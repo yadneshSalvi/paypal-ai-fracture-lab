@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@fracture/paypal-core": "file:vendor/fracture-paypal-core-0.2.2.tgz",
+    "@modelcontextprotocol/sdk": "1.32.2",
     "@paypal/agent-toolkit": "1.11.0",
     "better-sqlite3": "12.9.0",
     "dotenv": "17.2.3",

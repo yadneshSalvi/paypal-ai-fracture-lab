@@ -47,10 +47,12 @@ Preparation builds an explicit public-source snapshot and pinned core archive; i
 ## Implementation and scope
 
 - **Implemented:** authoritative PostgreSQL storage; durable run/action identities and worker leases; independent faulty and hardened Bramble targets; persistent local orders, captures and refunds; S0, S3, S4, S5, S10 and A4 executors; invariant evaluation; scoped API; genuine model diagnosis; labelled reference/deceptive repair inspection; comparisons and compensation; reports and connected interface.
-- **In progress:** generated repairs in a credential-free execution boundary, remaining scenario executors, authentic webhook quarantine and reconciliation, qualified live approval/proxy journeys, Tandem Python and actual Errand Toolkit behavior, CLI/MCP, campaign recovery and broader source analysis.
+- **In progress:** generated repairs in a credential-free execution boundary, remaining scenario executors, authentic webhook quarantine and reconciliation, qualified live approval/proxy journeys, Tandem Python and actual Errand Toolkit behavior, expanded CLI/MCP execution capabilities, campaign recovery and broader source analysis.
 - **Unmeasured:** the 600-attempt three-arm context study, 12-revision public sample audit, and five actual user sessions. Their outcomes remain blank until executed. The evaluation protocol is currently a draft, not falsely frozen.
 
 The baseline is eight live-resource cases, three provider-negative cases and twelve local cases. Seven proposed additions target 30 qualified cases. S0 is the introductory walkthrough and is excluded from that denominator. A visible scenario definition is not an executed capability: gated cases show the missing proof.
+
+The [local CLI and stdio MCP server](docs/DEVELOPER_TOOLS.md) now execute the qualified Sample scenarios through that same service, with private expiring grants, owned reports and immediate revocation for subsequent calls. Initialize with `npm run cli -- init`. Generated-repair, arbitrary-workspace and live-payment tools remain pending; this interface does not imply their completion.
 
 ## Payment boundary
 

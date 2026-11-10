@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "qualifiedAt": "2026-11-10T22:39:21.701782+00:00",
+  "scope": "Local developer CLI and stdio MCP, curated Sample experiments only",
+  "actualProtocol": "@modelcontextprotocol/sdk 1.32.2 Client/McpServer via in-memory and real stdio subprocesses",
+  "checks": {
+    "developerBoundary": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "adapters": [
+        "SQLite",
+        "isolated PostgreSQL schema"
+      ]
+    },
+    "existingApplicationAndAi": {
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typecheck": "passed"
+  },
+  "proof": [
+    "Fresh CLI processes and a stdio MCP client share the same persisted owner session and experiment.",
+    "Revocation from CLI blocks subsequent calls on an already-connected MCP client.",
+    "Unknown/live/path/payment inputs, cross-session resources, expired grants, symlinks and broad credential-file modes are rejected."
+  ],
+  "limitations": [
+    "Sample model resources are not PayPal transactions.",
+    "Generated patch execution, arbitrary workspace import and live payment tools remain unimplemented in this interface.",
+    "An invocation accepted before revocation can complete; subsequent invocations are denied.",
+    "No hosted MCP endpoint was deployed."
+  ],
+  "sourceSha256": {
+    "package.json": "6a7d2e2136b280a6a6929b901afb31f65abe1b4b96c08c0aaa7b8222ef226d94",
+    "package-lock.json": "6e1bbd8146c07ef53a2b892a44026bd7c7472d77620669fb0cd58bfbb94dd0fc",
+    "apps/cli/src/index.ts": "958466660832d2f72709922dba92cab7654b137f7bb4f6cc13cf05c4f3d5a00e",
+    "apps/mcp/src/index.ts": "d8dce75359855ea5a2d3ae1d489246618577c687f102ab75c69b8457b8e6d24f",
+    "apps/mcp/src/server.ts": "365b1f60984ee39ce1978b7bf3a3a60a3a8c3f45817ba70d804df015237973d1",
+    "packages/developer-tools/src/access.ts": "351fdee6f0161f3ae91a48dd1abb21744a66af8079fc9a77e1ee0e5fc54a9249",
+    "packages/developer-tools/src/runtime.ts": "ea3fc85f831a113bb2db2dd8806aa6cb81788d9ae6dd948c41ef6e45f21e4f9b",
+    "tests/developer-tools.test.ts": "41f7650653510e1a3b71d9b06331a53c475891b0f99532f0d76530c40409d798"
+  }
+}
