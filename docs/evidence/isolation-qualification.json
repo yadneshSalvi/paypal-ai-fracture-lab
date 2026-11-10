@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "source": "sample",
+  "qualifiedAt": "2026-11-10T21:51:19.852Z",
+  "candidateProvenance": "human_reference_and_original_baseline",
+  "modelGenerated": false,
+  "providerTraffic": "none",
+  "baseline": {
+    "stage": "evaluated",
+    "passed": false,
+    "candidateHash": "36098191e41a5f5c84259501fc70fb93397b59a9f282adeebadf435320891943",
+    "tests": [
+      {
+        "id": "compile",
+        "name": "Strict candidate compile",
+        "status": "pass",
+        "hidden": false,
+        "durationMs": 0,
+        "detail": "Pinned TypeScript compiler passed the candidate against the original interface."
+      },
+      {
+        "id": "happy",
+        "name": "Original happy-path purchase",
+        "status": "pass",
+        "hidden": false,
+        "durationMs": 20,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "lost",
+        "name": "Lost capture answer and repeated purchase intent",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 6,
+        "detail": "Observed 2 completed captures, 1 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "malformed",
+        "name": "Malformed committed success",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 5,
+        "detail": "Observed 2 completed captures, 1 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "unavailable",
+        "name": "Unavailable reconciliation stays uncertain",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 3,
+        "detail": "Observed 2 completed captures, 1 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "pending",
+        "name": "Pending capture never backs a download",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 3,
+        "detail": "Observed 0 completed captures, 2 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "auth",
+        "name": "Never-sent authentication has no payment effect",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 2,
+        "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "concurrent",
+        "name": "Eight concurrent callbacks share one purchase",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 28,
+        "detail": "Observed 8 completed captures, 8 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "revoked",
+        "name": "Revoked current authority blocks dispatch",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 3,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "payload",
+        "name": "Changed amount cannot reuse an approved identity",
+        "status": "fail",
+        "hidden": true,
+        "durationMs": 3,
+        "detail": "Observed 2 completed captures, 2 entitlements, paid; 0 authoritative reads; 0 refused/thrown calls."
+      }
+    ]
+  },
+  "reference": {
+    "stage": "evaluated",
+    "passed": true,
+    "candidateHash": "244a4815b649c73f2c5d0471e0bf6e3dcbacf1f48602101d3d5f1a21bfa1cbf3",
+    "tests": [
+      {
+        "id": "compile",
+        "name": "Strict candidate compile",
+        "status": "pass",
+        "hidden": false,
+        "durationMs": 0,
+        "detail": "Pinned TypeScript compiler passed the candidate against the original interface."
+      },
+      {
+        "id": "happy",
+        "name": "Original happy-path purchase",
+        "status": "pass",
+        "hidden": false,
+        "durationMs": 30,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "lost",
+        "name": "Lost capture answer and repeated purchase intent",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 11,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 3 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "malformed",
+        "name": "Malformed committed success",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 7,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 3 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "unavailable",
+        "name": "Unavailable reconciliation stays uncertain",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 6,
+        "detail": "Observed 1 completed captures, 0 entitlements, checking; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "pending",
+        "name": "Pending capture never backs a download",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 6,
+        "detail": "Observed 0 completed captures, 0 entitlements, checking; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "auth",
+        "name": "Never-sent authentication has no payment effect",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 22,
+        "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "concurrent",
+        "name": "Eight concurrent callbacks share one purchase",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 9,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "revoked",
+        "name": "Revoked current authority blocks dispatch",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 2,
+        "detail": "Observed 0 completed captures, 0 entitlements, processing; 0 authoritative reads; 1 refused/thrown calls."
+      },
+      {
+        "id": "payload",
+        "name": "Changed amount cannot reuse an approved identity",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 5,
+        "detail": "Observed 1 completed captures, 1 entitlements, processing; 1 authoritative reads; 1 refused/thrown calls."
+      }
+    ]
+  },
+  "suiteHash": "c3e3c478c3af78f82ba966e946cb578ef31b8a039855d920a65402adad190239",
+  "runnerReceipt": {
+    "imageId": "sha256:c41f15f8d7b1c449cabb125b0ada5db2b9dfdcc2a2cb888bb9e23c6c1961bc65",
+    "snapshotHash": "2fc3814a6c8bff4c0b034efd4ca79950564ea6143c4249cdc0884420cd01a150",
+    "containerId": "0b52738281e13eee4adbefa67717691f3c7c82fb5897daf80d9c583f4856a3ff",
+    "elapsedMs": 2557,
+    "networkMode": "none",
+    "readOnlyRoot": true,
+    "hostMountCount": 0,
+    "user": "1000:1000",
+    "memoryBytes": 536870912,
+    "pidsLimit": 96,
+    "capabilitiesDropped": [
+      "ALL"
+    ],
+    "securityOptions": [
+      "no-new-privileges"
+    ],
+    "source": "sample",
+    "credentialEnvironmentForwarded": false
+  },
+  "supervisor": {
+    "probe": "intentional_cpu_loop",
+    "outcome": "container_supervisor_killed_cpu_loop",
+    "elapsedMs": 55160
+  },
+  "limitations": [
+    "One bounded TypeScript checkout contract; not arbitrary repository execution.",
+    "This qualifies the isolated executor using original and human-reference source. It is not a generated repair result.",
+    "Static capability restrictions complement the container; no claim of formal JavaScript noninterference.",
+    "Hosted Vercel Sandbox and Python runners require separate qualification."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-11-10T21:42:32.699842+00:00",
+  "source": "sample",
+  "browser": "Codex in-app browser",
+  "sampleRunId": "08df5df0-ff4b-43a6-a5f2-3e6f24129819",
+  "observed": [
+    "Before customer retry, headline is Paid, but told to try again; exactly one local model capture of1200minor",
+    "Completed prior Astra diagnosis no longer shows the in-progress spinner",
+    "At390x844, body and document width390; Projects,Campaigns,Repairs,Evaluations,Evidence reachable",
+    "Named search opens with textbox focused, filters Evidence, Escape returns focus to the trigger"
+  ],
+  "financialWrites": 0,
+  "limits": [
+    "This fresh run is Sample local model execution, not provider sandbox execution",
+    "New run remains awaiting the deliberate customer retry",
+    "No full screen-reader or contrast audit claimed"
+  ]
+}

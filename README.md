@@ -32,6 +32,18 @@ Application conformance runs on PostgreSQL when configured and on an isolated SQ
 
 [`docs/evidence/application-conformance.json`](docs/evidence/application-conformance.json) records the executed application result. [`docs/evidence/model-diagnosis-qualification.json`](docs/evidence/model-diagnosis-qualification.json) records actual model calls against Sample payment evidence. Public PayPal qualification receipts are **separate isolated-account experiments**, not transactions from a current Sample run.
 
+The bounded TypeScript repair executor has a separate local qualification. On macOS it currently requires Docker and a dedicated Colima profile:
+
+```sh
+colima start fracture-lab --cpus 2 --memory 2 --disk 15 --root-disk 10 --runtime docker --activate=false --mount none --ssh-agent=false --ssh-config=false --port-forwarder none
+npm run prepare:isolation
+npm run verify:isolation
+```
+
+Preparation builds an explicit public-source snapshot and pinned core archive; it does not copy `.env`, private artifacts, host dependencies or credentials. Each candidate runs as an unprivileged user in a container with no network or host mounts, a read-only root, bounded temporary storage, CPU/memory/process limits and an independent 55-second supervisor. The original compiler, regression harness and provider observations are outside the candidate's allowed edit surface. Static import/reflection checks and a scoped SQL capability add restrictions; they are not a claim of formal JavaScript isolation.
+
+[`docs/evidence/isolation-qualification.json`](docs/evidence/isolation-qualification.json) records the actual inspected container settings and the same ten checks for two **human-authored** candidates: strict compile plus nine scenarios. The original faulty target passes its happy path and fails seven safety cases; the hardened reference passes all checks. The executor currently accepts one bounded checkout source file. It is not yet wired to generated repairs or the web API, and it is not an arbitrary-repository or hosted runner. Full local traces remain ignored in `.artifacts/isolation/`.
+
 ## Implementation and scope
 
 - **Implemented:** authoritative PostgreSQL storage; durable run/action identities and worker leases; independent faulty and hardened Bramble targets; persistent local orders, captures and refunds; S0, S3, S4, S5, S10 and A4 executors; invariant evaluation; scoped API; genuine model diagnosis; labelled reference/deceptive repair inspection; comparisons and compensation; reports and connected interface.

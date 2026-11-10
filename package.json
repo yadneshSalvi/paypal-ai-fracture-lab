@@ -43,6 +43,8 @@
     "eval:context": "tsx scripts/evaluate.ts",
     "verify:core": "tsx scripts/verify-core.ts",
     "verify:app": "tsx scripts/verify-app.ts",
+    "prepare:isolation": "tsx scripts/prepare-isolation.ts",
+    "verify:isolation": "tsx scripts/qualify-isolation.ts",
     "test:app": "tsx --test tests/application.test.ts"
   }
 }
