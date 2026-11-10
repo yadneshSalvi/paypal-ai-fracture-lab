@@ -1,5 +1,5 @@
 /** Portable payment-core v0.2.4. Domains retain policy; this package guards execution. */
-export const PAYPAL_CORE_VERSION = "0.2.6";
+export const PAYPAL_CORE_VERSION = "0.2.7";
 export const SDK_COMMIT = "5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2";
 export type EvidenceMode = "live_sandbox" | "sample" | "replay";
 export interface PaymentScope { tenantId: string; projectId: string }

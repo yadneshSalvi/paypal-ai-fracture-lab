@@ -112,6 +112,84 @@ for(const adapter of adapters){
     await assert.rejects(core.execute(cmd),/injected SQL outage/);assert.equal((await store.get(cmd.scope,cmd.operationId))?.status,"dispatching");
     const recovered=await core.recover(cmd.scope);assert.equal(recovered[0]?.status,"succeeded");assert.equal(provider.writes,1);assert.equal(provider.reads,1);
   });
+  test(`${adapter}: exact recovery resumes one policy's command without scanning or touching another policy in the same scope`,async t=>{
+    const {db}=await database(t,adapter);
+    class ExactStore extends SqlPaymentStore {override async list(_scope:PaymentScope):Promise<PaymentOperation[]>{throw new Error("Exact recovery must not enumerate a scope");}}
+    const store=new ExactStore(db),provider=new FixtureProvider();
+    const seed=command({kind:"create_order",intent:"CAPTURE",customId:"seed-owned",money:{currency:"USD",minor:1200}});
+    const refund=command({kind:"refund_capture",captureId:"CAPTURE-ELIGIBLE",money:{currency:"USD",minor:500}},seed.scope);
+    const reservation={resourceKey:"capture:CAPTURE-ELIGIBLE",currency:"USD",totalMinor:1200,externallyConsumedMinor:0,observedProviderIds:[],observedAt:new Date().toISOString()};
+    await store.claim(seed);await store.claim(refund,reservation);
+    const refundBefore=await store.get(refund.scope,refund.operationId);const seen:string[]=[];
+    const seedPolicy:PaymentPolicy={authorize:async cmd=>{seen.push(cmd.operationId);return {...await policy().authorize(cmd),allowed:cmd.action.kind==="create_order"};}};
+    const seedCore=new PaymentCore({store,provider,policy:seedPolicy,now:()=>new Date(Date.now()+120000)});
+    const result=await seedCore.recoverOperation(seed.scope,seed.operationId);
+    assert.equal(result.status,"succeeded");assert.deepEqual(seen,[seed.operationId]);assert.equal(provider.writes,1);
+    assert.deepEqual(await store.get(refund.scope,refund.operationId),refundBefore);
+    const refundPolicy:PaymentPolicy={authorize:async cmd=>({...await policy({reservation}).authorize(cmd),allowed:cmd.action.kind==="refund_capture"})};
+    const refundCore=new PaymentCore({store,provider,policy:refundPolicy,now:()=>new Date(Date.now()+120000)});
+    assert.equal((await refundCore.recoverOperation(refund.scope,refund.operationId)).status,"succeeded");
+    assert.equal(provider.writes,2);assert.equal(provider.reads,0);
+    assert.equal((await store.get(seed.scope,seed.operationId))?.command.providerRequestId,seed.providerRequestId);
+  });
+  test(`${adapter}: concurrent exact recovery returns the original SQL winner and dispatches once`,async t=>{
+    const {store}=await database(t,adapter);const provider=new FixtureProvider();const cmd=command();
+    await store.claim(cmd);
+    const make=()=>new PaymentCore({store,provider,policy:policy(),now:()=>new Date(Date.now()+120000)});
+    const cores=[make(),make()];
+    const results=await Promise.all(Array.from({length:12},(_,index)=>cores[index%2]!.recoverOperation(cmd.scope,cmd.operationId)));
+    assert.equal(provider.writes,1);assert(results.every(result=>result.command.operationId===cmd.operationId));
+    assert(results.every(result=>result.command.providerRequestId===cmd.providerRequestId));
+    assert.equal((await store.get(cmd.scope,cmd.operationId))?.status,"succeeded");
+  });
+  test(`${adapter}: exact recovery of an unknown outcome after expiry or revocation only reads its original resource`,async t=>{
+    const {store}=await database(t,adapter);const provider=new FixtureProvider();const cmd=command();const unrelated=command(undefined,cmd.scope);
+    provider.executeHook=async()=>{throw new ProviderError("connection","Lost write response","unknown",502);};
+    const original=new PaymentCore({store,provider,policy:policy()});
+    assert.equal((await original.execute(cmd)).status,"pending_reconciliation");
+    assert.equal((await original.execute(unrelated)).status,"pending_reconciliation");
+    const untouched=await store.get(unrelated.scope,unrelated.operationId);const reconciled:string[]=[];
+    let resolved=false;
+    provider.reconcileHook=async operation=>{reconciled.push(operation.command.operationId);return resolved?receipt(operation.command):null;};
+    const denied:PaymentPolicy={authorize:async()=>{throw new Error("Unknown reconciliation must not acquire new write authority");}};
+    const recovery=new PaymentCore({store,provider,policy:denied,now:()=>new Date(Date.now()+7200000)});
+    assert.equal((await recovery.recoverOperation(cmd.scope,cmd.operationId)).status,"pending_reconciliation");
+    assert.equal(provider.writes,2);assert.deepEqual(await store.get(unrelated.scope,unrelated.operationId),untouched);
+    resolved=true;const result=await recovery.recoverOperation(cmd.scope,cmd.operationId);
+    assert.equal(result.status,"succeeded");assert.equal(result.receipt?.reconciled,true);
+    assert.equal(result.command.providerRequestId,cmd.providerRequestId);assert.deepEqual(reconciled,[cmd.operationId,cmd.operationId]);assert.equal(provider.writes,2);
+  });
+  test(`${adapter}: an expired exact dispatch lease reconciles without authorizing or repeating the write`,async t=>{
+    const {store}=await database(t,adapter);const provider=new FixtureProvider();const cmd=command();
+    const claimed=await store.claim(cmd);await store.transition(cmd.scope,cmd.operationId,claimed.operation.version,"dispatching",null,null);
+    provider.reconcileHook=async operation=>receipt(operation.command);
+    const core=new PaymentCore({store,provider,policy:{authorize:async()=>{throw new Error("Dispatch recovery cannot authorize a new write");}},now:()=>new Date(Date.now()+7200000)});
+    assert.equal((await core.recoverOperation(cmd.scope,cmd.operationId)).status,"succeeded");assert.equal(provider.writes,0);assert.equal(provider.reads,1);
+  });
+  test(`${adapter}: an exact never-dispatched claim must still pass current authority and approval expiry`,async t=>{
+    const {store}=await database(t,adapter);const provider=new FixtureProvider();const revoked=command();const expired=command(undefined,revoked.scope);
+    await store.claim(revoked);await store.claim(expired);const untouched=await store.get(expired.scope,expired.operationId);
+    const core=new PaymentCore({store,provider,policy:policy({allowed:false,reason:"The current operator role was revoked."}),now:()=>new Date(Date.now()+120000)});
+    const rejected=await core.recoverOperation(revoked.scope,revoked.operationId);
+    assert.equal(rejected.status,"not_sent");assert.equal(rejected.error?.kind,"AUTHORITY_DENIED");assert.deepEqual(await store.get(expired.scope,expired.operationId),untouched);
+    const later=new PaymentCore({store,provider,policy:policy(),now:()=>new Date(Date.now()+7200000)});
+    const result=await later.recoverOperation(expired.scope,expired.operationId);assert.equal(result.status,"not_sent");assert.equal(result.error?.kind,"APPROVAL_EXPIRED");
+    assert.equal(provider.writes,0);assert.equal(provider.reads,0);
+  });
+  test(`${adapter}: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope`,async t=>{
+    const {store}=await database(t,adapter);const provider=new FixtureProvider();const core=new PaymentCore({store,provider,policy:{authorize:async()=>{throw new Error("No write authority should be queried");}}});
+    const cmd=command();const active=await store.claim(cmd);assert.deepEqual(await core.recoverOperation(cmd.scope,cmd.operationId),active.operation);
+    const dispatching=await store.transition(cmd.scope,cmd.operationId,active.operation.version,"dispatching",null,null);
+    assert.deepEqual(await core.recoverOperation(cmd.scope,cmd.operationId),dispatching);
+    for(const status of ["succeeded","refused","not_sent"] as const){
+      const terminal=command(undefined,cmd.scope);const row=await store.claim(terminal);const stored=await store.transition(terminal.scope,terminal.operationId,row.operation.version,status,null,null);
+      assert.deepEqual(await core.recoverOperation(terminal.scope,terminal.operationId),stored);
+    }
+    await assert.rejects(core.recoverOperation({...cmd.scope,tenantId:"different-tenant"},cmd.operationId),isCode("NOT_FOUND"));
+    await assert.rejects(core.recoverOperation({...cmd.scope,projectId:"different-project"},cmd.operationId),isCode("NOT_FOUND"));
+    await assert.rejects(core.recoverOperation(cmd.scope,"missing-operation"),isCode("NOT_FOUND"));
+    assert.equal(provider.writes,0);assert.equal(provider.reads,0);
+  });
   test(`${adapter}: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt`,async t=>{
     const {db}=await database(t,adapter);
     for(const point of ["commit","attempt"] as const){

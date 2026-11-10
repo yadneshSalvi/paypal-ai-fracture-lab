@@ -1,4 +1,4 @@
-# PayPal core 0.2.4
+# PayPal core 0.2.7
 
 Portable server-only payment execution, tested first against Fracture Lab's hardened control. Never insert this core into an intentionally faulty target's request path. MIT licensed; no account provisioning or package publication is performed.
 
@@ -20,7 +20,7 @@ The last command is supplied by Fracture Lab's root scripts. It executes the sui
 
 Public types are in `src/types.ts`; emitted declarations are in `dist/index.d.ts`. Import from the package root.
 
-- `PaymentCore({store,provider,policy})`: `execute(command)`, explicit `retry(scope,operationId)`, `reconcile(scope,operationId)`, `recover(scope)`, `listReceipts(scope)`, and `ingestWebhook(scope,rawBody,headers,verifier)`.
+- `PaymentCore({store,provider,policy})`: `execute(command)`, explicit `retry(scope,operationId)`, `reconcile(scope,operationId)`, `recoverOperation(scope,operationId,signal?)`, `recover(scope)`, `listReceipts(scope)`, and `ingestWebhook(scope,rawBody,headers,verifier)`.
 - `SqlPaymentStore(db, options?)`: call `initialize()` during migration. Claims and transitions use SQL uniqueness, row locks, and versions. The `PaymentStore` adapter also exposes `reclaim` for safe retry with a fresh budget.
 - `PostgresDatabase(connectionString)` and `SqliteDatabase(filePath)` implement `SqlDatabase`.
 - `SandboxPayPalProvider(config)`: typed SDK writes, normalized resource reads, conservative reconciliation, and scoped Transaction Search. Config requires exact sandbox URL, credentials, and a project-isolation marker.
@@ -50,7 +50,7 @@ HTTP success is not completed money movement. Pending captures/refunds, missing 
 
 For `create_order`, `succeeded` means an order exists, not that money moved. Capture/refund actions also require the correct resource terminal state and exact amount. Drive commerce from the normalized resource kind/status, not operation status alone.
 
-Claims commit before dispatch. Result-persistence failure leaves the committed `dispatching` record. A durable worker must schedule `recover(scope)`: expired dispatch leases and uncertainty receive reads, never blind writes. Failure after commit or in attempt logging leaves the canonical operation receipt recoverable. The package creates no background timer.
+Claims commit before dispatch. Result-persistence failure leaves the committed `dispatching` record. A durable worker should schedule `recoverOperation(scope,operationId)` for its own stored command: expired dispatch leases and uncertainty receive reads, never blind writes. An expired claim known to precede dispatch may resume only after current authority is checked again. Scope-wide `recover(scope)` remains available only where one policy owns every selected command. Failure after commit or in attempt logging leaves the canonical operation receipt recoverable. The package creates no background timer.
 
 There is no invented lookup of orders by request ID. Lost create responses without a known order ID stay unknown. A lost refund ID needs an owning order exposing its `customId` correlation; aggregate amounts cannot prove an individual refund. Partial authorization capture also remains unknown without exact attribution. Do not clear these reservations simply to enable another write.
 
@@ -136,3 +136,11 @@ Primary contracts: [PayPal event names](https://developer.paypal.com/api/rest/we
 
 
 Version0.2.6 corrects the runtime evidence version constant to match the package metadata; a regression now checks consistency. The0.2.5 archive remains immutable and its financial/event behavior is unchanged.
+
+## 0.2.7 exact-operation recovery
+
+`recoverOperation(scope,operationId,signal?)` reads only the named stored command. It does not list, authorize, mutate or dispatch other commands in the same tenant/project. This lets a seed worker and a refund worker use their own current domain policies within one project without applying the wrong policy during a scope-wide scan.
+
+An expired `claimed` operation goes through the existing current-authority check and atomic SQL version transition before its original request is sent. Concurrent recovery callers share that original winner. A pending reconciliation or an expired dispatch lease receives provider reads only, including after approval expiry or revocation. Active claims/dispatch leases and terminal states are returned unchanged; `not_sent` and `refused` still require explicit `retry` for another write. An unknown result never obtains a new request identity. A missing or differently scoped operation returns `NOT_FOUND`.
+
+PostgreSQL and SQLite regressions cover two policies in one scope, concurrent exact recovery, current-authority revocation, expired approvals, uncertain outcomes without replay, active leases, terminal no-ops and scope isolation. They use local fixture providers and do not establish additional live sandbox capability. Existing immutable archives and each product's adoption decision remain unchanged.

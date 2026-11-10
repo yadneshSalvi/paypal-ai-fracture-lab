@@ -78,7 +78,24 @@ export class PaymentCore {
     try{return await store.transition(scope,operationId,operation.version,receiptOutcome(operation.command,receipt),{...receipt,reconciled:true},null);}
     catch(error){if(error instanceof PaymentError&&error.code==="OPERATION_CHANGED"){const current=await store.get(scope,operationId);if(current)return current;}throw error;}
   }
-  /** Called by a durable scheduler after a request or process dies. Never resends an ambiguous write. */
+  /** Recover only the stored operation selected by its domain; never scans another policy's commands. */
+  async recoverOperation(scope:PaymentScope,operationId:string,signal?:AbortSignal):Promise<PaymentOperation>{
+    const operation=await this.options.store.get(scope,operationId);
+    if(!operation)throw new PaymentError("NOT_FOUND","Payment operation not found.",404);
+    const expired=Date.parse(operation.leaseUntil)<=this.now().getTime();
+    if(operation.status==="pending_reconciliation"||(operation.status==="dispatching"&&expired))return this.reconcile(scope,operationId,signal);
+    if(operation.status!=="claimed"||!expired)return operation;
+    try{return await this.dispatch(operation,signal);}
+    catch(error){
+      // Concurrent schedulers may select the same expired claim. Only the SQL version winner
+      // can transition to dispatching; losers return that original operation without a write.
+      if(error instanceof PaymentError&&error.code==="OPERATION_CHANGED"){
+        const current=await this.options.store.get(scope,operationId);if(current)return current;
+      }
+      throw error;
+    }
+  }
+  /** Scope-wide recovery requires one policy that can authorize every selected command in the scope. */
   async recover(scope:PaymentScope){
     const operations=await this.options.store.list(scope);const recovered:PaymentOperation[]=[];
     for(const operation of operations){
