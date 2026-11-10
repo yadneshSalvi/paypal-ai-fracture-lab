@@ -6,12 +6,12 @@ import { config } from "dotenv";
 config({path:join(process.cwd(),".env"),quiet:true});
 const digest=(text:string)=>createHash("sha256").update(text).digest("hex");
 const root=process.cwd();const packageDir=join(root,"packages/paypal-core");const packageVersion=JSON.parse(readFileSync(join(packageDir,"package.json"),"utf8")).version as string;
-const tests=spawnSync(process.execPath,["--import","tsx","--test","--test-reporter=tap","tests/paypal-core.test.ts","tests/paypal-sdk.test.ts"],{cwd:root,encoding:"utf8"});
+const tests=spawnSync(process.execPath,["--import","tsx","--test","--test-reporter=tap","tests/paypal-core.test.ts","tests/paypal-sdk.test.ts","tests/paypal-commerce-rest.test.ts","tests/paypal-store-codec.test.ts"],{cwd:root,encoding:"utf8"});
 if(tests.status!==0){process.stdout.write(tests.stdout);process.stderr.write(tests.stderr);process.exit(tests.status??1);}
 const build=spawnSync(process.execPath,["node_modules/typescript/bin/tsc","-p","packages/paypal-core/tsconfig.build.json"],{cwd:root,encoding:"utf8"});
 if(build.status!==0){process.stdout.write(build.stdout);process.stderr.write(build.stderr);process.exit(build.status??1);}
 const sourceHashes=Object.fromEntries(readdirSync(join(packageDir,"src")).filter(name=>name.endsWith(".ts")).sort().map(name=>[`src/${name}`,digest(readFileSync(join(packageDir,"src",name),"utf8"))]));
-const testFiles=["tests/paypal-core.test.ts","tests/paypal-sdk.test.ts"];
+const testFiles=["tests/paypal-core.test.ts","tests/paypal-sdk.test.ts","tests/paypal-commerce-rest.test.ts","tests/paypal-store-codec.test.ts"];
 const result={schemaVersion:1,package:"@fracture/paypal-core",version:packageVersion,testedAt:new Date().toISOString(),nodeVersion:process.version,source:"sample",providerTraffic:"none; local fixture fetch only",adapters:process.env.DATABASE_URL?["postgres","sqlite"]:["sqlite"],passed:Number(tests.stdout.match(/^# pass (\d+)/m)?.[1]??0),failed:Number(tests.stdout.match(/^# fail (\d+)/m)?.[1]??0),build:"passed",command:"npm run verify:core",sourceHashes,testHashes:Object.fromEntries(testFiles.map(path=>[path,digest(readFileSync(join(root,path),"utf8"))]))};
 mkdirSync(join(root,"docs/evidence"),{recursive:true});writeFileSync(join(root,"docs/evidence/core-conformance.json"),JSON.stringify(result,null,2)+"\n");
 copyFileSync(join(root,"LICENSE"),join(packageDir,"LICENSE"));

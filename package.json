@@ -39,7 +39,7 @@
     "cli": "tsx apps/cli/src/index.ts",
     "mcp": "tsx apps/mcp/src/index.ts",
     "seed": "tsx scripts/seed.ts",
-    "test:core": "tsx --test tests/paypal-core.test.ts tests/paypal-sdk.test.ts",
+    "test:core": "tsx --test tests/paypal-core.test.ts tests/paypal-sdk.test.ts tests/paypal-commerce-rest.test.ts tests/paypal-store-codec.test.ts",
     "eval:context": "tsx scripts/evaluate.ts",
     "verify:core": "tsx scripts/verify-core.ts",
     "verify:app": "tsx scripts/verify-app.ts",

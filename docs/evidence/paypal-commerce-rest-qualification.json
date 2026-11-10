@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "coreVersion": "0.2.4",
+  "source": "live_sandbox",
+  "observedAt": "2026-11-10T22:13:32.248Z",
+  "scope": "Isolated Fracture Lab sandbox merchant and controlled sandbox buyer; test funds only",
+  "invoice": {
+    "created": "succeeded",
+    "createRecoveryUsed": true,
+    "createState": "DRAFT",
+    "shareFirstAdapterResult": "unknown",
+    "shareDiagnosis": "Provider shared the invoice as UNPAID. The first adapter omitted that state; an exact read diagnosed it, and the decoder plus fixture regression were corrected. No second send was performed.",
+    "finalState": "CANCELLED",
+    "payments": 0,
+    "refunds": 0,
+    "notificationsRequested": false
+  },
+  "payout": {
+    "createState": "PENDING",
+    "batchReadState": "PROCESSING",
+    "completeBatchRead": true,
+    "individualReadState": "SUCCESS",
+    "money": {
+      "currency": "USD",
+      "minor": 100
+    },
+    "fee": {
+      "currency": "USD",
+      "minor": 25
+    },
+    "transactionIdentityPresent": true,
+    "exactRecipientAndItemMatch": true,
+    "createDispatches": 1
+  },
+  "limits": [
+    "No live invoice payment or refund was performed",
+    "No unclaimed payout cancellation was performed",
+    "No production money, physical goods or external outreach",
+    "No other project domain is qualified by this isolated transport probe"
+  ]
+}

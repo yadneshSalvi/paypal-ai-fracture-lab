@@ -1,4 +1,4 @@
-# PayPal core 0.2.3
+# PayPal core 0.2.4
 
 Portable server-only payment execution, tested first against Fracture Lab's hardened control. Never insert this core into an intentionally faulty target's request path. MIT licensed; no account provisioning or package publication is performed.
 
@@ -21,7 +21,7 @@ The last command is supplied by Fracture Lab's root scripts. It executes the sui
 Public types are in `src/types.ts`; emitted declarations are in `dist/index.d.ts`. Import from the package root.
 
 - `PaymentCore({store,provider,policy})`: `execute(command)`, explicit `retry(scope,operationId)`, `reconcile(scope,operationId)`, `recover(scope)`, `listReceipts(scope)`, and `ingestWebhook(scope,rawBody,headers,verifier)`.
-- `SqlPaymentStore(db)`: call `initialize()` during migration. Claims and transitions use SQL uniqueness, row locks, and versions. The `PaymentStore` adapter also exposes `reclaim` for safe retry with a fresh budget.
+- `SqlPaymentStore(db, options?)`: call `initialize()` during migration. Claims and transitions use SQL uniqueness, row locks, and versions. The `PaymentStore` adapter also exposes `reclaim` for safe retry with a fresh budget.
 - `PostgresDatabase(connectionString)` and `SqliteDatabase(filePath)` implement `SqlDatabase`.
 - `SandboxPayPalProvider(config)`: typed SDK writes, normalized resource reads, conservative reconciliation, and scoped Transaction Search. Config requires exact sandbox URL, credentials, and a project-isolation marker.
 - `PayPalWebhookVerifier(config,registeredWebhookId)`: REST postback because this SDK has no webhook operation. Simulator placeholder IDs are rejected. Original event JSON is preserved; arbitrary certificate URLs are never downloaded.
@@ -62,7 +62,7 @@ Tests cover durable duplicate claims, changed payloads, refund races, pending/un
 
 Authorization capture/void and Transaction Search have resolved typed implementations but require further endpoint-specific and real-account qualification before product claims. Tracking, disputes, payouts, vault, Toolkit tools, and subscription billing are separate extensions not supplied by 0.1.0. Each product needs its own live receipts, ownership policy, read-API authorization, durable recovery worker, and dead-letter review.
 
-| Surface | Version 0.2.2 status |
+| Surface | Version 0.2.4 status |
 |---|---|
 | Orders create/get/capture | Present; single purchase unit, optional exact item breakdown, custom ID, CAPTURE/AUTHORIZE intent; local SDK wire tests |
 | Orders return/cancel URLs, experience context, saved payment source | Present with exact current origin/consent grants and real-SDK fixture tests; approval UI and live qualification belong to the domain |
@@ -72,8 +72,9 @@ Authorization capture/void and Transaction Search have resolved typed implementa
 | Transaction Search | Present, read-only, bounded/paginated/scoped; entitlement and runtime qualification pending |
 | Registered webhook signature postback/intake | Present; receiver route/registration and authentic delivery qualification belong to each app |
 | Vault setup approval and payment-token acquisition | Domain-owned extension; checkout using an existing consent-bound wallet is supplied |
-| Payouts and recipient payout authority | Absent |
-| Invoices, tracking, customer disputes/evidence | Absent |
+| Payouts and recipient payout authority | Typed REST transport below; current recipient authority, durable claims and accounting remain domain owned |
+| Invoices | Typed REST draft/read/search/share-link/cancel transport below; payment attribution remains domain owned |
+| Tracking and customer disputes/evidence | Absent |
 | Subscriptions and Agent Toolkit tools | Absent |
 
 The Guild must qualify partial captures and `finalCapture` against its authorization ownership and remaining balance. WorldKit and Fieldproof must obtain actual Vault consent/payment tokens before using saved-wallet checkout. Glasshouse tracking/disputes are also explicit follow-on work.
@@ -107,3 +108,16 @@ A separate Fracture saved-wallet probe completed actual setup approval, token ex
 Optional `create_order.saveWalletOnSuccess` is `{consentId,consentVersion,consentDigest,usageType:"MERCHANT"}`. It requires buyer-present `experience`, approved redirect origins, and an exact, unexpired `policy.authorize().saveWalletConsent` containing those fields plus `expiresAt`. It cannot accompany `savedWallet`. Checks run before claim and immediately before dispatch; all fields enter the immutable action hash. The SDK emits only `payment_source.paypal.attributes.vault` with `store_in_vault:ON_SUCCESS` and `usage_type:MERCHANT` plus SDK defaults `customer_type:CONSUMER` and `permit_multiple_payment_tokens:false`. It never sends consent identifiers.
 
 Vault/customer IDs remain absent from normalized core receipts. The domain must read its exact owned order after observed authorization/capture and validate/store actual token identity privately; missing or pending vault data cannot become a saved mandate. A creation success does not mean money moved or vaulting completed. Existing consent-bound `savedWallet` checkout remains a separate operation. Local SDK fixture tests do not establish live capability.
+
+## 0.2.4 typed commerce REST and private operation storage
+
+`SandboxCommerceRestGateway(config, fetch?)` supplies Invoicing v2 and Payouts v1 because the pinned APIMatic SDK has no controllers for those APIs. This is an explicitly separate typed REST transport, not a new `PaymentCore` action or an authority layer. It requires the same sandbox-only configuration, rejects redirects, bounds responses/timeouts, and never automatically retries a write. Every caller must durably claim its semantic operation and recheck current scope, recipient, amount, approval/version, merchant ownership and reservation **before** invoking a mutation. Persist the immutable request and result privately. Public DTOs must omit raw recipient addresses and identifiers.
+
+- `createInvoice`, `getInvoice`, `findInvoices`, `sendInvoice`, `cancelInvoice`: exact invoice number and reference; create recovery searches and independently reads the original invoice. Sharing/cancellation suppresses merchant and recipient notifications. Future-dated invoices are rejected because provider notification semantics differ. An `UNPAID` shared invoice is not a payment; `PAID` is not sufficient payment evidence either. PAYPAL and EXTERNAL transaction types remain distinct. The invoice refund schema does not identify its original payment, so `originalPaymentId` is deliberately null and requires independent domain corroboration. No manual mark-paid or record-refund endpoints are exposed.
+- `createPayout`, `getPayoutBatch`, `getPayoutItem`, `cancelUnclaimedPayout`: USD, one to100items, exact EMAIL or PAYPAL_ID receivers, stable sender batch/item IDs and PayPal-Request-Id. Creation or batchSUCCESS does not imply itemSUCCESS. Full batch reads verify all pagination, item identities and coherent batch state; duplicates resolve the original batch only after every item matches. Pending or unknown writes retain domain reservations. A domain may explicitly recover an unknown creation with its identical persisted batch inside PayPal's30day duplicate retention, never a new identity; this transport does not schedule that retry. Cancellation requires an exact current UNCLAIMED item and confirms RETURNED.
+
+Results carry `outcome`, timestamp, HTTP status and debug ID; succeeded reads include their typed observations, while failures return safe generic codes. `not_sent` is known pre-dispatch, `refused` is a definite write4xx other than408, and uncertain responses remain `unknown`. The domain decides whether any observed provider state satisfies its business obligation. Read reconciliation may continue after a lost write response to establish the original outcome.
+
+`SqlPaymentStore` optionally accepts `{operationDocumentCodec:{encode(plaintext,context),decode(ciphertext,context)}}`. Synchronous callbacks must implement authenticated encryption with independent associated data binding `context.scope.tenantId`, `context.scope.projectId` and `context.operationId`. SQL stores a versioned wrapper; decode context is reconstructed from independent row columns, and the opened operation must match row identity and payload hash. Unknown encodings, missing keys and codec failures fail closed with safe errors. Existing plaintext is backward readable and becomes encrypted on its next transition; this is **not** a bulk migration of historical rows. The app owns key lifecycle and historical re-encryption, and must protect its separate domain command table as well. Attempts and normalized webhook records are unchanged and must not contain saved-wallet secrets.
+
+The conformance suite tests wire contracts, unknown response recovery, recipient binding, pagination, no duplicate writes, conditional storage encryption, key/context failures and durable reservation behavior. Separate `docs/evidence/paypal-commerce-rest-qualification.json` records the narrow actual controlled sandbox flow; the fixture conformance manifest remains labeled Sample. No product's collection, invoice payment, reimbursement or multi-recipient payout is qualified by this library test.
