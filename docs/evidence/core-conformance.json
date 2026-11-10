@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "package": "@fracture/paypal-core",
-  "version": "0.2.4",
-  "testedAt": "2026-11-10T22:15:25.570Z",
+  "version": "0.2.5",
+  "testedAt": "2026-11-10T22:42:17.154Z",
   "nodeVersion": "v22.22.3",
   "source": "sample",
   "providerTraffic": "none; local fixture fetch only",
@@ -10,7 +10,7 @@
     "postgres",
     "sqlite"
   ],
-  "passed": 131,
+  "passed": 135,
   "failed": 0,
   "build": "passed",
   "command": "npm run verify:core",
@@ -18,7 +18,7 @@
     "src/canonical.ts": "6a5283850790cafd278103fa15cb2e463bdf20ddb57030d3e417decfa0a22363",
     "src/checkout.ts": "f8fa172256f1d0e76fe8ae4234e597f534c53d02aa407534aa69d1378a0773ea",
     "src/commerce-rest.ts": "0aecb4547fe0975a39edf42119dc28fc2d6cfe51b8877da1ca255e7d28e6ce19",
-    "src/core.ts": "52e21d42185465e2cb9e0c7fb8b945eede7eeff60d3f52497c11ffc5585fa021",
+    "src/core.ts": "733312ddfef3122220888de556235fd26c2956deda189d6311d1d950e7ce8845",
     "src/index.ts": "55f950d9a9c5264f5f343d9c4ad35607f145117da808616f6deca48237b4b944",
     "src/provider.ts": "c4914faabd8e1ed3a6b6b05709e183af7f374be991e5e3ec1976423dc248e765",
     "src/sql.ts": "b2e3cc42068c5059055f1f6f926e4d2473988fee034df0a5d727a4eaf7a1a02a",
@@ -27,7 +27,7 @@
     "src/webhook.ts": "146e61a475115f1a888336b2a11d02cf292b74fe09e2b78df3ff8aa9df867559"
   },
   "testHashes": {
-    "tests/paypal-core.test.ts": "bc90ad427f1e709cd08c0f650e8c5fcaf3b4c834e46e1f05731541ed1ed20bb9",
+    "tests/paypal-core.test.ts": "52a48985f38edf7bd2032ad90112b56545a89969e2351712c744e56335666593",
     "tests/paypal-sdk.test.ts": "27c841a49bf254cd90cd502ea095495c46f7b05494544b446296d4a184e65c18",
     "tests/paypal-commerce-rest.test.ts": "cd5e47603780d59a14b04b7461dca903224682313f430e3762c1b03e9caf5caf",
     "tests/paypal-store-codec.test.ts": "e3a3778acbe0bad08bdabb5ffd4cfcb79e21322422ccd6c22464162f4f60e167"

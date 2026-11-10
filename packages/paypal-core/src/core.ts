@@ -95,10 +95,19 @@ export class PaymentCore {
     const body=parsed&&typeof parsed==="object"&&!Array.isArray(parsed)?parsed as Record<string,unknown>:{};
     const resource=body.resource&&typeof body.resource==="object"&&!Array.isArray(body.resource)?body.resource as Record<string,unknown>:{};
     const validId=(value:unknown)=>typeof value==="string"&&/^[A-Za-z0-9_.:-]{1,128}$/.test(value);
-    const knownType=typeof body.event_type==="string"&&/^(CHECKOUT\.ORDER\.(APPROVED|COMPLETED)|PAYMENT\.CAPTURE\.(COMPLETED|PENDING|DENIED|REFUNDED|REVERSED)|PAYMENT\.AUTHORIZATION\.(CREATED|VOIDED)|PAYMENT\.SALE\.(COMPLETED|DENIED|PENDING|REFUNDED|REVERSED)|CUSTOMER\.DISPUTE\.(CREATED|UPDATED|RESOLVED))$/.test(body.event_type);
-    const schemaValid=validId(body.id)&&validId(resource.id)&&knownType;
+    const knownType=typeof body.event_type==="string"&&/^(CHECKOUT\.ORDER\.(APPROVED|COMPLETED)|PAYMENT\.CAPTURE\.(COMPLETED|PENDING|DECLINED|DENIED|REFUNDED|REVERSED)|PAYMENT\.REFUND\.(PENDING|FAILED)|PAYMENT\.AUTHORIZATION\.(CREATED|VOIDED)|PAYMENT\.SALE\.(COMPLETED|DENIED|PENDING|REFUNDED|REVERSED)|CUSTOMER\.DISPUTE\.(CREATED|UPDATED|RESOLVED)|INVOICING\.INVOICE\.(CREATED|SENT|CANCELLED|PAID|REFUNDED|SCHEDULED|UPDATED)|PAYMENT\.PAYOUTSBATCH\.(DENIED|PROCESSING|SUCCESS)|PAYMENT\.PAYOUTS-ITEM\.(BLOCKED|CANCELED|FAILED|HELD|REFUNDED|RETURNED|SUCCEEDED|UNCLAIMED))$/.test(body.event_type);
+    // Intake admits a reconciliation hint, never a money/accounting conclusion.
+    // Payout payloads identify their resource differently from payment payloads.
+    const record=(value:unknown)=>value&&typeof value==="object"&&!Array.isArray(value)?value as Record<string,unknown>:{};
+    let candidates:unknown[]=[resource.id];
+    if(typeof body.event_type==="string"&&body.event_type.startsWith("INVOICING.INVOICE."))candidates=[resource.id,record(resource.invoice).id];
+    else if(typeof body.event_type==="string"&&body.event_type.startsWith("PAYMENT.PAYOUTS-ITEM."))candidates=[resource.payout_item_id,resource.id];
+    else if(typeof body.event_type==="string"&&body.event_type.startsWith("PAYMENT.PAYOUTSBATCH."))candidates=[record(resource.batch_header).payout_batch_id,resource.payout_batch_id,resource.id];
+    const present=candidates.filter(value=>value!==undefined&&value!==null);
+    const resourceId=present.length>0&&present.every(validId)&&new Set(present).size===1?String(present[0]):"unknown";
+    const schemaValid=validId(body.id)&&resourceId!=="unknown"&&knownType;
     const rejectionReason=!result.verified?"invalid_signature":!schemaValid?"unsupported_or_malformed_event":null;
-    const delivery:WebhookDelivery={id:randomUUID(),scope,eventId:validId(body.id)?String(body.id):`unidentified-${sha256(rawBody).slice(0,16)}`,eventType:knownType?String(body.event_type):"unknown",resourceId:validId(resource.id)?String(resource.id):"unknown",transmissionId:result.transmissionId,receivedAt:this.now().toISOString(),bodyHash:sha256(rawBody),verified:result.verified,schemaValid,rejectionReason,source:this.options.provider.source,status:!result.verified?"rejected":!schemaValid?"dead_letter":"queued"};
+    const delivery:WebhookDelivery={id:randomUUID(),scope,eventId:validId(body.id)?String(body.id):`unidentified-${sha256(rawBody).slice(0,16)}`,eventType:knownType?String(body.event_type):"unknown",resourceId,transmissionId:result.transmissionId,receivedAt:this.now().toISOString(),bodyHash:sha256(rawBody),verified:result.verified,schemaValid,rejectionReason,source:this.options.provider.source,status:!result.verified?"rejected":!schemaValid?"dead_letter":"queued"};
     const recorded=await this.options.store.recordWebhook(delivery);
     if(!result.verified)throw new PaymentError("INVALID_SIGNATURE","Webhook signature could not be verified.",400);
     if(!schemaValid)throw new PaymentError("WEBHOOK_DEAD_LETTER","Verified webhook has an unsupported or malformed resource; saved for inspection.",422);
