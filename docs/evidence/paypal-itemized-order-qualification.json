@@ -1,0 +1,39 @@
+{
+  "source": "live_sandbox",
+  "account": "fracture-lab isolated US sandbox merchant",
+  "version": "0.2.2",
+  "observedAt": "2026-11-10T20:22:24.909Z",
+  "orderIdHash": "3edb9ed10ac9bb5f9b204b635de56e34c85c529ec492b84eb75a80b36925c18f",
+  "status": "CREATED",
+  "items": [
+    {
+      "name": "Admission",
+      "sku": "admission",
+      "quantity": "1",
+      "unitAmount": {
+        "currency": "USD",
+        "value": "35.00"
+      }
+    },
+    {
+      "name": "Soundcheck perk",
+      "sku": "soundcheck",
+      "quantity": "1",
+      "unitAmount": {
+        "currency": "USD",
+        "value": "15.00"
+      }
+    }
+  ],
+  "total": {
+    "currency": "USD",
+    "value": "50.00",
+    "itemTotal": "50.00"
+  },
+  "financialResult": "Order created and reread only; no buyer approval, capture, refund or ticket issuance.",
+  "limits": [
+    "Does not qualify Opening Night credentials",
+    "Does not prove its80captures/38refunds",
+    "Component refund attribution remains domain-owned"
+  ]
+}

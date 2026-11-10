@@ -1,0 +1,31 @@
+{
+  "observedAt": "2026-11-10T21:14:53.851424+00:00",
+  "source": "live_sandbox",
+  "account": "Fracture Lab isolated US sandbox merchant and dedicated test buyer",
+  "coreVersion": "0.2.3",
+  "createStatus": "PAYER_ACTION_REQUIRED",
+  "capture": {
+    "status": "COMPLETED",
+    "currency": "USD",
+    "minor": 100,
+    "idHash": "cc211681b697b4ca8f8f7c1138628949c1bcdd7eb2ae6cfe2a17a84e5d4d351f"
+  },
+  "wallet": {
+    "observedFromOwnedOrder": true,
+    "currentPaymentTokenReread": true,
+    "customerIdentityMatched": true,
+    "idHash": "f83ccae8a7b2d9cbc48a6362d5400aa08dea6daec4848c333917f172a0482ede"
+  },
+  "refund": {
+    "status": "COMPLETED",
+    "currency": "USD",
+    "minor": 100,
+    "idHash": "50f39a2e63c12f3d9cbcd408523ebfc0f7539b10d33f521762469f97965fcad0"
+  },
+  "limits": [
+    "Controlled test of save during purchase only; no future charge authorized",
+    "Does not qualify another merchant, product mandate or production readiness",
+    "This buyer may already have a merchant token from prior sandbox qualification; no claim of first-ever wallet enrollment",
+    "Normalized core receipts contain no wallet/customer identifier"
+  ]
+}

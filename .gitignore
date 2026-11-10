@@ -29,3 +29,6 @@ test-results/
 .private/
 .setup-evidence/
 artifacts/private/
+.artifacts/
+.vercel
+.env*

@@ -1,0 +1,2 @@
+import { getService } from "../packages/service/src/index";
+const service=await getService();const session=await service.store.createSession("owner");await service.seedSession(session);const runs=await service.store.runs(session.id);console.log(JSON.stringify({source:"sample",sessionId:session.id,runs:runs.map(run=>({id:run.id,revision:run.revision,stage:run.stage,captures:run.captureCount,fulfilled:run.fulfillmentCount}))},null,2));await service.store.db.close();

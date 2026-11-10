@@ -1,0 +1,92 @@
+{
+  "source": "live_sandbox",
+  "account": "fracture-lab isolated US sandbox merchant",
+  "version": "0.2.1",
+  "operations": [
+    {
+      "phase": "create",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "order",
+          "status": "PAYER_ACTION_REQUIRED",
+          "money": null,
+          "idHash": "4466e20db391659f0f9c7166288a3fea556282a777b0c6e39fdf446daf8a78c1"
+        }
+      ]
+    },
+    {
+      "phase": "authorize",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "order",
+          "status": "COMPLETED",
+          "money": null,
+          "idHash": "4466e20db391659f0f9c7166288a3fea556282a777b0c6e39fdf446daf8a78c1"
+        },
+        {
+          "kind": "authorization",
+          "status": "CREATED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "idHash": "10751526116dd81630ba889fc0e2f6f2152f3d4e5b1acdb0ad6a91831f008510"
+        }
+      ]
+    },
+    {
+      "phase": "partial_capture",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "capture",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 400
+          },
+          "idHash": "7da9d2c228adcfc7b665d8e0edc854dcf92169049017c4fc442efdf5e5b74263"
+        }
+      ]
+    },
+    {
+      "phase": "void_remaining",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "authorization",
+          "status": "VOIDED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "idHash": "10751526116dd81630ba889fc0e2f6f2152f3d4e5b1acdb0ad6a91831f008510"
+        }
+      ]
+    },
+    {
+      "phase": "refund",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "refund",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 400
+          },
+          "idHash": "68bbd9914e413b4dbb9ad8f5de66173932f55798af3e1d078a963f269baff658"
+        }
+      ]
+    }
+  ],
+  "observedIssue": "Orders authorize returned415 with omitted optional SDK body; supported empty JSON body fixed it. Same request identity explicitly retried after definite refusal.",
+  "limits": [
+    "No saved-wallet qualification",
+    "No finalCapture=true qualification",
+    "No authentic webhook qualification",
+    "No other project credential qualification"
+  ]
+}

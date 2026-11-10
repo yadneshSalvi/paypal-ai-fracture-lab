@@ -1,0 +1,59 @@
+"use client";
+
+import { useEffect } from "react";
+import Link from "next/link";
+import { AppShell, LoadingWorkspace } from "./app-shell";
+import { BrambleStorefront } from "./bramble-phone";
+import { EmptyState, SourceChip } from "./primitives";
+import { CampaignsView, MapView, ProjectsView, ScenarioStudio } from "./project-views";
+import { RepairsView } from "./repair-views";
+import { ContractView, EvidenceView, ProviderFactsView } from "./proof-views";
+import { ErrandView, EvaluationsView, JudgeView } from "./research-views";
+import { ReportView } from "./report-view";
+import { NoRun, RunWorkbench } from "./run-workbench";
+import { useSelectedRun, useWorkspace } from "./workspace-provider";
+
+export type Screen = "run" | "projects" | "map" | "scenarios" | "campaigns" | "repairs" | "contract" | "facts" | "evidence" | "evaluations" | "errand" | "judge" | "report";
+export function FractureConsole({ screen, runId, projectId, repairId }: { screen: Screen; runId?: string; projectId?: string; repairId?: string }) {
+  const { workspace, loading, refresh, setActiveProjectId, setActiveRunId } = useWorkspace();
+  const run = useSelectedRun(runId, projectId);
+  useEffect(() => {
+    if (projectId) setActiveProjectId(projectId);
+    if (runId) {
+      setActiveRunId(runId);
+      const project = workspace?.runs.find(item => item.id === runId)?.projectId;
+      if (project) setActiveProjectId(project);
+    }
+  }, [projectId, runId, workspace, setActiveProjectId, setActiveRunId]);
+  let content;
+  if (loading) content = <LoadingWorkspace />;
+  else if (!workspace) content = <EmptyState title="The workspace service is disconnected." action={<button className="button primary" onClick={() => void refresh()}>Reconnect to the workspace</button>}>No observations have loaded. Start the application service, then reconnect to load your saved session and evidence.</EmptyState>;
+  else if (runId && !workspace.runs.some(item => item.id === runId)) content = <EmptyState title="This run isn’t in your session." action={<Link className="button primary" href="/projects">Open your projects</Link>}>Open a saved run from this workspace, or start a new sample scenario.</EmptyState>;
+  else if (projectId && !workspace.projects.some(item => item.id === projectId)) content = <EmptyState title="Project not found." action={<Link className="button primary" href="/projects">Open your projects</Link>}>This project is not registered in your current sample session.</EmptyState>;
+  else if (screen === "projects") content = <ProjectsView />;
+  else if (screen === "map") content = <MapView />;
+  else if (screen === "scenarios") content = <ScenarioStudio />;
+  else if (screen === "campaigns") content = <CampaignsView />;
+  else if (screen === "repairs") content = <RepairsView {...(runId ? { runId } : {})} {...(repairId ? { repairId } : {})} />;
+  else if (screen === "contract") content = <ContractView />;
+  else if (screen === "facts") content = <ProviderFactsView />;
+  else if (screen === "evidence") content = <EvidenceView />;
+  else if (screen === "evaluations") content = <EvaluationsView />;
+  else if (screen === "errand") content = <ErrandView />;
+  else if (screen === "judge") content = <JudgeView />;
+  else if (screen === "report") content = run ? <ReportView run={run} /> : <NoRun />;
+  else content = run ? <RunWorkbench run={run} /> : <NoRun />;
+  return <AppShell>{content}</AppShell>;
+}
+
+export function BramblePageClient({ runId, sequence }: { runId?: string; sequence?: number }) {
+  const { workspace, loading, busy, act, error, refresh } = useWorkspace();
+  const selected = useSelectedRun(runId, "bramble");
+  const run = runId ? workspace?.runs.find(item => item.id === runId && item.projectId === "bramble") : selected;
+  if (loading) return <div className="bramble-standalone-loading">Opening the sample storefront…</div>;
+  if (!workspace) return <div className="bramble-standalone-loading"><span>The workspace service is disconnected.</span><button onClick={() => void refresh()}>Reconnect</button><Link href="/">Return to the lab</Link></div>;
+  if (!run) return <div className="bramble-standalone-loading">This run isn’t available. <Link href="/">Return to Fracture Lab</Link></div>;
+  const event = run.events.find(item => item.sequence === sequence) ?? run.events.at(-1);
+  const projection = event?.projection ?? { phoneState: run.phoneState, applicationStatus: run.applicationStatus, providerStatus: run.providerStatus, capturedMinor: run.capturedMinor, refundedMinor: run.refundedMinor, captureCount: run.captureCount, fulfillmentCount: run.fulfillmentCount, currency: run.currency };
+  return <main className="bramble-standalone"><div className="bramble-lab-banner"><Link href={`/runs/${run.id}`}>← Fracture Lab</Link><SourceChip source={run.source} /><span>Fictional merchant</span></div><div className="standalone-storefront"><BrambleStorefront run={run} projection={projection} busy={Boolean(busy)} onAdvance={() => void act(run.id, "advance")} /></div>{error ? <p className="bramble-error" role="alert">{error}</p> : null}<p className="standalone-provenance">This page renders a deterministic sample run.<br />It does not call PayPal or collect a payment.</p></main>;
+}

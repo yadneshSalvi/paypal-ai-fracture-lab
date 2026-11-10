@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "source": "sample",
+  "paymentTraffic": "Local fixture only; zero PayPal requests",
+  "modelTraffic": "Actual OpenAI Responses API calls",
+  "qualifiedAt": "2026-11-10T21:14:37.425Z",
+  "runId": "3f74d152-e550-4c00-8034-f6d546565a85",
+  "scenarioHash": "c3a83fa2355eb9fb76a746519434420467a84ba6dba9a62bf64aeb4c43982986",
+  "sourceHash": "36098191e41a5f5c84259501fc70fb93397b59a9f282adeebadf435320891943",
+  "diagnosis": {
+    "id": "13685c18-04a5-4aa1-bf67-afbca3b1bc40",
+    "runId": "3f74d152-e550-4c00-8034-f6d546565a85",
+    "status": "tested",
+    "hypotheses": [
+      {
+        "id": "H1",
+        "title": "Committed payment with a lost acknowledgement",
+        "status": "supported",
+        "reason": "The Sample read confirms a COMPLETED USD 12.00 capture on SAMPLE-ORDER-8563cf27-42a, linked to this purchase intent. Observations report that its response was dropped before the application displayed failure."
+      },
+      {
+        "id": "H2",
+        "title": "Original capture completion was misreported",
+        "status": "eliminated",
+        "reason": "The successful Sample read confirms the original capture, SAMPLE-CAPTURE-d503bcd8-51a, as COMPLETED, contradicting the hypothesis that the original payment never committed."
+      }
+    ],
+    "experiment": {
+      "title": "Model-selected authoritative read",
+      "tool": "APIMatic OrdersController.ordersGetOrder",
+      "resourceId": "SAMPLE-ORDER-8563cf27-42a",
+      "observedStatus": "COMPLETED",
+      "receiptId": "418370fc-fb6e-41dc-87b8-f2a9ed861ed8"
+    },
+    "conclusion": "In this Sample scenario, the application treated a lost acknowledgement as payment failure. Observations report a retry through a new order and a second capture: USD 24.00 captured for one USD 12.00 purchase, with one fulfillment—not multiple captures on one order. The supplied read verifies only the original order. No refund or repair is evidenced.",
+    "model": "gpt-6-astra",
+    "source": "sample"
+  },
+  "attempts": [
+    {
+      "attemptId": "9df2200a-e338-4482-a5b0-12fd36cf0723",
+      "role": "diagnosis_tool_selection",
+      "model": "gpt-6-astra",
+      "status": "completed",
+      "inputHash": "b54ae017c5eba61f65756d78e9cdeab8e0fce1aaa84915714bc8bd61dbd865b4",
+      "durationMs": 25647
+    },
+    {
+      "attemptId": "7598769b-02da-44bd-a5dc-3edb476a0a47",
+      "role": "diagnosis_conclusion",
+      "model": "gpt-6-astra",
+      "status": "completed",
+      "inputHash": "0b17725a3593bfc5b34a7d4b48732f9687b64d9128004d746a179636c41fb282",
+      "durationMs": 55858
+    }
+  ],
+  "limitations": [
+    "One task-specific diagnosis qualification; no claim about the 600-attempt context study.",
+    "The model selected a run-owned read tool; no financial write tool was available."
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "source": "live_sandbox",
+  "account": "fracture-lab isolated US sandbox merchant",
+  "version": "0.2.1",
+  "setupStatus": "APPROVED",
+  "paymentTokenCreated": true,
+  "consent": {
+    "version": 1,
+    "maximumMinor": 100,
+    "currency": "USD",
+    "maximumCharges": 1,
+    "usagePattern": "UNSCHEDULED_PREPAID"
+  },
+  "operations": [
+    {
+      "phase": "charge",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "order",
+          "status": "COMPLETED",
+          "money": null,
+          "idHash": "8bf66eb7e5577795c8b0e4a16645014559d99460bcbf8cb416989f20827adbb1"
+        },
+        {
+          "kind": "capture",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 100
+          },
+          "idHash": "3911c4357fd0ba793d14cda6c23599be9a9da36203b96b5897c6e6c3c74ac2ec"
+        }
+      ]
+    },
+    {
+      "phase": "refund",
+      "state": "succeeded",
+      "resources": [
+        {
+          "kind": "refund",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 100
+          },
+          "idHash": "ce765d95049d26417e7076df64377f6546e5cb89e14d6cfc33ad7d2e69c9d974"
+        }
+      ]
+    }
+  ],
+  "observedBehavior": "Orders create with the saved PayPal wallet completed and captured immediately. No second capture was dispatched. The single USD1 capture was fully refunded.",
+  "limits": [
+    "Single Fracture merchant qualification only",
+    "Domain-specific Vault consent and expiry enforcement remain each application responsibility",
+    "No authentic webhook qualification",
+    "Not production capability proof"
+  ]
+}

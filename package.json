@@ -1,0 +1,48 @@
+{
+  "dependencies": {
+    "@fracture/paypal-core": "file:vendor/fracture-paypal-core-0.2.2.tgz",
+    "@paypal/agent-toolkit": "1.11.0",
+    "better-sqlite3": "12.9.0",
+    "dotenv": "17.2.3",
+    "lucide-react": "0.548.0",
+    "next": "16.4.6",
+    "paypal": "github:context-plugins/paypal-typescript-sdk#5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2",
+    "pg": "8.16.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.4.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "7.6.13",
+    "@types/node": "22.18.10",
+    "@types/pg": "8.15.6",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  },
+  "name": "fracture-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@10.9.8",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "next dev apps/web -p 4104",
+    "build": "next build apps/web",
+    "start": "next start apps/web -p 4104",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "cli": "tsx apps/cli/src/index.ts",
+    "mcp": "tsx apps/mcp/src/index.ts",
+    "seed": "tsx scripts/seed.ts",
+    "test:core": "tsx --test tests/paypal-core.test.ts tests/paypal-sdk.test.ts",
+    "eval:context": "tsx scripts/evaluate.ts",
+    "verify:core": "tsx scripts/verify-core.ts",
+    "verify:app": "tsx scripts/verify-app.ts",
+    "test:app": "tsx --test tests/application.test.ts"
+  }
+}
