@@ -2,7 +2,8 @@ import test from "node:test";
 import type { TestContext } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, readFile } from "node:fs/promises";
+import { PAYPAL_CORE_VERSION } from "../packages/paypal-core/src/types.js";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { config } from "dotenv";
@@ -11,6 +12,10 @@ import type { PaymentAction, PaymentCommand, PaymentPolicy, ProviderAdapter, Pro
 
 config({path:join(process.cwd(),".env"),quiet:true});
 const adapters:("sqlite"|"postgres")[]=process.env.DATABASE_URL?["sqlite","postgres"]:["sqlite"];
+test("runtime evidence version matches the immutable package metadata",async()=>{
+  const manifest=JSON.parse(await readFile(new URL("../packages/paypal-core/package.json",import.meta.url),"utf8"));
+  assert.equal(PAYPAL_CORE_VERSION,manifest.version);
+});
 function command(action:PaymentAction={kind:"capture_order",orderId:"ORDER-APPROVED",money:{currency:"USD",minor:1200}},scope:PaymentScope={tenantId:randomUUID(),projectId:"hardened-control"}):PaymentCommand {
   const id=randomUUID();return {scope,operationId:id,businessKey:`capture:${id}`,intentId:`intent:${id}`,providerRequestId:`request:${id}`,payloadHash:payloadHash(action),action,approval:{id:`approval:${id}`,version:1,digest:sha256(id),expiresAt:new Date(Date.now()+3600000).toISOString()}};
 }

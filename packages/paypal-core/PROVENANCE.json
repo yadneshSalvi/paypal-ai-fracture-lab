@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "@fracture/paypal-core",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "license": "MIT",
   "origin": "Fracture Lab hardened-control implementation",
   "sdk": {
@@ -11,9 +11,9 @@
     "commit": "5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2",
     "vendored": false
   },
-  "testedAt": "2026-11-10T22:42:17.154Z",
+  "testedAt": "2026-11-10T22:50:26.471Z",
   "conformance": {
-    "passed": 135,
+    "passed": 136,
     "failed": 0,
     "adapters": [
       "postgres",
@@ -31,7 +31,7 @@
     "src/provider.ts": "c4914faabd8e1ed3a6b6b05709e183af7f374be991e5e3ec1976423dc248e765",
     "src/sql.ts": "b2e3cc42068c5059055f1f6f926e4d2473988fee034df0a5d727a4eaf7a1a02a",
     "src/store.ts": "ba97cfc59e3f8978d2a7f7d12c7b9e044aa30ad472f0e88d900e37bfef6a211f",
-    "src/types.ts": "69b53d567f8fd9e430b42a940dffa2003771adda33f894dee36c8df1a30925a8",
+    "src/types.ts": "01af9edfc6aac709b9df29c1e851636bc58508d4dcf2777b89cad08016cb05da",
     "src/webhook.ts": "146e61a475115f1a888336b2a11d02cf292b74fe09e2b78df3ff8aa9df867559"
   }
 }

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "package": "@fracture/paypal-core",
-  "version": "0.2.5",
-  "testedAt": "2026-11-10T22:42:17.154Z",
+  "version": "0.2.6",
+  "testedAt": "2026-11-10T22:50:26.471Z",
   "nodeVersion": "v22.22.3",
   "source": "sample",
   "providerTraffic": "none; local fixture fetch only",
@@ -10,7 +10,7 @@
     "postgres",
     "sqlite"
   ],
-  "passed": 135,
+  "passed": 136,
   "failed": 0,
   "build": "passed",
   "command": "npm run verify:core",
@@ -23,11 +23,11 @@
     "src/provider.ts": "c4914faabd8e1ed3a6b6b05709e183af7f374be991e5e3ec1976423dc248e765",
     "src/sql.ts": "b2e3cc42068c5059055f1f6f926e4d2473988fee034df0a5d727a4eaf7a1a02a",
     "src/store.ts": "ba97cfc59e3f8978d2a7f7d12c7b9e044aa30ad472f0e88d900e37bfef6a211f",
-    "src/types.ts": "69b53d567f8fd9e430b42a940dffa2003771adda33f894dee36c8df1a30925a8",
+    "src/types.ts": "01af9edfc6aac709b9df29c1e851636bc58508d4dcf2777b89cad08016cb05da",
     "src/webhook.ts": "146e61a475115f1a888336b2a11d02cf292b74fe09e2b78df3ff8aa9df867559"
   },
   "testHashes": {
-    "tests/paypal-core.test.ts": "52a48985f38edf7bd2032ad90112b56545a89969e2351712c744e56335666593",
+    "tests/paypal-core.test.ts": "1fc2eabcd19ea6e41026fb48b72b7dfceaac8059f7aad9f982524ddaa7d64fda",
     "tests/paypal-sdk.test.ts": "27c841a49bf254cd90cd502ea095495c46f7b05494544b446296d4a184e65c18",
     "tests/paypal-commerce-rest.test.ts": "cd5e47603780d59a14b04b7461dca903224682313f430e3762c1b03e9caf5caf",
     "tests/paypal-store-codec.test.ts": "e3a3778acbe0bad08bdabb5ffd4cfcb79e21322422ccd6c22464162f4f60e167"

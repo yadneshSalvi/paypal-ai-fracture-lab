@@ -130,6 +130,9 @@ Invoice identity is read from `resource.id` or the legacy `resource.invoice.id` 
 
 Signature verification, schema admission, canonical deduplication and reconciliation are separate. Admission creates a queued **observation**, performs no resource read or financial mutation and changes no balance. An owned-resource worker must independently read and verify the expected resource before using it. In particular, an invoice `PAID` event can represent partial, pending or externally recorded money; a payout batch event does not establish any individual item's success. Out-of-order delivery must not roll back a later authoritative resource observation.
 
-The 135-case conformance manifest covers accepted event families, resource extraction, conflicting IDs, false event names, invalid signatures, redacted delivery metadata, deduplication and absence of automatic financial side effects. These use fixture verifiers and are **not authentic PayPal delivery qualification**. Each application must register its receiver and qualify actual signed deliveries separately.
+The 136-case conformance manifest covers accepted event families, resource extraction, conflicting IDs, false event names, invalid signatures, redacted delivery metadata, deduplication and absence of automatic financial side effects. These use fixture verifiers and are **not authentic PayPal delivery qualification**. Each application must register its receiver and qualify actual signed deliveries separately.
 
 Primary contracts: [PayPal event names](https://developer.paypal.com/api/rest/webhooks/event-names/), [Invoicing webhooks](https://developer.paypal.com/api/invoicing/webhooks/), and [Payouts webhooks](https://developer.paypal.com/payouts/webhooks).
+
+
+Version0.2.6 corrects the runtime evidence version constant to match the package metadata; a regression now checks consistency. The0.2.5 archive remains immutable and its financial/event behavior is unchanged.
