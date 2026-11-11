@@ -1,0 +1,798 @@
+{
+  "schemaVersion": 1,
+  "factId": "F5",
+  "source": "live_sandbox",
+  "faultSource": "provider_negative",
+  "protocolHash": "954f14b18a14694d67002fec69be728e32d39869bdec77246244a50877d15850",
+  "sdkCommit": "5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2",
+  "observedAt": "2026-11-11T04:01:41.011Z",
+  "finishedAt": "2026-11-11T04:01:01.628Z",
+  "endpoint": "/v2/checkout/orders/{id}/capture",
+  "mockHeader": "PayPal-Mock-Response",
+  "codes": [
+    "INSTRUMENT_DECLINED",
+    "DUPLICATE_INVOICE_ID",
+    "PAYER_CANNOT_PAY"
+  ],
+  "documentation": [
+    {
+      "url": "https://developer.paypal.com/negative-testing/request-headers",
+      "hash": "033ea60882a1bbd31a7dc88c8968601b95723b675aa50b700c1b4a4eda66792f"
+    },
+    {
+      "url": "https://developer.paypal.com/api/orders/v2/error-messages",
+      "hash": "09b78b5b143591efd1697499d42c0965b16e52bd9246e94f8fd009ce31df8679"
+    }
+  ],
+  "trials": [
+    {
+      "id": "trial-1",
+      "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+      "create": {
+        "startedAt": "2026-11-11T03:59:55.531Z",
+        "status": 201,
+        "requestHash": "1f950a4b2146adf9fe9c42c9d94bb5edec8f9f4c16b8a7a9a7c5f58e33b06cbf",
+        "responseHash": "527f0d4f5d50c2642bd979b1ffd3e01edf45b4ce9a0ad74cf80c4b3e8889bb98"
+      },
+      "arms": [
+        {
+          "id": "native-control",
+          "code": null,
+          "state": "verified",
+          "requestIdHash": "878b45837fe85cdb6a2cf6f414a5785490515111cb795b827caca0b985b25806",
+          "before": {
+            "at": "2026-11-11T03:59:58.033Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T03:59:59.991Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T03:59:58.048Z",
+            "httpStatus": 422,
+            "bodyHash": "e3a81183579f48ba3bd812450e051e3a37065ae21fafb8588ee588c39487f7a9",
+            "requestHash": "614a940afa4523bb37754ede4b8bc8534e170e5059a01389c1798b00bcefaac4",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "ORDER_NOT_APPROVED"
+            ]
+          }
+        },
+        {
+          "id": "PAYER_CANNOT_PAY",
+          "code": "PAYER_CANNOT_PAY",
+          "state": "verified",
+          "requestIdHash": "eee4ab6758fac0d991b083a09b7257addd6ed44a18c7b2650d6bb3a90f47fb25",
+          "before": {
+            "at": "2026-11-11T04:00:00.930Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:03.820Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:00.943Z",
+            "httpStatus": 422,
+            "bodyHash": "b6441725cc0892d8539224c8586af08685ed8367badd495531ced6817b002fd9",
+            "requestHash": "2879ae40955b36cf10a18f6039378407db5d33b88b47cbfbc44e93c1cbd37fc0",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "PAYER_CANNOT_PAY"
+            ]
+          }
+        },
+        {
+          "id": "DUPLICATE_INVOICE_ID",
+          "code": "DUPLICATE_INVOICE_ID",
+          "state": "verified",
+          "requestIdHash": "86c3d85bb9493edc22f1e24f19177401da8f944faef4303392ff8e56ce5eb1df",
+          "before": {
+            "at": "2026-11-11T04:00:04.459Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:06.822Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:04.474Z",
+            "httpStatus": 422,
+            "bodyHash": "7bad92903c3c7e4b604fd2178dd1b0782328e510a95d5d6a0b7c42d154cff764",
+            "requestHash": "b3500372b2fcb0e5203d0047ce0db0b47c32687f1fe61e96b2b2bc89c57e8495",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "DUPLICATE_INVOICE_ID"
+            ]
+          }
+        },
+        {
+          "id": "INSTRUMENT_DECLINED",
+          "code": "INSTRUMENT_DECLINED",
+          "state": "verified",
+          "requestIdHash": "67456ab6db5717425ed76c9c3352c30fc54263a536e9ce99a4b06f750cabd51a",
+          "before": {
+            "at": "2026-11-11T04:00:07.861Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:09.486Z",
+            "httpStatus": 200,
+            "bodyHash": "619e0997d1b35aa541ca20cd5b66efa96ef81e56dc8d4e329bfb98d73c144e20",
+            "orderHash": "2d6636c40b0b498a7b5ac66655d86d8f5178681f964039e576afcbbb4005804a",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:07.876Z",
+            "httpStatus": 422,
+            "bodyHash": "1d7216f4c40166cdaad03b880ebc2bc2300c879e3121d71cff253770fbecef3e",
+            "requestHash": "411cfc63a4337e99b63dca47027e4c4e724b6d542c5fcbbdceaaa7d9f04b2785",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "INSTRUMENT_DECLINED"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "trial-2",
+      "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+      "create": {
+        "startedAt": "2026-11-11T04:00:10.540Z",
+        "status": 201,
+        "requestHash": "3409e3c5c9d02f2c250cdae18c5c57a9c239d5fa1afc0313084bbefeb7791311",
+        "responseHash": "245a22396b2d55b2233d207798d55219031f0c31ed1193c5b7e1ccfcb2706ecb"
+      },
+      "arms": [
+        {
+          "id": "native-control",
+          "code": null,
+          "state": "verified",
+          "requestIdHash": "a9d539d85630530edb614d47a7b837862b23e5bd5910fd789323a9d14e097693",
+          "before": {
+            "at": "2026-11-11T04:00:12.524Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:14.399Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:12.534Z",
+            "httpStatus": 422,
+            "bodyHash": "77a5d805042b2bf942f2e59ebeb0c1d387a8b4d17b218ebd03351765ab0851a0",
+            "requestHash": "f69cab9e39ceb5180afb79e5ccc47466fd43e23b00f2b415c62cf6ef76f43580",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "ORDER_NOT_APPROVED"
+            ]
+          }
+        },
+        {
+          "id": "INSTRUMENT_DECLINED",
+          "code": "INSTRUMENT_DECLINED",
+          "state": "verified",
+          "requestIdHash": "176b2bf76172c5ca10489af473fa2d22e92318be35689fd2f20772ac3728577f",
+          "before": {
+            "at": "2026-11-11T04:00:14.910Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:16.920Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:14.922Z",
+            "httpStatus": 422,
+            "bodyHash": "1d7216f4c40166cdaad03b880ebc2bc2300c879e3121d71cff253770fbecef3e",
+            "requestHash": "2a479ee9369a3a4da664e3f17c7a9eefc1ce488e1b0bba9fd622491e94180ef9",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "INSTRUMENT_DECLINED"
+            ]
+          }
+        },
+        {
+          "id": "PAYER_CANNOT_PAY",
+          "code": "PAYER_CANNOT_PAY",
+          "state": "verified",
+          "requestIdHash": "78e2a59ccff5d33f3126a2bb8b865d490e60348f255ebbdc11592121195b9c95",
+          "before": {
+            "at": "2026-11-11T04:00:17.401Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:19.673Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:17.416Z",
+            "httpStatus": 422,
+            "bodyHash": "b6441725cc0892d8539224c8586af08685ed8367badd495531ced6817b002fd9",
+            "requestHash": "5d32a1e7c8e96d13e8892e53f9d144c8fdb9ef8d9c49e064006566bea661ef1a",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "PAYER_CANNOT_PAY"
+            ]
+          }
+        },
+        {
+          "id": "DUPLICATE_INVOICE_ID",
+          "code": "DUPLICATE_INVOICE_ID",
+          "state": "verified",
+          "requestIdHash": "8238c3ceb8d3b56efae2fb77cd38570be7a954d66febcb07fa1a391275f164e5",
+          "before": {
+            "at": "2026-11-11T04:00:20.097Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:22.164Z",
+            "httpStatus": 200,
+            "bodyHash": "af29e098cc3fe17dd32771adb0771e756a1f51ce7488b2512ca474dbf6142358",
+            "orderHash": "608ff3303521e091bf22238fd70e9e349355f9be85da5ded86d0f8969de620bf",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:20.110Z",
+            "httpStatus": 422,
+            "bodyHash": "7bad92903c3c7e4b604fd2178dd1b0782328e510a95d5d6a0b7c42d154cff764",
+            "requestHash": "643f617392131b9095ebb99ab41b9021bb99b2dad74d57b6aa7fb758fefcedde",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "DUPLICATE_INVOICE_ID"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "trial-3",
+      "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+      "create": {
+        "startedAt": "2026-11-11T04:00:22.896Z",
+        "status": 201,
+        "requestHash": "c27b9b7ef4903e9610346a0cee45f1740067fac3090c7089f3d7fb00c0a461bd",
+        "responseHash": "63299a5422582c3aed9fe91342a217ad009ccdceab4b0769f89950c560be73d5"
+      },
+      "arms": [
+        {
+          "id": "native-control",
+          "code": null,
+          "state": "verified",
+          "requestIdHash": "880f2b4e4b7d99d15ec297e024ebbb0893812c074110dfba923bfc65abb798d2",
+          "before": {
+            "at": "2026-11-11T04:00:25.003Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:27.076Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:25.016Z",
+            "httpStatus": 422,
+            "bodyHash": "c178b35cdc82f708d7db289fb8f51c791e5310dbe764128fa19ce81e5ae8568f",
+            "requestHash": "835588b33b0455dca03a03900b2e51686249663a16e7c2d80bf7b88ef2484e09",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "ORDER_NOT_APPROVED"
+            ]
+          }
+        },
+        {
+          "id": "DUPLICATE_INVOICE_ID",
+          "code": "DUPLICATE_INVOICE_ID",
+          "state": "verified",
+          "requestIdHash": "3b5f7b86f965a1baa6729ad4e5eee091ad0df9c2fad1d4807f1ab5ad5661d5b1",
+          "before": {
+            "at": "2026-11-11T04:00:27.605Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:29.963Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:27.615Z",
+            "httpStatus": 422,
+            "bodyHash": "7bad92903c3c7e4b604fd2178dd1b0782328e510a95d5d6a0b7c42d154cff764",
+            "requestHash": "26f4ba2d8eebc7c832cef2b2f4b9b739cd7d2568d18e6a09469ea94929f2ebb9",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "DUPLICATE_INVOICE_ID"
+            ]
+          }
+        },
+        {
+          "id": "PAYER_CANNOT_PAY",
+          "code": "PAYER_CANNOT_PAY",
+          "state": "verified",
+          "requestIdHash": "b1dc9413385a5554d15cb8bb876825b838d484f79475719658f7cb648a3e23b7",
+          "before": {
+            "at": "2026-11-11T04:00:31.102Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:32.034Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:31.114Z",
+            "httpStatus": 422,
+            "bodyHash": "b6441725cc0892d8539224c8586af08685ed8367badd495531ced6817b002fd9",
+            "requestHash": "74352678190f2d70c97e3dc2492857f722079d264403c8dce103559b2a7ec230",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "PAYER_CANNOT_PAY"
+            ]
+          }
+        },
+        {
+          "id": "INSTRUMENT_DECLINED",
+          "code": "INSTRUMENT_DECLINED",
+          "state": "verified",
+          "requestIdHash": "2811274dba9fd289a604ee5a3e82a4a2682f7bb83f0727ffdd2e6d5f8b695eaf",
+          "before": {
+            "at": "2026-11-11T04:00:33.190Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:35.051Z",
+            "httpStatus": 200,
+            "bodyHash": "9c04dc9c2f0595d2f47a52efbed3d97cacd8f14e10f054877113befd89bdc94a",
+            "orderHash": "4250f295d889c38b6391a6ac6952f241acfa2c1e3a3476d73420cad69ea22898",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:33.203Z",
+            "httpStatus": 422,
+            "bodyHash": "1d7216f4c40166cdaad03b880ebc2bc2300c879e3121d71cff253770fbecef3e",
+            "requestHash": "f62a21318b0e640fc018e760dcd5fd8d9788422e22e2f9a500a9566cbb06e581",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "INSTRUMENT_DECLINED"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "trial-4",
+      "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+      "create": {
+        "startedAt": "2026-11-11T04:00:35.519Z",
+        "status": 201,
+        "requestHash": "c0dfacd0cab8183f56b41d5dffc4cfa1443e60a4c536225764fad39dfabcdb4b",
+        "responseHash": "97bb3c1355b06e2440ed011b0da1f08299e27d4d5b9acde7f5d2bf9d1bb12f2c"
+      },
+      "arms": [
+        {
+          "id": "native-control",
+          "code": null,
+          "state": "verified",
+          "requestIdHash": "98c22d8e22997dd4a47e47e0f1a5adbd6ac4025f6a3ee31e0c8c4681a092fcd9",
+          "before": {
+            "at": "2026-11-11T04:00:37.879Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:39.631Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:37.891Z",
+            "httpStatus": 422,
+            "bodyHash": "2a42888450387c44b78cb6e98b2e9646272f97b95866f346dd773d31c43839bc",
+            "requestHash": "db7280640834d48141b02ddde5b0dff81c07b0fd3b3445bbadd2fa97955043f1",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "ORDER_NOT_APPROVED"
+            ]
+          }
+        },
+        {
+          "id": "INSTRUMENT_DECLINED",
+          "code": "INSTRUMENT_DECLINED",
+          "state": "verified",
+          "requestIdHash": "41c80423d6dfe4f30dc9a96f79dae49a0583f344e3018c9fd622f1cb8bab6bd3",
+          "before": {
+            "at": "2026-11-11T04:00:40.591Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:41.893Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:40.604Z",
+            "httpStatus": 422,
+            "bodyHash": "1d7216f4c40166cdaad03b880ebc2bc2300c879e3121d71cff253770fbecef3e",
+            "requestHash": "b088a13ae95b339787da20835a0c6f7901c1da55182bf489ea6c3bc39e3fff63",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "INSTRUMENT_DECLINED"
+            ]
+          }
+        },
+        {
+          "id": "PAYER_CANNOT_PAY",
+          "code": "PAYER_CANNOT_PAY",
+          "state": "verified",
+          "requestIdHash": "615f2c3aadfcb3d203a673e6429ff11aba6f771b066b565d094d72fa32541d8e",
+          "before": {
+            "at": "2026-11-11T04:00:42.479Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:44.532Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:42.490Z",
+            "httpStatus": 422,
+            "bodyHash": "b6441725cc0892d8539224c8586af08685ed8367badd495531ced6817b002fd9",
+            "requestHash": "789a3d68a24440919d31b446370efd77bf12118ef4097647961571faef852055",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "PAYER_CANNOT_PAY"
+            ]
+          }
+        },
+        {
+          "id": "DUPLICATE_INVOICE_ID",
+          "code": "DUPLICATE_INVOICE_ID",
+          "state": "verified",
+          "requestIdHash": "b6b521f82c4b1fdcb144a3c1e008246c90df6c15bb503472ea25bb9f585a6804",
+          "before": {
+            "at": "2026-11-11T04:00:45.402Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:47.438Z",
+            "httpStatus": 200,
+            "bodyHash": "e1d626bdda5d46358ce31bf7ac8b1aa1f36b09524557b2557dcc7e85bb425155",
+            "orderHash": "17f391d6033e183a180b2050d4915b3047de033138d7e4538a21d6ed4e8431af",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:45.412Z",
+            "httpStatus": 422,
+            "bodyHash": "7bad92903c3c7e4b604fd2178dd1b0782328e510a95d5d6a0b7c42d154cff764",
+            "requestHash": "c154cfd5eff3c3baa107900981f151bd620a1d046e9acf7ca44ebb502a99e37a",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "DUPLICATE_INVOICE_ID"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "trial-5",
+      "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+      "create": {
+        "startedAt": "2026-11-11T04:00:48.420Z",
+        "status": 201,
+        "requestHash": "6b4005efebf85b70286d3a31a8421d8fed79df5b7cccf0bdb4b29b788de80d95",
+        "responseHash": "527851d0b8a4f524b5ccc3bd08891740249b088ffe56f3fca7226a8548ab3fbd"
+      },
+      "arms": [
+        {
+          "id": "native-control",
+          "code": null,
+          "state": "verified",
+          "requestIdHash": "b2946a3cf3ae97033d8202e7584555acee2c7eb588ccbe73c60a4a95e428f63e",
+          "before": {
+            "at": "2026-11-11T04:00:50.552Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:52.147Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:50.565Z",
+            "httpStatus": 422,
+            "bodyHash": "f5a0fe93195b5b3f3136ef58ea9742bcd5704dd7edbf13fd48ffbe2487a2c985",
+            "requestHash": "cc10ea360e236ff322ddcfb2bc2777a3c1e39a4314f003c21be6b0cf75a7fcc9",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "ORDER_NOT_APPROVED"
+            ]
+          }
+        },
+        {
+          "id": "DUPLICATE_INVOICE_ID",
+          "code": "DUPLICATE_INVOICE_ID",
+          "state": "verified",
+          "requestIdHash": "b952a43ca1df62eecdf3a7a0cfb871ff1e702b46c8eb2d8961cf6cce4e78e83d",
+          "before": {
+            "at": "2026-11-11T04:00:53.180Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:55.134Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:53.192Z",
+            "httpStatus": 422,
+            "bodyHash": "7bad92903c3c7e4b604fd2178dd1b0782328e510a95d5d6a0b7c42d154cff764",
+            "requestHash": "22cc8956acc569f1a57a26d90de3f0096ee14d4a03d91ee38a813b6db6a710d1",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "DUPLICATE_INVOICE_ID"
+            ]
+          }
+        },
+        {
+          "id": "INSTRUMENT_DECLINED",
+          "code": "INSTRUMENT_DECLINED",
+          "state": "verified",
+          "requestIdHash": "069e7ae7e12eb2080da5b6225acd647087c26a7bc50d4e11bdcab262f5a917c9",
+          "before": {
+            "at": "2026-11-11T04:00:56.501Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:00:58.371Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:56.518Z",
+            "httpStatus": 422,
+            "bodyHash": "1d7216f4c40166cdaad03b880ebc2bc2300c879e3121d71cff253770fbecef3e",
+            "requestHash": "d01749e9860f6f8b716cb9279314ab810d2b4334565a45e29e9fd97f00a7bce1",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "INSTRUMENT_DECLINED"
+            ]
+          }
+        },
+        {
+          "id": "PAYER_CANNOT_PAY",
+          "code": "PAYER_CANNOT_PAY",
+          "state": "verified",
+          "requestIdHash": "30a44bd630ea13dfcd2f10c7e793fa68e964e719f89f89587e2e9f21bd2e9d05",
+          "before": {
+            "at": "2026-11-11T04:00:59.404Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "after": {
+            "at": "2026-11-11T04:01:01.596Z",
+            "httpStatus": 200,
+            "bodyHash": "30a69b6e86177d818952a53a98a4160c9bee2b225908b4696b4bb1ec151704e0",
+            "orderHash": "485c7edb4cd410200dff4c8bcd1a3b47644ae51f43960efd5bbbb2a80bd7a1c6",
+            "state": "CREATED",
+            "captures": 0,
+            "authorizations": 0
+          },
+          "response": {
+            "at": "2026-11-11T04:00:59.418Z",
+            "httpStatus": 422,
+            "bodyHash": "b6441725cc0892d8539224c8586af08685ed8367badd495531ced6817b002fd9",
+            "requestHash": "1787c8bead098787783ed3668028ad2bcdcf61f1f04347026cb380096aa4a74d",
+            "typedKind": "error5",
+            "name": "UNPROCESSABLE_ENTITY",
+            "issues": [
+              "PAYER_CANNOT_PAY"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "limits": {
+    "creates": 5,
+    "captureRequests": 20,
+    "approvals": 0,
+    "successfulCaptures": 0,
+    "authorizations": 0,
+    "refunds": 0
+  },
+  "limitation": "Exact endpoint/code compatibility on five unapproved USD1 sandbox orders. Provider-generated injected errors are not organic declines or evidence about an approved payer. The application N1–N3 scenarios remain a separate execution gate."
+}
