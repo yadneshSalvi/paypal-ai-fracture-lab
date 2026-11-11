@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import {usePathname} from 'next/navigation';
 import type { ApiEnvelope, ApiFailure, EvidenceDTO, Revision, RunDTO, WorkspaceDTO } from "@fracture/contracts";
 
 type RunAction = "advance" | "diagnose" | "repair" | "verify" | "remediate" | "cancel" | "cancel_work" | "generate" | "verify_generated";
@@ -63,6 +64,7 @@ function initializeWorkspace() {
 }
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
+  const researchPage=usePathname().startsWith('/evaluations');
   const [workspace, setWorkspace] = useState<WorkspaceDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -89,19 +91,25 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     mounted.current = true;
     let cancelled = false;
+    if(researchPage){
+      setLoading(false);
+      if(errorKind.current!=='action'){setError(null);errorKind.current=null;}
+      return ()=>{cancelled=true;mounted.current=false;};
+    }
+    setLoading(true);
     async function initialize() {
       try {
         const next = await initializeWorkspace();
         if (!cancelled) { setWorkspace(next); setError(null); }
       } catch (cause) {
-        if (!cancelled) setError(cause instanceof Error ? cause.message : "Could not start your sample session.");
+        if (!cancelled) {errorKind.current='load';setError(cause instanceof Error ? cause.message : "Could not start your sample session.");}
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
     void initialize();
     return () => { cancelled = true; mounted.current = false; };
-  }, []);
+  }, [researchPage]);
 
   const hasRunningWork = Boolean(busy) || workspace?.runs.some(run => !finalStages.has(run.stage)) || workspace?.campaigns.some(campaign => campaign.status === "running") || workspace?.work?.some(work => work.status === "running");
   useEffect(() => { if (activeCommand.current && workspace?.work?.some(work => work.id === activeCommand.current && ["completed", "failed", "cancelled"].includes(work.status))) setBusy(null); }, [workspace]);

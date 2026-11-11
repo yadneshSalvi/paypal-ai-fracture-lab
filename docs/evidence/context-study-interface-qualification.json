@@ -1,0 +1,378 @@
+{
+  "schemaVersion": 1,
+  "id": "fracture-context-study-interface-2026-11-11",
+  "qualifiedAt": "2026-11-11T09:43:08.036789+00:00",
+  "source": "executed_local_interface_checks",
+  "stage": "pre_result_seal",
+  "studyId": "fracture-context-2026-11-v1",
+  "protocolHash": "5e2553c9d371c4f842fe60b0d68eeb26c58841c1738a4b71ff1d023617e37240",
+  "baseCommit": "086ba2012c54fe7aff22a20709cce797243ca280",
+  "sourceFiles": [
+    {
+      "path": ".gitignore",
+      "sha256": "be811d6f57445bdbcf98ee70b189f0e08b9aae309ad12d6f0f42be70e9e9baa9"
+    },
+    {
+      "path": "apps/web/app/api/evaluations/candidates/[id]/route.ts",
+      "sha256": "0f5eb908733c072cf2469c0ce893ed2bbbde82101ac5d1d8cf1752aa18fbba43"
+    },
+    {
+      "path": "apps/web/app/api/evaluations/current/route.ts",
+      "sha256": "7f8aa7d64506c8899cc3047734a0dc0885f7f92c02350e371a61be4eb365d1f5"
+    },
+    {
+      "path": "apps/web/app/api/evaluations/tasks/[id]/route.ts",
+      "sha256": "4a16ed65aca28fddca989951c6addaee2777dad0093e6dd5e30ccdef8c64581f"
+    },
+    {
+      "path": "apps/web/app/evaluations/page.tsx",
+      "sha256": "ab7192649d0bcd31d8fb813478de488eec6fea7b3dd31b0a0ca7699fa819ad8f"
+    },
+    {
+      "path": "apps/web/app/globals.css",
+      "sha256": "f0d7371fe9cb7eeab57226ccc763e940c4af2d8b4b5c896ab2cdf0138a3df7d7"
+    },
+    {
+      "path": "apps/web/components/app-shell.tsx",
+      "sha256": "f68a4f144390db60244ed7ab8304556765f3e113ed95baa7c5b4d316edb54bfa"
+    },
+    {
+      "path": "apps/web/components/evaluation-view.module.css",
+      "sha256": "9952126b5cbcbd0a97e1f77c1582fd719f2b359dcb9b449d09bff281c2fd1ae6"
+    },
+    {
+      "path": "apps/web/components/evaluation-view.tsx",
+      "sha256": "e841e47fc22ebdadba45af08f23af8bb10300f22dff2db5ed74a634891af1a58"
+    },
+    {
+      "path": "apps/web/components/fracture-console.tsx",
+      "sha256": "a087f8b76b49f7faf0d56a3bf181fd6c2fad545095ad33dee7bd45bfc71e8d1d"
+    },
+    {
+      "path": "apps/web/components/research-views.tsx",
+      "sha256": "af07faaac261226d16d0670cbddc000f5c85efad5198968f6ffa655659786a30"
+    },
+    {
+      "path": "apps/web/components/workspace-provider.tsx",
+      "sha256": "40443ebd670acb635ab696832a9ef35946cdbf89ca87e956c09a4fb850d0cd86"
+    },
+    {
+      "path": "apps/web/lib/evaluation-presentation.ts",
+      "sha256": "ff233f34f7dae7287bb2c9e4109c1943795ef197721b70cbefc94cd03384bae5"
+    },
+    {
+      "path": "apps/web/next.config.ts",
+      "sha256": "8e1126ba6258e8754dc1534a769ee91463deb66fe8cfc001d25fc24a6d9653ea"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/APIMatic-MIT.txt",
+      "sha256": "a11e80a65da73f24ff1277bc92da4c22ad72ade5670718b42ef865cbfe5175f7"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/PayPal-Apache-2.0.txt",
+      "sha256": "aca29b3892ad5c363440c50a618247cf50272b970e1862d837dcc8e1a37336d3"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/gemini-python.json",
+      "sha256": "9cc2872705a42631685b4deca8be5ea08cad4ceed8621ca3429f6a666cd307bd"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/gemini-typescript.json",
+      "sha256": "c8a8b5533cf7b16b01ddf3136e89d41099ed1ad9c2b8573bd3166a6d3c9805df"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/openai-python.json",
+      "sha256": "f346222ed18538ea8a4ae4cb169cb62e3c568e07c4deb14400e8bf35bf6814f1"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/openai-typescript.json",
+      "sha256": "fb259b3f67113c70beb95089db357c664dba6605aa78fdf3df5072fe1627f74b"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/provenance.json",
+      "sha256": "f9c32395532f8fa1509621a8b93d6686ccbd75eb444c786ee77a293e15749635"
+    },
+    {
+      "path": "apps/web/public/evaluations/context-sources/settings-and-costs.json",
+      "sha256": "e15f3829c9acc89785c9dcf356445d7505831de3179c3619e87c283254b33aae"
+    },
+    {
+      "path": "apps/web/public/evaluations/fracture-context-2026-11-v1/freeze.json",
+      "sha256": "367f202ccdf96e3fec0037c6ab19d21bd1275f51a0bf6138d4f2b47a30c710ba"
+    },
+    {
+      "path": "apps/web/public/evaluations/fracture-context-2026-11-v1/protocol.json",
+      "sha256": "dde4a01e6dd4f661e6b507cfb4536eac1b0c62c01dd4cfd77509f6f633603ae6"
+    },
+    {
+      "path": "apps/web/public/evaluations/fracture-context-2026-11-v1/qualification.json",
+      "sha256": "719b6038dfd27b3e186321dd8ee83d88c16d1f8685f68a5fcaf2b5c3f3121995"
+    },
+    {
+      "path": "packages/contracts/src/evaluation-study.ts",
+      "sha256": "13c926d3aa7ea3657ff56e1a4105cc84b004f0fa1e5eff06e7cd14e7ed5f9ed4"
+    },
+    {
+      "path": "packages/service/src/catalog.ts",
+      "sha256": "7a1d5e94e4521b15f4c16b5126fc4ca395b7c2de58dbadd2d8d14c66a3cc3bb3"
+    },
+    {
+      "path": "packages/service/src/evaluation-publication.ts",
+      "sha256": "9cde1e1c62354db34be9e10be706f890290d9b06a3e5a896d61fc6d195b19b77"
+    },
+    {
+      "path": "packages/service/src/index.ts",
+      "sha256": "ff8f988aed6057552e6b3d338b6513aaad0f813b8cea9d8ffddc06d2f2c175b6"
+    },
+    {
+      "path": "scripts/evaluation-web-qa.ts",
+      "sha256": "291a0bbba447620ad1cce56c1b7f25d015b88f9d5980685dd907bcd48170fe17"
+    },
+    {
+      "path": "tests/evaluation-publication.test.ts",
+      "sha256": "d8cb19d367c4662a638b0c8a3fb8b6ce1bd1191ba72ab91116b5fe4681cc3ae7"
+    }
+  ],
+  "scope": {
+    "implemented": [
+      "Public research route independent of Sample workspace session initialization",
+      "Twenty-task atlas with language, split and failure-family filters",
+      "Frozen specification and faulty baseline inspection",
+      "Locked hardened references, full control assertions and candidate outcomes before result seal",
+      "Strict per-model, language and split analysis with explicit original denominators",
+      "Original-candidate table, filters, CSV export and receipt drawers after result seal",
+      "Saved model request, source, context access, SDK observation and retained retry inspection",
+      "Verified public artifact downloads and source/license provenance"
+    ],
+    "nativeResultViewsVerified": false,
+    "realStudyComplete": false,
+    "newPayPalEvidence": false,
+    "livePaymentOperations": 0
+  },
+  "verification": {
+    "fullSuite": {
+      "passed": 375,
+      "failed": 0,
+      "receipt": {
+        "schema": "fracture_evaluation_ui_defff6bb04239ff96424",
+        "startedAt": "2026-11-11T09:32:56.619Z",
+        "finishedAt": "2026-11-11T09:33:21.632Z",
+        "exitCode": 0,
+        "stopped": false,
+        "originalTablesTouched": false,
+        "qaSchemaRemoved": true,
+        "log": ".artifacts/evaluation-web-qa-2026-11-11T09-32-56.619Z.log",
+        "logSha256": "9aa9db2d36a0d9a459addf3e271bb8f4cc8c04702fd689d52275d436a18cf1de"
+      },
+      "note": "All provider adapters in application tests are mocked. Non-secret placeholder model credentials enable those mocked branches; PayPal keys are empty."
+    },
+    "afterFinalDisplayIdentityChecks": {
+      "publicationTests": {
+        "passed": 4,
+        "failed": 0,
+        "command": "npx tsx --test tests/evaluation-publication.test.ts"
+      },
+      "typescript": {
+        "passed": true,
+        "command": "npx tsc --noEmit"
+      }
+    },
+    "productionBuild": {
+      "schema": "fracture_evaluation_ui_d77596613c0a571d2bbd",
+      "startedAt": "2026-11-11T09:40:28.866Z",
+      "finishedAt": "2026-11-11T09:40:34.674Z",
+      "exitCode": 0,
+      "stopped": false,
+      "originalTablesTouched": false,
+      "qaSchemaRemoved": true,
+      "log": ".artifacts/evaluation-web-qa-2026-11-11T09-40-28.866Z.log",
+      "logSha256": "de940623b92d68618d1113140f3b0da9b3761da885203e08fcf56b05f30b3882"
+    },
+    "frozenStudyInputs": {
+      "passed": true,
+      "command": "npm run eval:context -- --verify-only",
+      "planned": 600
+    },
+    "httpDownloads": [
+      {
+        "url": "/evaluations/fracture-context-2026-11-v1/protocol.json",
+        "status": 200,
+        "bytes": 1795625,
+        "sha256": "dde4a01e6dd4f661e6b507cfb4536eac1b0c62c01dd4cfd77509f6f633603ae6",
+        "matchesSource": true
+      },
+      {
+        "url": "/evaluations/fracture-context-2026-11-v1/freeze.json",
+        "status": 200,
+        "bytes": 583,
+        "sha256": "367f202ccdf96e3fec0037c6ab19d21bd1275f51a0bf6138d4f2b47a30c710ba",
+        "matchesSource": true
+      },
+      {
+        "url": "/evaluations/fracture-context-2026-11-v1/qualification.json",
+        "status": 200,
+        "bytes": 14009,
+        "sha256": "719b6038dfd27b3e186321dd8ee83d88c16d1f8685f68a5fcaf2b5c3f3121995",
+        "matchesSource": true
+      },
+      {
+        "host": "localhost",
+        "url": "/api/evaluations/current",
+        "status": 200,
+        "phase": "running",
+        "records": 16,
+        "reportPresent": false
+      },
+      {
+        "host": "127.0.0.1",
+        "url": "/api/evaluations/current",
+        "status": 200,
+        "phase": "running",
+        "records": 16,
+        "reportPresent": false
+      },
+      {
+        "url": "/evaluations/context-sources/gemini-python.json",
+        "status": 200,
+        "bytes": 10415,
+        "sha256": "9cc2872705a42631685b4deca8be5ea08cad4ceed8621ca3429f6a666cd307bd",
+        "matchesSource": true
+      },
+      {
+        "url": "/evaluations/context-sources/gemini-typescript.json",
+        "status": 200,
+        "bytes": 10429,
+        "sha256": "c8a8b5533cf7b16b01ddf3136e89d41099ed1ad9c2b8573bd3166a6d3c9805df",
+        "matchesSource": true
+      },
+      {
+        "url": "/evaluations/context-sources/openai-python.json",
+        "status": 200,
+        "bytes": 9657,
+        "sha256": "f346222ed18538ea8a4ae4cb169cb62e3c568e07c4deb14400e8bf35bf6814f1",
+        "matchesSource": true
+      },
+      {
+        "url": "/evaluations/context-sources/openai-typescript.json",
+        "status": 200,
+        "bytes": 8350,
+        "sha256": "fb259b3f67113c70beb95089db357c664dba6605aa78fdf3df5072fe1627f74b",
+        "matchesSource": true
+      }
+    ],
+    "deploymentTrace": {
+      "evaluationRoutes": 3,
+      "privateArtifactEnvironmentOrPlanPaths": 0,
+      "candidateReceiptsBeforeSeal": 0
+    },
+    "publicCredentialScan": {
+      "files": 11,
+      "credentialMatches": 0
+    },
+    "qaDatabaseIsolation": {
+      "originalTablesTouched": false,
+      "testAndBuildSchemasRemoved": true,
+      "onlyRemainingQaSchema": "fracture_evaluation_ui_3e932d41edfbd629d57b",
+      "qaServer": {
+        "url": "http://localhost:4504/evaluations",
+        "providerCredentialsForwarded": false
+      }
+    }
+  },
+  "nativeQa": {
+    "executor": "Root integration agent, native in-app browser",
+    "checks": [
+      {
+        "name": "localhost study load without a workspace-origin warning",
+        "passed": true
+      },
+      {
+        "name": "Task atlas D5 + Python + held-out yields one of twenty tasks",
+        "passed": true
+      },
+      {
+        "name": "Task specification and baseline source drawers",
+        "passed": true
+      },
+      {
+        "name": "Hardened reference and control checks remain locked before seal",
+        "passed": true
+      },
+      {
+        "name": "All-attempt results remain locked before seal",
+        "passed": true
+      },
+      {
+        "name": "Escape closes task drawer and restores Read task button focus",
+        "passed": true
+      },
+      {
+        "name": "Four exact provider-tokenized budget pairs are visible",
+        "passed": true
+      },
+      {
+        "name": "Mobile layout and open dialog fit the document width",
+        "passed": true
+      }
+    ],
+    "mobile": {
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "dialog": {
+        "x": 12,
+        "width": 378,
+        "height": 844
+      },
+      "horizontalOverflow": false
+    },
+    "captures": [
+      {
+        "name": "fracture-evaluation-desktop.png",
+        "sha256": "175f0e02f5d57e91e2987fb2846acc8883b72e94a5c3fad3e756175a8ec59929",
+        "bytes": 67743,
+        "published": false
+      },
+      {
+        "name": "fracture-evaluation-mobile-drawer.png",
+        "sha256": "f59b70020d5667c5c842a005c04f5c386e31c996e7a5e0f87e19bf5d7f60f0a3",
+        "bytes": 84569,
+        "published": false
+      },
+      {
+        "name": "fracture-evaluation-mobile.png",
+        "sha256": "6f7be36bfafd5783af2b2a93ae997a70c9f77c167e1ca2a723f560b12b7bf76f",
+        "bytes": 5846,
+        "published": false
+      }
+    ],
+    "limitations": [
+      "The protocol JSON was clicked natively, but a saved browser download was not confirmed. A download helper timed out and reset its runtime. Separate HTTP checks verify the exact response bytes and hashes.",
+      "Native mobile screenshot output appears tiled below the captured 720px height. DOM inspection found one heading and no document overflow; the screenshot artifact is not evidence of duplicated application content.",
+      "Desktop capture preceded the public-page session-bootstrap fix. Root subsequently confirmed the valid research route had no spurious warning and no initialized Sample project links.",
+      "Final copy clarifies scored outcomes and fewer-than-five scored repeats; final publication checks reject altered task, metadata and receipt-link identities. These later changes passed focused tests, typecheck and production build."
+    ]
+  },
+  "retainedQualificationFailure": {
+    "kind": "local_test_harness_configuration",
+    "log": ".artifacts/evaluation-web-qa-2026-11-11T09-29-01.993Z.log",
+    "sha256": "ce30d28239ebc9470dcd589bd7badd3f1855d639f1692b4b11cd47ca4182a48f",
+    "passed": 366,
+    "failed": 9,
+    "reason": "The initial QA child correctly omitted live model credentials, but nine existing mocked-provider tests require a nonempty placeholder key. Tests were rerun with an offline-only placeholder; this did not alter model-study inputs or real provider attempts."
+  },
+  "studySnapshot": {
+    "updatedAt": "2026-11-11T09:40:46.553Z",
+    "planned": 600,
+    "terminalCandidates": 19,
+    "scoredCandidates": 8,
+    "infrastructureCandidates": 11,
+    "comparativeResults": "withheld_until_complete_anonymous_seal"
+  },
+  "limits": [
+    "This artifact qualifies the interface and local publication verifier. It is not a model-performance result.",
+    "The 600 original attempts continue under the immutable preregistration. Failed and unknown provider outcomes are retained.",
+    "Actual sealed result views, per-candidate model receipts and interval states require native review after the real study finishes. Temporary synthetic verifier fixtures are used only in unit tests and never in the public study directory.",
+    "The configured request deadline is recorded in the frozen protocol. Observed transport durations do not establish a provider timeout policy or root cause. The frozen transport adapter did not retain native exception detail for unknown transport catches; available request IDs, timing, usage and charge uncertainty remain visible.",
+    "No provider financial scenario was rerun. Deployment and public publication remain owned by the integration agent."
+  ]
+}
