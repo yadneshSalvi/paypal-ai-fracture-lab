@@ -10,6 +10,7 @@ plans/
 artifacts/private/
 **/node_modules/
 **/.next/
+**/.next-evaluation-*/
 **/.swc/
 coverage/
 test-results/

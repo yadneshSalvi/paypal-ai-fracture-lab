@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-11T16:02:24.556Z",
+  "kind": "workspace-network-efficiency",
+  "provenance": "local tests and isolated native browser; hosted read-only measurements",
+  "baseCommit": "cdfa103c95bbad8ccb5730efb7b636191650afad",
+  "sources": [
+    {
+      "path": "apps/web/components/workspace-provider.tsx",
+      "sha256": "786a9486fa8f1fd380a138c096f65437caece2f3e986a15c3c6ee0bb74e90109"
+    },
+    {
+      "path": "apps/web/lib/workspace-polling.ts",
+      "sha256": "8ee4cd6b35fb87476fdea8e54bb5cb5ae1bd299c747c4f92403c81cd678a4cc7"
+    },
+    {
+      "path": "packages/service/src/index.ts",
+      "sha256": "5d1afbf6155dad60f7ce457745989e60ee17c7f60c161d4397d98fc425c7abd2"
+    },
+    {
+      "path": "tests/workspace-transfer.test.ts",
+      "sha256": "f9828e7a6fd3666f657c2b579c04a86259387c865d4ffca4ea5c6cbf3a021d1c"
+    }
+  ],
+  "behavior": [
+    "Progress query returns role, status, run identity and timestamp without transferring complete model documents.",
+    "Customer approval waits do not cause recurring workspace refreshes; submitted actions still refresh canonical state.",
+    "Only one timer-driven workspace refresh may be in flight; hidden and research views do not poll the workspace."
+  ],
+  "validation": {
+    "focused": {
+      "passed": 4,
+      "failed": 0,
+      "adapters": [
+        "local PostgreSQL",
+        "SQLite"
+      ],
+      "maxProgressResultBytes": 1024,
+      "fullModelEvidenceUnchanged": true
+    },
+    "regression": {
+      "passed": 379,
+      "failed": 0,
+      "providerTransport": "controlled fixtures only",
+      "initialRun": {
+        "passed": 370,
+        "failed": 9,
+        "reason": "Test launcher blanked the required dummy model key. Tests rerun with an explicitly fake key; no product assertion or threshold changed."
+      }
+    },
+    "typecheck": "passed",
+    "productionBuild": "passed using Next.js 16.4.6 webpack in a separate source tree",
+    "nativeBrowser": {
+      "origin": "isolated local production build",
+      "idleApprovalWait": {
+        "observedSecondsAtLeast": 25,
+        "workspaceRequests": 0
+      },
+      "customerRetry": {
+        "source": "sample",
+        "captures": 2,
+        "grossMinor": 2400,
+        "currency": "USD"
+      },
+      "hardenedControl": {
+        "source": "sample",
+        "captures": 1,
+        "grossMinor": 1200,
+        "reloadPreserved": true
+      },
+      "priorLocalSessionRestored": true
+    }
+  },
+  "hostedReadOnlyMeasurements": {
+    "modelAttempts": 6,
+    "fullDocumentBytes": 188874,
+    "projectedProgressFieldBytes": 540,
+    "scope": "Sum across current hosted model attempts; excludes row/protocol overhead. This is not measured total request egress or whole-app savings.",
+    "quotaRecoveredAfterOwnerLaunchUpgrade": true
+  },
+  "limits": [
+    "Hosted request logs were not available to attribute the entire previous 5GB quota consumption.",
+    "Runs, full evidence views and model execution still use database traffic.",
+    "Financial history and the independently frozen context evaluation remain unchanged."
+  ],
+  "deployment": "pending at source checkpoint"
+}

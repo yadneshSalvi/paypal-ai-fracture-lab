@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import type { ReactNode } from "react";
 import {usePathname} from 'next/navigation';
 import type { ApiEnvelope, ApiFailure, EvidenceDTO, Revision, RunDTO, WorkspaceDTO } from "@fracture/contracts";
+import { hasExecutingWorkspaceWork } from "../lib/workspace-polling";
 
 type RunAction = "advance" | "diagnose" | "repair" | "verify" | "remediate" | "cancel" | "cancel_work" | "generate" | "verify_generated";
 type WorkspaceContextValue = {
@@ -27,7 +28,6 @@ type WorkspaceContextValue = {
 };
 
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
-const finalStages = new Set(["completed", "failed_infrastructure", "cancelled_reconciled", "cancelled_uncertain", "inconclusive"]);
 let initialization: Promise<WorkspaceDTO> | null = null;
 class WorkspaceRequestError extends Error { constructor(message:string,readonly code:string){super(message);} }
 
@@ -111,11 +111,16 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     return () => { cancelled = true; mounted.current = false; };
   }, [researchPage]);
 
-  const hasRunningWork = Boolean(busy) || workspace?.runs.some(run => !finalStages.has(run.stage)) || workspace?.campaigns.some(campaign => campaign.status === "running") || workspace?.work?.some(work => work.status === "running");
+  const hasRunningWork = !researchPage && hasExecutingWorkspaceWork(workspace, busy);
   useEffect(() => { if (activeCommand.current && workspace?.work?.some(work => work.id === activeCommand.current && ["completed", "failed", "cancelled"].includes(work.status))) setBusy(null); }, [workspace]);
   useEffect(() => {
     if (!hasRunningWork) return;
-    const interval = window.setInterval(() => { if (document.visibilityState === "visible") void refresh(); }, 1800);
+    let inFlight = false;
+    const interval = window.setInterval(() => {
+      if (document.visibilityState !== "visible" || inFlight) return;
+      inFlight = true;
+      void refresh().finally(() => { inFlight = false; });
+    }, 1800);
     return () => window.clearInterval(interval);
   }, [hasRunningWork, refresh]);
 
