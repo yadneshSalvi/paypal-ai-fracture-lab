@@ -1,0 +1,255 @@
+{
+  "recordedAt": "2026-11-11T01:29:07.220Z",
+  "source": "sample",
+  "livePaymentCalls": 0,
+  "studyAttempts": 0,
+  "results": [
+    {
+      "environment": "local",
+      "repairId": "06b9ea30-98b2-4ad9-b0d8-9545b103f543",
+      "candidateHash": "1f68e6150837698a919550efacf3b961f64d43a6666678a204f4c615e3bc6bc5",
+      "diffHash": "c8c9efc518943cbe73d3ccb033bb2b1fa00e76b45fc39798b77f746f35c1cf9f",
+      "baseHash": "36098191e41a5f5c84259501fc70fb93397b59a9f282adeebadf435320891943",
+      "contextDigest": "51602e97e302d7ee689d29943c2ba479f5575232f855e5cf9d320efc7f842db8",
+      "proofId": "70aaa104-6815-465f-800c-b2cfb833c7a0",
+      "proofHash": "8a97a787ee8d2572df12d9f67998be3019300547f0bab19b2b4ce1a18552abfa",
+      "observedAt": "2026-11-11T01:22:55.669Z",
+      "passed": true,
+      "tests": [
+        {
+          "id": "compile",
+          "name": "Strict candidate compile",
+          "detail": "Pinned TypeScript compiler passed the candidate against the original interface.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 0
+        },
+        {
+          "id": "happy",
+          "name": "Original happy-path purchase",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 4 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 77
+        },
+        {
+          "id": "lost",
+          "name": "Lost capture answer and repeated purchase intent",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 6 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 15
+        },
+        {
+          "id": "malformed",
+          "name": "Malformed committed success",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 6 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 14
+        },
+        {
+          "id": "unavailable",
+          "name": "Unavailable reconciliation stays uncertain",
+          "detail": "Observed 1 completed captures, 0 entitlements, checking; 4 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 13
+        },
+        {
+          "id": "pending",
+          "name": "Pending capture never backs a download",
+          "detail": "Observed 0 completed captures, 0 entitlements, checking; 6 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 28
+        },
+        {
+          "id": "auth",
+          "name": "Never-sent authentication has no payment effect",
+          "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 4
+        },
+        {
+          "id": "concurrent",
+          "name": "Eight concurrent callbacks share one purchase",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 4 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 16
+        },
+        {
+          "id": "revoked",
+          "name": "Revoked current authority blocks dispatch",
+          "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 2
+        },
+        {
+          "id": "payload",
+          "name": "Changed amount cannot reuse an approved identity",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 4 authoritative reads; 1 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 8
+        }
+      ],
+      "runner": {
+        "user": "1000:1000",
+        "source": "sample",
+        "cpuNano": 1000000000,
+        "imageId": "sha256:c41f15f8d7b1c449cabb125b0ada5db2b9dfdcc2a2cb888bb9e23c6c1961bc65",
+        "elapsedMs": 3343,
+        "pidsLimit": 96,
+        "containerId": "d5c0948d3a5a3bdb759ae8afb8d2c055293568a810766e30203eaab407c57421",
+        "memoryBytes": 536870912,
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "snapshotHash": "2fc3814a6c8bff4c0b034efd4ca79950564ea6143c4249cdc0884420cd01a150",
+        "hostMountCount": 0,
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "credentialEnvironmentForwarded": false
+      },
+      "stage": "evaluated"
+    },
+    {
+      "environment": "hosted",
+      "repairId": "975cc861-f665-4986-9afd-c4e58bb1d836",
+      "candidateHash": "9d242b33b65251006214f246bc73b53e5abb565f1075294c3845a2bbd67b066a",
+      "diffHash": "f042398a45a0529a585f7cb5fd017421edd4b2a5b14cdcd43818c829f68e7dd5",
+      "baseHash": "36098191e41a5f5c84259501fc70fb93397b59a9f282adeebadf435320891943",
+      "contextDigest": "51602e97e302d7ee689d29943c2ba479f5575232f855e5cf9d320efc7f842db8",
+      "proofId": "ca92e84b-67e4-4a00-b109-b9a40398d633",
+      "proofHash": "62c288f976f3bb95d1f483f47eda1a4c43e7e9d3fcc8d4726461e7c0d253b7d6",
+      "observedAt": "2026-11-11T01:21:32.341Z",
+      "passed": true,
+      "tests": [
+        {
+          "id": "compile",
+          "name": "Strict candidate compile",
+          "detail": "Pinned TypeScript compiler passed the candidate against the original interface.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 0
+        },
+        {
+          "id": "happy",
+          "name": "Original happy-path purchase",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 5 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 164
+        },
+        {
+          "id": "lost",
+          "name": "Lost capture answer and repeated purchase intent",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 9 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 66
+        },
+        {
+          "id": "malformed",
+          "name": "Malformed committed success",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 9 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 46
+        },
+        {
+          "id": "unavailable",
+          "name": "Unavailable reconciliation stays uncertain",
+          "detail": "Observed 1 completed captures, 0 entitlements, checking; 3 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 37
+        },
+        {
+          "id": "pending",
+          "name": "Pending capture never backs a download",
+          "detail": "Observed 0 completed captures, 0 entitlements, checking; 5 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 39
+        },
+        {
+          "id": "auth",
+          "name": "Never-sent authentication has no payment effect",
+          "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 19
+        },
+        {
+          "id": "concurrent",
+          "name": "Eight concurrent callbacks share one purchase",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 5 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 53
+        },
+        {
+          "id": "revoked",
+          "name": "Revoked current authority blocks dispatch",
+          "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 13
+        },
+        {
+          "id": "payload",
+          "name": "Changed amount cannot reuse an approved identity",
+          "detail": "Observed 1 completed captures, 1 entitlements, paid; 5 authoritative reads; 1 refused/thrown calls.",
+          "hidden": false,
+          "status": "pass",
+          "durationMs": 40
+        }
+      ],
+      "runner": {
+        "kind": "vercel_sandbox",
+        "user": "candidate",
+        "image": "vercel/sandbox/node@sha256:54359c96acc5ed74855d78883f6e1199a2f8f25381c65a4e9f0cc41d8196ebff",
+        "vcpus": 2,
+        "source": "sample",
+        "memoryMB": 4096,
+        "elapsedMs": 9701,
+        "nodeMajor": 22,
+        "persistent": false,
+        "snapshotId": "snap_SGsL2vTYitUeflLcoDlNxKzD0jIp",
+        "sandboxName": "fracture-candidate-caafc32f-50d9-4412-a7bb-d14cc767602b",
+        "processLimit": 96,
+        "rootReadOnly": false,
+        "snapshotHash": "a052102ff3f02d0d373b869a11ac78ccc671a67172c6827169815194ea246469",
+        "networkPolicy": "deny-all",
+        "disposalStatus": "stopped",
+        "hostMountCount": 0,
+        "maximumSeconds": 55,
+        "referenceReadOnly": true,
+        "credentialEnvironmentForwarded": false
+      },
+      "stage": "evaluated"
+    }
+  ],
+  "schemaVersion": 1,
+  "scope": "Two actual model-authored candidates compiled and executed against the original ten public Sample regression checks in isolated local/cloud runners.",
+  "limitations": [
+    "These are public regression checks, not the planned 600-attempt context study.",
+    "No external payment requests were issued by either candidate.",
+    "Earlier failing candidates remain in the application evidence history."
+  ],
+  "hostedExport": {
+    "downloadedPatch": "975cc861-f665-4986-9afd-c4e58bb1d836.patch",
+    "gitApplyCheckPassed": true,
+    "appliedSourceMatchesCandidateHash": true,
+    "appliedOnlyToIsolatedReviewCopy": true
+  }
+}

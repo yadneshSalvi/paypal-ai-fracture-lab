@@ -1487,3 +1487,266 @@ This is a low-level typed gateway, not a new PaymentCore action. Application ada
 Invoice payment type PAYPAL vs EXTERNAL is preserved independently of method. Each actual transaction ID and amount is retained. Invoice ID/status/paid_amount never substitutes for an economic payment. Invoice refund schema contains no original payment ID: originalPaymentId is null/unproved until domain corroborates external lineage. No record payment/refund endpoints included. Payout batch fees are estimates; exact per-item fee remains separately observed. Never expose receiver/raw invoice data publicly.
 
 Conformance to add: exact wire fields/notification suppression; no hidden write retry; auth vs post-dispatch uncertainty; corrupt2xx; readonly search recovery; full pagination with malformed/drift/duplicate denial; exact identity/amount/recipient and cancel-state bounds; PAYPAL vs EXTERNAL transactions; batch vs item success; duplicate link validation; redaction. Live account preflight stored privately; local conformance never implies live capability. Future full app actor/authority/journal/worker tests remain lead-owned.
+
+
+## Tandem Python integration contract — pinned independent worker
+
+Recorded by the root integration owner on 11 November2026 after both current Bramble candidate jobs and isolated verifications completed. This contract gates the independent Python implementation. Existing Bramble proofs retain their original context digest; future generation binds the complete new context. No Python application behavior is claimed by this contract.
+
+## Environment and host decision
+
+Pinned distribution paypal 2.29, import root paypal, non-editable commit 143e57f2a3729d7df3727386b8c9ddf023d9a5df. Actual interpreter .artifacts/tandem-venv/bin/python is Python3.11.15. uv0.12.9, pytest9.2, mypy and Pydantic2.14.3 installed. Same-SHA sdk-map.md and operation maps are at this sibling source checkout because the wheel does not install them. Source reading, not runtime introspection, supplied the facts below. No Python project existed for a baseline; actual read-only smoke passes strict mypy and four real sandbox GETs, recorded in python-readonly-qualification.json. The existing TypeScript app passes its regression suites separately.
+
+Sync PaypalClient is chosen once: the host is a bounded worker with synchronous JSON request/response messages, not an async Python server. Hold one client for the worker lifetime and close with a context manager. The TypeScript host supervises process deadline; Python timeout20 only bounds individual waits and does not establish a whole-call deadline. No async client in sync handlers. Local and cloud worker designs must preserve the same durable operation store via narrowly scoped messages; no general SQL or credentials enter the candidate process.
+
+Constructor is keyword-only: PaypalClient(*, base_url=None, timeout=30.0, retry_options=None, custom_http_client=None, oauth2=None, oauth2_token_source=None). Configure base_url=https://api-m.sandbox.paypal.com explicitly, ClientCredentials(client_id,client_secret) via paypal.core, retry_options=0 and timeout20. Credentials are required by our boundary; the SDK otherwise permits unauthenticated construction. Sample transport uses explicitly fictional credentials and no network. Real reads use only the isolated Fracture configuration. All mutating endpoints stay Sample until a new explicitly scoped sandbox lifecycle is qualified; existing consumed purchase consents are never reused.
+
+## Response, model and error contracts
+
+Use with_raw_response for every operation. Success(payload,status_code,headers) or Failure(error,status_code,headers); header names lowercased. ApiError has error/status_code/headers; lazy token errors bypass raw operation mode. RawError has status_code/content and .text()/.json(), never expose those raw values publicly. The exact per-operation unions are recorded below. Preserve intended 400/404/409/422 refusal, provider401/403/429 as upstream problems rather than caller authentication errors, and distinguish genuine refusal from unknown transport/decode outcomes. ValidationError/ValueError bypass raw modes. Most success model fields are UNSET, so successful decoding is insufficient: explicitly check resource id, supported status, amount/currency and parent/intent linkage. Unknown enum strings are not success.
+
+Custom HttpClient implements send(HttpRequest)->HttpResponse and close(); HttpRequest method/url/headers/body/timeout. JsonBody.value is a JSON-safe object and media_type is declared by SDK. HttpResponse exposes url/status_code/lowercase headers/read()/iter_bytes(chunk_size)/close(), read releases the connection and close is idempotent. send wraps no-response failures in TransportError(inner_exception); the SDK unwraps that after its retry boundary, so callers receive the underlying timeout/connection exception. Body read failures are not TransportError. Inspect httpx2 causes to distinguish ConnectError proven unsent from response-loss/ReadTimeout unknown; plain exceptions without proof remain unknown. Capture structured redacted traces before injected loss, never authorization headers or OAuth bodies.
+
+Request models: OrderRequest requires intent and purchase_units; CheckoutPaymentIntent CAPTURE/AUTHORIZE. PurchaseUnitRequest requires amount; set custom_id/reference_id deliberately. AmountWithBreakdown and Money require currency_code/value strings. RefundRequest.amount/custom_id are UNSET unless supplied. CaptureRequest.amount is UNSET, final_capture defaults False and must be set deliberately; invoice/note/descriptor omitted unless required. OrderAuthorizeRequest and OrderCaptureRequest fields are optional UNSET; use typed empty body to produce JSON rather than accidentally omitting content type. No None for SDK Optional[T]=T|UnsetType. No wire aliases for these used field names. Narrow via isinstance(value,UnsetType) where required; frozen Pydantic values serialize with to_dict/to_json.
+
+Response models: Order and OrderAuthorizeResponse id/status/purchase_units are UNSET unless provided. PurchaseUnit.payments -> PaymentCollection contains captures: OrdersCapture[], authorizations: AuthorizationWithAdditionalData[], refunds: Refund[], all optional UNSET. Capture entries id/status/amount/custom_id are optional; PaymentAuthorization additionally expiration_time and supplementary_data; CapturedPayment supplementary_data.related_ids may give order_id/authorization_id/capture_id. Related identifiers and Error.details are optional. Error requires name/message/debug_id; ErrorDetails requires issue and defaults location=body. Preserve each resource type, never interpret an order COMPLETED alone as paid.
+
+OrderStatus members CREATED,SAVED,APPROVED,VOIDED,COMPLETED,PAYER_ACTION_REQUIRED. CaptureStatus COMPLETED,DECLINED,PARTIALLY_REFUNDED,PENDING,REFUNDED,FAILED. RefundStatus CANCELLED,FAILED,PENDING,COMPLETED. AuthorizationStatus CREATED,CAPTURED,DENIED,PARTIALLY_CAPTURED,VOIDED,PENDING; provider expiry is an observed timestamp, while virtual expiry remains explicitly Sample. Do not copy the generated CAPTURED docstring's anomalous amount explanation into business policy: enforce measured sums independently. Every enum is open; unrecognized string blocks favorable conclusions.
+
+Unrequested fields: no payPalMockResponse, partner attribution, auth assertions, client metadata, payer/source credentials, supplementary overrides, note_to_payer or invoice_id unless an exact scenario calls for them. Prefer return=representation where full state is necessary, then independently reread. RequestOptions is not an invented header map. SDK-generated generic Idempotency-Key never replaces explicit stable pay_pal_request_id.
+
+## Exact operations from same-SHA maps
+
+### client.orders.authorize_order
+
+- **Route**: `POST /v2/checkout/orders/{id}/authorize`
+- **Auth**: `oauth2`
+- **Signature**: `def authorize_order(id_: str, *, pay_pal_mock_response: str | None = None, pay_pal_request_id: str | None = None, prefer: str | None = "return=minimal", pay_pal_client_metadata_id: str | None = None, pay_pal_auth_assertion: str | None = None, body: OrderAuthorizeRequest | OrderAuthorizeRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_request_id` — header `PayPal-Request-Id` · `prefer` — header `Prefer` · `pay_pal_client_metadata_id` — header `PayPal-Client-Metadata-Id` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion` · `body` — JSON body
+- **Returns (parsed)**: `OrderAuthorizeResponse`
+- **Returns (raw)**: `ApiResult[OrderAuthorizeResponse, AuthorizeOrderErrorBody]`
+- **Error**: `AuthorizeOrderErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `OrderAuthorizeRequest` | `paypal/models/order_authorize_request.py` |
+| `OrderAuthorizeRequestDict` | `paypal/models/order_authorize_request.py` |
+| `OrderAuthorizeResponse` | `paypal/models/order_authorize_response.py` |
+| `AuthorizeOrderErrorBody` | `paypal/errors/authorize_order_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.orders.capture_order
+
+- **Route**: `POST /v2/checkout/orders/{id}/capture`
+- **Auth**: `oauth2`
+- **Signature**: `def capture_order(id_: str, *, pay_pal_mock_response: str | None = None, pay_pal_request_id: str | None = None, prefer: str | None = "return=minimal", pay_pal_client_metadata_id: str | None = None, pay_pal_auth_assertion: str | None = None, body: OrderCaptureRequest | OrderCaptureRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_request_id` — header `PayPal-Request-Id` · `prefer` — header `Prefer` · `pay_pal_client_metadata_id` — header `PayPal-Client-Metadata-Id` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion` · `body` — JSON body
+- **Returns (parsed)**: `Order`
+- **Returns (raw)**: `ApiResult[Order, CaptureOrderErrorBody]`
+- **Error**: `CaptureOrderErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `OrderCaptureRequest` | `paypal/models/order_capture_request.py` |
+| `OrderCaptureRequestDict` | `paypal/models/order_capture_request.py` |
+| `Order` | `paypal/models/order.py` |
+| `CaptureOrderErrorBody` | `paypal/errors/capture_order_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.orders.create_order
+
+- **Route**: `POST /v2/checkout/orders`
+- **Auth**: `oauth2`
+- **Signature**: `def create_order(body: OrderRequest | OrderRequestDict, *, pay_pal_mock_response: str | None = None, pay_pal_request_id: str | None = None, pay_pal_partner_attribution_id: str | None = None, pay_pal_client_metadata_id: str | None = None, prefer: str | None = "return=minimal", pay_pal_auth_assertion: str | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `body`
+- **Params**: `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_request_id` — header `PayPal-Request-Id` · `pay_pal_partner_attribution_id` — header `PayPal-Partner-Attribution-Id` · `pay_pal_client_metadata_id` — header `PayPal-Client-Metadata-Id` · `prefer` — header `Prefer` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion` · `body` — JSON body
+- **Returns (parsed)**: `Order`
+- **Returns (raw)**: `ApiResult[Order, CreateOrderErrorBody]`
+- **Error**: `CreateOrderErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [400, 401, 422] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `OrderRequest` | `paypal/models/order_request.py` |
+| `OrderRequestDict` | `paypal/models/order_request.py` |
+| `Order` | `paypal/models/order.py` |
+| `CreateOrderErrorBody` | `paypal/errors/create_order_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.orders.get_order
+
+- **Route**: `GET /v2/checkout/orders/{id}`
+- **Auth**: `oauth2`
+- **Signature**: `def get_order(id_: str, *, fields: str | None = None, pay_pal_mock_response: str | None = None, pay_pal_auth_assertion: str | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `fields` — query · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion`
+- **Returns (parsed)**: `Order`
+- **Returns (raw)**: `ApiResult[Order, GetOrderErrorBody]`
+- **Error**: `GetOrderErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [401, 404] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `Order` | `paypal/models/order.py` |
+| `GetOrderErrorBody` | `paypal/errors/get_order_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.payments.capture_authorized_payment
+
+- **Route**: `POST /v2/payments/authorizations/{authorization_id}/capture`
+- **Auth**: `oauth2`
+- **Signature**: `def capture_authorized_payment(authorization_id: str, *, pay_pal_mock_response: str | None = None, pay_pal_request_id: str | None = None, prefer: str | None = "return=minimal", pay_pal_auth_assertion: str | None = None, body: CaptureRequest | CaptureRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `authorization_id`
+- **Params**: `authorization_id` — path · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_request_id` — header `PayPal-Request-Id` · `prefer` — header `Prefer` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion` · `body` — JSON body
+- **Returns (parsed)**: `CapturedPayment`
+- **Returns (raw)**: `ApiResult[CapturedPayment, CaptureAuthorizedPaymentErrorBody]`
+- **Error**: `CaptureAuthorizedPaymentErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [400, 401, 403, 404, 409, 422] · `RawError` [500, anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `CaptureRequest` | `paypal/models/capture_request.py` |
+| `CaptureRequestDict` | `paypal/models/capture_request.py` |
+| `CapturedPayment` | `paypal/models/captured_payment.py` |
+| `CaptureAuthorizedPaymentErrorBody` | `paypal/errors/capture_authorized_payment_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.payments.get_authorized_payment
+
+- **Route**: `GET /v2/payments/authorizations/{authorization_id}`
+- **Auth**: `oauth2`
+- **Signature**: `def get_authorized_payment(authorization_id: str, *, pay_pal_mock_response: str | None = None, pay_pal_auth_assertion: str | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `authorization_id`
+- **Params**: `authorization_id` — path · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion`
+- **Returns (parsed)**: `PaymentAuthorization`
+- **Returns (raw)**: `ApiResult[PaymentAuthorization, GetAuthorizedPaymentErrorBody]`
+- **Error**: `GetAuthorizedPaymentErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [401, 403, 404] · `RawError` [500, anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `PaymentAuthorization` | `paypal/models/payment_authorization.py` |
+| `GetAuthorizedPaymentErrorBody` | `paypal/errors/get_authorized_payment_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.payments.get_captured_payment
+
+- **Route**: `GET /v2/payments/captures/{capture_id}`
+- **Auth**: `oauth2`
+- **Signature**: `def get_captured_payment(capture_id: str, *, pay_pal_mock_response: str | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `capture_id`
+- **Params**: `capture_id` — path · `pay_pal_mock_response` — header `PayPal-Mock-Response`
+- **Returns (parsed)**: `CapturedPayment`
+- **Returns (raw)**: `ApiResult[CapturedPayment, GetCapturedPaymentErrorBody]`
+- **Error**: `GetCapturedPaymentErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [401, 403, 404] · `RawError` [500, anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `CapturedPayment` | `paypal/models/captured_payment.py` |
+| `GetCapturedPaymentErrorBody` | `paypal/errors/get_captured_payment_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.payments.get_refund
+
+- **Route**: `GET /v2/payments/refunds/{refund_id}`
+- **Auth**: `oauth2`
+- **Signature**: `def get_refund(refund_id: str, *, pay_pal_mock_response: str | None = None, pay_pal_auth_assertion: str | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `refund_id`
+- **Params**: `refund_id` — path · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion`
+- **Returns (parsed)**: `Refund`
+- **Returns (raw)**: `ApiResult[Refund, GetRefundErrorBody]`
+- **Error**: `GetRefundErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [401, 403, 404] · `RawError` [500, anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `Refund` | `paypal/models/refund.py` |
+| `GetRefundErrorBody` | `paypal/errors/get_refund_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.payments.refund_captured_payment
+
+- **Route**: `POST /v2/payments/captures/{capture_id}/refund`
+- **Auth**: `oauth2`
+- **Signature**: `def refund_captured_payment(capture_id: str, *, pay_pal_mock_response: str | None = None, pay_pal_request_id: str | None = None, prefer: str | None = "return=minimal", pay_pal_auth_assertion: str | None = None, body: RefundRequest | RefundRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `capture_id`
+- **Params**: `capture_id` — path · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_request_id` — header `PayPal-Request-Id` · `prefer` — header `Prefer` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion` · `body` — JSON body
+- **Returns (parsed)**: `Refund`
+- **Returns (raw)**: `ApiResult[Refund, RefundCapturedPaymentErrorBody]`
+- **Error**: `RefundCapturedPaymentErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [400, 401, 403, 404, 409, 422] · `RawError` [500, anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `RefundRequest` | `paypal/models/refund_request.py` |
+| `RefundRequestDict` | `paypal/models/refund_request.py` |
+| `Refund` | `paypal/models/refund.py` |
+| `RefundCapturedPaymentErrorBody` | `paypal/errors/refund_captured_payment_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+### client.payments.void_payment
+
+- **Route**: `POST /v2/payments/authorizations/{authorization_id}/void`
+- **Auth**: `oauth2`
+- **Signature**: `def void_payment(authorization_id: str, *, pay_pal_mock_response: str | None = None, pay_pal_auth_assertion: str | None = None, pay_pal_request_id: str | None = None, prefer: str | None = "return=minimal", request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `authorization_id`
+- **Params**: `authorization_id` — path · `pay_pal_mock_response` — header `PayPal-Mock-Response` · `pay_pal_auth_assertion` — header `PayPal-Auth-Assertion` · `pay_pal_request_id` — header `PayPal-Request-Id` · `prefer` — header `Prefer`
+- **Returns (parsed)**: `PaymentAuthorization`
+- **Returns (raw)**: `ApiResult[PaymentAuthorization, VoidPaymentErrorBody]`
+- **Error**: `VoidPaymentErrorBody` — **Case A (typed)**
+- **Error arms**: `Error` [401, 403, 404, 409, 422] · `RawError` [500, anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `PaymentAuthorization` | `paypal/models/payment_authorization.py` |
+| `VoidPaymentErrorBody` | `paypal/errors/void_payment_error.py` |
+| `Error` | `paypal/models/error.py` |
+
+
+
+## Invariants and implementation bindings (TBD code locations only)
+
+Every hardened write follows durable claim → SDK call → record. The store owns unique tenant/run/business-operation identity plus immutable payload hash, original provider request ID and current approval version. Losing claims raise an explicit DuplicateClaim which the worker catches and returns the existing operation; no pre-read-only dedupe. Refusals release only according to explicit known-refusal policy; unknown dispatch retains protection. This is target application behavior, never silently imposed on the faulty target by the observer.
+
+| Write | Claim / rejection | Unknown recovery | Where in code |
+|---|---|---|---|
+| create_order | durable unique purchase/create | supported known original order read only; otherwise unknown, no invented search-by-request-ID | TBD claim then SDK functions |
+| authorize_order | durable unique original order/authorize | get_order of same owned order and inspect its exact authorizations | TBD claim then SDK functions |
+| capture_order | durable unique intent capture | get_order original order, exact capture/amount/status | TBD claim then SDK functions |
+| capture_authorized_payment | unique capture intent plus atomic authorization remainder reservation | known capture GET; parent authorization GET alone cannot prove the particular capture | TBD claim then SDK functions |
+| refund_captured_payment | unique refund intent plus atomic refundable remainder reservation | known refund GET; capture balance change alone is not exact-operation proof | TBD claim then SDK functions |
+| void_payment | unique remaining-authorization release | get_authorized_payment same original id; VOIDED doesn't imply refund of captured funds | TBD claim then SDK functions |
+
+Unknown operations with no supported exact lookup stay unknown; no re-POST merely to escape uncertainty. Always read the original authorization after void, including an empty or undecodable response. Preserve gross capture history after refunds. Successful partial capture consumes only captured amount; remaining authorization is separately released or expires. No paid ticket without exact completed capture. One semantic ticket entitlement across callback/restart races. Review/cancel/revoke checks occur immediately before dispatch. Pre-send authentication/encoding failures do not trigger financial reconciliation; actual response loss does. Pending capture doesn't fulfill; pending refund retains reservation. No cross-tenant resource access. Distinct signed webhook event identity/monotonic reducers are a separate adapter, not assumed in this SDK.
+
+## Required reading completed before implementation
+
+MUST load python-integrate-paypal, python-getting-started, python-client-initialization, python-authentication, python-calling-endpoints, python-models, python-error-handling, python-configuration-resilience and python-testing. Root read these companions and SDK maps/source. No event-stream or file operations are in this worker's scope. Runtime/model errors naming SDK types trigger a new targeted source lookup; do not guess replacements.
+
+## Tests and capability gates
+
+Meaningful SDK wire tests cover stable versus generic identity, body omission versus typed {}, defaults/UNSET, typed/Raw refusals, success decode failure, transport before/after dispatch, no SDK retries, exact resource linkage, read-only recovery and current authority. Concurrent claim/refund races and restart proofs use the actual durable app store; Python strict mypy plus pytest are required. Baseline and hardened invariants use the same provider observations without the harness repairing the baseline. Child process/environment/no-network isolation is a separately measured boundary. Hosted Python VM snapshot, complete fixture UI, actual ticket scenario execution, live write qualification and evaluation are not implemented by these planning notes.
+
+No open SDK lookup is intentionally left for listed calls; code/test bindings remain TBD until authored. Before applying to root plan, recheck that desired transport/store architecture has been finalized and no additional SDK operation is introduced. Do not mark row verified until exact unchanged-source checks execute.
+
+## Runtime and transport design resolved after actual host qualification
+
+Vercel snapshot snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv now contains Python3.11.15 and exact local dependency versions, including pinnedpaypal2.29. A nonroot candidate user cannot write the runtime or sudo. DNS/IP egress denial and absence of secret environment variables were measured. The parent can use installed Sandbox3.9.1 detached runCommand(stdin:true), command.logs(), serialized writeStdin() and closeStdin(); an actual ready→request→reply→request→reply exchange passed. Raw API transport errors after uncertain stdin delivery must never automatically resend a mutation frame. The same protocol can run over local child-process pipes. This runtime snapshot is an environment prerequisite only; it contains no Tandem application, frozen evaluator or provider credentials.
+
+Planned worker: apps/fixtures/tandem/worker.py reads strictly bounded versioned JSON frames; sdk_adapter.py owns the long-lived pinned SDK with custom HttpClient. Target faulty.py and hardened.py independently decide their purchase operations. The parent bridge packages/tandem/src/bridge.ts fixes session/run scope and permits only typed operation claims, target-state writes, target-owned entitlement operations, authority reads and bounded Sample provider requests. No arbitrary SQL, filesystem path, URL or resource from another run can be requested. Source hash and worker version bind every invocation. The Python SDK still encodes real request channels; no hidden wrapper adds business identity to the faulty target.
+
+Durability: target operation claims and provider-model state reside in separate app PostgreSQL tables. Each operation is committed before the parent acknowledges its frame; the frame request ID is separate from the business operation identity. A lost worker answer cannot lose an already recorded provider effect. A new worker resumes from saved target operations and performs exact read-only reconciliation; the provider observer does not fix the faulty target. Parent lease/deadline/current actor checks stop stale workers, while an uncertain remote frame leaves the originating operation pending. Authorization, capture and refund money remain separately recorded. This bridge requires meaningful concurrent/restart/partial-message tests before the UI can claim durable parity.

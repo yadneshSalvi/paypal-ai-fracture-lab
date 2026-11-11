@@ -18,6 +18,10 @@ playwright-report/
 *.pem
 *.key
 *.tsbuildinfo
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+*.py[cod]
 vendor/*
 !vendor/fracture-paypal-core-0.2.2.tgz
 !vendor/paypal-core-0.2.2.provenance.json

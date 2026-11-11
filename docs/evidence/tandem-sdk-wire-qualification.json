@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-11T01:38:39.952313+00:00",
+  "scope": "Actual pinned APIMatic Python SDK over a credential-free in-process Sample transport. Wire boundary only; not a deployed Tandem domain fixture.",
+  "sdk": {
+    "distribution": "paypal",
+    "version": "2.29",
+    "commit": "143e57f2a3729d7df3727386b8c9ddf023d9a5df"
+  },
+  "tests": {
+    "command": ".artifacts/tandem-venv/bin/python -m pytest -q apps/fixtures/tandem/test_sdk_adapter.py",
+    "passed": 31,
+    "failed": 0,
+    "elapsedSeconds": 0.53
+  },
+  "typecheck": {
+    "command": ".artifacts/tandem-venv/bin/python -m mypy --strict apps/fixtures/tandem/sdk_adapter.py apps/fixtures/tandem/test_sdk_adapter.py",
+    "sourceFiles": 2,
+    "passed": true
+  },
+  "sourceHashes": {
+    "apps/fixtures/tandem/sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+    "apps/fixtures/tandem/test_sdk_adapter.py": "1d82049cb0578d60343bc135df3e1d460cfde2a536a2bcdd4941f3afaeda3a52",
+    "apps/fixtures/tandem/requirements.txt": "8b07bca0b3dd578f9d7bd1961886cdc37f20f3632d8f65b26b23087fdb6f851e"
+  },
+  "externalProviderCalls": 0,
+  "limitations": [
+    "No domain-level payment/entitlement decisions in this boundary.",
+    "No worker IPC, durable target claims, cloud application execution or full independent evaluation qualified by this record."
+  ]
+}

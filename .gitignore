@@ -20,6 +20,10 @@ playwright-report/
 test-results/
 .turbo/
 *.tsbuildinfo
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+*.py[cod]
 .DS_Store
 *.log
 
