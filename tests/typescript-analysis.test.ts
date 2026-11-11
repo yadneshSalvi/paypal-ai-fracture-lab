@@ -31,6 +31,9 @@ test("later spread cannot prove an endpoint header survives",()=>{
 test("outer option spreads cannot prove an explicit header survives",()=>{
  const r=analyze("checkout.ts",`fetch('https://api-m.sandbox.paypal.com/v2/checkout/orders',{method:'POST',headers:{'PayPal-Request-Id':key},...options});`);assert.equal(r.calls[0]?.identity,"unknown");assert.equal(r.findings[0]?.severity,"unverified");
 });
+test("mutated option objects do not borrow stale initializer evidence",()=>{
+ const r=analyze("checkout.ts",`const headers={};headers['PayPal-Request-Id']=intent;fetch('https://api-m.sandbox.paypal.com/v2/checkout/orders',{method:'POST',headers}); const options={method:'POST',headers:{'PayPal-Request-Id':intent}};options.headers={};fetch('https://api-m.sandbox.paypal.com/v2/checkout/orders',options);`);assert.deepEqual(r.calls.map(call=>call.identity),["unknown","unknown"]);assert.ok(r.findings.every(finding=>finding.severity==="unverified"));
+});
 test("readonly calls and unrelated hosts do not become mutation risks",()=>{
  const r=analyze("checkout.ts",`fetch('https://api-m.sandbox.paypal.com/v2/checkout/orders/id',{method:'GET'});fetch('https://api-m.sandbox.paypal.com.evil.example/v2/checkout/orders',{method:'POST'});`);assert.equal(r.calls.length,1);assert.equal(r.findings.length,0);
 });

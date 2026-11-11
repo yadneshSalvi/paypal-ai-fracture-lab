@@ -22,7 +22,8 @@ export function analyzeTypeScriptPayments(path:string,text:string):TypeScriptAna
   if(clause?.namedBindings&&ts.isNamedImports(clause.namedBindings))for(const binding of clause.namedBindings.elements)if(!binding.isTypeOnly)imported.set(binding.name.text,adapter);
  }
  walk(file,node=>{if(ts.isVariableDeclaration(node)&&ts.isIdentifier(node.name)&&node.initializer){const values=variables.get(node.name.text)??[];values.push(node.initializer);variables.set(node.name.text,values);}});
- walk(file,node=>{if(ts.isParameter(node)&&ts.isIdentifier(node.name))unstable.add(node.name.text);if(ts.isBinaryExpression(node)&&node.operatorToken.kind>=ts.SyntaxKind.FirstAssignment&&node.operatorToken.kind<=ts.SyntaxKind.LastAssignment&&ts.isIdentifier(node.left))unstable.add(node.left.text);});
+ function mutatedRoot(expression:ts.Expression):string|undefined{return ts.isIdentifier(expression)?expression.text:ts.isPropertyAccessExpression(expression)||ts.isElementAccessExpression(expression)?mutatedRoot(expression.expression):undefined;}
+ walk(file,node=>{if(ts.isParameter(node)&&ts.isIdentifier(node.name))unstable.add(node.name.text);if(ts.isBinaryExpression(node)&&node.operatorToken.kind>=ts.SyntaxKind.FirstAssignment&&node.operatorToken.kind<=ts.SyntaxKind.LastAssignment){const root=mutatedRoot(node.left);if(root)unstable.add(root);}if((ts.isPrefixUnaryExpression(node)||ts.isPostfixUnaryExpression(node))&&(node.operator===ts.SyntaxKind.PlusPlusToken||node.operator===ts.SyntaxKind.MinusMinusToken)){const root=mutatedRoot(node.operand);if(root)unstable.add(root);}});
  // A shadowed or multiply assigned binding cannot borrow evidence from another scope.
  function resolve(value:ts.Expression|undefined,seen=new Set<string>()):ts.Expression|undefined{
   if(!value)return undefined;if(ts.isParenthesizedExpression(value)||ts.isAsExpression(value)||ts.isSatisfiesExpression(value))return resolve(value.expression,seen);
