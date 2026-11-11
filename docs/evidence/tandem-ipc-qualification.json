@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-11T01:44:24.369Z",
+  "scope": "Actual pinned Python SDK over two serialized worker/host exchanges in a nonroot Vercel Sandbox. Host supplied Sample responses. No ticket application or durable database qualification.",
+  "passed": true,
+  "externalProviderCalls": 0,
+  "sourceHashes": {
+    "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+    "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+    "qualify_worker.py": "a0d318a52694700dc7b991c8f686a7f4c9323eb9d969bb1380e84720cfa0a7dc"
+  },
+  "runtimeSnapshot": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+  "sandbox": {
+    "image": "vercel/sandbox/python@sha256:83bd68d13c058b3b2738beef15c302c1627f5cf67e3d2eac002de9f33aa0730e",
+    "user": "candidate",
+    "networkPolicy": "deny-all",
+    "credentialEnvironmentForwarded": false,
+    "runtimeReadOnly": true,
+    "sourceReadOnly": true,
+    "rootFilesystem": "writable_microvm",
+    "elapsedMs": 5787,
+    "maximumSeconds": 40,
+    "processLimit": 96,
+    "disposal": "stopped"
+  },
+  "observations": [
+    {
+      "sequence": 1,
+      "method": "POST",
+      "path": "/v2/checkout/orders",
+      "providerRequestId": "qualification-create-1",
+      "genericIdempotencyHeaderPresent": true,
+      "body": {
+        "intent": "AUTHORIZE",
+        "purchase_units": [
+          {
+            "reference_id": "qualification-ticket",
+            "amount": {
+              "currency_code": "USD",
+              "value": "48.00"
+            },
+            "custom_id": "qualification-ticket"
+          }
+        ]
+      }
+    },
+    {
+      "sequence": 2,
+      "method": "GET",
+      "path": "/v2/checkout/orders/SAMPLE-QUALIFICATION-ORDER",
+      "providerRequestId": null,
+      "genericIdempotencyHeaderPresent": false,
+      "body": null
+    }
+  ],
+  "result": {
+    "version": 1,
+    "type": "complete",
+    "invocationId": "sample-ffce86fe-e210-4462-92f0-bad35b7867ca",
+    "source": "sample",
+    "create": "observed",
+    "read": "observed",
+    "requests": 2
+  },
+  "localTests": {
+    "passed": 58,
+    "failed": 0,
+    "elapsedSeconds": 1.07,
+    "strictMypySourceFiles": 5,
+    "strictMypyPassed": true,
+    "actualSubprocessIncluded": true
+  },
+  "limitations": [
+    "Sample host replies only; no external PayPal calls.",
+    "No durable database, target business operation claim or ticket entitlement implemented by this qualification.",
+    "No general arbitrary-repository runner or 600-attempt evaluation result."
+  ],
+  "priorAttempt": {
+    "result": "qualification_incomplete",
+    "cause": "Supervisor attempted to close stdin after the finite worker had already exited; command API returned404.",
+    "resolution": "Do not write or close a finished command; inspect its independently awaited exit result. No worker request was resent."
+  }
+}
