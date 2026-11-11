@@ -1,0 +1,20 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type Address } from "./address.js";
+import { type CardAttributes } from "./card-attributes.js";
+import { type CardExperienceContext } from "./card-experience-context.js";
+import { type CardStoredCredential } from "./card-stored-credential.js";
+import { type NetworkToken } from "./network-token.js";
+export type CardRequest = {
+    name?: string;
+    number?: string;
+    expiry?: string;
+    securityCode?: string;
+    billingAddress?: Address;
+    attributes?: CardAttributes;
+    vaultId?: string;
+    singleUseToken?: string;
+    storedCredential?: CardStoredCredential;
+    networkToken?: NetworkToken;
+    experienceContext?: CardExperienceContext;
+};
+export declare const cardRequestSchema: Schema<CardRequest>;

@@ -1,0 +1,7 @@
+# Harbor: two approved orders for one reservation
+
+Two checkout windows can approve different orders for the same reservation. This endpoint receives `{orderId,accountId,attemptId}`. The durable `approvals[orderId]` row maps to `intentId`; the corresponding `intents[intentId]` holds accountId, authorized, amountMinor and currency. Only a mapped, authorized order with matching provider purchase identity and price may be captured. No new orders are created by this endpoint.
+
+Repair the fan-in so two approvals for one intent can never produce two captures, including simultaneous callbacks and a lost capture response. Every completed reservation gets exactly one `entitlements[intentId]` record with intentId, captureId and amountMinor. Independent reservations remain usable. Prefer an existing winning operation over the latest callback's order ID. The losing approved order stays uncharged. Unknown or pending outcomes keep the reservation's protection and may be reconciled by reading the known winning order. An unreachable read cannot justify another capture.
+
+Return paid/200 with captureId only on an observed matching COMPLETED capture; pending/202 or unknown/202 for uncertainty; forbidden/403 for scope or provider identity/amount mismatch; missing/404 for absent mappings; refused/422 for an explicit provider refusal; not_sent/503 for a proven pre-dispatch failure. Unexpected programming failures must escape. The workspace contract defines capabilities and the offline provider.

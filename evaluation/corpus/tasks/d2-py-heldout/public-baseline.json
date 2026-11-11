@@ -1,0 +1,18 @@
+{
+  "sourceHash": "002b47a30a501ecb26fca23cac499249bff5737115796fea8e23e54a2c13e422",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "ordinary-partial-refund/completed",
+      "passed": true,
+      "detail": "One authorized partial refund is completed."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "kind": "api_binding_qualification",
+  "studyTask": false,
+  "qualityMeasurement": false,
+  "passed": true,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "result": {
+    "schemaVersion": 1,
+    "kind": "model_generation",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "status": "completed",
+    "source": "QUALIFIED_READ_ONLY_BINDING",
+    "sourceHash": "c04ce04fa90c2690076a2e9ca286c93422d1f37c6575d80caea3b7dc12de0b76",
+    "summary": "binding checked",
+    "errorCode": null,
+    "calls": [
+      {
+        "index": 0,
+        "http": {
+          "provider": "openai",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "requestHash": "cf04ce2447f44a1be03b93be0753ca13a6f995fc9fd6dfa0cbc74a41735ef35f",
+          "startedAt": "2026-11-11T08:18:46.113Z",
+          "finishedAt": "2026-11-11T08:18:47.789Z",
+          "durationMs": 1676,
+          "httpStatus": 200,
+          "requestId": "req_dfef1e00ebfb48b8904d7c06b0e4de2d",
+          "responseHash": "950c387af403db4564d631270c58362a12af11b7ae183c6263b9a8e83fbbe3a5",
+          "errorCode": null
+        },
+        "responseId": "resp_033a7248ef37f9e9016af424e64a6487d299fd27fc779385e8",
+        "reportedModel": "gpt-6.1-sol",
+        "status": "completed",
+        "usage": {
+          "inputTokens": 357,
+          "cachedInputTokens": 0,
+          "outputTokens": 29,
+          "reasoningTokens": 0,
+          "totalTokens": 386,
+          "raw": {
+            "input_tokens": 357,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 29,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 386
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "fc_033a7248ef37f9e9016af424e776e487d29386f44ffb0f371f",
+            "call_id": "call_xckiTuAEk8nmEcqlOLzZqaWE",
+            "name": "read_file",
+            "arguments": "{\"path\":\"qualification.txt\",\"startLine\":1,\"lineCount\":10}"
+          }
+        ],
+        "estimatedCostUsd": 0.001004,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 1,
+        "http": {
+          "provider": "openai",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "requestHash": "306b01cff24d10728cdbe98633193631e8539017409c854ebe84cf776f3aeffa",
+          "startedAt": "2026-11-11T08:18:47.790Z",
+          "finishedAt": "2026-11-11T08:18:50.377Z",
+          "durationMs": 2587,
+          "httpStatus": 200,
+          "requestId": "req_258b76ab5ed04513a39988d7ea36d5ad",
+          "responseHash": "8f9f36fc299fbf8b40f4d4a58258bb00137c2079e39909d32d16821786ceddbc",
+          "errorCode": null
+        },
+        "responseId": "resp_033a7248ef37f9e9016af424e7eb4887d283a4d098ab9a278c",
+        "reportedModel": "gpt-6.1-sol",
+        "status": "completed",
+        "usage": {
+          "inputTokens": 407,
+          "cachedInputTokens": 0,
+          "outputTokens": 23,
+          "reasoningTokens": 0,
+          "totalTokens": 430,
+          "raw": {
+            "input_tokens": 407,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 23,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 430
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "message",
+            "id": "msg_033a7248ef37f9e9016af424ea039887d29ed20a8f0d2ad547",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"source\":\"QUALIFIED_READ_ONLY_BINDING\",\"summary\":\"binding checked\"}"
+              }
+            ]
+          }
+        ],
+        "estimatedCostUsd": 0.001044,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      }
+    ],
+    "toolAccesses": [
+      {
+        "index": 0,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "startLine": 1,
+          "lineCount": 10
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      }
+    ],
+    "inputTokens": 764,
+    "outputTokens": 52,
+    "reasoningTokens": 0,
+    "totalTokens": 816,
+    "estimatedCostUsd": 0.002048,
+    "unpricedCalls": 0,
+    "durationMs": 4270,
+    "finishedAt": "2026-11-11T08:18:50.377Z",
+    "receiptHash": "8bc13e8add85d1430793f844f0271d252f8b973f0c3b30573d6adbffc034200b"
+  },
+  "eventsHash": "7e4f077961c56247a7804cf4095e8c6f9b9a7306b644d4c45d6b0f146ce8d9e8"
+}

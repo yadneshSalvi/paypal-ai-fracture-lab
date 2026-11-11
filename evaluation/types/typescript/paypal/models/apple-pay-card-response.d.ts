@@ -1,0 +1,25 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type Address } from "./address.js";
+import { type AuthenticationResponse } from "./authentication-response.js";
+import { type BinDetails } from "./bin-details.js";
+import { type CardAttributesResponse } from "./card-attributes-response.js";
+import { type CardBrand } from "./card-brand.js";
+import { type CardFromRequest } from "./card-from-request.js";
+import { type CardStoredCredential } from "./card-stored-credential.js";
+import { type CardType } from "./card-type.js";
+export type ApplePayCardResponse = {
+    name?: string;
+    lastDigits?: string;
+    brand?: CardBrand;
+    availableNetworks?: CardBrand[];
+    type?: CardType;
+    authenticationResult?: AuthenticationResponse;
+    attributes?: CardAttributesResponse;
+    fromRequest?: CardFromRequest;
+    expiry?: string;
+    binDetails?: BinDetails;
+    storedCredential?: CardStoredCredential;
+    billingAddress?: Address;
+    countryCode?: string;
+};
+export declare const applePayCardResponseSchema: Schema<ApplePayCardResponse>;

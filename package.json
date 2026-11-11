@@ -43,14 +43,21 @@
     "mcp": "tsx apps/mcp/src/index.ts",
     "seed": "tsx scripts/seed.ts",
     "test:core": "tsx --test tests/paypal-core.test.ts tests/paypal-sdk.test.ts tests/paypal-commerce-rest.test.ts tests/paypal-store-codec.test.ts",
-    "eval:context": "tsx scripts/evaluate.ts",
+    "eval:context": "tsx scripts/run-context-study.ts",
     "verify:core": "tsx scripts/verify-core.ts",
     "verify:app": "tsx scripts/verify-app.ts",
     "prepare:isolation": "tsx scripts/prepare-isolation.ts",
     "verify:isolation": "tsx scripts/qualify-isolation.ts",
     "test:app": "tsx --test tests/application.test.ts",
     "worker:repairs": "tsx scripts/repair-worker.ts",
-    "prepare:isolation:cloud": "tsx scripts/prepare-cloud-isolation.ts"
+    "prepare:isolation:cloud": "tsx scripts/prepare-cloud-isolation.ts",
+    "eval:prepare": "tsx scripts/prepare-evaluation.ts",
+    "eval:controls": "tsx scripts/qualify-evaluation.ts",
+    "eval:safety": "tsx scripts/qualify-evaluation-safety.ts",
+    "eval:freeze": "tsx scripts/freeze-context-study.ts",
+    "eval:seal": "tsx scripts/seal-context-study.ts",
+    "eval:protocol": "tsx scripts/evaluate.ts",
+    "eval:reproduce": "tsx scripts/reproduce-context-report.ts"
   },
   "overrides": {
     "@langchain/core": "0.3.80",

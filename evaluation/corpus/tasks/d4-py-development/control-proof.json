@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d4-py-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:51:16.737Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d4-py-development.json.gz",
+    "sha256": "a63f7598866f3d74cb7968ef3b3dbd2ab16924167a7516db7a5880129e53f322"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "29d9b6c4f9d76a2ba6300afc0bb8775995b195381435ec482a11da62183c0194",
+      "receiptHash": "f1c0a8bde78c55031a1d38e38cf7cdf65c3e2d721d96c7b4ad3bb538b37cec2f",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "refund-after-external-adjustment/refund",
+          "passed": true,
+          "detail": "A valid remaining partial refund succeeds after an external refund."
+        },
+        {
+          "id": "external-plus-pending-reservation/remaining-balance",
+          "passed": false,
+          "detail": "External refunds and pending local refunds jointly constrain admission."
+        },
+        {
+          "id": "completed-local-not-subtracted-twice/exact-accounting",
+          "passed": true,
+          "detail": "Completed local reservations are counted once, leaving the exact remaining amount usable."
+        },
+        {
+          "id": "completed-local-not-subtracted-twice/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "lost-refund-retains-local-capacity/unknown-capacity",
+          "passed": false,
+          "detail": "Unknown dispatch is retained separately from the trusted external-refund snapshot."
+        },
+        {
+          "id": "updated-external-snapshot/fresh-capacity",
+          "passed": false,
+          "detail": "A newer external snapshot reduces admission before another refund is sent."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "4b462638c90b144f529c80369827f4e9441470788ce851a313b0494f72953dd9",
+      "receiptHash": "007f05cd88c4334e265072b63c1e719417db6367fa0a62dbfa12cc474e59e9be",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "refund-after-external-adjustment/refund",
+          "passed": true,
+          "detail": "A valid remaining partial refund succeeds after an external refund."
+        },
+        {
+          "id": "external-plus-pending-reservation/remaining-balance",
+          "passed": true,
+          "detail": "External refunds and pending local refunds jointly constrain admission."
+        },
+        {
+          "id": "completed-local-not-subtracted-twice/exact-accounting",
+          "passed": true,
+          "detail": "Completed local reservations are counted once, leaving the exact remaining amount usable."
+        },
+        {
+          "id": "completed-local-not-subtracted-twice/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "lost-refund-retains-local-capacity/unknown-capacity",
+          "passed": true,
+          "detail": "Unknown dispatch is retained separately from the trusted external-refund snapshot."
+        },
+        {
+          "id": "updated-external-snapshot/fresh-capacity",
+          "passed": true,
+          "detail": "A newer external snapshot reduces admission before another refund is sent."
+        }
+      ]
+    }
+  ]
+}

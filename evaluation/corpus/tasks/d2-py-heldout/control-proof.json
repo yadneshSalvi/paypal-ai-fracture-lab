@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d2-py-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:19.491Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d2-py-heldout.json.gz",
+    "sha256": "8a932cd78fa7a2749c298c7f2ce2318b7a7bda43eb075012d1e879d61d1c7c38"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "002b47a30a501ecb26fca23cac499249bff5737115796fea8e23e54a2c13e422",
+      "receiptHash": "c20e46be44ccd8dcaf023dfff43db3773750f8624fe613b34fe4c583febc8317",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "ordinary-partial-refund/completed",
+          "passed": true,
+          "detail": "One authorized partial refund is completed."
+        },
+        {
+          "id": "lost-answer-and-validated-hint/no-speculative-resend",
+          "passed": false,
+          "detail": "A lost refund answer remains protected across a fresh worker."
+        },
+        {
+          "id": "lost-answer-and-validated-hint/supported-reference",
+          "passed": true,
+          "detail": "A later matching reference is verified with the refund endpoint."
+        },
+        {
+          "id": "lost-answer-and-validated-hint/provider-identity",
+          "passed": false,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "same-capture-wrong-refund/hint-is-not-authority",
+          "passed": false,
+          "detail": "A same-amount refund from another intent cannot resolve the original unknown."
+        },
+        {
+          "id": "pending-and-unreadable/pending",
+          "passed": false,
+          "detail": "A known pending refund stays pending."
+        },
+        {
+          "id": "pending-and-unreadable/unavailable",
+          "passed": false,
+          "detail": "A failed pending-refund reread never issues a replacement refund."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "524ba627fe204cce2b47ff6686f14ad18b973cae3812434d925204bfe0f72c0d",
+      "receiptHash": "7ee3eb36b1049793e2ceae045a4e9e7decb03f7557674dd66ff649a208405ecd",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "ordinary-partial-refund/completed",
+          "passed": true,
+          "detail": "One authorized partial refund is completed."
+        },
+        {
+          "id": "lost-answer-and-validated-hint/no-speculative-resend",
+          "passed": true,
+          "detail": "A lost refund answer remains protected across a fresh worker."
+        },
+        {
+          "id": "lost-answer-and-validated-hint/supported-reference",
+          "passed": true,
+          "detail": "A later matching reference is verified with the refund endpoint."
+        },
+        {
+          "id": "lost-answer-and-validated-hint/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "same-capture-wrong-refund/hint-is-not-authority",
+          "passed": true,
+          "detail": "A same-amount refund from another intent cannot resolve the original unknown."
+        },
+        {
+          "id": "pending-and-unreadable/pending",
+          "passed": true,
+          "detail": "A known pending refund stays pending."
+        },
+        {
+          "id": "pending-and-unreadable/unavailable",
+          "passed": true,
+          "detail": "A failed pending-refund reread never issues a replacement refund."
+        }
+      ]
+    }
+  ]
+}

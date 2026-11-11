@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-11T08:59:10.738Z",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+  "architecture": "arm64",
+  "archive": {
+    "file": "evaluation-runtime-a09fcd18538d.tar.gz",
+    "bytes": 219000205,
+    "sha256": "97ca79314c667f0de71e2015c2a125b5b99a22a455ffa95b44d2948845965d71",
+    "format": "docker image save with deterministic gzip header"
+  },
+  "retention": "Exact archive retained locally before source freeze; external publication is a separate release action.",
+  "reproduction": "Verify archive SHA-256, gunzip and docker load, then verify the image ID before running a candidate. Rebuilding the Dockerfile is a newly qualified runtime, not proof of identical image bytes."
+}

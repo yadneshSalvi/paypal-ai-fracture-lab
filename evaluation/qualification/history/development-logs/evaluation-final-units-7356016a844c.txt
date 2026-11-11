@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: balanced protocol creates 600 unique stable assignments, 300 held out, randomized arms, arm-free grading
+ok 1 - balanced protocol creates 600 unique stable assignments, 300 held out, randomized arms, arm-free grading
+  ---
+  duration_ms: 17.00975
+  type: 'test'
+  ...
+# Subtest: invalid split, hidden leakage, token mismatch and duplicate seeds cannot freeze
+ok 2 - invalid split, hidden leakage, token mismatch and duplicate seeds cannot freeze
+  ---
+  duration_ms: 4.083208
+  type: 'test'
+  ...
+# Subtest: file verification detects changed hashes, path traversal, secrets and symlink escape
+ok 3 - file verification detects changed hashes, path traversal, secrets and symlink escape
+  ---
+  duration_ms: 17.38125
+  type: 'test'
+  ...
+# Subtest: missing and infrastructure outcomes stay in the denominator and suppress incomplete intervals
+ok 4 - missing and infrastructure outcomes stay in the denominator and suppress incomplete intervals
+  ---
+  duration_ms: 10.590708
+  type: 'test'
+  ...
+# Subtest: retained first submission permits only one linked predeclared infrastructure retry
+ok 5 - retained first submission permits only one linked predeclared infrastructure retry
+  ---
+  duration_ms: 11.6555
+  type: 'test'
+  ...
+# Subtest: a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate
+ok 6 - a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate
+  ---
+  duration_ms: 8.767583
+  type: 'test'
+  ...
+# Subtest: executable protocol binds four language-specific token budgets and equal provider workers
+ok 7 - executable protocol binds four language-specific token budgets and equal provider workers
+  ---
+  duration_ms: 1.6025
+  type: 'test'
+  ...
+# Subtest: invalid final model output is a retained scored failure, never a free infrastructure retry
+ok 8 - invalid final model output is a retained scored failure, never a free infrastructure retry
+  ---
+  duration_ms: 5.815875
+  type: 'test'
+  ...
+# Subtest: paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible
+ok 9 - paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible
+  ---
+  duration_ms: 699.594584
+  type: 'test'
+  ...
+# Subtest: the bridge rejects forged, changed and cross-worker control frames
+ok 10 - the bridge rejects forged, changed and cross-worker control frames
+  ---
+  duration_ms: 0.881916
+  type: 'test'
+  ...
+# Subtest: receipt hashes survive JSON persistence without allowing a changed verdict
+ok 11 - receipt hashes survive JSON persistence without allowing a changed verdict
+  ---
+  duration_ms: 20.461875
+  type: 'test'
+  ...
+# Subtest: atomic SQL capacity holds an unknown refund and releases only an explicit refused reservation
+ok 12 - atomic SQL capacity holds an unknown refund and releases only an explicit refused reservation
+  ---
+  duration_ms: 6.992458
+  type: 'test'
+  ...
+# Subtest: the offline provider refuses refunds against pending money and preserves distinct request identities
+ok 13 - the offline provider refuses refunds against pending money and preserves distinct request identities
+  ---
+  duration_ms: 0.674167
+  type: 'test'
+  ...
+# Subtest: Gemini thought tokens enter the output limit once; OpenAI reasoning is already inside output_tokens
+ok 14 - Gemini thought tokens enter the output limit once; OpenAI reasoning is already inside output_tokens
+  ---
+  duration_ms: 0.129667
+  type: 'test'
+  ...
+# Subtest: the ZDR gateway carries opaque reasoning and tool results without exposing reasoning in receipts
+ok 15 - the ZDR gateway carries opaque reasoning and tool results without exposing reasoning in receipts
+  ---
+  duration_ms: 9.256292
+  type: 'test'
+  ...
+# Subtest: a missing final source stays a failed first submission without a quality retry
+ok 16 - a missing final source stays a failed first submission without a quality retry
+  ---
+  duration_ms: 0.403042
+  type: 'test'
+  ...
+# Subtest: provider failures remain infrastructure records and the gateway never silently retries them
+ok 17 - provider failures remain infrastructure records and the gateway never silently retries them
+  ---
+  duration_ms: 0.325459
+  type: 'test'
+  ...
+# Subtest: cumulative output budget stops a tool loop before an extra generation request
+ok 18 - cumulative output budget stops a tool loop before an extra generation request
+  ---
+  duration_ms: 0.5045
+  type: 'test'
+  ...
+# Subtest: anonymous receipt verification rejects changed verdicts, provider requests and original candidate identities
+ok 19 - anonymous receipt verification rejects changed verdicts, provider requests and original candidate identities
+  ---
+  duration_ms: 68.670333
+  type: 'test'
+  ...
+# Subtest: an interrupted dispatched request stays counted with unknown charges and no target verdict
+ok 20 - an interrupted dispatched request stays counted with unknown charges and no target verdict
+  ---
+  duration_ms: 42.757959
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 934.777625

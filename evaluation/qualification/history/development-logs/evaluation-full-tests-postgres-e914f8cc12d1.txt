@@ -1,0 +1,2231 @@
+
+> fracture-lab@0.1.0 test
+> tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: model-selected diagnosis performs a real scoped read and cannot dispatch money
+ok 1 - model-selected diagnosis performs a real scoped read and cannot dispatch money
+  ---
+  duration_ms: 71.733625
+  type: 'test'
+  ...
+# Subtest: an out-of-scope model tool argument is rejected before resource access
+ok 2 - an out-of-scope model tool argument is rejected before resource access
+  ---
+  duration_ms: 110.701958
+  type: 'test'
+  ...
+# Subtest: model transport persists attempts without authorization and excludes private reasoning
+ok 3 - model transport persists attempts without authorization and excludes private reasoning
+  ---
+  duration_ms: 77.995375
+  type: 'test'
+  ...
+# Subtest: incomplete model response remains a failed retained attempt including usage
+ok 4 - incomplete model response remains a failed retained attempt including usage
+  ---
+  duration_ms: 53.168875
+  type: 'test'
+  ...
+# Subtest: SQL cancellation aborts an in-flight model request and prevents late publication
+ok 5 - SQL cancellation aborts an in-flight model request and prevents late publication
+  ---
+  duration_ms: 1535.8975
+  type: 'test'
+  ...
+# Subtest: cancelled authority and diagnosis commit are checked atomically
+ok 6 - cancelled authority and diagnosis commit are checked atomically
+  ---
+  duration_ms: 27.270541
+  type: 'test'
+  ...
+# Subtest: fragmented UTF-8 SSE accepts only terminal output and never retains reasoning deltas
+ok 7 - fragmented UTF-8 SSE accepts only terminal output and never retains reasoning deltas
+  ---
+  duration_ms: 36.235042
+  type: 'test'
+  ...
+# Subtest: a disconnected stream cannot promote a partial generated answer
+ok 8 - a disconnected stream cannot promote a partial generated answer
+  ---
+  duration_ms: 19.375625
+  type: 'test'
+  ...
+# Subtest: streamed incomplete output retains usage and never becomes a completed model receipt
+ok 9 - streamed incomplete output retains usage and never becomes a completed model receipt
+  ---
+  duration_ms: 20.878458
+  type: 'test'
+  ...
+# Subtest: background work resumes from a new worker with one create and one immutable receipt
+ok 10 - background work resumes from a new worker with one create and one immutable receipt
+  ---
+  duration_ms: 31.128125
+  type: 'test'
+  ...
+# Subtest: a lost background create response is retained and never automatically resubmitted
+ok 11 - a lost background create response is retained and never automatically resubmitted
+  ---
+  duration_ms: 37.153791
+  type: 'test'
+  ...
+# Subtest: background checkpoint rejects changed input and a foreign response identity
+ok 12 - background checkpoint rejects changed input and a foreign response identity
+  ---
+  duration_ms: 26.975875
+  type: 'test'
+  ...
+# Subtest: cancelled background work retains its exact provider identity through failed cleanup
+ok 13 - cancelled background work retains its exact provider identity through failed cleanup
+  ---
+  duration_ms: 31.056208
+  type: 'test'
+  ...
+# Subtest: sqlite: baseline and control both pass the original happy-path purchase
+ok 14 - sqlite: baseline and control both pass the original happy-path purchase
+  ---
+  duration_ms: 120.109375
+  type: 'test'
+  ...
+# Subtest: sqlite: S0 faulty retry creates two approved orders, control reconciles one
+ok 15 - sqlite: S0 faulty retry creates two approved orders, control reconciles one
+  ---
+  duration_ms: 108.912625
+  type: 'test'
+  ...
+# Subtest: sqlite: interactive retry and repeated HTTP command identities do not duplicate the experiment
+ok 16 - sqlite: interactive retry and repeated HTTP command identities do not duplicate the experiment
+  ---
+  duration_ms: 70.200209
+  type: 'test'
+  ...
+# Subtest: sqlite: unavailable reread remains checking without another purchase
+ok 17 - sqlite: unavailable reread remains checking without another purchase
+  ---
+  duration_ms: 37.760625
+  type: 'test'
+  ...
+# Subtest: sqlite: never-sent authentication has no provider mutation or invented reconciliation
+ok 18 - sqlite: never-sent authentication has no provider mutation or invented reconciliation
+  ---
+  duration_ms: 32.610833
+  type: 'test'
+  ...
+# Subtest: sqlite: malformed success is reconciled by control and misreported by baseline
+ok 19 - sqlite: malformed success is reconciled by control and misreported by baseline
+  ---
+  duration_ms: 70.274291
+  type: 'test'
+  ...
+# Subtest: sqlite: pending capture cannot back fulfillment and does not become completed money
+ok 20 - sqlite: pending capture cannot back fulfillment and does not become completed money
+  ---
+  duration_ms: 54.160792
+  type: 'test'
+  ...
+# Subtest: sqlite: harness safety intervention cannot count as target pass
+ok 21 - sqlite: harness safety intervention cannot count as target pass
+  ---
+  duration_ms: 38.401166
+  type: 'test'
+  ...
+# Subtest: sqlite: partial compensation preserves gross duplicate history and original failure
+ok 22 - sqlite: partial compensation preserves gross duplicate history and original failure
+  ---
+  duration_ms: 74.031
+  type: 'test'
+  ...
+# Subtest: sqlite: session ownership, signed cookies, and immutable command payloads
+ok 23 - sqlite: session ownership, signed cookies, and immutable command payloads
+  ---
+  duration_ms: 56.826958
+  type: 'test'
+  ...
+# Subtest: sqlite: reload reads durable evidence through a fresh database connection
+ok 24 - sqlite: reload reads durable evidence through a fresh database connection
+  ---
+  duration_ms: 37.290917
+  type: 'test'
+  ...
+# Subtest: sqlite: expired worker at dispatch boundary cannot blindly replay
+ok 25 - sqlite: expired worker at dispatch boundary cannot blindly replay
+  ---
+  duration_ms: 21.719375
+  type: 'test'
+  ...
+# Subtest: postgres: baseline and control both pass the original happy-path purchase
+ok 26 - postgres: baseline and control both pass the original happy-path purchase
+  ---
+  duration_ms: 278.384
+  type: 'test'
+  ...
+# Subtest: postgres: S0 faulty retry creates two approved orders, control reconciles one
+ok 27 - postgres: S0 faulty retry creates two approved orders, control reconciles one
+  ---
+  duration_ms: 207.270125
+  type: 'test'
+  ...
+# Subtest: postgres: interactive retry and repeated HTTP command identities do not duplicate the experiment
+ok 28 - postgres: interactive retry and repeated HTTP command identities do not duplicate the experiment
+  ---
+  duration_ms: 203.808208
+  type: 'test'
+  ...
+# Subtest: postgres: unavailable reread remains checking without another purchase
+ok 29 - postgres: unavailable reread remains checking without another purchase
+  ---
+  duration_ms: 160.48425
+  type: 'test'
+  ...
+# Subtest: postgres: never-sent authentication has no provider mutation or invented reconciliation
+ok 30 - postgres: never-sent authentication has no provider mutation or invented reconciliation
+  ---
+  duration_ms: 133.521375
+  type: 'test'
+  ...
+# Subtest: postgres: malformed success is reconciled by control and misreported by baseline
+ok 31 - postgres: malformed success is reconciled by control and misreported by baseline
+  ---
+  duration_ms: 266.562583
+  type: 'test'
+  ...
+# Subtest: postgres: pending capture cannot back fulfillment and does not become completed money
+ok 32 - postgres: pending capture cannot back fulfillment and does not become completed money
+  ---
+  duration_ms: 192.627
+  type: 'test'
+  ...
+# Subtest: postgres: harness safety intervention cannot count as target pass
+ok 33 - postgres: harness safety intervention cannot count as target pass
+  ---
+  duration_ms: 141.777166
+  type: 'test'
+  ...
+# Subtest: postgres: partial compensation preserves gross duplicate history and original failure
+ok 34 - postgres: partial compensation preserves gross duplicate history and original failure
+  ---
+  duration_ms: 143.92675
+  type: 'test'
+  ...
+# Subtest: postgres: session ownership, signed cookies, and immutable command payloads
+ok 35 - postgres: session ownership, signed cookies, and immutable command payloads
+  ---
+  duration_ms: 103.670291
+  type: 'test'
+  ...
+# Subtest: postgres: reload reads durable evidence through a fresh database connection
+ok 36 - postgres: reload reads durable evidence through a fresh database connection
+  ---
+  duration_ms: 137.674583
+  type: 'test'
+  ...
+# Subtest: postgres: expired worker at dispatch boundary cannot blindly replay
+ok 37 - postgres: expired worker at dispatch boundary cannot blindly replay
+  ---
+  duration_ms: 75.683792
+  type: 'test'
+  ...
+# Subtest: repair policy rejects weakened assertions and secret access before execution
+ok 38 - repair policy rejects weakened assertions and secret access before execution
+  ---
+  duration_ms: 0.487416
+  type: 'test'
+  ...
+# Subtest: balanced protocol creates 600 unique stable assignments, 300 held out, randomized arms, arm-free grading
+ok 39 - balanced protocol creates 600 unique stable assignments, 300 held out, randomized arms, arm-free grading
+  ---
+  duration_ms: 32.016791
+  type: 'test'
+  ...
+# Subtest: invalid split, hidden leakage, token mismatch and duplicate seeds cannot freeze
+ok 40 - invalid split, hidden leakage, token mismatch and duplicate seeds cannot freeze
+  ---
+  duration_ms: 9.946875
+  type: 'test'
+  ...
+# Subtest: file verification detects changed hashes, path traversal, secrets and symlink escape
+ok 41 - file verification detects changed hashes, path traversal, secrets and symlink escape
+  ---
+  duration_ms: 139.048125
+  type: 'test'
+  ...
+# Subtest: missing and infrastructure outcomes stay in the denominator and suppress incomplete intervals
+ok 42 - missing and infrastructure outcomes stay in the denominator and suppress incomplete intervals
+  ---
+  duration_ms: 16.438833
+  type: 'test'
+  ...
+# Subtest: retained first submission permits only one linked predeclared infrastructure retry
+ok 43 - retained first submission permits only one linked predeclared infrastructure retry
+  ---
+  duration_ms: 15.292417
+  type: 'test'
+  ...
+# Subtest: a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate
+ok 44 - a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate
+  ---
+  duration_ms: 19.06175
+  type: 'test'
+  ...
+# Subtest: executable protocol binds four language-specific token budgets and equal provider workers
+ok 45 - executable protocol binds four language-specific token budgets and equal provider workers
+  ---
+  duration_ms: 2.333208
+  type: 'test'
+  ...
+# Subtest: invalid final model output is a retained scored failure, never a free infrastructure retry
+ok 46 - invalid final model output is a retained scored failure, never a free infrastructure retry
+  ---
+  duration_ms: 9.804208
+  type: 'test'
+  ...
+# Subtest: paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible
+ok 47 - paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible
+  ---
+  duration_ms: 1370.011167
+  type: 'test'
+  ...
+# Subtest: contract evidence binds exact source/test spans and only supported categories
+ok 48 - contract evidence binds exact source/test spans and only supported categories
+  ---
+  duration_ms: 8.381833
+  type: 'test'
+  ...
+# Subtest: a stale provider, fixture, database or test hash invalidates all verification
+ok 49 - a stale provider, fixture, database or test hash invalidates all verification
+  ---
+  duration_ms: 10.713708
+  type: 'test'
+  ...
+# Subtest: missing, failed, duplicate, absent-adapter and malformed receipts never verify
+ok 50 - missing, failed, duplicate, absent-adapter and malformed receipts never verify
+  ---
+  duration_ms: 4.97
+  type: 'test'
+  ...
+# Subtest: sqlite: developer calls persist actual experiment evidence and bind command identity
+ok 51 - sqlite: developer calls persist actual experiment evidence and bind command identity
+  ---
+  duration_ms: 159.239667
+  type: 'test'
+  ...
+# Subtest: sqlite: an independent developer grant cannot read or diagnose another session's run
+ok 52 - sqlite: an independent developer grant cannot read or diagnose another session's run
+  ---
+  duration_ms: 74.551417
+  type: 'test'
+  ...
+# Subtest: sqlite: expired, revoked, forged and stale owner grants fail closed
+ok 53 - sqlite: expired, revoked, forged and stale owner grants fail closed
+  ---
+  duration_ms: 8.124625
+  type: 'test'
+  ...
+# Subtest: sqlite: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios
+ok 54 - sqlite: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios
+  ---
+  duration_ms: 8.791959
+  type: 'test'
+  ...
+# Subtest: sqlite: proposals are read-only and rate limits bound execution
+ok 55 - sqlite: proposals are read-only and rate limits bound execution
+  ---
+  duration_ms: 19.438417
+  type: 'test'
+  ...
+# Subtest: postgres: developer calls persist actual experiment evidence and bind command identity
+ok 56 - postgres: developer calls persist actual experiment evidence and bind command identity
+  ---
+  duration_ms: 389.444375
+  type: 'test'
+  ...
+# Subtest: postgres: an independent developer grant cannot read or diagnose another session's run
+ok 57 - postgres: an independent developer grant cannot read or diagnose another session's run
+  ---
+  duration_ms: 245.032166
+  type: 'test'
+  ...
+# Subtest: postgres: expired, revoked, forged and stale owner grants fail closed
+ok 58 - postgres: expired, revoked, forged and stale owner grants fail closed
+  ---
+  duration_ms: 91.734917
+  type: 'test'
+  ...
+# Subtest: postgres: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios
+ok 59 - postgres: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios
+  ---
+  duration_ms: 74.584084
+  type: 'test'
+  ...
+# Subtest: postgres: proposals are read-only and rate limits bound execution
+ok 60 - postgres: proposals are read-only and rate limits bound execution
+  ---
+  duration_ms: 75.775667
+  type: 'test'
+  ...
+# Subtest: private credential initialization is idempotent and rejects symlinks and broad file permissions
+ok 61 - private credential initialization is idempotent and rejects symlinks and broad file permissions
+  ---
+  duration_ms: 23.727208
+  type: 'test'
+  ...
+# Subtest: MCP client discovers strict schemas, executes Sample flow, and observes immediate grant revocation
+ok 62 - MCP client discovers strict schemas, executes Sample flow, and observes immediate grant revocation
+  ---
+  duration_ms: 36.017834
+  type: 'test'
+  ...
+# Subtest: CLI and real stdio MCP share persisted owner scope across fresh processes
+ok 63 - CLI and real stdio MCP share persisted owner scope across fresh processes
+  ---
+  duration_ms: 6627.604625
+  type: 'test'
+  ...
+# Subtest: sqlite: actual Toolkit baseline creates two orders, control recovers one, neither captures
+ok 64 - sqlite: actual Toolkit baseline creates two orders, control recovers one, neither captures
+  ---
+  duration_ms: 3310.295458
+  type: 'test'
+  ...
+# Subtest: sqlite: control commits claim before dispatch and concurrent callers share one operation
+ok 65 - sqlite: control commits claim before dispatch and concurrent callers share one operation
+  ---
+  duration_ms: 472.267208
+  type: 'test'
+  ...
+# Subtest: sqlite: changed arguments, other session, cancelled run and disabled tools cannot dispatch
+ok 66 - sqlite: changed arguments, other session, cancelled run and disabled tools cannot dispatch
+  ---
+  duration_ms: 444.439042
+  type: 'test'
+  ...
+# Subtest: sqlite: authentication refusal is never classified as an unknown order
+ok 67 - sqlite: authentication refusal is never classified as an unknown order
+  ---
+  duration_ms: 433.6735
+  type: 'test'
+  ...
+# Subtest: sqlite: Toolkit structured refusal remains distinct from unknown transport failure
+ok 68 - sqlite: Toolkit structured refusal remains distinct from unknown transport failure
+  ---
+  duration_ms: 464.103459
+  type: 'test'
+  ...
+# Subtest: postgres: actual Toolkit baseline creates two orders, control recovers one, neither captures
+ok 69 - postgres: actual Toolkit baseline creates two orders, control recovers one, neither captures
+  ---
+  duration_ms: 1807.201375
+  type: 'test'
+  ...
+# Subtest: postgres: control commits claim before dispatch and concurrent callers share one operation
+ok 70 - postgres: control commits claim before dispatch and concurrent callers share one operation
+  ---
+  duration_ms: 455.273334
+  type: 'test'
+  ...
+# Subtest: postgres: changed arguments, other session, cancelled run and disabled tools cannot dispatch
+ok 71 - postgres: changed arguments, other session, cancelled run and disabled tools cannot dispatch
+  ---
+  duration_ms: 460.075708
+  type: 'test'
+  ...
+# Subtest: postgres: authentication refusal is never classified as an unknown order
+ok 72 - postgres: authentication refusal is never classified as an unknown order
+  ---
+  duration_ms: 476.642583
+  type: 'test'
+  ...
+# Subtest: postgres: Toolkit structured refusal remains distinct from unknown transport failure
+ok 73 - postgres: Toolkit structured refusal remains distinct from unknown transport failure
+  ---
+  duration_ms: 533.860875
+  type: 'test'
+  ...
+# Subtest: the bridge rejects forged, changed and cross-worker control frames
+ok 74 - the bridge rejects forged, changed and cross-worker control frames
+  ---
+  duration_ms: 2.519542
+  type: 'test'
+  ...
+# Subtest: receipt hashes survive JSON persistence without allowing a changed verdict
+ok 75 - receipt hashes survive JSON persistence without allowing a changed verdict
+  ---
+  duration_ms: 50.922292
+  type: 'test'
+  ...
+# Subtest: atomic SQL capacity holds an unknown refund and releases only an explicit refused reservation
+ok 76 - atomic SQL capacity holds an unknown refund and releases only an explicit refused reservation
+  ---
+  duration_ms: 10.575625
+  type: 'test'
+  ...
+# Subtest: the offline provider refuses refunds against pending money and preserves distinct request identities
+ok 77 - the offline provider refuses refunds against pending money and preserves distinct request identities
+  ---
+  duration_ms: 0.699667
+  type: 'test'
+  ...
+# Subtest: Gemini thought tokens enter the output limit once; OpenAI reasoning is already inside output_tokens
+ok 78 - Gemini thought tokens enter the output limit once; OpenAI reasoning is already inside output_tokens
+  ---
+  duration_ms: 0.1355
+  type: 'test'
+  ...
+# Subtest: the ZDR gateway carries opaque reasoning and tool results without exposing reasoning in receipts
+ok 79 - the ZDR gateway carries opaque reasoning and tool results without exposing reasoning in receipts
+  ---
+  duration_ms: 13.819958
+  type: 'test'
+  ...
+# Subtest: a missing final source stays a failed first submission without a quality retry
+ok 80 - a missing final source stays a failed first submission without a quality retry
+  ---
+  duration_ms: 1.103958
+  type: 'test'
+  ...
+# Subtest: provider failures remain infrastructure records and the gateway never silently retries them
+ok 81 - provider failures remain infrastructure records and the gateway never silently retries them
+  ---
+  duration_ms: 0.898292
+  type: 'test'
+  ...
+# Subtest: cumulative output budget stops a tool loop before an extra generation request
+ok 82 - cumulative output budget stops a tool loop before an extra generation request
+  ---
+  duration_ms: 1.316209
+  type: 'test'
+  ...
+# Subtest: sqlite: generated jobs retain source/context bindings, provenance and exact verification
+ok 83 - sqlite: generated jobs retain source/context bindings, provenance and exact verification
+  ---
+  duration_ms: 173.492542
+  type: 'test'
+  ...
+# Subtest: sqlite: unresolved contract binding blocks code generation before dispatch
+ok 84 - sqlite: unresolved contract binding blocks code generation before dispatch
+  ---
+  duration_ms: 60.478292
+  type: 'test'
+  ...
+# Subtest: sqlite: excess and duplicate contract categories fail before author dispatch
+ok 85 - sqlite: excess and duplicate contract categories fail before author dispatch
+  ---
+  duration_ms: 87.844292
+  type: 'test'
+  ...
+# Subtest: sqlite: stale or forged patch citations are rejected with attempts retained
+ok 86 - sqlite: stale or forged patch citations are rejected with attempts retained
+  ---
+  duration_ms: 38.514875
+  type: 'test'
+  ...
+# Subtest: sqlite: queue payload mutation fails before a model call
+ok 87 - sqlite: queue payload mutation fails before a model call
+  ---
+  duration_ms: 51.008667
+  type: 'test'
+  ...
+# Subtest: sqlite: context changes after queue block model dispatch
+ok 88 - sqlite: context changes after queue block model dispatch
+  ---
+  duration_ms: 78.390334
+  type: 'test'
+  ...
+# Subtest: sqlite: cancellation racing the model cannot publish a candidate
+ok 89 - sqlite: cancellation racing the model cannot publish a candidate
+  ---
+  duration_ms: 112.517208
+  type: 'test'
+  ...
+# Subtest: sqlite: expired and revoked authority stop queued work
+ok 90 - sqlite: expired and revoked authority stop queued work
+  ---
+  duration_ms: 68.506667
+  type: 'test'
+  ...
+# Subtest: sqlite: concurrent workers produce one saved candidate
+ok 91 - sqlite: concurrent workers produce one saved candidate
+  ---
+  duration_ms: 63.5845
+  type: 'test'
+  ...
+# Subtest: sqlite: cross-session and mutated candidate records cannot execute
+ok 92 - sqlite: cross-session and mutated candidate records cannot execute
+  ---
+  duration_ms: 63.289208
+  type: 'test'
+  ...
+# Subtest: sqlite: a different runner or candidate hash cannot produce verified status
+ok 93 - sqlite: a different runner or candidate hash cannot produce verified status
+  ---
+  duration_ms: 73.785416
+  type: 'test'
+  ...
+# Subtest: sqlite: failed behavioral checks stay failed and do not rewrite reference provenance
+ok 94 - sqlite: failed behavioral checks stay failed and do not rewrite reference provenance
+  ---
+  duration_ms: 97.724
+  type: 'test'
+  ...
+# Subtest: sqlite: refinement uses exact prior failure without replacing its evidence
+ok 95 - sqlite: refinement uses exact prior failure without replacing its evidence
+  ---
+  duration_ms: 79.752583
+  type: 'test'
+  ...
+# Subtest: sqlite: revised authoring context requires a new candidate and retains prior context provenance
+ok 96 - sqlite: revised authoring context requires a new candidate and retains prior context provenance
+  ---
+  duration_ms: 61.053375
+  type: 'test'
+  ...
+# Subtest: sqlite: a checkpointed abandoned lease resumes its saved action
+ok 97 - sqlite: a checkpointed abandoned lease resumes its saved action
+  ---
+  duration_ms: 42.562666
+  type: 'test'
+  ...
+# Subtest: sqlite: abandoned leases fail visibly and are never automatically regenerated
+ok 98 - sqlite: abandoned leases fail visibly and are never automatically regenerated
+  ---
+  duration_ms: 55.087917
+  type: 'test'
+  ...
+# Subtest: postgres: generated jobs retain source/context bindings, provenance and exact verification
+ok 99 - postgres: generated jobs retain source/context bindings, provenance and exact verification
+  ---
+  duration_ms: 265.1065
+  type: 'test'
+  ...
+# Subtest: postgres: unresolved contract binding blocks code generation before dispatch
+ok 100 - postgres: unresolved contract binding blocks code generation before dispatch
+  ---
+  duration_ms: 187.034625
+  type: 'test'
+  ...
+# Subtest: postgres: excess and duplicate contract categories fail before author dispatch
+ok 101 - postgres: excess and duplicate contract categories fail before author dispatch
+  ---
+  duration_ms: 181.185792
+  type: 'test'
+  ...
+# Subtest: postgres: stale or forged patch citations are rejected with attempts retained
+ok 102 - postgres: stale or forged patch citations are rejected with attempts retained
+  ---
+  duration_ms: 215.240334
+  type: 'test'
+  ...
+# Subtest: postgres: queue payload mutation fails before a model call
+ok 103 - postgres: queue payload mutation fails before a model call
+  ---
+  duration_ms: 160.66975
+  type: 'test'
+  ...
+# Subtest: postgres: context changes after queue block model dispatch
+ok 104 - postgres: context changes after queue block model dispatch
+  ---
+  duration_ms: 136.593375
+  type: 'test'
+  ...
+# Subtest: postgres: cancellation racing the model cannot publish a candidate
+ok 105 - postgres: cancellation racing the model cannot publish a candidate
+  ---
+  duration_ms: 152.778791
+  type: 'test'
+  ...
+# Subtest: postgres: expired and revoked authority stop queued work
+ok 106 - postgres: expired and revoked authority stop queued work
+  ---
+  duration_ms: 136.191958
+  type: 'test'
+  ...
+# Subtest: postgres: concurrent workers produce one saved candidate
+ok 107 - postgres: concurrent workers produce one saved candidate
+  ---
+  duration_ms: 148.699
+  type: 'test'
+  ...
+# Subtest: postgres: cross-session and mutated candidate records cannot execute
+ok 108 - postgres: cross-session and mutated candidate records cannot execute
+  ---
+  duration_ms: 127.504417
+  type: 'test'
+  ...
+# Subtest: postgres: a different runner or candidate hash cannot produce verified status
+ok 109 - postgres: a different runner or candidate hash cannot produce verified status
+  ---
+  duration_ms: 146.016875
+  type: 'test'
+  ...
+# Subtest: postgres: failed behavioral checks stay failed and do not rewrite reference provenance
+ok 110 - postgres: failed behavioral checks stay failed and do not rewrite reference provenance
+  ---
+  duration_ms: 156.220291
+  type: 'test'
+  ...
+# Subtest: postgres: refinement uses exact prior failure without replacing its evidence
+ok 111 - postgres: refinement uses exact prior failure without replacing its evidence
+  ---
+  duration_ms: 217.429542
+  type: 'test'
+  ...
+# Subtest: postgres: revised authoring context requires a new candidate and retains prior context provenance
+ok 112 - postgres: revised authoring context requires a new candidate and retains prior context provenance
+  ---
+  duration_ms: 182.111125
+  type: 'test'
+  ...
+# Subtest: postgres: a checkpointed abandoned lease resumes its saved action
+ok 113 - postgres: a checkpointed abandoned lease resumes its saved action
+  ---
+  duration_ms: 135.489333
+  type: 'test'
+  ...
+# Subtest: postgres: abandoned leases fail visibly and are never automatically regenerated
+ok 114 - postgres: abandoned leases fail visibly and are never automatically regenerated
+  ---
+  duration_ms: 129.547834
+  type: 'test'
+  ...
+# Subtest: fresh worker process observes a revoked grant without calling the model
+ok 115 - fresh worker process observes a revoked grant without calling the model
+  ---
+  duration_ms: 795.535375
+  type: 'test'
+  ...
+# Subtest: candidate policy accepts the original bounded checkout and rejects ambient execution
+ok 116 - candidate policy accepts the original bounded checkout and rejects ambient execution
+  ---
+  duration_ms: 117.786333
+  type: 'test'
+  ...
+# Subtest: SQL capability cannot alter provider observations, schemas or attached databases
+ok 117 - SQL capability cannot alter provider observations, schemas or attached databases
+  ---
+  duration_ms: 0.691417
+  type: 'test'
+  ...
+# Subtest: live phases retain a real response before loss; distinct retry requires another approval
+ok 118 - live phases retain a real response before loss; distinct retry requires another approval
+  ---
+  duration_ms: 170.622667
+  type: 'test'
+  ...
+# Subtest: hardened actual SDK phases reconcile the original capture and fulfill once
+ok 119 - hardened actual SDK phases reconcile the original capture and fulfill once
+  ---
+  duration_ms: 77.557458
+  type: 'test'
+  ...
+# Subtest: concurrent original callbacks do not repeat one experiment step
+ok 120 - concurrent original callbacks do not repeat one experiment step
+  ---
+  duration_ms: 56.760792
+  type: 'test'
+  ...
+# Subtest: session, exact order, amount, expiry and cancellation bind every mutation
+ok 121 - session, exact order, amount, expiry and cancellation bind every mutation
+  ---
+  duration_ms: 62.351708
+  type: 'test'
+  ...
+# Subtest: an unknown create stays protected without a replacement or invented lookup
+ok 122 - an unknown create stays protected without a replacement or invented lookup
+  ---
+  duration_ms: 52.894416
+  type: 'test'
+  ...
+# Subtest: never-sent authentication is distinct and issues no original-resource reads
+ok 123 - never-sent authentication is distinct and issues no original-resource reads
+  ---
+  duration_ms: 42.991375
+  type: 'test'
+  ...
+# Subtest: public live resource parsing omits payer details and credentials
+ok 124 - public live resource parsing omits payer details and credentials
+  ---
+  duration_ms: 0.174583
+  type: 'test'
+  ...
+# Subtest: read-only recovery completes the original hardened payment after unavailable reads
+ok 125 - read-only recovery completes the original hardened payment after unavailable reads
+  ---
+  duration_ms: 83.880792
+  type: 'test'
+  ...
+# Subtest: recovery never repairs the faulty target from privileged lab knowledge
+ok 126 - recovery never repairs the faulty target from privileged lab knowledge
+  ---
+  duration_ms: 41.238084
+  type: 'test'
+  ...
+# Subtest: cancellation after an already-sent capture prevents fulfillment but retains its money
+ok 127 - cancellation after an already-sent capture prevents fulfillment but retains its money
+  ---
+  duration_ms: 62.22775
+  type: 'test'
+  ...
+# Subtest: expired authority and changed source are refused before any provider dispatch
+ok 128 - expired authority and changed source are refused before any provider dispatch
+  ---
+  duration_ms: 26.657
+  type: 'test'
+  ...
+# Subtest: pending provider capture cannot release a digital book
+ok 129 - pending provider capture cannot release a digital book
+  ---
+  duration_ms: 52.474584
+  type: 'test'
+  ...
+# Subtest: rolling capture reservations include unknown outcomes and refuse a seventh dispatch
+ok 130 - rolling capture reservations include unknown outcomes and refuse a seventh dispatch
+  ---
+  duration_ms: 84.124
+  type: 'test'
+  ...
+# Subtest: PostgreSQL concurrent callbacks preserve one claimed original order and capture
+ok 131 - PostgreSQL concurrent callbacks preserve one claimed original order and capture
+  ---
+  duration_ms: 288.058208
+  type: 'test'
+  ...
+# Subtest: explicit duplicate compensation refunds exactly once and preserves both original charges
+ok 132 - explicit duplicate compensation refunds exactly once and preserves both original charges
+  ---
+  duration_ms: 76.436416
+  type: 'test'
+  ...
+# Subtest: compensation denies a changed original capture before a refund dispatch
+ok 133 - compensation denies a changed original capture before a refund dispatch
+  ---
+  duration_ms: 27.976125
+  type: 'test'
+  ...
+# Subtest: same-tab approval uses the provider original link and freezes an allowed return origin
+ok 134 - same-tab approval uses the provider original link and freezes an allowed return origin
+  ---
+  duration_ms: 22.266041
+  type: 'test'
+  ...
+# Subtest: invoice create exact wire and independent owned reread; no money effect inferred
+ok 135 - invoice create exact wire and independent owned reread; no money effect inferred
+  ---
+  duration_ms: 23.139042
+  type: 'test'
+  ...
+# Subtest: lost invoice create searches original reference then rereads, never posts second draft
+ok 136 - lost invoice create searches original reference then rereads, never posts second draft
+  ---
+  duration_ms: 1.415792
+  type: 'test'
+  ...
+# Subtest: invoice unknown with no match remains unknown and does not leak request or error data
+ok 137 - invoice unknown with no match remains unknown and does not leak request or error data
+  ---
+  duration_ms: 0.726583
+  type: 'test'
+  ...
+# Subtest: authentication failure is never-sent and does not perform recovery read
+ok 138 - authentication failure is never-sent and does not perform recovery read
+  ---
+  duration_ms: 0.1195
+  type: 'test'
+  ...
+# Subtest: invalid payout amount and duplicate item reject before OAuth
+ok 139 - invalid payout amount and duplicate item reject before OAuth
+  ---
+  duration_ms: 0.165166
+  type: 'test'
+  ...
+# Subtest: share-link-only invoice sends no notifications and observes current state
+ok 140 - share-link-only invoice sends no notifications and observes current state
+  ---
+  duration_ms: 0.993834
+  type: 'test'
+  ...
+# Subtest: invoice send guard future
+ok 141 - invoice send guard future
+  ---
+  duration_ms: 0.277042
+  type: 'test'
+  ...
+# Subtest: invoice send guard wrong-reference
+ok 142 - invoice send guard wrong-reference
+  ---
+  duration_ms: 0.175458
+  type: 'test'
+  ...
+# Subtest: invoice send guard already-paid
+ok 143 - invoice send guard already-paid
+  ---
+  duration_ms: 0.329709
+  type: 'test'
+  ...
+# Subtest: invoice cancellation observes CANCELLED after 204, not a refund
+ok 144 - invoice cancellation observes CANCELLED after 204, not a refund
+  ---
+  duration_ms: 0.687292
+  type: 'test'
+  ...
+# Subtest: invoice preserves PAYPAL and EXTERNAL identities with unproved refund lineage
+ok 145 - invoice preserves PAYPAL and EXTERNAL identities with unproved refund lineage
+  ---
+  duration_ms: 0.307875
+  type: 'test'
+  ...
+# Subtest: payout exact stable wire EMAIL
+ok 146 - payout exact stable wire EMAIL
+  ---
+  duration_ms: 0.443334
+  type: 'test'
+  ...
+# Subtest: payout exact stable wire PAYPAL_ID
+ok 147 - payout exact stable wire PAYPAL_ID
+  ---
+  duration_ms: 0.324416
+  type: 'test'
+  ...
+# Subtest: successful payout batch preserves unclaimed item and estimated fee
+ok 148 - successful payout batch preserves unclaimed item and estimated fee
+  ---
+  duration_ms: 0.315209
+  type: 'test'
+  ...
+# Subtest: payout HTTP 400 preserves outcome and never retries
+ok 149 - payout HTTP 400 preserves outcome and never retries
+  ---
+  duration_ms: 0.187084
+  type: 'test'
+  ...
+# Subtest: payout HTTP 403 preserves outcome and never retries
+ok 150 - payout HTTP 403 preserves outcome and never retries
+  ---
+  duration_ms: 0.157209
+  type: 'test'
+  ...
+# Subtest: payout HTTP 408 preserves outcome and never retries
+ok 151 - payout HTTP 408 preserves outcome and never retries
+  ---
+  duration_ms: 0.173583
+  type: 'test'
+  ...
+# Subtest: payout HTTP 429 preserves outcome and never retries
+ok 152 - payout HTTP 429 preserves outcome and never retries
+  ---
+  duration_ms: 0.1515
+  type: 'test'
+  ...
+# Subtest: payout HTTP 500 preserves outcome and never retries
+ok 153 - payout HTTP 500 preserves outcome and never retries
+  ---
+  duration_ms: 0.182375
+  type: 'test'
+  ...
+# Subtest: payout network loss does not generate another identity or retry
+ok 154 - payout network loss does not generate another identity or retry
+  ---
+  duration_ms: 0.141959
+  type: 'test'
+  ...
+# Subtest: malformed 2xx payout stays unknown
+ok 155 - malformed 2xx payout stays unknown
+  ---
+  duration_ms: 0.279417
+  type: 'test'
+  ...
+# Subtest: duplicate payout safely resolves original only with full item binding
+ok 156 - duplicate payout safely resolves original only with full item binding
+  ---
+  duration_ms: 0.317958
+  type: 'test'
+  ...
+# Subtest: duplicate payout cannot adopt external-link
+ok 157 - duplicate payout cannot adopt external-link
+  ---
+  duration_ms: 0.194666
+  type: 'test'
+  ...
+# Subtest: duplicate payout cannot adopt wrong-item
+ok 158 - duplicate payout cannot adopt wrong-item
+  ---
+  duration_ms: 0.222625
+  type: 'test'
+  ...
+# Subtest: payout paginates complete item set without following provider URLs
+ok 159 - payout paginates complete item set without following provider URLs
+  ---
+  duration_ms: 0.362209
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination missing-total
+ok 160 - incomplete payout pagination missing-total
+  ---
+  duration_ms: 0.189833
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination duplicate
+ok 161 - incomplete payout pagination duplicate
+  ---
+  duration_ms: 0.267166
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination wrong-batch
+ok 162 - incomplete payout pagination wrong-batch
+  ---
+  duration_ms: 0.158417
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination drift
+ok 163 - incomplete payout pagination drift
+  ---
+  duration_ms: 0.317875
+  type: 'test'
+  ...
+# Subtest: unclaimed cancellation validates original and confirms RETURNED after response loss
+ok 164 - unclaimed cancellation validates original and confirms RETURNED after response loss
+  ---
+  duration_ms: 0.305958
+  type: 'test'
+  ...
+# Subtest: payout cancellation preflight claimed
+ok 165 - payout cancellation preflight claimed
+  ---
+  duration_ms: 0.142
+  type: 'test'
+  ...
+# Subtest: payout cancellation preflight wrong-recipient
+ok 166 - payout cancellation preflight wrong-recipient
+  ---
+  duration_ms: 0.117375
+  type: 'test'
+  ...
+# Subtest: pre-aborted request never asks for credentials or writes
+ok 167 - pre-aborted request never asks for credentials or writes
+  ---
+  duration_ms: 0.145
+  type: 'test'
+  ...
+# Subtest: actual share-link UNPAID state is accepted without implying payment
+ok 168 - actual share-link UNPAID state is accepted without implying payment
+  ---
+  duration_ms: 0.31475
+  type: 'test'
+  ...
+# Subtest: official sandbox invoice fragment link stays exact without following it
+ok 169 - official sandbox invoice fragment link stays exact without following it
+  ---
+  duration_ms: 0.129333
+  type: 'test'
+  ...
+# Subtest: runtime evidence version matches the immutable package metadata
+ok 170 - runtime evidence version matches the immutable package metadata
+  ---
+  duration_ms: 5.109542
+  type: 'test'
+  ...
+# Subtest: sqlite: hardened control claims before outbound and concurrent duplicate callbacks dispatch once
+ok 171 - sqlite: hardened control claims before outbound and concurrent duplicate callbacks dispatch once
+  ---
+  duration_ms: 14.881541
+  type: 'test'
+  ...
+# Subtest: sqlite: lost write response reconciles the original operation without another write
+ok 172 - sqlite: lost write response reconciles the original operation without another write
+  ---
+  duration_ms: 4.861375
+  type: 'test'
+  ...
+# Subtest: sqlite: an unavailable reread remains unknown and blocks a retry
+ok 173 - sqlite: an unavailable reread remains unknown and blocks a retry
+  ---
+  duration_ms: 8.677208
+  type: 'test'
+  ...
+# Subtest: sqlite: never-sent authentication does not trigger a resource reread
+ok 174 - sqlite: never-sent authentication does not trigger a resource reread
+  ---
+  duration_ms: 4.404084
+  type: 'test'
+  ...
+# Subtest: sqlite: pending and denied resource states never become completed money movement
+ok 175 - sqlite: pending and denied resource states never become completed money movement
+  ---
+  duration_ms: 8.169041
+  type: 'test'
+  ...
+# Subtest: sqlite: two refund intents cannot reserve the same remaining money
+ok 176 - sqlite: two refund intents cannot reserve the same remaining money
+  ---
+  duration_ms: 4.902833
+  type: 'test'
+  ...
+# Subtest: sqlite: duplicate refund callbacks return their winner even while waiting for the resource lock
+ok 177 - sqlite: duplicate refund callbacks return their winner even while waiting for the resource lock
+  ---
+  duration_ms: 5.849708
+  type: 'test'
+  ...
+# Subtest: sqlite: a pending refund reconciles only when the refund resource completes
+ok 178 - sqlite: a pending refund reconciles only when the refund resource completes
+  ---
+  duration_ms: 5.16875
+  type: 'test'
+  ...
+# Subtest: sqlite: SQL failure after provider success is recovered by a read, never another write
+ok 179 - sqlite: SQL failure after provider success is recovered by a read, never another write
+  ---
+  duration_ms: 6.738084
+  type: 'test'
+  ...
+# Subtest: sqlite: exact recovery resumes one policy's command without scanning or touching another policy in the same scope
+ok 180 - sqlite: exact recovery resumes one policy's command without scanning or touching another policy in the same scope
+  ---
+  duration_ms: 12.772833
+  type: 'test'
+  ...
+# Subtest: sqlite: concurrent exact recovery returns the original SQL winner and dispatches once
+ok 181 - sqlite: concurrent exact recovery returns the original SQL winner and dispatches once
+  ---
+  duration_ms: 6.11925
+  type: 'test'
+  ...
+# Subtest: sqlite: exact recovery of an unknown outcome after expiry or revocation only reads its original resource
+ok 182 - sqlite: exact recovery of an unknown outcome after expiry or revocation only reads its original resource
+  ---
+  duration_ms: 4.422375
+  type: 'test'
+  ...
+# Subtest: sqlite: an expired exact dispatch lease reconciles without authorizing or repeating the write
+ok 183 - sqlite: an expired exact dispatch lease reconciles without authorizing or repeating the write
+  ---
+  duration_ms: 3.286834
+  type: 'test'
+  ...
+# Subtest: sqlite: an exact never-dispatched claim must still pass current authority and approval expiry
+ok 184 - sqlite: an exact never-dispatched claim must still pass current authority and approval expiry
+  ---
+  duration_ms: 5.317584
+  type: 'test'
+  ...
+# Subtest: sqlite: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope
+ok 185 - sqlite: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope
+  ---
+  duration_ms: 5.729
+  type: 'test'
+  ...
+# Subtest: sqlite: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt
+ok 186 - sqlite: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt
+  ---
+  duration_ms: 5.171708
+  type: 'test'
+  ...
+# Subtest: sqlite: revoked and altered authority is rejected before dispatch
+ok 187 - sqlite: revoked and altered authority is rejected before dispatch
+  ---
+  duration_ms: 2.955875
+  type: 'test'
+  ...
+# Subtest: sqlite: signature, payload schema, canonical deduplication, and dead letters are separate decisions
+ok 188 - sqlite: signature, payload schema, canonical deduplication, and dead letters are separate decisions
+  ---
+  duration_ms: 12.625541
+  type: 'test'
+  ...
+# Subtest: sqlite: invoice and payout event families queue exact resource hints without financial side effects
+ok 189 - sqlite: invoice and payout event families queue exact resource hints without financial side effects
+  ---
+  duration_ms: 8.754083
+  type: 'test'
+  ...
+# Subtest: sqlite: malformed, conflicting and unverified commerce event identities never enter the canonical queue
+ok 190 - sqlite: malformed, conflicting and unverified commerce event identities never enter the canonical queue
+  ---
+  duration_ms: 3.776667
+  type: 'test'
+  ...
+# Subtest: postgres: hardened control claims before outbound and concurrent duplicate callbacks dispatch once
+ok 191 - postgres: hardened control claims before outbound and concurrent duplicate callbacks dispatch once
+  ---
+  duration_ms: 97.866875
+  type: 'test'
+  ...
+# Subtest: postgres: lost write response reconciles the original operation without another write
+ok 192 - postgres: lost write response reconciles the original operation without another write
+  ---
+  duration_ms: 84.044333
+  type: 'test'
+  ...
+# Subtest: postgres: an unavailable reread remains unknown and blocks a retry
+ok 193 - postgres: an unavailable reread remains unknown and blocks a retry
+  ---
+  duration_ms: 67.892458
+  type: 'test'
+  ...
+# Subtest: postgres: never-sent authentication does not trigger a resource reread
+ok 194 - postgres: never-sent authentication does not trigger a resource reread
+  ---
+  duration_ms: 35.256917
+  type: 'test'
+  ...
+# Subtest: postgres: pending and denied resource states never become completed money movement
+ok 195 - postgres: pending and denied resource states never become completed money movement
+  ---
+  duration_ms: 33.021708
+  type: 'test'
+  ...
+# Subtest: postgres: two refund intents cannot reserve the same remaining money
+ok 196 - postgres: two refund intents cannot reserve the same remaining money
+  ---
+  duration_ms: 17.941958
+  type: 'test'
+  ...
+# Subtest: postgres: duplicate refund callbacks return their winner even while waiting for the resource lock
+ok 197 - postgres: duplicate refund callbacks return their winner even while waiting for the resource lock
+  ---
+  duration_ms: 28.8615
+  type: 'test'
+  ...
+# Subtest: postgres: a pending refund reconciles only when the refund resource completes
+ok 198 - postgres: a pending refund reconciles only when the refund resource completes
+  ---
+  duration_ms: 17.339
+  type: 'test'
+  ...
+# Subtest: postgres: SQL failure after provider success is recovered by a read, never another write
+ok 199 - postgres: SQL failure after provider success is recovered by a read, never another write
+  ---
+  duration_ms: 22.050583
+  type: 'test'
+  ...
+# Subtest: postgres: exact recovery resumes one policy's command without scanning or touching another policy in the same scope
+ok 200 - postgres: exact recovery resumes one policy's command without scanning or touching another policy in the same scope
+  ---
+  duration_ms: 19.155875
+  type: 'test'
+  ...
+# Subtest: postgres: concurrent exact recovery returns the original SQL winner and dispatches once
+ok 201 - postgres: concurrent exact recovery returns the original SQL winner and dispatches once
+  ---
+  duration_ms: 28.304125
+  type: 'test'
+  ...
+# Subtest: postgres: exact recovery of an unknown outcome after expiry or revocation only reads its original resource
+ok 202 - postgres: exact recovery of an unknown outcome after expiry or revocation only reads its original resource
+  ---
+  duration_ms: 46.269208
+  type: 'test'
+  ...
+# Subtest: postgres: an expired exact dispatch lease reconciles without authorizing or repeating the write
+ok 203 - postgres: an expired exact dispatch lease reconciles without authorizing or repeating the write
+  ---
+  duration_ms: 15.227875
+  type: 'test'
+  ...
+# Subtest: postgres: an exact never-dispatched claim must still pass current authority and approval expiry
+ok 204 - postgres: an exact never-dispatched claim must still pass current authority and approval expiry
+  ---
+  duration_ms: 26.327166
+  type: 'test'
+  ...
+# Subtest: postgres: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope
+ok 205 - postgres: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope
+  ---
+  duration_ms: 30.644333
+  type: 'test'
+  ...
+# Subtest: postgres: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt
+ok 206 - postgres: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt
+  ---
+  duration_ms: 151.097333
+  type: 'test'
+  ...
+# Subtest: postgres: revoked and altered authority is rejected before dispatch
+ok 207 - postgres: revoked and altered authority is rejected before dispatch
+  ---
+  duration_ms: 18.880958
+  type: 'test'
+  ...
+# Subtest: postgres: signature, payload schema, canonical deduplication, and dead letters are separate decisions
+ok 208 - postgres: signature, payload schema, canonical deduplication, and dead letters are separate decisions
+  ---
+  duration_ms: 18.683292
+  type: 'test'
+  ...
+# Subtest: postgres: invoice and payout event families queue exact resource hints without financial side effects
+ok 209 - postgres: invoice and payout event families queue exact resource hints without financial side effects
+  ---
+  duration_ms: 155.940709
+  type: 'test'
+  ...
+# Subtest: postgres: malformed, conflicting and unverified commerce event identities never enter the canonical queue
+ok 210 - postgres: malformed, conflicting and unverified commerce event identities never enter the canonical queue
+  ---
+  duration_ms: 39.326833
+  type: 'test'
+  ...
+# Subtest: minor-unit money never uses binary-float rounding and unsupported precision fails closed
+ok 211 - minor-unit money never uses binary-float rounding and unsupported precision fails closed
+  ---
+  duration_ms: 0.515458
+  type: 'test'
+  ...
+# Subtest: public evidence recursively redacts credentials and customer contact data
+ok 212 - public evidence recursively redacts credentials and customer contact data
+  ---
+  duration_ms: 0.21075
+  type: 'test'
+  ...
+# Subtest: pinned SDK uses sandbox host, public operation fields, stable provider identity, and committed claim
+ok 213 - pinned SDK uses sandbox host, public operation fields, stable provider identity, and committed claim
+  ---
+  duration_ms: 45.249708
+  type: 'test'
+  ...
+# Subtest: pinned SDK redirect checkout sends only approved source fields and preserves separate order state
+ok 214 - pinned SDK redirect checkout sends only approved source fields and preserves separate order state
+  ---
+  duration_ms: 19.093333
+  type: 'test'
+  ...
+# Subtest: pinned SDK wallet checkout sends only approved source fields and preserves separate order state
+ok 215 - pinned SDK wallet checkout sends only approved source fields and preserves separate order state
+  ---
+  duration_ms: 20.627083
+  type: 'test'
+  ...
+# Subtest: pinned SDK combined checkout sends only approved source fields and preserves separate order state
+ok 216 - pinned SDK combined checkout sends only approved source fields and preserves separate order state
+  ---
+  duration_ms: 5.301083
+  type: 'test'
+  ...
+# Subtest: checkout rejects ungranted origin before authentication or claim
+ok 217 - checkout rejects ungranted origin before authentication or claim
+  ---
+  duration_ms: 3.758125
+  type: 'test'
+  ...
+# Subtest: checkout rejects remote plaintext before authentication or claim
+ok 218 - checkout rejects remote plaintext before authentication or claim
+  ---
+  duration_ms: 6.254292
+  type: 'test'
+  ...
+# Subtest: checkout rejects embedded password before authentication or claim
+ok 219 - checkout rejects embedded password before authentication or claim
+  ---
+  duration_ms: 3.582166
+  type: 'test'
+  ...
+# Subtest: checkout rejects fragment before authentication or claim
+ok 220 - checkout rejects fragment before authentication or claim
+  ---
+  duration_ms: 5.206584
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses missing current consent before provider traffic
+ok 221 - saved wallet refuses missing current consent before provider traffic
+  ---
+  duration_ms: 6.46575
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses expired current consent before provider traffic
+ok 222 - saved wallet refuses expired current consent before provider traffic
+  ---
+  duration_ms: 3.151291
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses version current consent before provider traffic
+ok 223 - saved wallet refuses version current consent before provider traffic
+  ---
+  duration_ms: 30.293584
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses digest current consent before provider traffic
+ok 224 - saved wallet refuses digest current consent before provider traffic
+  ---
+  duration_ms: 3.383542
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses vault current consent before provider traffic
+ok 225 - saved wallet refuses vault current consent before provider traffic
+  ---
+  duration_ms: 4.00875
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses pattern current consent before provider traffic
+ok 226 - saved wallet refuses pattern current consent before provider traffic
+  ---
+  duration_ms: 3.755167
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses initiator current consent before provider traffic
+ok 227 - saved wallet refuses initiator current consent before provider traffic
+  ---
+  duration_ms: 4.549
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses usage current consent before provider traffic
+ok 228 - saved wallet refuses usage current consent before provider traffic
+  ---
+  duration_ms: 3.280834
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses resource current consent before provider traffic
+ok 229 - saved wallet refuses resource current consent before provider traffic
+  ---
+  duration_ms: 3.830584
+  type: 'test'
+  ...
+# Subtest: wallet consent revoked after durable claim cannot dispatch
+ok 230 - wallet consent revoked after durable claim cannot dispatch
+  ---
+  duration_ms: 4.616708
+  type: 'test'
+  ...
+# Subtest: nested checkout changes cannot reuse a durable operation identity
+ok 231 - nested checkout changes cannot reuse a durable operation identity
+  ---
+  duration_ms: 28.72575
+  type: 'test'
+  ...
+# Subtest: pinned SDK first-purchase wallet saving emits the exact vault instruction without consent or token leakage
+ok 232 - pinned SDK first-purchase wallet saving emits the exact vault instruction without consent or token leakage
+  ---
+  duration_ms: 11.916
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses missing authority without traffic
+ok 233 - first-purchase wallet save refuses missing authority without traffic
+  ---
+  duration_ms: 5.943334
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses expired authority without traffic
+ok 234 - first-purchase wallet save refuses expired authority without traffic
+  ---
+  duration_ms: 4.3355
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses invalid expiry authority without traffic
+ok 235 - first-purchase wallet save refuses invalid expiry authority without traffic
+  ---
+  duration_ms: 6.787166
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses id authority without traffic
+ok 236 - first-purchase wallet save refuses id authority without traffic
+  ---
+  duration_ms: 14.969083
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses version authority without traffic
+ok 237 - first-purchase wallet save refuses version authority without traffic
+  ---
+  duration_ms: 3.387834
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses digest authority without traffic
+ok 238 - first-purchase wallet save refuses digest authority without traffic
+  ---
+  duration_ms: 2.990583
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses usage type authority without traffic
+ok 239 - first-purchase wallet save refuses usage type authority without traffic
+  ---
+  duration_ms: 4.89125
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses amount authority without traffic
+ok 240 - first-purchase wallet save refuses amount authority without traffic
+  ---
+  duration_ms: 3.713791
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects redirect
+ok 241 - first-purchase wallet save rejects redirect
+  ---
+  duration_ms: 4.1635
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects both sources
+ok 242 - first-purchase wallet save rejects both sources
+  ---
+  duration_ms: 3.9985
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects blank id
+ok 243 - first-purchase wallet save rejects blank id
+  ---
+  duration_ms: 6.981958
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects bad version
+ok 244 - first-purchase wallet save rejects bad version
+  ---
+  duration_ms: 11.641042
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects platform
+ok 245 - first-purchase wallet save rejects platform
+  ---
+  duration_ms: 6.981916
+  type: 'test'
+  ...
+# Subtest: new wallet saving consent revoked after claim leaves a never-sent operation
+ok 246 - new wallet saving consent revoked after claim leaves a never-sent operation
+  ---
+  duration_ms: 2.953292
+  type: 'test'
+  ...
+# Subtest: pinned SDK authorize_order sends empty JSON after payer approval
+ok 247 - pinned SDK authorize_order sends empty JSON after payer approval
+  ---
+  duration_ms: 4.934792
+  type: 'test'
+  ...
+# Subtest: pinned SDK capture_order sends empty JSON after payer approval
+ok 248 - pinned SDK capture_order sends empty JSON after payer approval
+  ---
+  duration_ms: 6.236583
+  type: 'test'
+  ...
+# Subtest: pinned SDK connection after capture reconciles original order and capture reads
+ok 249 - pinned SDK connection after capture reconciles original order and capture reads
+  ---
+  duration_ms: 9.456583
+  type: 'test'
+  ...
+# Subtest: pinned SDK malformed-success after capture reconciles original order and capture reads
+ok 250 - pinned SDK malformed-success after capture reconciles original order and capture reads
+  ---
+  duration_ms: 7.798792
+  type: 'test'
+  ...
+# Subtest: pinned SDK OAuth refusal is never sent and does not issue payment reads or writes
+ok 251 - pinned SDK OAuth refusal is never sent and does not issue payment reads or writes
+  ---
+  duration_ms: 8.795167
+  type: 'test'
+  ...
+# Subtest: pinned SDK 422 is a refusal with no automatic POST retry or unsafe body exposure
+ok 252 - pinned SDK 422 is a refusal with no automatic POST retry or unsafe body exposure
+  ---
+  duration_ms: 5.884833
+  type: 'test'
+  ...
+# Subtest: provider refusal does not echo unknown reasons, customer values, or descriptions
+ok 253 - provider refusal does not echo unknown reasons, customer values, or descriptions
+  ---
+  duration_ms: 11.629708
+  type: 'test'
+  ...
+# Subtest: Transaction Search accepts an omitted array only with explicit empty totals
+ok 254 - Transaction Search accepts an omitted array only with explicit empty totals
+  ---
+  duration_ms: 1.524792
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects missing totals instead of asserting complete history
+ok 255 - Transaction Search rejects missing totals instead of asserting complete history
+  ---
+  duration_ms: 0.721125
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects omitted nonempty page instead of asserting complete history
+ok 256 - Transaction Search rejects omitted nonempty page instead of asserting complete history
+  ---
+  duration_ms: 0.599209
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects contradictory empty totals instead of asserting complete history
+ok 257 - Transaction Search rejects contradictory empty totals instead of asserting complete history
+  ---
+  duration_ms: 0.80025
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects wrong response page instead of asserting complete history
+ok 258 - Transaction Search rejects wrong response page instead of asserting complete history
+  ---
+  duration_ms: 0.676417
+  type: 'test'
+  ...
+# Subtest: sandbox adapter rejects production hosts and omitted isolation before authentication
+ok 259 - sandbox adapter rejects production hosts and omitted isolation before authentication
+  ---
+  duration_ms: 0.170375
+  type: 'test'
+  ...
+# Subtest: pinned SDK partial refund sends exact cents and custom identity while pending money stays reserved
+ok 260 - pinned SDK partial refund sends exact cents and custom identity while pending money stays reserved
+  ---
+  duration_ms: 44.727917
+  type: 'test'
+  ...
+# Subtest: REST webhook verification preserves signed JSON and rejects attacker certificate hosts
+ok 261 - REST webhook verification preserves signed JSON and rejects attacker certificate hosts
+  ---
+  duration_ms: 0.893083
+  type: 'test'
+  ...
+# Subtest: itemized ticket sends exact two components and matching item_total through the pinned SDK
+ok 262 - itemized ticket sends exact two components and matching item_total through the pinned SDK
+  ---
+  duration_ms: 7.939875
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses sum differs before claim or provider traffic
+ok 263 - itemized checkout refuses sum differs before claim or provider traffic
+  ---
+  duration_ms: 5.741208
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses foreign currency before claim or provider traffic
+ok 264 - itemized checkout refuses foreign currency before claim or provider traffic
+  ---
+  duration_ms: 4.59875
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses fractional quantity before claim or provider traffic
+ok 265 - itemized checkout refuses fractional quantity before claim or provider traffic
+  ---
+  duration_ms: 3.58075
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses empty list before claim or provider traffic
+ok 266 - itemized checkout refuses empty list before claim or provider traffic
+  ---
+  duration_ms: 25.172167
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses blank name before claim or provider traffic
+ok 267 - itemized checkout refuses blank name before claim or provider traffic
+  ---
+  duration_ms: 33.325208
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses oversized quantity before claim or provider traffic
+ok 268 - itemized checkout refuses oversized quantity before claim or provider traffic
+  ---
+  duration_ms: 2.925
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses unsafe multiplication before claim or provider traffic
+ok 269 - itemized checkout refuses unsafe multiplication before claim or provider traffic
+  ---
+  duration_ms: 23.299459
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses negative amount before claim or provider traffic
+ok 270 - itemized checkout refuses negative amount before claim or provider traffic
+  ---
+  duration_ms: 15.985333
+  type: 'test'
+  ...
+# Subtest: sqlite: encrypted operation survives a fresh store, duplicate claim, transitions and retry
+ok 271 - sqlite: encrypted operation survives a fresh store, duplicate claim, transitions and retry
+  ---
+  duration_ms: 44.162417
+  type: 'test'
+  ...
+# Subtest: sqlite: encrypted operation rejects missing codec and wrong key without returning private content
+ok 272 - sqlite: encrypted operation rejects missing codec and wrong key without returning private content
+  ---
+  duration_ms: 8.995292
+  type: 'test'
+  ...
+# Subtest: sqlite: authenticated context prevents ciphertext swapping across row identities
+ok 273 - sqlite: authenticated context prevents ciphertext swapping across row identities
+  ---
+  duration_ms: 18.587625
+  type: 'test'
+  ...
+# Subtest: sqlite: existing plaintext remains readable and becomes encrypted on next transition
+ok 274 - sqlite: existing plaintext remains readable and becomes encrypted on next transition
+  ---
+  duration_ms: 8.87675
+  type: 'test'
+  ...
+# Subtest: sqlite: codec failure rolls back claim and does not mask credentials in errors
+ok 275 - sqlite: codec failure rolls back claim and does not mask credentials in errors
+  ---
+  duration_ms: 4.94775
+  type: 'test'
+  ...
+# Subtest: sqlite: encrypted reservations retain concurrent budget protection
+ok 276 - sqlite: encrypted reservations retain concurrent budget protection
+  ---
+  duration_ms: 5.088709
+  type: 'test'
+  ...
+# Subtest: postgres: encrypted operation survives a fresh store, duplicate claim, transitions and retry
+ok 277 - postgres: encrypted operation survives a fresh store, duplicate claim, transitions and retry
+  ---
+  duration_ms: 45.248
+  type: 'test'
+  ...
+# Subtest: postgres: encrypted operation rejects missing codec and wrong key without returning private content
+ok 278 - postgres: encrypted operation rejects missing codec and wrong key without returning private content
+  ---
+  duration_ms: 12.267708
+  type: 'test'
+  ...
+# Subtest: postgres: authenticated context prevents ciphertext swapping across row identities
+ok 279 - postgres: authenticated context prevents ciphertext swapping across row identities
+  ---
+  duration_ms: 64.058583
+  type: 'test'
+  ...
+# Subtest: postgres: existing plaintext remains readable and becomes encrypted on next transition
+ok 280 - postgres: existing plaintext remains readable and becomes encrypted on next transition
+  ---
+  duration_ms: 18.186791
+  type: 'test'
+  ...
+# Subtest: postgres: codec failure rolls back claim and does not mask credentials in errors
+ok 281 - postgres: codec failure rolls back claim and does not mask credentials in errors
+  ---
+  duration_ms: 10.882792
+  type: 'test'
+  ...
+# Subtest: postgres: encrypted reservations retain concurrent budget protection
+ok 282 - postgres: encrypted reservations retain concurrent budget protection
+  ---
+  duration_ms: 20.828
+  type: 'test'
+  ...
+# Subtest: published F9 result is bound to all independently checked matched pairs
+ok 283 - published F9 result is bound to all independently checked matched pairs
+  ---
+  duration_ms: 0.613583
+  type: 'test'
+  ...
+# Subtest: missing or duplicated pair prevents the repeated observation claim
+ok 284 - missing or duplicated pair prevents the repeated observation claim
+  ---
+  duration_ms: 0.408208
+  type: 'test'
+  ...
+# Subtest: changing only a conclusion string cannot manufacture another observed result
+ok 285 - changing only a conclusion string cannot manufacture another observed result
+  ---
+  duration_ms: 0.10825
+  type: 'test'
+  ...
+# Subtest: twenty original provider responses establish three specific five-trial pairs, not real payer declines
+ok 286 - twenty original provider responses establish three specific five-trial pairs, not real payer declines
+  ---
+  duration_ms: 5.886042
+  type: 'test'
+  ...
+# Subtest: a control with the requested mock code cannot qualify its matched trial
+ok 287 - a control with the requested mock code cannot qualify its matched trial
+  ---
+  duration_ms: 0.6415
+  type: 'test'
+  ...
+# Subtest: HTTP status, actual code and typed SDK error are required independently of labels
+ok 288 - HTTP status, actual code and typed SDK error are required independently of labels
+  ---
+  duration_ms: 3.6725
+  type: 'test'
+  ...
+# Subtest: duplicated trial, order, request identity, code or missing read cannot inflate repetitions
+ok 289 - duplicated trial, order, request identity, code or missing read cannot inflate repetitions
+  ---
+  duration_ms: 1.318542
+  type: 'test'
+  ...
+# Subtest: effect-bearing, wrong-resource, reversed-time and late observations invalidate the no-effect report
+ok 290 - effect-bearing, wrong-resource, reversed-time and late observations invalidate the no-effect report
+  ---
+  duration_ms: 1.334833
+  type: 'test'
+  ...
+# Subtest: changing endpoint, code membership, SDK identity or declared financial limit cannot carry this qualification
+ok 291 - changing endpoint, code membership, SDK identity or declared financial limit cannot carry this qualification
+  ---
+  duration_ms: 0.83775
+  type: 'test'
+  ...
+# Subtest: actual installed SDK forwards only the selected mock header and decodes the operation-specific refusal
+ok 292 - actual installed SDK forwards only the selected mock header and decodes the operation-specific refusal
+  ---
+  duration_ms: 427.95925
+  type: 'test'
+  ...
+# Subtest: pooled hosted campaigns require the identical explicit direct endpoint and database
+ok 293 - pooled hosted campaigns require the identical explicit direct endpoint and database
+  ---
+  duration_ms: 1.074
+  type: 'test'
+  ...
+# Subtest: known pooler hosts and transaction-pool ports reject before campaign execution
+ok 294 - known pooler hosts and transaction-pool ports reject before campaign execution
+  ---
+  duration_ms: 0.255333
+  type: 'test'
+  ...
+# Subtest: unconfirmed lock release retires its connection and cannot report success
+ok 295 - unconfirmed lock release retires its connection and cannot report success
+  ---
+  duration_ms: 0.221541
+  type: 'test'
+  ...
+# Subtest: frozen manifest has forty distinct slots, matched treatment identities and zero-spend body
+ok 296 - frozen manifest has forty distinct slots, matched treatment identities and zero-spend body
+  ---
+  duration_ms: 12.31125
+  type: 'test'
+  ...
+# Subtest: actual SDK + PostgreSQL matched campaign distinguishes generic header from provider key and rereads every call
+ok 297 - actual SDK + PostgreSQL matched campaign distinguishes generic header from provider key and rereads every call
+  ---
+  duration_ms: 566.963916
+  type: 'test'
+  ...
+# Subtest: reducer preserves a contrary provider outcome instead of forcing expected F9 result
+ok 298 - reducer preserves a contrary provider outcome instead of forcing expected F9 result
+  ---
+  duration_ms: 252.476292
+  type: 'test'
+  ...
+# Subtest: lost create remains unknown with no invented lookup or repeated write after restart
+ok 299 - lost create remains unknown with no invented lookup or repeated write after restart
+  ---
+  duration_ms: 34.576041
+  type: 'test'
+  ...
+# Subtest: malformed original success recovers its durably observed id using GET without another create
+ok 300 - malformed original success recovers its durably observed id using GET without another create
+  ---
+  duration_ms: 29.664042
+  type: 'test'
+  ...
+# Subtest: never-sent credential refusal does not read any resource and remains in attempted campaign
+ok 301 - never-sent credential refusal does not read any resource and remains in attempted campaign
+  ---
+  duration_ms: 26.191416
+  type: 'test'
+  ...
+# Subtest: failed original resource read preserves known id and stops without another create
+ok 302 - failed original resource read preserves known id and stops without another create
+  ---
+  duration_ms: 38.273833
+  type: 'test'
+  ...
+# Subtest: declared provider refusal retains reason without retry or invented evidence
+ok 303 - declared provider refusal retains reason without retry or invented evidence
+  ---
+  duration_ms: 64.720875
+  type: 'test'
+  ...
+# Subtest: crossed slot, immutable manifest change and wrong merchant all reject before network
+ok 304 - crossed slot, immutable manifest change and wrong merchant all reject before network
+  ---
+  duration_ms: 23.618959
+  type: 'test'
+  ...
+# Subtest: durable duplicate claims and campaign lock stop simultaneous executors
+ok 305 - durable duplicate claims and campaign lock stop simultaneous executors
+  ---
+  duration_ms: 32.101417
+  type: 'test'
+  ...
+# Subtest: public report never exposes original resource or request identifiers
+ok 306 - public report never exposes original resource or request identifiers
+  ---
+  duration_ms: 298.199917
+  type: 'test'
+  ...
+# Subtest: unqualified positive control prevents a generic-header conclusion
+ok 307 - unqualified positive control prevents a generic-header conclusion
+  ---
+  duration_ms: 321.875333
+  type: 'test'
+  ...
+# Subtest: actual retained campaign has four observed resends and one natural retry, not a completed five-trial gate
+ok 308 - actual retained campaign has four observed resends and one natural retry, not a completed five-trial gate
+  ---
+  duration_ms: 4.619875
+  type: 'test'
+  ...
+# Subtest: a 202 acceptance, extra count or fabricated conclusion cannot fill the missing delivery
+ok 309 - a 202 acceptance, extra count or fabricated conclusion cannot fill the missing delivery
+  ---
+  duration_ms: 0.497375
+  type: 'test'
+  ...
+# Subtest: duplicate/missing slots or intake IDs cannot manufacture repetitions
+ok 310 - duplicate/missing slots or intake IDs cannot manufacture repetitions
+  ---
+  duration_ms: 0.4695
+  type: 'test'
+  ...
+# Subtest: changed bodies, failed signatures and unbound resource evidence invalidate published qualification
+ok 311 - changed bodies, failed signatures and unbound resource evidence invalidate published qualification
+  ---
+  duration_ms: 2.898666
+  type: 'test'
+  ...
+# Subtest: manual redelivery requires an actual later verified intake with new transmission metadata
+ok 312 - manual redelivery requires an actual later verified intake with new transmission metadata
+  ---
+  duration_ms: 0.563208
+  type: 'test'
+  ...
+# Subtest: natural retry accepts same transmission ID but requires the exact used single-failure rule and no resend
+ok 313 - natural retry accepts same transmission ID but requires the exact used single-failure rule and no resend
+  ---
+  duration_ms: 0.609208
+  type: 'test'
+  ...
+# Subtest: a valid fifth independent resend can change the fact only when its evidence exists (synthetic reducer test)
+ok 314 - a valid fifth independent resend can change the fact only when its evidence exists (synthetic reducer test)
+  ---
+  duration_ms: 1.083709
+  type: 'test'
+  ...
+# Subtest: actual core postback preserves raw event bytes, exact registered identity and encrypted private original
+ok 315 - actual core postback preserves raw event bytes, exact registered identity and encrypted private original
+  ---
+  duration_ms: 69.517833
+  type: 'test'
+  ...
+# Subtest: concurrent duplicate signed-fixture deliveries retain every intake but admit one canonical observation
+ok 316 - concurrent duplicate signed-fixture deliveries retain every intake but admit one canonical observation
+  ---
+  duration_ms: 70.716167
+  type: 'test'
+  ...
+# Subtest: same verified event identity with different bytes quarantines the later intake without changing canonical evidence
+ok 317 - same verified event identity with different bytes quarantines the later intake without changing canonical evidence
+  ---
+  duration_ms: 37.859208
+  type: 'test'
+  ...
+# Subtest: provider verification outage stays unverified and does not admit a canonical event
+ok 318 - provider verification outage stays unverified and does not admit a canonical event
+  ---
+  duration_ms: 28.38875
+  type: 'test'
+  ...
+# Subtest: forged and missing signatures cannot reach canonical event storage
+ok 319 - forged and missing signatures cannot reach canonical event storage
+  ---
+  duration_ms: 26.462959
+  type: 'test'
+  ...
+# Subtest: untrusted certificate URL is never fetched and remains rejected evidence
+ok 320 - untrusted certificate URL is never fetched and remains rejected evidence
+  ---
+  duration_ms: 30.344084
+  type: 'test'
+  ...
+# Subtest: one armed500 commits the observation first; concurrent redeliveries acknowledge without repeating admission
+ok 321 - one armed500 commits the observation first; concurrent redeliveries acknowledge without repeating admission
+  ---
+  duration_ms: 49.621666
+  type: 'test'
+  ...
+# Subtest: armed failure requires the exact order and event type inside its original time window
+ok 322 - armed failure requires the exact order and event type inside its original time window
+  ---
+  duration_ms: 39.871417
+  type: 'test'
+  ...
+# Subtest: HTTP intake rejects wrong format, malformed UTF8 and oversized stream without provider calls
+ok 323 - HTTP intake rejects wrong format, malformed UTF8 and oversized stream without provider calls
+  ---
+  duration_ms: 25.73375
+  type: 'test'
+  ...
+# Subtest: HTTP route accepts a valid provider request without browser origin or judge cookie
+ok 324 - HTTP route accepts a valid provider request without browser origin or judge cookie
+  ---
+  duration_ms: 31.583958
+  type: 'test'
+  ...
+# Subtest: SQL failure cannot acknowledge a half-committed event or consume its one500 rule
+ok 325 - SQL failure cannot acknowledge a half-committed event or consume its one500 rule
+  ---
+  duration_ms: 59.404667
+  type: 'test'
+  ...
+# Subtest: a separately scoped observer cannot read another merchant private evidence or consume its rule
+ok 326 - a separately scoped observer cannot read another merchant private evidence or consume its rule
+  ---
+  duration_ms: 31.032458
+  type: 'test'
+  ...
+# Subtest: one atomic comparison survives duplicate starts, uses fresh paired resources, and rejects another session
+ok 327 - one atomic comparison survives duplicate starts, uses fresh paired resources, and rejects another session
+  ---
+  duration_ms: 79.309459
+  type: 'test'
+  ...
+# Subtest: workflow retries never replay a completed faulty invocation; explicit customer retry demonstrates the duplicate
+ok 328 - workflow retries never replay a completed faulty invocation; explicit customer retry demonstrates the duplicate
+  ---
+  duration_ms: 2250.763167
+  type: 'test'
+  ...
+# Subtest: lease expiration fences every frame and retains uncertain work without redispatch
+ok 329 - lease expiration fences every frame and retains uncertain work without redispatch
+  ---
+  duration_ms: 35.488667
+  type: 'test'
+  ...
+# Subtest: global and session limits admit at most three isolated workers and one per session
+ok 330 - global and session limits admit at most three isolated workers and one per session
+  ---
+  duration_ms: 49.648125
+  type: 'test'
+  ...
+# Subtest: cancellation closes active frames, preserves committed effects, and allows only original reconciliation
+ok 331 - cancellation closes active frames, preserves committed effects, and allows only original reconciliation
+  ---
+  duration_ms: 1493.976166
+  type: 'test'
+  ...
+# Subtest: reservation uses original resources and repeated action identity cannot add another capture or refund
+ok 332 - reservation uses original resources and repeated action identity cannot add another capture or refund
+  ---
+  duration_ms: 3293.224125
+  type: 'test'
+  ...
+# Subtest: a second database instance resumes queued work without losing source binding or evidence
+ok 333 - a second database instance resumes queued work without losing source binding or evidence
+  ---
+  duration_ms: 1019.4525
+  type: 'test'
+  ...
+# Subtest: Python SDK happy paths produce one completed capture and one ticket in both revisions
+    # Subtest: faulty
+    ok 1 - faulty
+      ---
+      duration_ms: 1258.040708
+      type: 'test'
+      ...
+    # Subtest: hardened
+    ok 2 - hardened
+      ---
+      duration_ms: 639.634375
+      type: 'test'
+      ...
+    1..2
+ok 334 - Python SDK happy paths produce one completed capture and one ticket in both revisions
+  ---
+  duration_ms: 1898.198167
+  type: 'test'
+  ...
+# Subtest: lost capture answer creates a true duplicate in baseline; hardened target reads the original order
+    # Subtest: faulty
+    ok 1 - faulty
+      ---
+      duration_ms: 1055.204791
+      type: 'test'
+      ...
+    # Subtest: hardened
+    ok 2 - hardened
+      ---
+      duration_ms: 1019.70125
+      type: 'test'
+      ...
+    1..2
+ok 335 - lost capture answer creates a true duplicate in baseline; hardened target reads the original order
+  ---
+  duration_ms: 2075.303917
+  type: 'test'
+  ...
+# Subtest: unavailable original read stays checking without fulfillment or a second charge
+ok 336 - unavailable original read stays checking without fulfillment or a second charge
+  ---
+  duration_ms: 1058.952208
+  type: 'test'
+  ...
+# Subtest: pending payment is never a paid ticket in hardened target; baseline defect remains observable
+    # Subtest: faulty
+    ok 1 - faulty
+      ---
+      duration_ms: 503.310208
+      type: 'test'
+      ...
+    # Subtest: hardened
+    ok 2 - hardened
+      ---
+      duration_ms: 473.269833
+      type: 'test'
+      ...
+    1..2
+ok 337 - pending payment is never a paid ticket in hardened target; baseline defect remains observable
+  ---
+  duration_ms: 977.171
+  type: 'test'
+  ...
+# Subtest: known never-sent failure produces no financial read or provider resource
+ok 338 - known never-sent failure produces no financial read or provider resource
+  ---
+  duration_ms: 447.025584
+  type: 'test'
+  ...
+# Subtest: lost create response retains the original unknown operation and never invents an order lookup
+ok 339 - lost create response retains the original unknown operation and never invents an order lookup
+  ---
+  duration_ms: 875.395958
+  type: 'test'
+  ...
+# Subtest: malformed successful capture response reconciles actual preserved resource
+ok 340 - malformed successful capture response reconciles actual preserved resource
+  ---
+  duration_ms: 463.186
+  type: 'test'
+  ...
+# Subtest: six simultaneous Python workers share a durable claim and one ticket
+ok 341 - six simultaneous Python workers share a durable claim and one ticket
+  ---
+  duration_ms: 988.50675
+  type: 'test'
+  ...
+# Subtest: partial capture and remaining-hold release preserve captured money and do not pretend to refund
+ok 342 - partial capture and remaining-hold release preserve captured money and do not pretend to refund
+  ---
+  duration_ms: 1251.592333
+  type: 'test'
+  ...
+# Subtest: parallel refunds atomically reserve remainder and same-operation replay does not send another refund
+ok 343 - parallel refunds atomically reserve remainder and same-operation replay does not send another refund
+  ---
+  duration_ms: 1299.217166
+  type: 'test'
+  ...
+# Subtest: lost partial-capture answer has no exact capture id and cannot be inferred from the authorization balance
+ok 344 - lost partial-capture answer has no exact capture id and cannot be inferred from the authorization balance
+  ---
+  duration_ms: 1235.500417
+  type: 'test'
+  ...
+# Subtest: lost refund response holds its exact reservation; changed payload and larger refunds are rejected
+ok 345 - lost refund response holds its exact reservation; changed payload and larger refunds are rejected
+  ---
+  duration_ms: 2017.526041
+  type: 'test'
+  ...
+# Subtest: database/process restart retains original captures and operation claims
+ok 346 - database/process restart retains original captures and operation claims
+  ---
+  duration_ms: 838.511959
+  type: 'test'
+  ...
+# Subtest: worker crash after committed capture frame is recovered from the original order on a fresh invocation
+ok 347 - worker crash after committed capture frame is recovered from the original order on a fresh invocation
+  ---
+  duration_ms: 786.873958
+  type: 'test'
+  ...
+# Subtest: revocation between claim and dispatch blocks the original write; another tenant cannot read the run
+ok 348 - revocation between claim and dispatch blocks the original write; another tenant cannot read the run
+  ---
+  duration_ms: 20.005834
+  type: 'test'
+  ...
+# Subtest: bridge rejects duplicate, crossed and expired frames without forwarding any request
+ok 349 - bridge rejects duplicate, crossed and expired frames without forwarding any request
+  ---
+  duration_ms: 20.196542
+  type: 'test'
+  ...
+# Subtest: strict frame parser rejects duplicate nested keys and excessive nesting
+ok 350 - strict frame parser rejects duplicate nested keys and excessive nesting
+  ---
+  duration_ms: 0.627375
+  type: 'test'
+  ...
+# Subtest: cancelled target can reconcile the original uncertain capture using reads only
+ok 351 - cancelled target can reconcile the original uncertain capture using reads only
+  ---
+  duration_ms: 780.058709
+  type: 'test'
+  ...
+# Subtest: raw Request evidence is revision-bound; comments cannot create findings
+ok 352 - raw Request evidence is revision-bound; comments cannot create findings
+  ---
+  duration_ms: 4.905417
+  type: 'test'
+  ...
+# Subtest: endpoint identity and generic-only identity have different findings
+ok 353 - endpoint identity and generic-only identity have different findings
+  ---
+  duration_ms: 1.1475
+  type: 'test'
+  ...
+# Subtest: dynamic and spread headers cannot be called absent
+ok 354 - dynamic and spread headers cannot be called absent
+  ---
+  duration_ms: 0.5755
+  type: 'test'
+  ...
+# Subtest: SDK aliases require package provenance and preserve adapter identity
+ok 355 - SDK aliases require package provenance and preserve adapter identity
+  ---
+  duration_ms: 1.354125
+  type: 'test'
+  ...
+# Subtest: shadowed aliases do not borrow evidence from another scope
+ok 356 - shadowed aliases do not borrow evidence from another scope
+  ---
+  duration_ms: 0.623292
+  type: 'test'
+  ...
+# Subtest: reassigned and parameter-shadowed receivers stay unresolved
+ok 357 - reassigned and parameter-shadowed receivers stay unresolved
+  ---
+  duration_ms: 0.420375
+  type: 'test'
+  ...
+# Subtest: later spread cannot prove an endpoint header survives
+ok 358 - later spread cannot prove an endpoint header survives
+  ---
+  duration_ms: 0.280584
+  type: 'test'
+  ...
+# Subtest: outer option spreads cannot prove an explicit header survives
+ok 359 - outer option spreads cannot prove an explicit header survives
+  ---
+  duration_ms: 0.223375
+  type: 'test'
+  ...
+# Subtest: mutated option objects do not borrow stale initializer evidence
+ok 360 - mutated option objects do not borrow stale initializer evidence
+  ---
+  duration_ms: 0.67525
+  type: 'test'
+  ...
+# Subtest: readonly calls and unrelated hosts do not become mutation risks
+ok 361 - readonly calls and unrelated hosts do not become mutation risks
+  ---
+  duration_ms: 0.373958
+  type: 'test'
+  ...
+# Subtest: catch classification stays risk until runtime proof
+ok 362 - catch classification stays risk until runtime proof
+  ---
+  duration_ms: 0.3755
+  type: 'test'
+  ...
+# Subtest: actual faulty fixture supplies its real callsites
+ok 363 - actual faulty fixture supplies its real callsites
+  ---
+  duration_ms: 6.097875
+  type: 'test'
+  ...
+1..363
+# tests 369
+# suites 0
+# pass 369
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19233.781167

@@ -1,0 +1,18 @@
+{
+  "sourceHash": "355f8cde8d15af89022c5602cd0d750ab583db5bb6db9e93fb13c606003d5ea6",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "approved-tool-job/ready",
+      "passed": true,
+      "detail": "An approved create tool produces a confirmed order."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

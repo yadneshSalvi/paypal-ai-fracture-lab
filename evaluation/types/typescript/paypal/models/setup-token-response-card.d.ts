@@ -1,0 +1,23 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type BinDetails } from "./bin-details.js";
+import { type CardAuthenticationResponse } from "./card-authentication-response.js";
+import { type CardBrand } from "./card-brand.js";
+import { type CardResponseAddress } from "./card-response-address.js";
+import { type CardType } from "./card-type.js";
+import { type CardVerificationDetails } from "./card-verification-details.js";
+import { type CardVerificationStatus } from "./card-verification-status.js";
+import { type NetworkTransactionReferenceEntity } from "./network-transaction-reference-entity.js";
+export type SetupTokenResponseCard = {
+    name?: string;
+    lastDigits?: string;
+    brand?: CardBrand;
+    expiry?: string;
+    billingAddress?: CardResponseAddress;
+    verificationStatus?: CardVerificationStatus;
+    verification?: CardVerificationDetails;
+    networkTransactionReference?: NetworkTransactionReferenceEntity;
+    authenticationResult?: CardAuthenticationResponse;
+    binDetails?: BinDetails;
+    type?: CardType;
+};
+export declare const setupTokenResponseCardSchema: Schema<SetupTokenResponseCard>;

@@ -1,0 +1,25 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type Address } from "./address.js";
+import { type Name } from "./name.js";
+import { type PayPalPaymentTokenCustomerType } from "./pay-pal-payment-token-customer-type.js";
+import { type PayPalPaymentTokenUsageType } from "./pay-pal-payment-token-usage-type.js";
+import { type PhoneWithType } from "./phone-with-type.js";
+import { type Phone } from "./phone.js";
+import { type UsagePattern } from "./usage-pattern.js";
+import { type VaultedDigitalWalletShippingDetails } from "./vaulted-digital-wallet-shipping-details.js";
+export type PayPalPaymentToken = {
+    description?: string;
+    usagePattern?: UsagePattern;
+    shipping?: VaultedDigitalWalletShippingDetails;
+    permitMultiplePaymentTokens?: boolean;
+    usageType?: PayPalPaymentTokenUsageType;
+    customerType?: PayPalPaymentTokenCustomerType;
+    emailAddress?: string;
+    payerId?: string;
+    name?: Name;
+    phone?: PhoneWithType;
+    address?: Address;
+    accountId?: string;
+    phoneNumber?: Phone;
+};
+export declare const payPalPaymentTokenSchema: Schema<PayPalPaymentToken>;

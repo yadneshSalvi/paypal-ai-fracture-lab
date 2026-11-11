@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d3-ts-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:31.101Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d3-ts-heldout.json.gz",
+    "sha256": "fb2f29c9c65f1b1b9ddc14323f1b952536eb3d124e26247fdde8396a3706c0e6"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "5e4bdd175664f698d2a274b54e651860a37d4b29386cb488d5adc76f26dda24a",
+      "receiptHash": "f52bc56d422468782c37ca8d478116a451a69ead4bbf9fd570d11833d064717c",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "paid-projection/projection",
+          "passed": true,
+          "detail": "A completed capture creates paid access."
+        },
+        {
+          "id": "refund-before-stale-completion/terminal-state",
+          "passed": false,
+          "detail": "Reverse-ordered and parallel notifications cannot reopen refunded access."
+        },
+        {
+          "id": "refund-before-stale-completion/one-refund-notice",
+          "passed": true,
+          "detail": "The refund notice is durable and unique."
+        },
+        {
+          "id": "partial-refund-with-old-event/canonical-partial",
+          "passed": false,
+          "detail": "The current provider resource overrides stale event labels."
+        },
+        {
+          "id": "unknown-shape-and-scope/no-fabricated-state",
+          "passed": false,
+          "detail": "Missing authoritative fields produce a retryable unknown result."
+        },
+        {
+          "id": "unknown-shape-and-scope/no-projection",
+          "passed": false,
+          "detail": "An incomplete resource creates no access projection."
+        },
+        {
+          "id": "unknown-shape-and-scope/scope",
+          "passed": true,
+          "detail": "Account scope is enforced for projection updates."
+        },
+        {
+          "id": "interrupted-notice-resumes/resumable-dependent-effect",
+          "passed": false,
+          "detail": "A repeated event repairs an interrupted dependent refund notice."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "0e7b98a8ad1595c5c47bf993623c739c6e46462da25f271dcb47b2ec6d5fb3f4",
+      "receiptHash": "205f91e65fcd231c5ae954e18121e49f35c728bea01e2568f271e7f972fb30dc",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "paid-projection/projection",
+          "passed": true,
+          "detail": "A completed capture creates paid access."
+        },
+        {
+          "id": "refund-before-stale-completion/terminal-state",
+          "passed": true,
+          "detail": "Reverse-ordered and parallel notifications cannot reopen refunded access."
+        },
+        {
+          "id": "refund-before-stale-completion/one-refund-notice",
+          "passed": true,
+          "detail": "The refund notice is durable and unique."
+        },
+        {
+          "id": "partial-refund-with-old-event/canonical-partial",
+          "passed": true,
+          "detail": "The current provider resource overrides stale event labels."
+        },
+        {
+          "id": "unknown-shape-and-scope/no-fabricated-state",
+          "passed": true,
+          "detail": "Missing authoritative fields produce a retryable unknown result."
+        },
+        {
+          "id": "unknown-shape-and-scope/no-projection",
+          "passed": true,
+          "detail": "An incomplete resource creates no access projection."
+        },
+        {
+          "id": "unknown-shape-and-scope/scope",
+          "passed": true,
+          "detail": "Account scope is enforced for projection updates."
+        },
+        {
+          "id": "interrupted-notice-resumes/resumable-dependent-effect",
+          "passed": true,
+          "detail": "A repeated event repairs an interrupted dependent refund notice."
+        }
+      ]
+    }
+  ]
+}

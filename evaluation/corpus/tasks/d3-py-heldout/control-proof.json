@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d3-py-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:50.627Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d3-py-heldout.json.gz",
+    "sha256": "b5a6dd58ea1d7bccc06557787cdd07b8f0197b6741a1dd839a116f51947821e7"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "c3774e2343bf9a6e410669556554398ec2be7a8a34361599fe6b8fb9fa78d295",
+      "receiptHash": "7376ec19d4d8e58f9d1716bdaca45b8705c591b2e3b3bf05431f59504e8741f1",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "completed-order/dispatch",
+          "passed": true,
+          "detail": "An authoritative completed capture permits one dispatch."
+        },
+        {
+          "id": "approval-never-fulfills/phase-boundary",
+          "passed": false,
+          "detail": "Approval is not paid fulfillment even with a misleading body field."
+        },
+        {
+          "id": "approval-never-fulfills/pending-boundary",
+          "passed": false,
+          "detail": "A capture notification still requires a completed canonical capture."
+        },
+        {
+          "id": "capture-before-approval-and-duplicates/one-dispatch",
+          "passed": false,
+          "detail": "Repeated completion and a late approval produce one dispatch."
+        },
+        {
+          "id": "capture-before-approval-and-duplicates/no-webhook-payment",
+          "passed": false,
+          "detail": "The webhook only reads authoritative state and never initiates payment."
+        },
+        {
+          "id": "read-and-store-retry/unknown",
+          "passed": false,
+          "detail": "A failed order read produces retryable delivery failure."
+        },
+        {
+          "id": "read-and-store-retry/resume",
+          "passed": true,
+          "detail": "A later process resumes the interrupted local dispatch safely."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "4a738e700e498bc5a478a5d572022a9752a15d57d035c019799c509642afeaf3",
+      "receiptHash": "63ce83f540b522ec6a855871c66ca577d3ae99889df5af4135b3f891dc4a4074",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "completed-order/dispatch",
+          "passed": true,
+          "detail": "An authoritative completed capture permits one dispatch."
+        },
+        {
+          "id": "approval-never-fulfills/phase-boundary",
+          "passed": true,
+          "detail": "Approval is not paid fulfillment even with a misleading body field."
+        },
+        {
+          "id": "approval-never-fulfills/pending-boundary",
+          "passed": true,
+          "detail": "A capture notification still requires a completed canonical capture."
+        },
+        {
+          "id": "capture-before-approval-and-duplicates/one-dispatch",
+          "passed": true,
+          "detail": "Repeated completion and a late approval produce one dispatch."
+        },
+        {
+          "id": "capture-before-approval-and-duplicates/no-webhook-payment",
+          "passed": true,
+          "detail": "The webhook only reads authoritative state and never initiates payment."
+        },
+        {
+          "id": "read-and-store-retry/unknown",
+          "passed": true,
+          "detail": "A failed order read produces retryable delivery failure."
+        },
+        {
+          "id": "read-and-store-retry/resume",
+          "passed": true,
+          "detail": "A later process resumes the interrupted local dispatch safely."
+        }
+      ]
+    }
+  ]
+}

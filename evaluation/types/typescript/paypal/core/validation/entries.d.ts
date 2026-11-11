@@ -1,0 +1,16 @@
+import type { ZodMiniType } from "zod/v4-mini";
+import { type Encoded, type Entry, type Schema } from "./schema.js";
+export declare function lazy<T>(target: () => Schema<T, Encoded<T>>): ZodMiniType<T, Encoded<T>>;
+export declare function defaulted<T>(entry: Entry<T, Encoded<T>>, value: T): ZodMiniType<T, Encoded<T>>;
+export declare function fallback<T>(entry: Entry<T, Encoded<T>>, value: T): ZodMiniType<T, Encoded<T>>;
+export declare function callback<T extends (...args: never[]) => unknown>(): ZodMiniType<T, T>;
+export declare function optionalNullable<T>(entry: Entry<T, Encoded<T>>): ZodMiniType<T | null | undefined, Encoded<T> | null | undefined>;
+export declare const dateTime: () => ZodMiniType<Date, string>;
+export declare const rfc1123DateTime: () => ZodMiniType<Date, string>;
+export declare const unixSecondsDateTime: () => ZodMiniType<Date, number>;
+export declare const dateOnly: () => ZodMiniType<string, string>;
+export declare const bytes: () => ZodMiniType<Uint8Array, string>;
+export declare const base64UrlBytes: () => ZodMiniType<Uint8Array, string>;
+export declare const base32Bytes: () => ZodMiniType<Uint8Array, string>;
+export declare const base32HexBytes: () => ZodMiniType<Uint8Array, string>;
+export declare const base16Bytes: () => ZodMiniType<Uint8Array, string>;

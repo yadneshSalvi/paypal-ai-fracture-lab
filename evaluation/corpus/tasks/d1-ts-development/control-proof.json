@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d1-ts-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:49:26.592Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d1-ts-development.json.gz",
+    "sha256": "8d348387f06e1ebe29d85fc3d3a0467e0a7c4a4101d0b681c594cc9ba033d3c2"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "0658044afc12d679b9b1326efbb9705de09f5330a36f99da24cf7c69138ec378",
+      "receiptHash": "c87859fbac80d29ea59a66ce76f52211f5409964f3954014416a137089ea1824",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "ordinary-purchases/liveness",
+          "passed": true,
+          "detail": "Two independent authorized purchases each complete."
+        },
+        {
+          "id": "ordinary-purchases/effects",
+          "passed": true,
+          "detail": "Each purchase has its own completed capture and entitlement."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/single-charge",
+          "passed": false,
+          "detail": "A lost capture answer cannot turn one purchase into a second order."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/recovered",
+          "passed": true,
+          "detail": "A fresh worker reconciles the captured order and grants once."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/authoritative-read",
+          "passed": false,
+          "detail": "The missing answer is resolved by a supported order read."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "simultaneous-browser-retries/concurrent-one-charge",
+          "passed": false,
+          "detail": "Concurrent delivery IDs do not become separate purchase identities."
+        },
+        {
+          "id": "simultaneous-browser-retries/concurrent-one-entitlement",
+          "passed": true,
+          "detail": "A durable unique purchase claim survives independent processes."
+        },
+        {
+          "id": "scope-and-uncertain-creation/scope",
+          "passed": true,
+          "detail": "An account mismatch has no provider effects."
+        },
+        {
+          "id": "scope-and-uncertain-creation/unknown-no-invented-lookup",
+          "passed": false,
+          "detail": "An unknown create without a resource ID remains protected and cannot be searched by request ID."
+        },
+        {
+          "id": "pending-capture-is-not-paid/pending",
+          "passed": false,
+          "detail": "Order COMPLETED does not imply its capture is COMPLETED."
+        },
+        {
+          "id": "pending-capture-is-not-paid/pending-protection",
+          "passed": false,
+          "detail": "Pending money stays protected across repeated deliveries."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "ca242589a7f32e5861d5beb8a8c5805f7b35fa0c3df04917821a690b212f5ad1",
+      "receiptHash": "94dd1feb61474af1caf22e2a7b48e1ec806f683d17a52950c68bd60009b8cdc4",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "ordinary-purchases/liveness",
+          "passed": true,
+          "detail": "Two independent authorized purchases each complete."
+        },
+        {
+          "id": "ordinary-purchases/effects",
+          "passed": true,
+          "detail": "Each purchase has its own completed capture and entitlement."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/single-charge",
+          "passed": true,
+          "detail": "A lost capture answer cannot turn one purchase into a second order."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/recovered",
+          "passed": true,
+          "detail": "A fresh worker reconciles the captured order and grants once."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/authoritative-read",
+          "passed": true,
+          "detail": "The missing answer is resolved by a supported order read."
+        },
+        {
+          "id": "lost-capture-and-new-deliveries/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "simultaneous-browser-retries/concurrent-one-charge",
+          "passed": true,
+          "detail": "Concurrent delivery IDs do not become separate purchase identities."
+        },
+        {
+          "id": "simultaneous-browser-retries/concurrent-one-entitlement",
+          "passed": true,
+          "detail": "A durable unique purchase claim survives independent processes."
+        },
+        {
+          "id": "scope-and-uncertain-creation/scope",
+          "passed": true,
+          "detail": "An account mismatch has no provider effects."
+        },
+        {
+          "id": "scope-and-uncertain-creation/unknown-no-invented-lookup",
+          "passed": true,
+          "detail": "An unknown create without a resource ID remains protected and cannot be searched by request ID."
+        },
+        {
+          "id": "pending-capture-is-not-paid/pending",
+          "passed": true,
+          "detail": "Order COMPLETED does not imply its capture is COMPLETED."
+        },
+        {
+          "id": "pending-capture-is-not-paid/pending-protection",
+          "passed": true,
+          "detail": "Pending money stays protected across repeated deliveries."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d2-ts-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:00.286Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d2-ts-heldout.json.gz",
+    "sha256": "beafe626e00dc8a83506efef9e9a0ce02bb7b67882a6fa1b5568fa40bd3e60d8"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "419d6edd216bc58e5aeab6a8b13980a1a74177530683216d96ae23add3ffc927",
+      "receiptHash": "dd362b4e729c47911c3d1707e5066afe7c9cc67142dcc83fa8fe38d20e09abcd",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "known-completed-refund/completed",
+          "passed": true,
+          "detail": "A matching known completed refund settles its local intent."
+        },
+        {
+          "id": "unrelated-refund-with-no-reference/no-balance-inference",
+          "passed": false,
+          "detail": "Another refund changes the capture balance without answering this unknown intent."
+        },
+        {
+          "id": "mismatched-known-reference/identity-not-just-amount",
+          "passed": false,
+          "detail": "Matching amount and capture balance cannot replace refund intent identity."
+        },
+        {
+          "id": "pending-and-later-completion/pending",
+          "passed": false,
+          "detail": "Pending refund capacity remains represented."
+        },
+        {
+          "id": "pending-and-later-completion/later-observation",
+          "passed": true,
+          "detail": "The same known resource can later become completed without a write."
+        },
+        {
+          "id": "unreadable-and-foreign-account/scope",
+          "passed": true,
+          "detail": "Account scope precedes any provider read."
+        },
+        {
+          "id": "unreadable-and-foreign-account/unreadable-unknown",
+          "passed": true,
+          "detail": "A malformed authoritative response stays unknown and read-only."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "58a49f1c3f172c05a0d024921319085bb6a91a4ad34e3400b72ddd130aef4bcd",
+      "receiptHash": "28b4b0bd74aabfded33883d7c14e4641260a80f8f413032bae764d670af77cd6",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "known-completed-refund/completed",
+          "passed": true,
+          "detail": "A matching known completed refund settles its local intent."
+        },
+        {
+          "id": "unrelated-refund-with-no-reference/no-balance-inference",
+          "passed": true,
+          "detail": "Another refund changes the capture balance without answering this unknown intent."
+        },
+        {
+          "id": "mismatched-known-reference/identity-not-just-amount",
+          "passed": true,
+          "detail": "Matching amount and capture balance cannot replace refund intent identity."
+        },
+        {
+          "id": "pending-and-later-completion/pending",
+          "passed": true,
+          "detail": "Pending refund capacity remains represented."
+        },
+        {
+          "id": "pending-and-later-completion/later-observation",
+          "passed": true,
+          "detail": "The same known resource can later become completed without a write."
+        },
+        {
+          "id": "unreadable-and-foreign-account/scope",
+          "passed": true,
+          "detail": "Account scope precedes any provider read."
+        },
+        {
+          "id": "unreadable-and-foreign-account/unreadable-unknown",
+          "passed": true,
+          "detail": "A malformed authoritative response stays unknown and read-only."
+        }
+      ]
+    }
+  ]
+}

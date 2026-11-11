@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d2-ts-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:49:55.213Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d2-ts-development.json.gz",
+    "sha256": "662ea08650be6043d8c47af574d7849387139224b30ba3b35ca9ec60fae5807d"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "a1402db4a1705e47550b0cf580b435d3b5e6642c36b0fdaf3d434c91061e4d6c",
+      "receiptHash": "0de70d9197cfed6ff67ae085df159171b7165454a02d937040e14ecead18c399",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "ordinary-capture/paid",
+          "passed": true,
+          "detail": "An ordinary confirmed capture grants its entitlement."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/unknown-protected",
+          "passed": false,
+          "detail": "Both missing write response and unavailable read remain unknown."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/recover-original",
+          "passed": false,
+          "detail": "A later worker rereads the original operation without another write."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/read-recorded",
+          "passed": false,
+          "detail": "Both the failed and successful supported reads are retained."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "malformed-capture-answer/recovered-after-decode",
+          "passed": false,
+          "detail": "A malformed or missing optional response is reconciled through the known resource."
+        },
+        {
+          "id": "missing-capture-answer/recovered-after-decode",
+          "passed": false,
+          "detail": "A malformed or missing optional response is reconciled through the known resource."
+        },
+        {
+          "id": "auth-never-dispatched/never-sent-distinction",
+          "passed": false,
+          "detail": "An authentication failure before dispatch does not trigger a payment reread."
+        },
+        {
+          "id": "auth-never-dispatched/safe-explicit-retry",
+          "passed": true,
+          "detail": "A caller can retry after the proven pre-dispatch failure is fixed."
+        },
+        {
+          "id": "pending-capture/pending-not-paid",
+          "passed": false,
+          "detail": "A completed order with a pending capture is not a paid entitlement."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "cf8f00863206aa023d40aea81a18b267cede69f6a53910677795a73f0fad61d8",
+      "receiptHash": "e5f319fab8c62efdbae50b1f7d670fb0fc6ae3c8a042d5c8bf22cd7c1615a7ed",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "ordinary-capture/paid",
+          "passed": true,
+          "detail": "An ordinary confirmed capture grants its entitlement."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/unknown-protected",
+          "passed": true,
+          "detail": "Both missing write response and unavailable read remain unknown."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/recover-original",
+          "passed": true,
+          "detail": "A later worker rereads the original operation without another write."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/read-recorded",
+          "passed": true,
+          "detail": "Both the failed and successful supported reads are retained."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "malformed-capture-answer/recovered-after-decode",
+          "passed": true,
+          "detail": "A malformed or missing optional response is reconciled through the known resource."
+        },
+        {
+          "id": "missing-capture-answer/recovered-after-decode",
+          "passed": true,
+          "detail": "A malformed or missing optional response is reconciled through the known resource."
+        },
+        {
+          "id": "auth-never-dispatched/never-sent-distinction",
+          "passed": true,
+          "detail": "An authentication failure before dispatch does not trigger a payment reread."
+        },
+        {
+          "id": "auth-never-dispatched/safe-explicit-retry",
+          "passed": true,
+          "detail": "A caller can retry after the proven pre-dispatch failure is fixed."
+        },
+        {
+          "id": "pending-capture/pending-not-paid",
+          "passed": true,
+          "detail": "A completed order with a pending capture is not a paid entitlement."
+        }
+      ]
+    }
+  ]
+}

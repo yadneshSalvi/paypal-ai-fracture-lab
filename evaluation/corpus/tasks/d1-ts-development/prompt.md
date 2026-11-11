@@ -1,0 +1,7 @@
+# Bramble: one purchase, several checkout attempts
+
+Repair this checkout service. A shopper can retry one `intentId` using a fresh `attemptId`; two attempts may overlap, or the process may end after PayPal captures but before the caller receives a response. The price and buyer authority come from `intents[intentId]` (`accountId`, `amountMinor`, `currency`, `authorized`). A command supplies `intentId`, `accountId`, and `attemptId`.
+
+One authorized intent must cause at most one completed capture and one `entitlements[intentId]` row. Different authorized intents must still succeed. Entitlements store `intentId`, `captureId`, and `amountMinor` and require an observed COMPLETED capture for the correct purchase, amount, and currency. A known order can be read to reconcile a missing capture response. An unknown create with no resource ID must remain unknown; the application has no search by request ID. Pending or unreadable state cannot be reported as paid. Preserve durable protection across retries and process restarts. A request from another account must have no provider effect.
+
+Return `{status,httpStatus,captureId?}`: paid/200, pending/202, unknown/202, refused/422, not_sent/503, forbidden/403, or missing/404. Provider 4xx refusals should be visible. An authentication or encoding failure before the payment request is not an unknown dispatched write. All other programming errors must escape to the caller. Use only the supplied SDK and workspace contract. Do not change any protected file.

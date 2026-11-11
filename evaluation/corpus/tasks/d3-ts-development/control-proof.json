@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d3-ts-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:25.212Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d3-ts-development.json.gz",
+    "sha256": "a03dc81367b3d27697c6bc7165d452790aab3aafdd5450fd4797c3fa0f9a3369"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "612d084fe8ac538b29bb96a97bd08c1678fc65cd24585df8b8596ebc68f21725",
+      "receiptHash": "c038502a18ed9d01c1f78e16ff5eb19ac79b4414204da513beedd3dbaa19952b",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "verified-capture/grant",
+          "passed": true,
+          "detail": "A verified completed capture grants access."
+        },
+        {
+          "id": "signed-payload-is-not-state/no-pending-grant",
+          "passed": false,
+          "detail": "A signed notification is checked against current capture state."
+        },
+        {
+          "id": "duplicate-and-conflicting-envelope/once",
+          "passed": true,
+          "detail": "Parallel duplicates grant only one entitlement and never write to PayPal."
+        },
+        {
+          "id": "duplicate-and-conflicting-envelope/envelope-binding",
+          "passed": false,
+          "detail": "A processed event ID cannot silently change its authenticated body."
+        },
+        {
+          "id": "read-outage-retry/retryable",
+          "passed": false,
+          "detail": "A failed canonical read does not consume the event."
+        },
+        {
+          "id": "read-outage-retry/eventually-granted",
+          "passed": true,
+          "detail": "The unchanged event can complete on redelivery."
+        },
+        {
+          "id": "forgery-scope-and-refund/signature",
+          "passed": true,
+          "detail": "A payload verification flag cannot replace exact-envelope verification."
+        },
+        {
+          "id": "forgery-scope-and-refund/tenant",
+          "passed": true,
+          "detail": "Tenant scope precedes the canonical read."
+        },
+        {
+          "id": "forgery-scope-and-refund/stale-completion",
+          "passed": false,
+          "detail": "A stale completed notification cannot grant a fully refunded payment."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "afa1b9cb2c12faa6664b191cc027d82bf2527c4c69fba7a62a48c56494032004",
+      "receiptHash": "94804e765b76e77fd416a8987cedee87395402809a4ce56b9329344cb64b8ad0",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "verified-capture/grant",
+          "passed": true,
+          "detail": "A verified completed capture grants access."
+        },
+        {
+          "id": "signed-payload-is-not-state/no-pending-grant",
+          "passed": true,
+          "detail": "A signed notification is checked against current capture state."
+        },
+        {
+          "id": "duplicate-and-conflicting-envelope/once",
+          "passed": true,
+          "detail": "Parallel duplicates grant only one entitlement and never write to PayPal."
+        },
+        {
+          "id": "duplicate-and-conflicting-envelope/envelope-binding",
+          "passed": true,
+          "detail": "A processed event ID cannot silently change its authenticated body."
+        },
+        {
+          "id": "read-outage-retry/retryable",
+          "passed": true,
+          "detail": "A failed canonical read does not consume the event."
+        },
+        {
+          "id": "read-outage-retry/eventually-granted",
+          "passed": true,
+          "detail": "The unchanged event can complete on redelivery."
+        },
+        {
+          "id": "forgery-scope-and-refund/signature",
+          "passed": true,
+          "detail": "A payload verification flag cannot replace exact-envelope verification."
+        },
+        {
+          "id": "forgery-scope-and-refund/tenant",
+          "passed": true,
+          "detail": "Tenant scope precedes the canonical read."
+        },
+        {
+          "id": "forgery-scope-and-refund/stale-completion",
+          "passed": true,
+          "detail": "A stale completed notification cannot grant a fully refunded payment."
+        }
+      ]
+    }
+  ]
+}

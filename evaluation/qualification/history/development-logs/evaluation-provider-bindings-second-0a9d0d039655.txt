@@ -1,0 +1,2 @@
+{"stage":"provider_binding","provider":"openai","model":"gpt-6.1-sol","passed":false,"status":"infrastructure_failure","errorCode":"provider_400","requests":2,"tokens":386,"estimatedCostUsd":0.001004}
+{"stage":"provider_binding","provider":"gemini","model":"gemini-3.8-flash","passed":true,"status":"completed","errorCode":null,"requests":25,"tokens":39456,"estimatedCostUsd":0.033693}

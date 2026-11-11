@@ -4,7 +4,7 @@ import {assignments} from './schedule';
 const hash=z.string().regex(/^[a-f0-9]{64}$/);
 /** Treatment labels never enter the grader's record. Analysis joins them only after result freeze. */
 export const gradeSchema=z.object({schemaVersion:z.literal(1),candidateId:z.string().regex(/^[a-f0-9]{40}$/),taskId:z.string(),protocolHash:hash,
-  sourceHash:hash.nullable(),graderHash:hash,stage:z.enum(['graded','infrastructure_failure']),compilePassed:z.boolean().nullable(),policyPassed:z.boolean().nullable(),hiddenPassed:z.boolean().nullable(),
+  sourceHash:hash.nullable(),graderHash:hash,stage:z.enum(['graded','submission_failure','infrastructure_failure']),compilePassed:z.boolean().nullable(),policyPassed:z.boolean().nullable(),hiddenPassed:z.boolean().nullable(),
   tests:z.array(z.object({id:z.string(),passed:z.boolean()}).strict()),tokens:z.number().int().nonnegative(),durationMs:z.number().nonnegative(),
   providerReceiptHash:hash.nullable(),runnerReceiptHash:hash.nullable(),errorCode:z.string().nullable(),retryOf:z.string().nullable(),
   attemptNumber:z.number().int().min(1).max(2),finishedAt:z.iso.datetime()}).strict();
@@ -16,8 +16,9 @@ export function validateGrades(p:Protocol,input:unknown[]){
     if(!a||a.taskId!==g.taskId||g.protocolHash!==protocolHash)throw new Error('Grade does not belong to this frozen protocol.');
     if(g.graderHash!==digest(canonical(p.evaluatorFiles)))throw new Error('Grade uses a different frozen evaluator.');
     if(g.stage==='graded'&&(!g.sourceHash||g.compilePassed===null||g.policyPassed===null||g.hiddenPassed===null||!g.providerReceiptHash||!g.runnerReceiptHash||g.errorCode))throw new Error('A graded result requires actual model and runner receipts and all three verdicts.');
+    if(g.stage==='submission_failure'&&(g.sourceHash!==null||g.compilePassed!==false||g.policyPassed!==false||g.hiddenPassed!==false||g.tests.length||!g.providerReceiptHash||g.runnerReceiptHash!==null||!g.errorCode))throw new Error('An invalid or missing model submission is a retained first-submission failure with its provider receipt.');
     if(new Set(g.tests.map(t=>t.id)).size!==g.tests.length)throw new Error('Repeated test identifiers cannot inflate a grade.');
-    if(g.hiddenPassed===true&&(!g.tests.length||g.tests.some(t=>!t.passed)))throw new Error('Passing hidden verdict requires nonempty, passing test records.');
+    if(g.hiddenPassed===true&&(!g.compilePassed||!g.policyPassed||!g.tests.length||g.tests.some(t=>!t.passed)))throw new Error('Passing hidden verdict requires compilation, policy and nonempty, passing test records.');
     if(g.stage==='infrastructure_failure'&&(g.compilePassed!==null||g.policyPassed!==null||g.hiddenPassed!==null||g.tests.length||!g.errorCode))throw new Error('Infrastructure failures cannot be assigned a target verdict.');
     const group=groups.get(g.candidateId)??[];if(group.some(x=>x.attemptNumber===g.attemptNumber))throw new Error('A candidate attempt cannot be replaced or selectively duplicated.');group.push(g);groups.set(g.candidateId,group);
   }
@@ -28,7 +29,7 @@ export function validateGrades(p:Protocol,input:unknown[]){
       if(first.sourceHash&&(first.sourceHash!==second.sourceHash||first.providerReceiptHash!==second.providerReceiptHash))throw new Error('A runner retry must grade the same original model submission.');
     }
   }
-  return rows.map(a=>{const history=groups.get(a.candidateId)??[];const g=history.at(-1)??null;return {...a,history,grade:g,passed:g?.stage==='graded'?Boolean(g.compilePassed&&g.policyPassed&&g.hiddenPassed):null};});
+  return rows.map(a=>{const history=groups.get(a.candidateId)??[];const g=history.at(-1)??null;return {...a,history,grade:g,passed:g?.stage==='graded'?Boolean(g.compilePassed&&g.policyPassed&&g.hiddenPassed):g?.stage==='submission_failure'?false:null};});
 }
 const quantile=(sorted:number[],q:number)=>{const n=(sorted.length-1)*q,lo=Math.floor(n),hi=Math.ceil(n);return sorted[lo]!+(sorted[hi]!-sorted[lo]!)*(n-lo);};
 function random(seed:string){let x=Number.parseInt(digest(seed).slice(0,8),16)||1;return ()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296;};}

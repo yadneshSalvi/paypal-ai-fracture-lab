@@ -1,0 +1,1 @@
+{"stage":"sources_prepared","records":13,"types":881,"completeOperationsCharacters":99097}

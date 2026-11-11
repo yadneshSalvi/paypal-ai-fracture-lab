@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d5-py-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:51:54.282Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d5-py-development.json.gz",
+    "sha256": "b5c6738db423d21befda6cbfc5619839ef09eab48f3e4faa4ef1d4d138fb0dc5"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "20a854d02981c275ef3092b251f207df418c894d955e0d212eba404b38b5473f",
+      "receiptHash": "1be037af1e3053df682231e032ed9af7ac50741bbc15f2c1579874602466ab29",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "confirmed-refund-tool/completed",
+          "passed": true,
+          "detail": "A scoped refund tool returns an executed completed refund."
+        },
+        {
+          "id": "refund-error-403/typed-recovery",
+          "passed": false,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "refund-error-422/typed-recovery",
+          "passed": false,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "refund-error-429/typed-recovery",
+          "passed": false,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "refund-error-418/typed-recovery",
+          "passed": false,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "lost-and-pending-tool-results/no-blind-tool-retry",
+          "passed": false,
+          "detail": "A replanned tool invocation cannot replace an unknown refund."
+        },
+        {
+          "id": "lost-and-pending-tool-results/pending-not-completed",
+          "passed": false,
+          "detail": "A pending refund receives its own non-completed state."
+        },
+        {
+          "id": "oauth-and-unexpected-store-failure/oauth-not-dispatched",
+          "passed": false,
+          "detail": "OAuth provider error is classified before the refund is dispatched."
+        },
+        {
+          "id": "oauth-and-unexpected-store-failure/fixed-retry",
+          "passed": true,
+          "detail": "A new tool call can safely retry after a proven authentication failure."
+        },
+        {
+          "id": "oauth-and-unexpected-store-failure/programming-boundary",
+          "passed": false,
+          "detail": "A failed operation claim is not translated into a retryable provider error."
+        },
+        {
+          "id": "argument-ceiling-and-replay/bounded-authority",
+          "passed": false,
+          "detail": "Tool arguments cannot enlarge the authorized refund."
+        },
+        {
+          "id": "argument-ceiling-and-replay/semantic-identity",
+          "passed": false,
+          "detail": "Repeated successful calls return one business refund."
+        },
+        {
+          "id": "argument-ceiling-and-replay/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "596b909ba98bcad2bcec35cc0be636a49b8a47ef0074d5f7765a746fa2bca644",
+      "receiptHash": "7fb50f0cc58d9266734e2b74012a9438993c2866b687d1954c2c8fbb6de3830b",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "confirmed-refund-tool/completed",
+          "passed": true,
+          "detail": "A scoped refund tool returns an executed completed refund."
+        },
+        {
+          "id": "refund-error-403/typed-recovery",
+          "passed": true,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "refund-error-422/typed-recovery",
+          "passed": true,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "refund-error-429/typed-recovery",
+          "passed": true,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "refund-error-418/typed-recovery",
+          "passed": true,
+          "detail": "Typed and raw provider refusal bodies yield safe recovery instructions."
+        },
+        {
+          "id": "lost-and-pending-tool-results/no-blind-tool-retry",
+          "passed": true,
+          "detail": "A replanned tool invocation cannot replace an unknown refund."
+        },
+        {
+          "id": "lost-and-pending-tool-results/pending-not-completed",
+          "passed": true,
+          "detail": "A pending refund receives its own non-completed state."
+        },
+        {
+          "id": "oauth-and-unexpected-store-failure/oauth-not-dispatched",
+          "passed": true,
+          "detail": "OAuth provider error is classified before the refund is dispatched."
+        },
+        {
+          "id": "oauth-and-unexpected-store-failure/fixed-retry",
+          "passed": true,
+          "detail": "A new tool call can safely retry after a proven authentication failure."
+        },
+        {
+          "id": "oauth-and-unexpected-store-failure/programming-boundary",
+          "passed": true,
+          "detail": "A failed operation claim is not translated into a retryable provider error."
+        },
+        {
+          "id": "argument-ceiling-and-replay/bounded-authority",
+          "passed": true,
+          "detail": "Tool arguments cannot enlarge the authorized refund."
+        },
+        {
+          "id": "argument-ceiling-and-replay/semantic-identity",
+          "passed": true,
+          "detail": "Repeated successful calls return one business refund."
+        },
+        {
+          "id": "argument-ceiling-and-replay/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        }
+      ]
+    }
+  ]
+}

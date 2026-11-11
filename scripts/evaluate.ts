@@ -21,6 +21,7 @@ async function main(){
    console.log(JSON.stringify({status:'protocol_frozen',...proof,executedAttempts:0,output}));return;
  }
  if(command==='summarize'){
+   if(p.schemaVersion===2)throw new Error('Executable study outcomes must pass eval:seal. Use eval:reproduce to verify an already sealed public report.');
    const raw=JSON.parse(await readFile(resolve(option('results')!),'utf8'));if(!Array.isArray(raw))throw new Error('The results file must contain an array of anonymized grader records.');
    const report=summarize(p,raw),output=resolve(option('out')!);await saveNew(output,report);
    console.log(JSON.stringify({output,protocolHash:proof.protocolHash,resultsHash:digest(canonical(raw)),planned:report.planned,graded:report.graded,missing:report.missing,infrastructureFailures:report.infrastructureFailures}));return;

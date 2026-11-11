@@ -1,0 +1,18 @@
+{
+  "sourceHash": "c21e2a9bc04dd4e7113d57add064e2cc6c473ef68ef2af6deb64e39e0ce73fd4",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "confirmed-tool-capture/completed",
+      "passed": true,
+      "detail": "The capture tool reports an executed confirmed capture."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

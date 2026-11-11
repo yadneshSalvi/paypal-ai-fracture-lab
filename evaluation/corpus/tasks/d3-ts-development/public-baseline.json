@@ -1,0 +1,18 @@
+{
+  "sourceHash": "612d084fe8ac538b29bb96a97bd08c1678fc65cd24585df8b8596ebc68f21725",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "verified-capture/grant",
+      "passed": true,
+      "detail": "A verified completed capture grants access."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

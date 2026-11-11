@@ -1,0 +1,7 @@
+# Tandem: a group booking survives a worker restart
+
+The ticket service receives `{bookingId,accountId,revision,deliveryId}`. `intents[bookingId]` is the authorized quote with accountId, revision, amountMinor, currency and a nonempty list of seat IDs in `seats`. A delivery ID identifies an HTTP/job attempt, never a new purchase. The shopper may refresh, reopen the app, or retry after a worker disappears.
+
+Repair booking purchase and fulfillment. For one accepted booking revision, create and capture at most one order. On a matching COMPLETED capture, grant each quoted seat once in `tickets[bookingId + ':' + seatId]`, containing bookingId, seatId and captureId. If ticket creation is interrupted, a later worker must finish missing tickets without paying again. The quote must match command revision before any effect; reject a stale revision with conflict/409. Another account or revoked authorization returns forbidden/403. Different booking IDs, even with the same seat labels, must remain distinct.
+
+The persisted known order can be read after an unknown capture answer. Unknown creation without an order ID remains protected; no request-ID search exists. Optional SDK fields may be UNSET. Pending, absent, malformed or unreadable results do not justify tickets or another write. Return paid/200 with captureId after fulfillment; pending/202, unknown/202, refused/422, or not_sent/503 otherwise. Surface programming/store failures instead of discarding them. No new dependency or protected-file edit is allowed.

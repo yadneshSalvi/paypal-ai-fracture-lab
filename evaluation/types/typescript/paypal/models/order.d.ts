@@ -1,0 +1,21 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type CheckoutPaymentIntent } from "./checkout-payment-intent.js";
+import { type LinkDescription } from "./link-description.js";
+import { type OrderStatus } from "./order-status.js";
+import { type Payer } from "./payer.js";
+import { type PaymentSourceResponse } from "./payment-source-response.js";
+import { type ProcessingInstruction } from "./processing-instruction.js";
+import { type PurchaseUnit } from "./purchase-unit.js";
+export type Order = {
+    createTime?: string;
+    updateTime?: string;
+    id?: string;
+    paymentSource?: PaymentSourceResponse;
+    intent?: CheckoutPaymentIntent;
+    processingInstruction?: ProcessingInstruction;
+    payer?: Payer;
+    purchaseUnits?: PurchaseUnit[];
+    status?: OrderStatus;
+    links?: LinkDescription[];
+};
+export declare const orderSchema: Schema<Order>;

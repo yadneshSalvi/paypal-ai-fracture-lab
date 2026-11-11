@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d1-py-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:49:41.958Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d1-py-development.json.gz",
+    "sha256": "8ae2bed3a77b6231931c012787e290e2a6b136ac9e5eca3ad6d8bc8679098666"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "d7c6394828eccfe8b97383b850cf76f7a2d185474e1de9f49ab474004ed54d56",
+      "receiptHash": "4194d7a774ad699145308f1faa382585ef3a4ea17bd46cfc7ea8fcfa001ee72f",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "group-tickets/group-fulfillment",
+          "passed": true,
+          "detail": "One group payment fulfills its three quoted seats."
+        },
+        {
+          "id": "lost-answer-new-job/one-group-payment",
+          "passed": false,
+          "detail": "A restarted ticket job recovers the original capture."
+        },
+        {
+          "id": "lost-answer-new-job/seats-once",
+          "passed": true,
+          "detail": "Each quoted seat is granted once."
+        },
+        {
+          "id": "lost-answer-new-job/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "interrupted-seat-delivery/store-failure-visible",
+          "passed": true,
+          "detail": "A store outage is not disguised as a provider result."
+        },
+        {
+          "id": "interrupted-seat-delivery/finish-without-repay",
+          "passed": false,
+          "detail": "A new process finishes missing tickets against the same capture."
+        },
+        {
+          "id": "quote-revision-and-independent-booking/stale-quote",
+          "passed": false,
+          "detail": "A stale price revision cannot initiate payment."
+        },
+        {
+          "id": "quote-revision-and-independent-booking/distinct-business-keys",
+          "passed": false,
+          "detail": "Delivery IDs and reused seat labels cannot collapse independent bookings."
+        },
+        {
+          "id": "pending-does-not-issue-tickets/pending-seat",
+          "passed": false,
+          "detail": "A pending capture reserves the purchase without issuing admission."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "4b728d3db5c56160567976198b906939e87184a89c3b4388ae0cfcd0b04a06a4",
+      "receiptHash": "150d9294198670dc6026ebffb21e317ecc8dd73c33fdc29382168a9b0406a004",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "group-tickets/group-fulfillment",
+          "passed": true,
+          "detail": "One group payment fulfills its three quoted seats."
+        },
+        {
+          "id": "lost-answer-new-job/one-group-payment",
+          "passed": true,
+          "detail": "A restarted ticket job recovers the original capture."
+        },
+        {
+          "id": "lost-answer-new-job/seats-once",
+          "passed": true,
+          "detail": "Each quoted seat is granted once."
+        },
+        {
+          "id": "lost-answer-new-job/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "interrupted-seat-delivery/store-failure-visible",
+          "passed": true,
+          "detail": "A store outage is not disguised as a provider result."
+        },
+        {
+          "id": "interrupted-seat-delivery/finish-without-repay",
+          "passed": true,
+          "detail": "A new process finishes missing tickets against the same capture."
+        },
+        {
+          "id": "quote-revision-and-independent-booking/stale-quote",
+          "passed": true,
+          "detail": "A stale price revision cannot initiate payment."
+        },
+        {
+          "id": "quote-revision-and-independent-booking/distinct-business-keys",
+          "passed": true,
+          "detail": "Delivery IDs and reused seat labels cannot collapse independent bookings."
+        },
+        {
+          "id": "pending-does-not-issue-tickets/pending-seat",
+          "passed": true,
+          "detail": "A pending capture reserves the purchase without issuing admission."
+        }
+      ]
+    }
+  ]
+}

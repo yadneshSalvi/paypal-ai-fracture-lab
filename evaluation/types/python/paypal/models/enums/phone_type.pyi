@@ -1,0 +1,12 @@
+from enum import Enum
+from typing import Annotated, TypeAlias
+from ...core import open_enum_validator
+
+class PhoneType(str, Enum):
+    FAX = 'FAX'
+    HOME = 'HOME'
+    MOBILE = 'MOBILE'
+    OTHER = 'OTHER'
+    PAGER = 'PAGER'
+    __str__ = str.__str__
+PhoneTypeOrStr: TypeAlias = Annotated[PhoneType | str, open_enum_validator(PhoneType)]

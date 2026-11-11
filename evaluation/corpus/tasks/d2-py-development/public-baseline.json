@@ -1,0 +1,18 @@
+{
+  "sourceHash": "d0cac6708058c61034cfab4254206383084db5d3010963aff76ea9183d34f83a",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "ready-order/ready",
+      "passed": true,
+      "detail": "A successful creation returns an actual order identifier."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

@@ -1,0 +1,13 @@
+import {resolve,join} from 'node:path';
+import {readJson} from '../packages/evaluation/src/artifacts';
+import {parseProtocol,verifyProtocolFiles,canonical,digest} from '../packages/evaluation/src/protocol';
+import {summarize} from '../packages/evaluation/src/results';
+const root=resolve(import.meta.dirname,'..'),id=process.argv[2]??'fracture-context-2026-11-v1';
+if(!/^[a-zA-Z0-9_-]+$/.test(id))throw new Error('Invalid study identifier.');
+const directory=join(root,'evaluation/studies',id),p=parseProtocol(await readJson(join(directory,'protocol.json')));
+await verifyProtocolFiles(root,p);
+const seal=await readJson(join(directory,'seal.json')),grades=await readJson<unknown[]>(join(directory,'grades.anonymous.json')),published=await readJson(join(directory,'report.json'));
+if(seal.protocolHash!==digest(canonical(p))||seal.gradesHash!==digest(canonical(grades)))throw new Error('Published anonymous results differ from their seal.');
+const report=summarize(p,grades);
+for(const [key,value] of Object.entries(report))if(canonical(value)!==canonical(published[key]))throw new Error(`Published analysis cannot be reproduced: ${key}`);
+console.log(JSON.stringify({status:'reproduced_without_provider_calls',studyId:id,planned:report.planned,graded:report.graded,missing:report.missing,infrastructureFailures:report.infrastructureFailures,resultHash:report.resultHash,strata:report.strata.length,resamples:p.statistics.resamples}));

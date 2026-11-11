@@ -1,0 +1,18 @@
+{
+  "sourceHash": "e30f8bd6ae3c9342403cfd9cea5d60580cf6f73a6597a6094bb760d20bc73d6d",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "one-item-batch/batch",
+      "passed": true,
+      "detail": "A one-item authorized refund batch completes."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

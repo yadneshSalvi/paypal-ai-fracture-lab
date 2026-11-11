@@ -1,0 +1,21 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type AmountWithBreakdown } from "./amount-with-breakdown.js";
+import { type ItemRequest } from "./item-request.js";
+import { type PayeeBase } from "./payee-base.js";
+import { type PaymentInstruction } from "./payment-instruction.js";
+import { type ShippingDetails } from "./shipping-details.js";
+import { type SupplementaryData } from "./supplementary-data.js";
+export type PurchaseUnitRequest = {
+    referenceId?: string;
+    amount: AmountWithBreakdown;
+    payee?: PayeeBase;
+    paymentInstruction?: PaymentInstruction;
+    description?: string;
+    customId?: string;
+    invoiceId?: string;
+    softDescriptor?: string;
+    items?: ItemRequest[];
+    shipping?: ShippingDetails;
+    supplementaryData?: SupplementaryData;
+};
+export declare const purchaseUnitRequestSchema: Schema<PurchaseUnitRequest>;

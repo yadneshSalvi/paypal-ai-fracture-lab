@@ -1,0 +1,21 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type Money } from "./money.js";
+import { type OrderBillingPlan } from "./order-billing-plan.js";
+import { type UniversalProductCode } from "./universal-product-code.js";
+export type LineItem = {
+    name: string;
+    quantity: string;
+    description?: string;
+    sku?: string;
+    url?: string;
+    imageUrl?: string;
+    upc?: UniversalProductCode;
+    billingPlan?: OrderBillingPlan;
+    unitAmount?: Money;
+    tax?: Money;
+    commodityCode?: string;
+    discountAmount?: Money;
+    totalAmount?: Money;
+    unitOfMeasure?: string;
+};
+export declare const lineItemSchema: Schema<LineItem>;

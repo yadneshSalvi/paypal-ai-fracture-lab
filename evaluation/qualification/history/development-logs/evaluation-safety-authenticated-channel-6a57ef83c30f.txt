@@ -1,0 +1,9 @@
+{"probe":"host-files","passed":true}
+{"probe":"environment","passed":true}
+{"probe":"egress","passed":true}
+{"probe":"reflection","passed":true}
+{"probe":"subprocess","passed":true}
+{"probe":"python-egress","passed":true}
+{"probe":"control-descriptor-write","passed":true}
+{"probe":"private-console-pipe","passed":true}
+{"stage":"safety_qualified","probes":11,"evaluatorHash":"01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf","imageId":"sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847"}

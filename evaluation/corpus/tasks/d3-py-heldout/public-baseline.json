@@ -1,0 +1,18 @@
+{
+  "sourceHash": "c3774e2343bf9a6e410669556554398ec2be7a8a34361599fe6b8fb9fa78d295",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "completed-order/dispatch",
+      "passed": true,
+      "detail": "An authoritative completed capture permits one dispatch."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

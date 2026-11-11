@@ -1,5 +1,23 @@
 # Fracture Lab PayPal integration contract
 
+## Context-study execution contract — 11 November 2026
+
+This additive work uses only the exact create/get/capture/refund/get-refund contracts already resolved below. It changes no shared payment core, provider account or previous experiment. Payment traffic is offline Sample traffic; only the model gateway may contact OpenAI/Gemini. Real-credential payment probes are outside this study. The untouched TypeScript tree and seven synthetic protocol checks passed; those are infrastructure checks, not study outcomes.
+
+SDK identities remain TypeScript paypal2.29.0 at5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2 and Python paypal2.29 at143e57f2a3729d7df3727386b8c9ddf023d9a5df. TypeScript uses ESM/strict/exactOptionalPropertyTypes and PaypalClient. Python uses the synchronous PaypalClient in a bounded worker and closes it. Normal installed dependencies and the public transport seams encode actual SDK requests. Fixed fictional credentials, explicit sandbox base URL, retry0 and logging off apply. No real credential, hidden test or golden answer enters the runner image. All arms have identical compiled dependency/type access; generated Markdown maps are accessible only through their declared context bundle.
+
+| Contract | Boundary | Qualification |
+|---|---|---|
+| DUPLICATE CLAIMS | Target-owned SQL unique table/key, separate from immutable provider observations; SQLITE_CONSTRAINT_UNIQUE caught; committed claim before dispatch | Concurrent invocations and new processes share the store; witness inspects claims at dispatch |
+| UNKNOWN OUTCOMES | Exact known order/capture/refund GET; no lookup by request identity; absent original resource stays unknown | Lost/malformed/pending/unavailable-read and paired never-sent cases |
+| CROSS-OPERATION INVARIANTS | Target checks owned intent/resource and immutable payload before claim; pending refund reservations hold capacity | Changed-payload, cross-intent, concurrency and missing-reference cases |
+| OPTIONAL FIELDS | Exact task money/identity/intent; representation where needed; no payer/source fields | Independent observations retain actual headers; harness never supplies a missing key |
+| WHEN THE API SAYS NO | Caller4xx/reason preserved; fixed credentials/quota/upstream messages; uncertainty differs from proven unsent | Actual SDK errors and decoding, not mocked client methods |
+
+Twenty independent modules cover five families, two languages and development/held-out splits. Candidate edits are restricted to one source module. Frozen hashes and actual baseline/golden receipts precede inference. The anonymous grader receives candidate/task/source identities, not treatment labels. Hidden assertions stay outside the container. Containers have no network/host mounts/secrets, a read-only filesystem, nonroot UID, dropped capabilities and bounded resources/lifetime. All first submissions, provider errors and the single predeclared infrastructure retry are immutable.
+
+Required reading: MUST load typescript-integrate-paypal, typescript-getting-started, typescript-client-initialization, typescript-error-handling, typescript-testing and authentication/calling-endpoints/models/configuration-resilience companions; MUST load their Python equivalents. Installed maps and this sheet override generic companion examples. Source/test bindings and execution receipts accompany the corpus before study freeze. No unresolved API lookup is introduced.
+
 ## v0.2 extension contract — checkout experience and saved wallets
 
 Root integration owner, 11 November 2026. User authorization for full implementation persists; this is the prerequisite contract sheet, not a request for another approval. Existing operation identity, current policy, unknown-outcome recovery and no automatic write retry rules remain mandatory.

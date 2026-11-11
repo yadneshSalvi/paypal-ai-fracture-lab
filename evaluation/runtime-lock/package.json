@@ -1,0 +1,11 @@
+{
+  "name": "fracture-evaluation-runtime",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "paypal": "git+https://github.com/context-plugins/paypal-typescript-sdk.git#5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2",
+    "typescript": "5.9.3",
+    "@types/node": "22.18.10"
+  }
+}

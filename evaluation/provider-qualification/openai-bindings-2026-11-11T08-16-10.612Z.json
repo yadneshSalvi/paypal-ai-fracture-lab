@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "kind": "api_binding_qualification",
+  "studyTask": false,
+  "qualityMeasurement": false,
+  "passed": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "result": {
+    "schemaVersion": 1,
+    "kind": "model_generation",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "status": "infrastructure_failure",
+    "source": null,
+    "sourceHash": null,
+    "summary": null,
+    "errorCode": "provider_400",
+    "calls": [
+      {
+        "index": 0,
+        "http": {
+          "provider": "openai",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "requestHash": "f30e96377e4c0ed44402aa2a274c5f0952f0a9e62fdd00173b90c935eebaf0ff",
+          "startedAt": "2026-11-11T08:16:10.620Z",
+          "finishedAt": "2026-11-11T08:16:12.379Z",
+          "durationMs": 1759,
+          "httpStatus": 200,
+          "requestId": "req_f1af6c0caf514fbeb01399b16f3b0c88",
+          "responseHash": "043dcabff74355558e018435d071ccaaee0374c83642412f13de87decc84f5d3",
+          "errorCode": null
+        },
+        "responseId": "resp_0c3bc1928cba04a1016af4244acbe487d2b9c99575f435f3bd",
+        "reportedModel": "gpt-6.1-sol",
+        "status": "completed",
+        "usage": {
+          "inputTokens": 357,
+          "cachedInputTokens": 0,
+          "outputTokens": 29,
+          "reasoningTokens": 0,
+          "totalTokens": 386,
+          "raw": {
+            "input_tokens": 357,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 29,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 386
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "fc_0c3bc1928cba04a1016af4244c004487d2a695c3859454ba00",
+            "call_id": "call_CHFLtFC7yjwZJOcASs6ZJi8u",
+            "name": "read_file",
+            "arguments": "{\"path\":\"qualification.txt\",\"startLine\":1,\"lineCount\":10}"
+          }
+        ],
+        "estimatedCostUsd": 0.001004,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 1,
+        "http": {
+          "provider": "openai",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "requestHash": "3ab171a410c1b93eb913d079ce505bf9bc1067dabf1dbb76cf54382f526fdce1",
+          "startedAt": "2026-11-11T08:16:12.380Z",
+          "finishedAt": "2026-11-11T08:16:12.629Z",
+          "durationMs": 249,
+          "httpStatus": 400,
+          "requestId": "req_28fe74589c6a412cb73186454293c543",
+          "responseHash": "99f9f27ff4a989c96755305cf6d704fcc589604da01803ca439bfde5d2ceec78",
+          "errorCode": "provider_400"
+        },
+        "responseId": null,
+        "reportedModel": null,
+        "status": null,
+        "usage": null,
+        "visibleOutput": null,
+        "estimatedCostUsd": null,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      }
+    ],
+    "toolAccesses": [
+      {
+        "index": 0,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "startLine": 1,
+          "lineCount": 10
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      }
+    ],
+    "inputTokens": 357,
+    "outputTokens": 29,
+    "reasoningTokens": 0,
+    "totalTokens": 386,
+    "estimatedCostUsd": 0.001004,
+    "unpricedCalls": 1,
+    "durationMs": 2016,
+    "finishedAt": "2026-11-11T08:16:12.629Z",
+    "receiptHash": "3573917a24f19dc9fceb5156a5f077062ff5c917e41a65cff99b7f97ee4a3863"
+  },
+  "eventsHash": "42f9310afd0f4215ec6c44a42293551c3b9bec1d95039a3601920df7f6f65292"
+}

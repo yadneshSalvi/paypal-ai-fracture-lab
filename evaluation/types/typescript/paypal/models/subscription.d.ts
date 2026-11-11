@@ -1,0 +1,22 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type LinkDescription } from "./link-description.js";
+import { type Money } from "./money.js";
+import { type PlanDetails } from "./plan-details.js";
+import { type Subscriber } from "./subscriber.js";
+import { type SubscriptionBillingInformation } from "./subscription-billing-information.js";
+export type Subscription = {
+    id?: string;
+    planId?: string;
+    startTime?: string;
+    quantity?: string;
+    shippingAmount?: Money;
+    subscriber?: Subscriber;
+    billingInfo?: SubscriptionBillingInformation;
+    createTime?: string;
+    updateTime?: string;
+    customId?: string;
+    planOverridden?: boolean;
+    plan?: PlanDetails;
+    links?: LinkDescription[];
+};
+export declare const subscriptionSchema: Schema<Subscription>;

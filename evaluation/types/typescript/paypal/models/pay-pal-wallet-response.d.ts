@@ -1,0 +1,26 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type Address } from "./address.js";
+import { type ExperienceStatus } from "./experience-status.js";
+import { type Name } from "./name.js";
+import { type PayPalWalletAccountVerificationStatus } from "./pay-pal-wallet-account-verification-status.js";
+import { type PayPalWalletAttributesResponse } from "./pay-pal-wallet-attributes-response.js";
+import { type PayPalWalletStoredCredential } from "./pay-pal-wallet-stored-credential.js";
+import { type PhoneNumber } from "./phone-number.js";
+import { type PhoneType } from "./phone-type.js";
+import { type TaxInfo } from "./tax-info.js";
+export type PayPalWalletResponse = {
+    emailAddress?: string;
+    accountId?: string;
+    accountStatus?: PayPalWalletAccountVerificationStatus;
+    name?: Name;
+    phoneType?: PhoneType;
+    phoneNumber?: PhoneNumber;
+    birthDate?: string;
+    businessName?: string;
+    taxInfo?: TaxInfo;
+    address?: Address;
+    attributes?: PayPalWalletAttributesResponse;
+    storedCredential?: PayPalWalletStoredCredential;
+    experienceStatus?: ExperienceStatus;
+};
+export declare const payPalWalletResponseSchema: Schema<PayPalWalletResponse>;

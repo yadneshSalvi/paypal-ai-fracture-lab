@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d4-py-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:51:27.972Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d4-py-heldout.json.gz",
+    "sha256": "3158b1d3a3170f8330d1fa87a8c57458fccc5e1ea28dd8b175cdc9d25f9f48c8"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "e30f8bd6ae3c9342403cfd9cea5d60580cf6f73a6597a6094bb760d20bc73d6d",
+      "receiptHash": "90ec454d5ed61324768b81065145fd52cec29cf411c79dc5c2ef8093f83234c0",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "one-item-batch/batch",
+          "passed": true,
+          "detail": "A one-item authorized refund batch completes."
+        },
+        {
+          "id": "same-capture-distinct-items/item-identity",
+          "passed": false,
+          "detail": "Two valid lines on one capture use distinct refund identities and replay without new writes."
+        },
+        {
+          "id": "same-capture-distinct-items/distinct-provider-identities",
+          "passed": false,
+          "detail": "Provider identity belongs to each item rather than the batch delivery."
+        },
+        {
+          "id": "partial-unknown-batch-restart/partial-progress",
+          "passed": false,
+          "detail": "The unknown item stays protected while the other item can complete once."
+        },
+        {
+          "id": "pending-item-settles-later/batch-pending",
+          "passed": false,
+          "detail": "One pending item prevents a completed batch claim."
+        },
+        {
+          "id": "pending-item-settles-later/reread-pending",
+          "passed": false,
+          "detail": "Known refund IDs settle by read without repeated batch payments."
+        },
+        {
+          "id": "concurrent-batch-and-all-item-scope/concurrent-items",
+          "passed": false,
+          "detail": "Parallel batch workers share durable item claims."
+        },
+        {
+          "id": "concurrent-batch-and-all-item-scope/prevalidate-batch",
+          "passed": false,
+          "detail": "Every item is scoped before the first batch payment is dispatched."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "3122ea5ff337c6a8e2006eb76eff7dfa1428434f33aaa0ead4683a8de15a1911",
+      "receiptHash": "ba56d32abaaba47e1cfd80525f4f5651b08475a5629c0bb96ef12cd2a0288f57",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "one-item-batch/batch",
+          "passed": true,
+          "detail": "A one-item authorized refund batch completes."
+        },
+        {
+          "id": "same-capture-distinct-items/item-identity",
+          "passed": true,
+          "detail": "Two valid lines on one capture use distinct refund identities and replay without new writes."
+        },
+        {
+          "id": "same-capture-distinct-items/distinct-provider-identities",
+          "passed": true,
+          "detail": "Provider identity belongs to each item rather than the batch delivery."
+        },
+        {
+          "id": "partial-unknown-batch-restart/partial-progress",
+          "passed": true,
+          "detail": "The unknown item stays protected while the other item can complete once."
+        },
+        {
+          "id": "pending-item-settles-later/batch-pending",
+          "passed": true,
+          "detail": "One pending item prevents a completed batch claim."
+        },
+        {
+          "id": "pending-item-settles-later/reread-pending",
+          "passed": true,
+          "detail": "Known refund IDs settle by read without repeated batch payments."
+        },
+        {
+          "id": "concurrent-batch-and-all-item-scope/concurrent-items",
+          "passed": true,
+          "detail": "Parallel batch workers share durable item claims."
+        },
+        {
+          "id": "concurrent-batch-and-all-item-scope/prevalidate-batch",
+          "passed": true,
+          "detail": "Every item is scoped before the first batch payment is dispatched."
+        }
+      ]
+    }
+  ]
+}

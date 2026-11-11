@@ -1,0 +1,21 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type CheckoutPaymentIntent } from "./checkout-payment-intent.js";
+import { type LinkDescription } from "./link-description.js";
+import { type OrderAuthorizeResponsePaymentSource } from "./order-authorize-response-payment-source.js";
+import { type OrderStatus } from "./order-status.js";
+import { type Payer } from "./payer.js";
+import { type ProcessingInstruction } from "./processing-instruction.js";
+import { type PurchaseUnit } from "./purchase-unit.js";
+export type OrderAuthorizeResponse = {
+    createTime?: string;
+    updateTime?: string;
+    id?: string;
+    paymentSource?: OrderAuthorizeResponsePaymentSource;
+    intent?: CheckoutPaymentIntent;
+    processingInstruction?: ProcessingInstruction;
+    payer?: Payer;
+    purchaseUnits?: PurchaseUnit[];
+    status?: OrderStatus;
+    links?: LinkDescription[];
+};
+export declare const orderAuthorizeResponseSchema: Schema<OrderAuthorizeResponse>;

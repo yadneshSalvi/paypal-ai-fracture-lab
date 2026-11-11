@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "tag": "fracture-evaluation:1-a25552bfb621",
+  "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+  "inputs": {
+    "package.json": "4911c3f4e3894ccc7bdffa5578c93786352010cee6a2c0d5a536a7d1e4870900",
+    "package-lock.json": "eb7c24c71815cbfe7c0ce7d00e3f65f5b9e5ae084544fca70ab1081ecf8ad7ff",
+    "requirements.txt": "8b07bca0b3dd578f9d7bd1961886cdc37f20f3632d8f65b26b23087fdb6f851e",
+    "Dockerfile": "187864348d7945f5509f6084bbfc6073085cc23cfc1cfb9f34b80f0cfa209835",
+    "api.ts": "44e4512a6d46e27fea9b25aeafbeccc09af6cd3eb8c123686a1a9b588d5ca681",
+    "api.py": "0f772f73d538b793840dfa92a9e2a073e555c26436994141ff128fcfa3629e49",
+    "runtime/channel.d.mts": "ec88a6c8a776e7e9c1de07c3a900a22f3be57137b9b08b8145fc888200446e3a",
+    "runtime/channel.mjs": "d9f9a1c39165268aff5d38a2b02d950a8dcd8253ce1dd7551ab8c5e7b62aca19",
+    "runtime/policy.mjs": "12b92a195cccbb5a3a8702ee337b9ab2eef5ada09a89ede6d973449dd7fdb7df",
+    "runtime/policy.py": "aabaeec32fd82484ff03a99d4086d657ae453c20fd8860f18eb216a7ecf20a67",
+    "runtime/supervisor.mjs": "155839a7fdb5aeeeea9c4e1851b4fd57f615bc538f5a2b5bc69cf1a414033acd",
+    "runtime/worker.mjs": "9e93e3fb6cf47fe0adf910065bc84e54e481ab929b57302c5676dd3cff38e430",
+    "runtime/worker.py": "4f665082deebd3cec877d01ad7b8c8e2cf04c5e8b23ee691cfeea7ac790bdc41"
+  },
+  "architecture": "arm64",
+  "os": "linux",
+  "context": "colima-fracture-lab",
+  "baseImage": "node:22.22.3-bookworm-slim@sha256:e21fc383b50d5347dc7a9f1cae45b8f4e2f0d39f7ade28e4eef7d2934522b752",
+  "createdAt": "2026-11-11T08:44:23.072Z",
+  "realCredentials": false,
+  "network": "none",
+  "gradingBoundary": "Trusted external evaluator; candidate SDK wire and SQL capabilities only."
+}

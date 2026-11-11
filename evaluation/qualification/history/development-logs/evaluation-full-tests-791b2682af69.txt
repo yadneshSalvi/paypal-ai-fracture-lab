@@ -1,0 +1,2722 @@
+
+> fracture-lab@0.1.0 test
+> tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: model-selected diagnosis performs a real scoped read and cannot dispatch money
+ok 1 - model-selected diagnosis performs a real scoped read and cannot dispatch money
+  ---
+  duration_ms: 101.578084
+  type: 'test'
+  ...
+# Subtest: an out-of-scope model tool argument is rejected before resource access
+ok 2 - an out-of-scope model tool argument is rejected before resource access
+  ---
+  duration_ms: 26.668625
+  type: 'test'
+  ...
+# Subtest: model transport persists attempts without authorization and excludes private reasoning
+ok 3 - model transport persists attempts without authorization and excludes private reasoning
+  ---
+  duration_ms: 43.641792
+  type: 'test'
+  ...
+# Subtest: incomplete model response remains a failed retained attempt including usage
+ok 4 - incomplete model response remains a failed retained attempt including usage
+  ---
+  duration_ms: 42.9125
+  type: 'test'
+  ...
+# Subtest: SQL cancellation aborts an in-flight model request and prevents late publication
+ok 5 - SQL cancellation aborts an in-flight model request and prevents late publication
+  ---
+  duration_ms: 1546.196625
+  type: 'test'
+  ...
+# Subtest: cancelled authority and diagnosis commit are checked atomically
+ok 6 - cancelled authority and diagnosis commit are checked atomically
+  ---
+  duration_ms: 13.99675
+  type: 'test'
+  ...
+# Subtest: fragmented UTF-8 SSE accepts only terminal output and never retains reasoning deltas
+ok 7 - fragmented UTF-8 SSE accepts only terminal output and never retains reasoning deltas
+  ---
+  duration_ms: 17.862292
+  type: 'test'
+  ...
+# Subtest: a disconnected stream cannot promote a partial generated answer
+ok 8 - a disconnected stream cannot promote a partial generated answer
+  ---
+  duration_ms: 13.005209
+  type: 'test'
+  ...
+# Subtest: streamed incomplete output retains usage and never becomes a completed model receipt
+ok 9 - streamed incomplete output retains usage and never becomes a completed model receipt
+  ---
+  duration_ms: 16.21825
+  type: 'test'
+  ...
+# Subtest: background work resumes from a new worker with one create and one immutable receipt
+ok 10 - background work resumes from a new worker with one create and one immutable receipt
+  ---
+  duration_ms: 15.833625
+  type: 'test'
+  ...
+# Subtest: a lost background create response is retained and never automatically resubmitted
+ok 11 - a lost background create response is retained and never automatically resubmitted
+  ---
+  duration_ms: 15.024542
+  type: 'test'
+  ...
+# Subtest: background checkpoint rejects changed input and a foreign response identity
+ok 12 - background checkpoint rejects changed input and a foreign response identity
+  ---
+  duration_ms: 15.222209
+  type: 'test'
+  ...
+# Subtest: cancelled background work retains its exact provider identity through failed cleanup
+ok 13 - cancelled background work retains its exact provider identity through failed cleanup
+  ---
+  duration_ms: 12.946041
+  type: 'test'
+  ...
+# Subtest: sqlite: baseline and control both pass the original happy-path purchase
+ok 14 - sqlite: baseline and control both pass the original happy-path purchase
+  ---
+  duration_ms: 119.843083
+  type: 'test'
+  ...
+# Subtest: sqlite: S0 faulty retry creates two approved orders, control reconciles one
+ok 15 - sqlite: S0 faulty retry creates two approved orders, control reconciles one
+  ---
+  duration_ms: 89.827625
+  type: 'test'
+  ...
+# Subtest: sqlite: interactive retry and repeated HTTP command identities do not duplicate the experiment
+ok 16 - sqlite: interactive retry and repeated HTTP command identities do not duplicate the experiment
+  ---
+  duration_ms: 41.597209
+  type: 'test'
+  ...
+# Subtest: sqlite: unavailable reread remains checking without another purchase
+ok 17 - sqlite: unavailable reread remains checking without another purchase
+  ---
+  duration_ms: 29.143125
+  type: 'test'
+  ...
+# Subtest: sqlite: never-sent authentication has no provider mutation or invented reconciliation
+ok 18 - sqlite: never-sent authentication has no provider mutation or invented reconciliation
+  ---
+  duration_ms: 40.720333
+  type: 'test'
+  ...
+# Subtest: sqlite: malformed success is reconciled by control and misreported by baseline
+ok 19 - sqlite: malformed success is reconciled by control and misreported by baseline
+  ---
+  duration_ms: 42.675583
+  type: 'test'
+  ...
+# Subtest: sqlite: pending capture cannot back fulfillment and does not become completed money
+ok 20 - sqlite: pending capture cannot back fulfillment and does not become completed money
+  ---
+  duration_ms: 54.038583
+  type: 'test'
+  ...
+# Subtest: sqlite: harness safety intervention cannot count as target pass
+ok 21 - sqlite: harness safety intervention cannot count as target pass
+  ---
+  duration_ms: 45.204334
+  type: 'test'
+  ...
+# Subtest: sqlite: partial compensation preserves gross duplicate history and original failure
+ok 22 - sqlite: partial compensation preserves gross duplicate history and original failure
+  ---
+  duration_ms: 24.282625
+  type: 'test'
+  ...
+# Subtest: sqlite: session ownership, signed cookies, and immutable command payloads
+ok 23 - sqlite: session ownership, signed cookies, and immutable command payloads
+  ---
+  duration_ms: 23.595125
+  type: 'test'
+  ...
+# Subtest: sqlite: reload reads durable evidence through a fresh database connection
+ok 24 - sqlite: reload reads durable evidence through a fresh database connection
+  ---
+  duration_ms: 24.754
+  type: 'test'
+  ...
+# Subtest: sqlite: expired worker at dispatch boundary cannot blindly replay
+ok 25 - sqlite: expired worker at dispatch boundary cannot blindly replay
+  ---
+  duration_ms: 10.646208
+  type: 'test'
+  ...
+# Subtest: repair policy rejects weakened assertions and secret access before execution
+ok 26 - repair policy rejects weakened assertions and secret access before execution
+  ---
+  duration_ms: 0.434916
+  type: 'test'
+  ...
+# Subtest: balanced protocol creates 600 unique stable assignments, 300 held out, randomized arms, arm-free grading
+ok 27 - balanced protocol creates 600 unique stable assignments, 300 held out, randomized arms, arm-free grading
+  ---
+  duration_ms: 32.567542
+  type: 'test'
+  ...
+# Subtest: invalid split, hidden leakage, token mismatch and duplicate seeds cannot freeze
+ok 28 - invalid split, hidden leakage, token mismatch and duplicate seeds cannot freeze
+  ---
+  duration_ms: 7.069083
+  type: 'test'
+  ...
+# Subtest: file verification detects changed hashes, path traversal, secrets and symlink escape
+ok 29 - file verification detects changed hashes, path traversal, secrets and symlink escape
+  ---
+  duration_ms: 144.453917
+  type: 'test'
+  ...
+# Subtest: missing and infrastructure outcomes stay in the denominator and suppress incomplete intervals
+ok 30 - missing and infrastructure outcomes stay in the denominator and suppress incomplete intervals
+  ---
+  duration_ms: 15.041583
+  type: 'test'
+  ...
+# Subtest: retained first submission permits only one linked predeclared infrastructure retry
+ok 31 - retained first submission permits only one linked predeclared infrastructure retry
+  ---
+  duration_ms: 32.678917
+  type: 'test'
+  ...
+# Subtest: a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate
+ok 32 - a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate
+  ---
+  duration_ms: 35.95375
+  type: 'test'
+  ...
+# Subtest: executable protocol binds four language-specific token budgets and equal provider workers
+ok 33 - executable protocol binds four language-specific token budgets and equal provider workers
+  ---
+  duration_ms: 1.584708
+  type: 'test'
+  ...
+# Subtest: invalid final model output is a retained scored failure, never a free infrastructure retry
+ok 34 - invalid final model output is a retained scored failure, never a free infrastructure retry
+  ---
+  duration_ms: 12.852125
+  type: 'test'
+  ...
+# Subtest: paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible
+ok 35 - paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible
+  ---
+  duration_ms: 1336.86975
+  type: 'test'
+  ...
+# Subtest: contract evidence binds exact source/test spans and only supported categories
+ok 36 - contract evidence binds exact source/test spans and only supported categories
+  ---
+  duration_ms: 36.879209
+  type: 'test'
+  ...
+# Subtest: a stale provider, fixture, database or test hash invalidates all verification
+ok 37 - a stale provider, fixture, database or test hash invalidates all verification
+  ---
+  duration_ms: 6.901333
+  type: 'test'
+  ...
+# Subtest: missing, failed, duplicate, absent-adapter and malformed receipts never verify
+ok 38 - missing, failed, duplicate, absent-adapter and malformed receipts never verify
+  ---
+  duration_ms: 18.046833
+  type: 'test'
+  ...
+# Subtest: sqlite: developer calls persist actual experiment evidence and bind command identity
+ok 39 - sqlite: developer calls persist actual experiment evidence and bind command identity
+  ---
+  duration_ms: 171.337458
+  type: 'test'
+  ...
+# Subtest: sqlite: an independent developer grant cannot read or diagnose another session's run
+ok 40 - sqlite: an independent developer grant cannot read or diagnose another session's run
+  ---
+  duration_ms: 43.303708
+  type: 'test'
+  ...
+# Subtest: sqlite: expired, revoked, forged and stale owner grants fail closed
+ok 41 - sqlite: expired, revoked, forged and stale owner grants fail closed
+  ---
+  duration_ms: 7.568917
+  type: 'test'
+  ...
+# Subtest: sqlite: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios
+ok 42 - sqlite: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios
+  ---
+  duration_ms: 15.004292
+  type: 'test'
+  ...
+# Subtest: sqlite: proposals are read-only and rate limits bound execution
+ok 43 - sqlite: proposals are read-only and rate limits bound execution
+  ---
+  duration_ms: 12.179333
+  type: 'test'
+  ...
+# Subtest: private credential initialization is idempotent and rejects symlinks and broad file permissions
+ok 44 - private credential initialization is idempotent and rejects symlinks and broad file permissions
+  ---
+  duration_ms: 24.125917
+  type: 'test'
+  ...
+# Subtest: MCP client discovers strict schemas, executes Sample flow, and observes immediate grant revocation
+ok 45 - MCP client discovers strict schemas, executes Sample flow, and observes immediate grant revocation
+  ---
+  duration_ms: 49.724667
+  type: 'test'
+  ...
+# Subtest: CLI and real stdio MCP share persisted owner scope across fresh processes
+ok 46 - CLI and real stdio MCP share persisted owner scope across fresh processes # SKIP
+  ---
+  duration_ms: 0.119667
+  type: 'test'
+  ...
+# Subtest: sqlite: actual Toolkit baseline creates two orders, control recovers one, neither captures
+ok 47 - sqlite: actual Toolkit baseline creates two orders, control recovers one, neither captures
+  ---
+  duration_ms: 2445.123958
+  type: 'test'
+  ...
+# Subtest: sqlite: control commits claim before dispatch and concurrent callers share one operation
+ok 48 - sqlite: control commits claim before dispatch and concurrent callers share one operation
+  ---
+  duration_ms: 388.873
+  type: 'test'
+  ...
+# Subtest: sqlite: changed arguments, other session, cancelled run and disabled tools cannot dispatch
+ok 49 - sqlite: changed arguments, other session, cancelled run and disabled tools cannot dispatch
+  ---
+  duration_ms: 384.298125
+  type: 'test'
+  ...
+# Subtest: sqlite: authentication refusal is never classified as an unknown order
+ok 50 - sqlite: authentication refusal is never classified as an unknown order
+  ---
+  duration_ms: 385.445083
+  type: 'test'
+  ...
+# Subtest: sqlite: Toolkit structured refusal remains distinct from unknown transport failure
+ok 51 - sqlite: Toolkit structured refusal remains distinct from unknown transport failure
+  ---
+  duration_ms: 382.889042
+  type: 'test'
+  ...
+# Subtest: receipt hashes survive JSON persistence without allowing a changed verdict
+ok 52 - receipt hashes survive JSON persistence without allowing a changed verdict
+  ---
+  duration_ms: 78.943667
+  type: 'test'
+  ...
+# Subtest: atomic SQL capacity holds an unknown refund and releases only an explicit refused reservation
+ok 53 - atomic SQL capacity holds an unknown refund and releases only an explicit refused reservation
+  ---
+  duration_ms: 9.816084
+  type: 'test'
+  ...
+# Subtest: the offline provider refuses refunds against pending money and preserves distinct request identities
+ok 54 - the offline provider refuses refunds against pending money and preserves distinct request identities
+  ---
+  duration_ms: 0.747125
+  type: 'test'
+  ...
+# Subtest: Gemini thought tokens enter the output limit once; OpenAI reasoning is already inside output_tokens
+ok 55 - Gemini thought tokens enter the output limit once; OpenAI reasoning is already inside output_tokens
+  ---
+  duration_ms: 0.261667
+  type: 'test'
+  ...
+# Subtest: the ZDR gateway carries opaque reasoning and tool results without exposing reasoning in receipts
+ok 56 - the ZDR gateway carries opaque reasoning and tool results without exposing reasoning in receipts
+  ---
+  duration_ms: 25.788625
+  type: 'test'
+  ...
+# Subtest: a missing final source stays a failed first submission without a quality retry
+ok 57 - a missing final source stays a failed first submission without a quality retry
+  ---
+  duration_ms: 0.393375
+  type: 'test'
+  ...
+# Subtest: provider failures remain infrastructure records and the gateway never silently retries them
+ok 58 - provider failures remain infrastructure records and the gateway never silently retries them
+  ---
+  duration_ms: 0.390625
+  type: 'test'
+  ...
+# Subtest: cumulative output budget stops a tool loop before an extra generation request
+ok 59 - cumulative output budget stops a tool loop before an extra generation request
+  ---
+  duration_ms: 0.404708
+  type: 'test'
+  ...
+# Subtest: sqlite: generated jobs retain source/context bindings, provenance and exact verification
+ok 60 - sqlite: generated jobs retain source/context bindings, provenance and exact verification
+  ---
+  duration_ms: 202.052959
+  type: 'test'
+  ...
+# Subtest: sqlite: unresolved contract binding blocks code generation before dispatch
+ok 61 - sqlite: unresolved contract binding blocks code generation before dispatch
+  ---
+  duration_ms: 59.911375
+  type: 'test'
+  ...
+# Subtest: sqlite: excess and duplicate contract categories fail before author dispatch
+ok 62 - sqlite: excess and duplicate contract categories fail before author dispatch
+  ---
+  duration_ms: 56.573584
+  type: 'test'
+  ...
+# Subtest: sqlite: stale or forged patch citations are rejected with attempts retained
+ok 63 - sqlite: stale or forged patch citations are rejected with attempts retained
+  ---
+  duration_ms: 35.381542
+  type: 'test'
+  ...
+# Subtest: sqlite: queue payload mutation fails before a model call
+ok 64 - sqlite: queue payload mutation fails before a model call
+  ---
+  duration_ms: 39.285541
+  type: 'test'
+  ...
+# Subtest: sqlite: context changes after queue block model dispatch
+ok 65 - sqlite: context changes after queue block model dispatch
+  ---
+  duration_ms: 59.387708
+  type: 'test'
+  ...
+# Subtest: sqlite: cancellation racing the model cannot publish a candidate
+ok 66 - sqlite: cancellation racing the model cannot publish a candidate
+  ---
+  duration_ms: 50.487583
+  type: 'test'
+  ...
+# Subtest: sqlite: expired and revoked authority stop queued work
+ok 67 - sqlite: expired and revoked authority stop queued work
+  ---
+  duration_ms: 31.885625
+  type: 'test'
+  ...
+# Subtest: sqlite: concurrent workers produce one saved candidate
+ok 68 - sqlite: concurrent workers produce one saved candidate
+  ---
+  duration_ms: 39.491209
+  type: 'test'
+  ...
+# Subtest: sqlite: cross-session and mutated candidate records cannot execute
+ok 69 - sqlite: cross-session and mutated candidate records cannot execute
+  ---
+  duration_ms: 38.629416
+  type: 'test'
+  ...
+# Subtest: sqlite: a different runner or candidate hash cannot produce verified status
+ok 70 - sqlite: a different runner or candidate hash cannot produce verified status
+  ---
+  duration_ms: 47.108542
+  type: 'test'
+  ...
+# Subtest: sqlite: failed behavioral checks stay failed and do not rewrite reference provenance
+ok 71 - sqlite: failed behavioral checks stay failed and do not rewrite reference provenance
+  ---
+  duration_ms: 49.83925
+  type: 'test'
+  ...
+# Subtest: sqlite: refinement uses exact prior failure without replacing its evidence
+ok 72 - sqlite: refinement uses exact prior failure without replacing its evidence
+  ---
+  duration_ms: 59.984125
+  type: 'test'
+  ...
+# Subtest: sqlite: revised authoring context requires a new candidate and retains prior context provenance
+ok 73 - sqlite: revised authoring context requires a new candidate and retains prior context provenance
+  ---
+  duration_ms: 53.030959
+  type: 'test'
+  ...
+# Subtest: sqlite: a checkpointed abandoned lease resumes its saved action
+ok 74 - sqlite: a checkpointed abandoned lease resumes its saved action
+  ---
+  duration_ms: 32.027542
+  type: 'test'
+  ...
+# Subtest: sqlite: abandoned leases fail visibly and are never automatically regenerated
+ok 75 - sqlite: abandoned leases fail visibly and are never automatically regenerated
+  ---
+  duration_ms: 33.903792
+  type: 'test'
+  ...
+# Subtest: fresh worker process observes a revoked grant without calling the model
+ok 76 - fresh worker process observes a revoked grant without calling the model # SKIP
+  ---
+  duration_ms: 0.053333
+  type: 'test'
+  ...
+# Subtest: candidate policy accepts the original bounded checkout and rejects ambient execution
+ok 77 - candidate policy accepts the original bounded checkout and rejects ambient execution
+  ---
+  duration_ms: 136.71775
+  type: 'test'
+  ...
+# Subtest: SQL capability cannot alter provider observations, schemas or attached databases
+ok 78 - SQL capability cannot alter provider observations, schemas or attached databases
+  ---
+  duration_ms: 0.677708
+  type: 'test'
+  ...
+# Subtest: live phases retain a real response before loss; distinct retry requires another approval
+ok 79 - live phases retain a real response before loss; distinct retry requires another approval
+  ---
+  duration_ms: 149.978
+  type: 'test'
+  ...
+# Subtest: hardened actual SDK phases reconcile the original capture and fulfill once
+ok 80 - hardened actual SDK phases reconcile the original capture and fulfill once
+  ---
+  duration_ms: 86.088208
+  type: 'test'
+  ...
+# Subtest: concurrent original callbacks do not repeat one experiment step
+ok 81 - concurrent original callbacks do not repeat one experiment step
+  ---
+  duration_ms: 66.249959
+  type: 'test'
+  ...
+# Subtest: session, exact order, amount, expiry and cancellation bind every mutation
+ok 82 - session, exact order, amount, expiry and cancellation bind every mutation
+  ---
+  duration_ms: 20.234333
+  type: 'test'
+  ...
+# Subtest: an unknown create stays protected without a replacement or invented lookup
+ok 83 - an unknown create stays protected without a replacement or invented lookup
+  ---
+  duration_ms: 44.589667
+  type: 'test'
+  ...
+# Subtest: never-sent authentication is distinct and issues no original-resource reads
+ok 84 - never-sent authentication is distinct and issues no original-resource reads
+  ---
+  duration_ms: 14.188583
+  type: 'test'
+  ...
+# Subtest: public live resource parsing omits payer details and credentials
+ok 85 - public live resource parsing omits payer details and credentials
+  ---
+  duration_ms: 0.15925
+  type: 'test'
+  ...
+# Subtest: read-only recovery completes the original hardened payment after unavailable reads
+ok 86 - read-only recovery completes the original hardened payment after unavailable reads
+  ---
+  duration_ms: 57.416125
+  type: 'test'
+  ...
+# Subtest: recovery never repairs the faulty target from privileged lab knowledge
+ok 87 - recovery never repairs the faulty target from privileged lab knowledge
+  ---
+  duration_ms: 46.333458
+  type: 'test'
+  ...
+# Subtest: cancellation after an already-sent capture prevents fulfillment but retains its money
+ok 88 - cancellation after an already-sent capture prevents fulfillment but retains its money
+  ---
+  duration_ms: 76.421292
+  type: 'test'
+  ...
+# Subtest: expired authority and changed source are refused before any provider dispatch
+ok 89 - expired authority and changed source are refused before any provider dispatch
+  ---
+  duration_ms: 15.543959
+  type: 'test'
+  ...
+# Subtest: pending provider capture cannot release a digital book
+ok 90 - pending provider capture cannot release a digital book
+  ---
+  duration_ms: 37.053917
+  type: 'test'
+  ...
+# Subtest: rolling capture reservations include unknown outcomes and refuse a seventh dispatch
+ok 91 - rolling capture reservations include unknown outcomes and refuse a seventh dispatch
+  ---
+  duration_ms: 40.324833
+  type: 'test'
+  ...
+# Subtest: PostgreSQL concurrent callbacks preserve one claimed original order and capture
+ok 92 - PostgreSQL concurrent callbacks preserve one claimed original order and capture # SKIP
+  ---
+  duration_ms: 0.070167
+  type: 'test'
+  ...
+# Subtest: explicit duplicate compensation refunds exactly once and preserves both original charges
+ok 93 - explicit duplicate compensation refunds exactly once and preserves both original charges
+  ---
+  duration_ms: 56.0725
+  type: 'test'
+  ...
+# Subtest: compensation denies a changed original capture before a refund dispatch
+ok 94 - compensation denies a changed original capture before a refund dispatch
+  ---
+  duration_ms: 32.607166
+  type: 'test'
+  ...
+# Subtest: same-tab approval uses the provider original link and freezes an allowed return origin
+ok 95 - same-tab approval uses the provider original link and freezes an allowed return origin
+  ---
+  duration_ms: 20.2505
+  type: 'test'
+  ...
+# Subtest: invoice create exact wire and independent owned reread; no money effect inferred
+ok 96 - invoice create exact wire and independent owned reread; no money effect inferred
+  ---
+  duration_ms: 18.92425
+  type: 'test'
+  ...
+# Subtest: lost invoice create searches original reference then rereads, never posts second draft
+ok 97 - lost invoice create searches original reference then rereads, never posts second draft
+  ---
+  duration_ms: 1.94525
+  type: 'test'
+  ...
+# Subtest: invoice unknown with no match remains unknown and does not leak request or error data
+ok 98 - invoice unknown with no match remains unknown and does not leak request or error data
+  ---
+  duration_ms: 0.905291
+  type: 'test'
+  ...
+# Subtest: authentication failure is never-sent and does not perform recovery read
+ok 99 - authentication failure is never-sent and does not perform recovery read
+  ---
+  duration_ms: 0.128334
+  type: 'test'
+  ...
+# Subtest: invalid payout amount and duplicate item reject before OAuth
+ok 100 - invalid payout amount and duplicate item reject before OAuth
+  ---
+  duration_ms: 0.174375
+  type: 'test'
+  ...
+# Subtest: share-link-only invoice sends no notifications and observes current state
+ok 101 - share-link-only invoice sends no notifications and observes current state
+  ---
+  duration_ms: 1.031542
+  type: 'test'
+  ...
+# Subtest: invoice send guard future
+ok 102 - invoice send guard future
+  ---
+  duration_ms: 0.292292
+  type: 'test'
+  ...
+# Subtest: invoice send guard wrong-reference
+ok 103 - invoice send guard wrong-reference
+  ---
+  duration_ms: 0.178708
+  type: 'test'
+  ...
+# Subtest: invoice send guard already-paid
+ok 104 - invoice send guard already-paid
+  ---
+  duration_ms: 0.322708
+  type: 'test'
+  ...
+# Subtest: invoice cancellation observes CANCELLED after 204, not a refund
+ok 105 - invoice cancellation observes CANCELLED after 204, not a refund
+  ---
+  duration_ms: 0.695
+  type: 'test'
+  ...
+# Subtest: invoice preserves PAYPAL and EXTERNAL identities with unproved refund lineage
+ok 106 - invoice preserves PAYPAL and EXTERNAL identities with unproved refund lineage
+  ---
+  duration_ms: 0.296833
+  type: 'test'
+  ...
+# Subtest: payout exact stable wire EMAIL
+ok 107 - payout exact stable wire EMAIL
+  ---
+  duration_ms: 0.415125
+  type: 'test'
+  ...
+# Subtest: payout exact stable wire PAYPAL_ID
+ok 108 - payout exact stable wire PAYPAL_ID
+  ---
+  duration_ms: 0.33925
+  type: 'test'
+  ...
+# Subtest: successful payout batch preserves unclaimed item and estimated fee
+ok 109 - successful payout batch preserves unclaimed item and estimated fee
+  ---
+  duration_ms: 0.361
+  type: 'test'
+  ...
+# Subtest: payout HTTP 400 preserves outcome and never retries
+ok 110 - payout HTTP 400 preserves outcome and never retries
+  ---
+  duration_ms: 0.196583
+  type: 'test'
+  ...
+# Subtest: payout HTTP 403 preserves outcome and never retries
+ok 111 - payout HTTP 403 preserves outcome and never retries
+  ---
+  duration_ms: 0.159041
+  type: 'test'
+  ...
+# Subtest: payout HTTP 408 preserves outcome and never retries
+ok 112 - payout HTTP 408 preserves outcome and never retries
+  ---
+  duration_ms: 0.169833
+  type: 'test'
+  ...
+# Subtest: payout HTTP 429 preserves outcome and never retries
+ok 113 - payout HTTP 429 preserves outcome and never retries
+  ---
+  duration_ms: 0.151083
+  type: 'test'
+  ...
+# Subtest: payout HTTP 500 preserves outcome and never retries
+ok 114 - payout HTTP 500 preserves outcome and never retries
+  ---
+  duration_ms: 0.211375
+  type: 'test'
+  ...
+# Subtest: payout network loss does not generate another identity or retry
+ok 115 - payout network loss does not generate another identity or retry
+  ---
+  duration_ms: 0.154125
+  type: 'test'
+  ...
+# Subtest: malformed 2xx payout stays unknown
+ok 116 - malformed 2xx payout stays unknown
+  ---
+  duration_ms: 0.204333
+  type: 'test'
+  ...
+# Subtest: duplicate payout safely resolves original only with full item binding
+ok 117 - duplicate payout safely resolves original only with full item binding
+  ---
+  duration_ms: 0.30825
+  type: 'test'
+  ...
+# Subtest: duplicate payout cannot adopt external-link
+ok 118 - duplicate payout cannot adopt external-link
+  ---
+  duration_ms: 0.202916
+  type: 'test'
+  ...
+# Subtest: duplicate payout cannot adopt wrong-item
+ok 119 - duplicate payout cannot adopt wrong-item
+  ---
+  duration_ms: 0.320708
+  type: 'test'
+  ...
+# Subtest: payout paginates complete item set without following provider URLs
+ok 120 - payout paginates complete item set without following provider URLs
+  ---
+  duration_ms: 1.851667
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination missing-total
+ok 121 - incomplete payout pagination missing-total
+  ---
+  duration_ms: 0.424125
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination duplicate
+ok 122 - incomplete payout pagination duplicate
+  ---
+  duration_ms: 1.832375
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination wrong-batch
+ok 123 - incomplete payout pagination wrong-batch
+  ---
+  duration_ms: 7.947416
+  type: 'test'
+  ...
+# Subtest: incomplete payout pagination drift
+ok 124 - incomplete payout pagination drift
+  ---
+  duration_ms: 0.325833
+  type: 'test'
+  ...
+# Subtest: unclaimed cancellation validates original and confirms RETURNED after response loss
+ok 125 - unclaimed cancellation validates original and confirms RETURNED after response loss
+  ---
+  duration_ms: 0.352042
+  type: 'test'
+  ...
+# Subtest: payout cancellation preflight claimed
+ok 126 - payout cancellation preflight claimed
+  ---
+  duration_ms: 0.148958
+  type: 'test'
+  ...
+# Subtest: payout cancellation preflight wrong-recipient
+ok 127 - payout cancellation preflight wrong-recipient
+  ---
+  duration_ms: 0.110542
+  type: 'test'
+  ...
+# Subtest: pre-aborted request never asks for credentials or writes
+ok 128 - pre-aborted request never asks for credentials or writes
+  ---
+  duration_ms: 0.1555
+  type: 'test'
+  ...
+# Subtest: actual share-link UNPAID state is accepted without implying payment
+ok 129 - actual share-link UNPAID state is accepted without implying payment
+  ---
+  duration_ms: 0.313417
+  type: 'test'
+  ...
+# Subtest: official sandbox invoice fragment link stays exact without following it
+ok 130 - official sandbox invoice fragment link stays exact without following it
+  ---
+  duration_ms: 0.127
+  type: 'test'
+  ...
+# Subtest: runtime evidence version matches the immutable package metadata
+ok 131 - runtime evidence version matches the immutable package metadata
+  ---
+  duration_ms: 3.221958
+  type: 'test'
+  ...
+# Subtest: sqlite: hardened control claims before outbound and concurrent duplicate callbacks dispatch once
+ok 132 - sqlite: hardened control claims before outbound and concurrent duplicate callbacks dispatch once
+  ---
+  duration_ms: 26.724709
+  type: 'test'
+  ...
+# Subtest: sqlite: lost write response reconciles the original operation without another write
+ok 133 - sqlite: lost write response reconciles the original operation without another write
+  ---
+  duration_ms: 11.409583
+  type: 'test'
+  ...
+# Subtest: sqlite: an unavailable reread remains unknown and blocks a retry
+ok 134 - sqlite: an unavailable reread remains unknown and blocks a retry
+  ---
+  duration_ms: 46.251584
+  type: 'test'
+  ...
+# Subtest: sqlite: never-sent authentication does not trigger a resource reread
+ok 135 - sqlite: never-sent authentication does not trigger a resource reread
+  ---
+  duration_ms: 4.889917
+  type: 'test'
+  ...
+# Subtest: sqlite: pending and denied resource states never become completed money movement
+ok 136 - sqlite: pending and denied resource states never become completed money movement
+  ---
+  duration_ms: 4.236291
+  type: 'test'
+  ...
+# Subtest: sqlite: two refund intents cannot reserve the same remaining money
+ok 137 - sqlite: two refund intents cannot reserve the same remaining money
+  ---
+  duration_ms: 7.899958
+  type: 'test'
+  ...
+# Subtest: sqlite: duplicate refund callbacks return their winner even while waiting for the resource lock
+ok 138 - sqlite: duplicate refund callbacks return their winner even while waiting for the resource lock
+  ---
+  duration_ms: 4.747375
+  type: 'test'
+  ...
+# Subtest: sqlite: a pending refund reconciles only when the refund resource completes
+ok 139 - sqlite: a pending refund reconciles only when the refund resource completes
+  ---
+  duration_ms: 20.445625
+  type: 'test'
+  ...
+# Subtest: sqlite: SQL failure after provider success is recovered by a read, never another write
+ok 140 - sqlite: SQL failure after provider success is recovered by a read, never another write
+  ---
+  duration_ms: 15.628375
+  type: 'test'
+  ...
+# Subtest: sqlite: exact recovery resumes one policy's command without scanning or touching another policy in the same scope
+ok 141 - sqlite: exact recovery resumes one policy's command without scanning or touching another policy in the same scope
+  ---
+  duration_ms: 4.550292
+  type: 'test'
+  ...
+# Subtest: sqlite: concurrent exact recovery returns the original SQL winner and dispatches once
+ok 142 - sqlite: concurrent exact recovery returns the original SQL winner and dispatches once
+  ---
+  duration_ms: 6.360375
+  type: 'test'
+  ...
+# Subtest: sqlite: exact recovery of an unknown outcome after expiry or revocation only reads its original resource
+ok 143 - sqlite: exact recovery of an unknown outcome after expiry or revocation only reads its original resource
+  ---
+  duration_ms: 5.213041
+  type: 'test'
+  ...
+# Subtest: sqlite: an expired exact dispatch lease reconciles without authorizing or repeating the write
+ok 144 - sqlite: an expired exact dispatch lease reconciles without authorizing or repeating the write
+  ---
+  duration_ms: 4.557834
+  type: 'test'
+  ...
+# Subtest: sqlite: an exact never-dispatched claim must still pass current authority and approval expiry
+ok 145 - sqlite: an exact never-dispatched claim must still pass current authority and approval expiry
+  ---
+  duration_ms: 4.4705
+  type: 'test'
+  ...
+# Subtest: sqlite: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope
+ok 146 - sqlite: exact recovery leaves active leases and terminal operations unchanged and enforces tenant/project scope
+  ---
+  duration_ms: 6.023875
+  type: 'test'
+  ...
+# Subtest: sqlite: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt
+ok 147 - sqlite: a lost SQL commit acknowledgement and failed attempt log preserve the canonical receipt
+  ---
+  duration_ms: 3.880667
+  type: 'test'
+  ...
+# Subtest: sqlite: revoked and altered authority is rejected before dispatch
+ok 148 - sqlite: revoked and altered authority is rejected before dispatch
+  ---
+  duration_ms: 4.484625
+  type: 'test'
+  ...
+# Subtest: sqlite: signature, payload schema, canonical deduplication, and dead letters are separate decisions
+ok 149 - sqlite: signature, payload schema, canonical deduplication, and dead letters are separate decisions
+  ---
+  duration_ms: 17.383333
+  type: 'test'
+  ...
+# Subtest: sqlite: invoice and payout event families queue exact resource hints without financial side effects
+ok 150 - sqlite: invoice and payout event families queue exact resource hints without financial side effects
+  ---
+  duration_ms: 8.152417
+  type: 'test'
+  ...
+# Subtest: sqlite: malformed, conflicting and unverified commerce event identities never enter the canonical queue
+ok 151 - sqlite: malformed, conflicting and unverified commerce event identities never enter the canonical queue
+  ---
+  duration_ms: 4.281542
+  type: 'test'
+  ...
+# Subtest: minor-unit money never uses binary-float rounding and unsupported precision fails closed
+ok 152 - minor-unit money never uses binary-float rounding and unsupported precision fails closed
+  ---
+  duration_ms: 0.623208
+  type: 'test'
+  ...
+# Subtest: public evidence recursively redacts credentials and customer contact data
+ok 153 - public evidence recursively redacts credentials and customer contact data
+  ---
+  duration_ms: 0.222917
+  type: 'test'
+  ...
+# Subtest: pinned SDK uses sandbox host, public operation fields, stable provider identity, and committed claim
+ok 154 - pinned SDK uses sandbox host, public operation fields, stable provider identity, and committed claim
+  ---
+  duration_ms: 60.994333
+  type: 'test'
+  ...
+# Subtest: pinned SDK redirect checkout sends only approved source fields and preserves separate order state
+ok 155 - pinned SDK redirect checkout sends only approved source fields and preserves separate order state
+  ---
+  duration_ms: 6.384417
+  type: 'test'
+  ...
+# Subtest: pinned SDK wallet checkout sends only approved source fields and preserves separate order state
+ok 156 - pinned SDK wallet checkout sends only approved source fields and preserves separate order state
+  ---
+  duration_ms: 6.432917
+  type: 'test'
+  ...
+# Subtest: pinned SDK combined checkout sends only approved source fields and preserves separate order state
+ok 157 - pinned SDK combined checkout sends only approved source fields and preserves separate order state
+  ---
+  duration_ms: 6.386875
+  type: 'test'
+  ...
+# Subtest: checkout rejects ungranted origin before authentication or claim
+ok 158 - checkout rejects ungranted origin before authentication or claim
+  ---
+  duration_ms: 3.685
+  type: 'test'
+  ...
+# Subtest: checkout rejects remote plaintext before authentication or claim
+ok 159 - checkout rejects remote plaintext before authentication or claim
+  ---
+  duration_ms: 4.112625
+  type: 'test'
+  ...
+# Subtest: checkout rejects embedded password before authentication or claim
+ok 160 - checkout rejects embedded password before authentication or claim
+  ---
+  duration_ms: 3.765791
+  type: 'test'
+  ...
+# Subtest: checkout rejects fragment before authentication or claim
+ok 161 - checkout rejects fragment before authentication or claim
+  ---
+  duration_ms: 5.131333
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses missing current consent before provider traffic
+ok 162 - saved wallet refuses missing current consent before provider traffic
+  ---
+  duration_ms: 3.790125
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses expired current consent before provider traffic
+ok 163 - saved wallet refuses expired current consent before provider traffic
+  ---
+  duration_ms: 24.713583
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses version current consent before provider traffic
+ok 164 - saved wallet refuses version current consent before provider traffic
+  ---
+  duration_ms: 7.78525
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses digest current consent before provider traffic
+ok 165 - saved wallet refuses digest current consent before provider traffic
+  ---
+  duration_ms: 3.82125
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses vault current consent before provider traffic
+ok 166 - saved wallet refuses vault current consent before provider traffic
+  ---
+  duration_ms: 3.286708
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses pattern current consent before provider traffic
+ok 167 - saved wallet refuses pattern current consent before provider traffic
+  ---
+  duration_ms: 3.159375
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses initiator current consent before provider traffic
+ok 168 - saved wallet refuses initiator current consent before provider traffic
+  ---
+  duration_ms: 3.209083
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses usage current consent before provider traffic
+ok 169 - saved wallet refuses usage current consent before provider traffic
+  ---
+  duration_ms: 2.627084
+  type: 'test'
+  ...
+# Subtest: saved wallet refuses resource current consent before provider traffic
+ok 170 - saved wallet refuses resource current consent before provider traffic
+  ---
+  duration_ms: 2.840459
+  type: 'test'
+  ...
+# Subtest: wallet consent revoked after durable claim cannot dispatch
+ok 171 - wallet consent revoked after durable claim cannot dispatch
+  ---
+  duration_ms: 3.876833
+  type: 'test'
+  ...
+# Subtest: nested checkout changes cannot reuse a durable operation identity
+ok 172 - nested checkout changes cannot reuse a durable operation identity
+  ---
+  duration_ms: 5.78625
+  type: 'test'
+  ...
+# Subtest: pinned SDK first-purchase wallet saving emits the exact vault instruction without consent or token leakage
+ok 173 - pinned SDK first-purchase wallet saving emits the exact vault instruction without consent or token leakage
+  ---
+  duration_ms: 68.475041
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses missing authority without traffic
+ok 174 - first-purchase wallet save refuses missing authority without traffic
+  ---
+  duration_ms: 6.328792
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses expired authority without traffic
+ok 175 - first-purchase wallet save refuses expired authority without traffic
+  ---
+  duration_ms: 3.662542
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses invalid expiry authority without traffic
+ok 176 - first-purchase wallet save refuses invalid expiry authority without traffic
+  ---
+  duration_ms: 3.82275
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses id authority without traffic
+ok 177 - first-purchase wallet save refuses id authority without traffic
+  ---
+  duration_ms: 8.358334
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses version authority without traffic
+ok 178 - first-purchase wallet save refuses version authority without traffic
+  ---
+  duration_ms: 6.113959
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses digest authority without traffic
+ok 179 - first-purchase wallet save refuses digest authority without traffic
+  ---
+  duration_ms: 7.17425
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses usage type authority without traffic
+ok 180 - first-purchase wallet save refuses usage type authority without traffic
+  ---
+  duration_ms: 2.709916
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save refuses amount authority without traffic
+ok 181 - first-purchase wallet save refuses amount authority without traffic
+  ---
+  duration_ms: 9.564417
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects redirect
+ok 182 - first-purchase wallet save rejects redirect
+  ---
+  duration_ms: 7.1465
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects both sources
+ok 183 - first-purchase wallet save rejects both sources
+  ---
+  duration_ms: 3.580666
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects blank id
+ok 184 - first-purchase wallet save rejects blank id
+  ---
+  duration_ms: 3.331667
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects bad version
+ok 185 - first-purchase wallet save rejects bad version
+  ---
+  duration_ms: 2.576041
+  type: 'test'
+  ...
+# Subtest: first-purchase wallet save rejects platform
+ok 186 - first-purchase wallet save rejects platform
+  ---
+  duration_ms: 2.933541
+  type: 'test'
+  ...
+# Subtest: new wallet saving consent revoked after claim leaves a never-sent operation
+ok 187 - new wallet saving consent revoked after claim leaves a never-sent operation
+  ---
+  duration_ms: 29.320333
+  type: 'test'
+  ...
+# Subtest: pinned SDK authorize_order sends empty JSON after payer approval
+ok 188 - pinned SDK authorize_order sends empty JSON after payer approval
+  ---
+  duration_ms: 14.362
+  type: 'test'
+  ...
+# Subtest: pinned SDK capture_order sends empty JSON after payer approval
+ok 189 - pinned SDK capture_order sends empty JSON after payer approval
+  ---
+  duration_ms: 5.891541
+  type: 'test'
+  ...
+# Subtest: pinned SDK connection after capture reconciles original order and capture reads
+ok 190 - pinned SDK connection after capture reconciles original order and capture reads
+  ---
+  duration_ms: 6.433292
+  type: 'test'
+  ...
+# Subtest: pinned SDK malformed-success after capture reconciles original order and capture reads
+ok 191 - pinned SDK malformed-success after capture reconciles original order and capture reads
+  ---
+  duration_ms: 15.614667
+  type: 'test'
+  ...
+# Subtest: pinned SDK OAuth refusal is never sent and does not issue payment reads or writes
+ok 192 - pinned SDK OAuth refusal is never sent and does not issue payment reads or writes
+  ---
+  duration_ms: 3.878
+  type: 'test'
+  ...
+# Subtest: pinned SDK 422 is a refusal with no automatic POST retry or unsafe body exposure
+ok 193 - pinned SDK 422 is a refusal with no automatic POST retry or unsafe body exposure
+  ---
+  duration_ms: 6.97825
+  type: 'test'
+  ...
+# Subtest: provider refusal does not echo unknown reasons, customer values, or descriptions
+ok 194 - provider refusal does not echo unknown reasons, customer values, or descriptions
+  ---
+  duration_ms: 4.994583
+  type: 'test'
+  ...
+# Subtest: Transaction Search accepts an omitted array only with explicit empty totals
+ok 195 - Transaction Search accepts an omitted array only with explicit empty totals
+  ---
+  duration_ms: 2.399667
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects missing totals instead of asserting complete history
+ok 196 - Transaction Search rejects missing totals instead of asserting complete history
+  ---
+  duration_ms: 0.742292
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects omitted nonempty page instead of asserting complete history
+ok 197 - Transaction Search rejects omitted nonempty page instead of asserting complete history
+  ---
+  duration_ms: 0.560208
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects contradictory empty totals instead of asserting complete history
+ok 198 - Transaction Search rejects contradictory empty totals instead of asserting complete history
+  ---
+  duration_ms: 0.681041
+  type: 'test'
+  ...
+# Subtest: Transaction Search rejects wrong response page instead of asserting complete history
+ok 199 - Transaction Search rejects wrong response page instead of asserting complete history
+  ---
+  duration_ms: 0.640417
+  type: 'test'
+  ...
+# Subtest: sandbox adapter rejects production hosts and omitted isolation before authentication
+ok 200 - sandbox adapter rejects production hosts and omitted isolation before authentication
+  ---
+  duration_ms: 0.084
+  type: 'test'
+  ...
+# Subtest: pinned SDK partial refund sends exact cents and custom identity while pending money stays reserved
+ok 201 - pinned SDK partial refund sends exact cents and custom identity while pending money stays reserved
+  ---
+  duration_ms: 26.073916
+  type: 'test'
+  ...
+# Subtest: REST webhook verification preserves signed JSON and rejects attacker certificate hosts
+ok 202 - REST webhook verification preserves signed JSON and rejects attacker certificate hosts
+  ---
+  duration_ms: 0.563834
+  type: 'test'
+  ...
+# Subtest: itemized ticket sends exact two components and matching item_total through the pinned SDK
+ok 203 - itemized ticket sends exact two components and matching item_total through the pinned SDK
+  ---
+  duration_ms: 8.931834
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses sum differs before claim or provider traffic
+ok 204 - itemized checkout refuses sum differs before claim or provider traffic
+  ---
+  duration_ms: 8.506
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses foreign currency before claim or provider traffic
+ok 205 - itemized checkout refuses foreign currency before claim or provider traffic
+  ---
+  duration_ms: 5.261625
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses fractional quantity before claim or provider traffic
+ok 206 - itemized checkout refuses fractional quantity before claim or provider traffic
+  ---
+  duration_ms: 3.322583
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses empty list before claim or provider traffic
+ok 207 - itemized checkout refuses empty list before claim or provider traffic
+  ---
+  duration_ms: 5.140417
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses blank name before claim or provider traffic
+ok 208 - itemized checkout refuses blank name before claim or provider traffic
+  ---
+  duration_ms: 5.727167
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses oversized quantity before claim or provider traffic
+ok 209 - itemized checkout refuses oversized quantity before claim or provider traffic
+  ---
+  duration_ms: 6.093084
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses unsafe multiplication before claim or provider traffic
+ok 210 - itemized checkout refuses unsafe multiplication before claim or provider traffic
+  ---
+  duration_ms: 3.328125
+  type: 'test'
+  ...
+# Subtest: itemized checkout refuses negative amount before claim or provider traffic
+ok 211 - itemized checkout refuses negative amount before claim or provider traffic
+  ---
+  duration_ms: 5.705208
+  type: 'test'
+  ...
+# Subtest: sqlite: encrypted operation survives a fresh store, duplicate claim, transitions and retry
+ok 212 - sqlite: encrypted operation survives a fresh store, duplicate claim, transitions and retry
+  ---
+  duration_ms: 18.757833
+  type: 'test'
+  ...
+# Subtest: sqlite: encrypted operation rejects missing codec and wrong key without returning private content
+ok 213 - sqlite: encrypted operation rejects missing codec and wrong key without returning private content
+  ---
+  duration_ms: 7.049667
+  type: 'test'
+  ...
+# Subtest: sqlite: authenticated context prevents ciphertext swapping across row identities
+ok 214 - sqlite: authenticated context prevents ciphertext swapping across row identities
+  ---
+  duration_ms: 4.309084
+  type: 'test'
+  ...
+# Subtest: sqlite: existing plaintext remains readable and becomes encrypted on next transition
+ok 215 - sqlite: existing plaintext remains readable and becomes encrypted on next transition
+  ---
+  duration_ms: 10.616084
+  type: 'test'
+  ...
+# Subtest: sqlite: codec failure rolls back claim and does not mask credentials in errors
+ok 216 - sqlite: codec failure rolls back claim and does not mask credentials in errors
+  ---
+  duration_ms: 3.076625
+  type: 'test'
+  ...
+# Subtest: sqlite: encrypted reservations retain concurrent budget protection
+ok 217 - sqlite: encrypted reservations retain concurrent budget protection
+  ---
+  duration_ms: 6.324791
+  type: 'test'
+  ...
+# Subtest: published F9 result is bound to all independently checked matched pairs
+ok 218 - published F9 result is bound to all independently checked matched pairs
+  ---
+  duration_ms: 0.602958
+  type: 'test'
+  ...
+# Subtest: missing or duplicated pair prevents the repeated observation claim
+ok 219 - missing or duplicated pair prevents the repeated observation claim
+  ---
+  duration_ms: 0.384375
+  type: 'test'
+  ...
+# Subtest: changing only a conclusion string cannot manufacture another observed result
+ok 220 - changing only a conclusion string cannot manufacture another observed result
+  ---
+  duration_ms: 0.147292
+  type: 'test'
+  ...
+# Subtest: twenty original provider responses establish three specific five-trial pairs, not real payer declines
+ok 221 - twenty original provider responses establish three specific five-trial pairs, not real payer declines
+  ---
+  duration_ms: 4.88775
+  type: 'test'
+  ...
+# Subtest: a control with the requested mock code cannot qualify its matched trial
+ok 222 - a control with the requested mock code cannot qualify its matched trial
+  ---
+  duration_ms: 0.638542
+  type: 'test'
+  ...
+# Subtest: HTTP status, actual code and typed SDK error are required independently of labels
+ok 223 - HTTP status, actual code and typed SDK error are required independently of labels
+  ---
+  duration_ms: 5.565541
+  type: 'test'
+  ...
+# Subtest: duplicated trial, order, request identity, code or missing read cannot inflate repetitions
+ok 224 - duplicated trial, order, request identity, code or missing read cannot inflate repetitions
+  ---
+  duration_ms: 1.190333
+  type: 'test'
+  ...
+# Subtest: effect-bearing, wrong-resource, reversed-time and late observations invalidate the no-effect report
+ok 225 - effect-bearing, wrong-resource, reversed-time and late observations invalidate the no-effect report
+  ---
+  duration_ms: 1.116458
+  type: 'test'
+  ...
+# Subtest: changing endpoint, code membership, SDK identity or declared financial limit cannot carry this qualification
+ok 226 - changing endpoint, code membership, SDK identity or declared financial limit cannot carry this qualification
+  ---
+  duration_ms: 0.781542
+  type: 'test'
+  ...
+# Subtest: actual installed SDK forwards only the selected mock header and decodes the operation-specific refusal
+ok 227 - actual installed SDK forwards only the selected mock header and decodes the operation-specific refusal
+  ---
+  duration_ms: 412.860875
+  type: 'test'
+  ...
+# Subtest: pooled hosted campaigns require the identical explicit direct endpoint and database
+ok 228 - pooled hosted campaigns require the identical explicit direct endpoint and database
+  ---
+  duration_ms: 0.798667
+  type: 'test'
+  ...
+# Subtest: known pooler hosts and transaction-pool ports reject before campaign execution
+ok 229 - known pooler hosts and transaction-pool ports reject before campaign execution
+  ---
+  duration_ms: 0.22875
+  type: 'test'
+  ...
+# Subtest: unconfirmed lock release retires its connection and cannot report success
+ok 230 - unconfirmed lock release retires its connection and cannot report success
+  ---
+  duration_ms: 0.212833
+  type: 'test'
+  ...
+# Subtest: frozen manifest has forty distinct slots, matched treatment identities and zero-spend body
+ok 231 - frozen manifest has forty distinct slots, matched treatment identities and zero-spend body
+  ---
+  duration_ms: 27.605666
+  type: 'test'
+  ...
+# Subtest: actual SDK + PostgreSQL matched campaign distinguishes generic header from provider key and rereads every call
+not ok 232 - actual SDK + PostgreSQL matched campaign distinguishes generic header from provider key and rereads every call
+  ---
+  duration_ms: 10.839708
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:4147'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:31:151)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: reducer preserves a contrary provider outcome instead of forcing expected F9 result
+not ok 233 - reducer preserves a contrary provider outcome instead of forcing expected F9 result
+  ---
+  duration_ms: 0.389292
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:4784'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:32:124)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lost create remains unknown with no invented lookup or repeated write after restart
+not ok 234 - lost create remains unknown with no invented lookup or repeated write after restart
+  ---
+  duration_ms: 0.334583
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:5159'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:33:124)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed original success recovers its durably observed id using GET without another create
+not ok 235 - malformed original success recovers its durably observed id using GET without another create
+  ---
+  duration_ms: 0.29825
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:5667'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:34:133)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: never-sent credential refusal does not read any resource and remains in attempted campaign
+not ok 236 - never-sent credential refusal does not read any resource and remains in attempted campaign
+  ---
+  duration_ms: 0.333458
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:6008'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:35:131)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed original resource read preserves known id and stops without another create
+not ok 237 - failed original resource read preserves known id and stops without another create
+  ---
+  duration_ms: 0.218208
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:6360'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:36:122)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: declared provider refusal retains reason without retry or invented evidence
+not ok 238 - declared provider refusal retains reason without retry or invented evidence
+  ---
+  duration_ms: 0.137375
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:6764'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:37:116)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: crossed slot, immutable manifest change and wrong merchant all reject before network
+not ok 239 - crossed slot, immutable manifest change and wrong merchant all reject before network
+  ---
+  duration_ms: 0.268042
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:7140'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:38:125)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: durable duplicate claims and campaign lock stop simultaneous executors
+not ok 240 - durable duplicate claims and campaign lock stop simultaneous executors
+  ---
+  duration_ms: 0.491291
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:7655'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:39:111)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public report never exposes original resource or request identifiers
+not ok 241 - public report never exposes original resource or request identifiers
+  ---
+  duration_ms: 0.19625
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:8025'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:40:109)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unqualified positive control prevents a generic-header conclusion
+not ok 242 - unqualified positive control prevents a generic-header conclusion
+  ---
+  duration_ms: 0.131834
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:1:8525'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:14:44)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-probes.test.ts:42:106)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: actual retained campaign has four observed resends and one natural retry, not a completed five-trial gate
+ok 243 - actual retained campaign has four observed resends and one natural retry, not a completed five-trial gate
+  ---
+  duration_ms: 5.491
+  type: 'test'
+  ...
+# Subtest: a 202 acceptance, extra count or fabricated conclusion cannot fill the missing delivery
+ok 244 - a 202 acceptance, extra count or fabricated conclusion cannot fill the missing delivery
+  ---
+  duration_ms: 0.629
+  type: 'test'
+  ...
+# Subtest: duplicate/missing slots or intake IDs cannot manufacture repetitions
+ok 245 - duplicate/missing slots or intake IDs cannot manufacture repetitions
+  ---
+  duration_ms: 0.49075
+  type: 'test'
+  ...
+# Subtest: changed bodies, failed signatures and unbound resource evidence invalidate published qualification
+ok 246 - changed bodies, failed signatures and unbound resource evidence invalidate published qualification
+  ---
+  duration_ms: 1.313375
+  type: 'test'
+  ...
+# Subtest: manual redelivery requires an actual later verified intake with new transmission metadata
+ok 247 - manual redelivery requires an actual later verified intake with new transmission metadata
+  ---
+  duration_ms: 6.484125
+  type: 'test'
+  ...
+# Subtest: natural retry accepts same transmission ID but requires the exact used single-failure rule and no resend
+ok 248 - natural retry accepts same transmission ID but requires the exact used single-failure rule and no resend
+  ---
+  duration_ms: 0.529042
+  type: 'test'
+  ...
+# Subtest: a valid fifth independent resend can change the fact only when its evidence exists (synthetic reducer test)
+ok 249 - a valid fifth independent resend can change the fact only when its evidence exists (synthetic reducer test)
+  ---
+  duration_ms: 0.369875
+  type: 'test'
+  ...
+# Subtest: actual core postback preserves raw event bytes, exact registered identity and encrypted private original
+not ok 250 - actual core postback preserves raw event bytes, exact registered identity and encrypted private original
+  ---
+  duration_ms: 11.268542
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:3128'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:26:39)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: concurrent duplicate signed-fixture deliveries retain every intake but admit one canonical observation
+not ok 251 - concurrent duplicate signed-fixture deliveries retain every intake but admit one canonical observation
+  ---
+  duration_ms: 7.567625
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:4375'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:33:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: same verified event identity with different bytes quarantines the later intake without changing canonical evidence
+not ok 252 - same verified event identity with different bytes quarantines the later intake without changing canonical evidence
+  ---
+  duration_ms: 8.464167
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:4982'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:36:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: provider verification outage stays unverified and does not admit a canonical event
+not ok 253 - provider verification outage stays unverified and does not admit a canonical event
+  ---
+  duration_ms: 5.293083
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:5594'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:39:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: forged and missing signatures cannot reach canonical event storage
+not ok 254 - forged and missing signatures cannot reach canonical event storage
+  ---
+  duration_ms: 5.075
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:6124'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:42:33)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: untrusted certificate URL is never fetched and remains rejected evidence
+not ok 255 - untrusted certificate URL is never fetched and remains rejected evidence
+  ---
+  duration_ms: 6.492708
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:6608'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:45:33)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: one armed500 commits the observation first; concurrent redeliveries acknowledge without repeating admission
+not ok 256 - one armed500 commits the observation first; concurrent redeliveries acknowledge without repeating admission
+  ---
+  duration_ms: 3.648
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:7042'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:48:30)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: armed failure requires the exact order and event type inside its original time window
+not ok 257 - armed failure requires the exact order and event type inside its original time window
+  ---
+  duration_ms: 3.630292
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:8111'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:53:30)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP intake rejects wrong format, malformed UTF8 and oversized stream without provider calls
+not ok 258 - HTTP intake rejects wrong format, malformed UTF8 and oversized stream without provider calls
+  ---
+  duration_ms: 4.00375
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:8961'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:57:28)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: HTTP route accepts a valid provider request without browser origin or judge cookie
+not ok 259 - HTTP route accepts a valid provider request without browser origin or judge cookie
+  ---
+  duration_ms: 4.023334
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:9759'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:63:19)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: SQL failure cannot acknowledge a half-committed event or consume its one500 rule
+not ok 260 - SQL failure cannot acknowledge a half-committed event or consume its one500 rule
+  ---
+  duration_ms: 3.73825
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:10172'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:66:30)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a separately scoped observer cannot read another merchant private evidence or consume its rule
+not ok 261 - a separately scoped observer cannot read another merchant private evidence or consume its rule
+  ---
+  duration_ms: 2.795583
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:1:11549'
+  failureType: 'testCodeFailure'
+  error: 'database "yadneshsalvi" does not exist'
+  code: '3D000'
+  name: 'error'
+  stack: |-
+    /Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/node_modules/pg-pool/index.js:45:11
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:13:126)
+    async TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/provider-webhooks.test.ts:72:30)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: one atomic comparison survives duplicate starts, uses fresh paired resources, and rejects another session
+not ok 262 - one atomic comparison survives duplicate starts, uses fresh paired resources, and rejects another session
+  ---
+  duration_ms: 3.582916
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:1293'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:22:40)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: workflow retries never replay a completed faulty invocation; explicit customer retry demonstrates the duplicate
+not ok 263 - workflow retries never replay a completed faulty invocation; explicit customer retry demonstrates the duplicate
+  ---
+  duration_ms: 0.358209
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:2131'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:28:40)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: lease expiration fences every frame and retains uncertain work without redispatch
+not ok 264 - lease expiration fences every frame and retains uncertain work without redispatch
+  ---
+  duration_ms: 0.171833
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:3293'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:36:43)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: global and session limits admit at most three isolated workers and one per session
+not ok 265 - global and session limits admit at most three isolated workers and one per session
+  ---
+  duration_ms: 0.136917
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:4410'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:44:32)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: cancellation closes active frames, preserves committed effects, and allows only original reconciliation
+not ok 266 - cancellation closes active frames, preserves committed effects, and allows only original reconciliation
+  ---
+  duration_ms: 0.183334
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:4877'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:48:40)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: reservation uses original resources and repeated action identity cannot add another capture or refund
+not ok 267 - reservation uses original resources and repeated action identity cannot add another capture or refund
+  ---
+  duration_ms: 0.127666
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:6183'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:57:40)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a second database instance resumes queued work without losing source binding or evidence
+not ok 268 - a second database instance resumes queued work without losing source binding or evidence
+  ---
+  duration_ms: 0.155083
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:1:7332'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(process.env.DATABASE_URL)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:16:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem-jobs.test.ts:62:44)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Python SDK happy paths produce one completed capture and one ticket in both revisions
+    # Subtest: faulty
+    not ok 1 - faulty
+      ---
+      duration_ms: 1.818542
+      type: 'test'
+      location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:1862'
+      failureType: 'testCodeFailure'
+      error: 'Tandem durability qualification requires PostgreSQL'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ''
+      operator: '=='
+      stack: |-
+        setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:25:109)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        TestContext.test (node:internal/test_runner/test:373:20)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:25:65)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+      ...
+    # Subtest: hardened
+    not ok 2 - hardened
+      ---
+      duration_ms: 0.138625
+      type: 'test'
+      location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:1862'
+      failureType: 'testCodeFailure'
+      error: 'Tandem durability qualification requires PostgreSQL'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ''
+      operator: '=='
+      stack: |-
+        setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:25:109)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        TestContext.test (node:internal/test_runner/test:373:20)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:25:65)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    1..2
+not ok 269 - Python SDK happy paths produce one completed capture and one ticket in both revisions
+  ---
+  duration_ms: 2.292834
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:1707'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: lost capture answer creates a true duplicate in baseline; hardened target reads the original order
+    # Subtest: faulty
+    not ok 1 - faulty
+      ---
+      duration_ms: 0.142958
+      type: 'test'
+      location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:2554'
+      failureType: 'testCodeFailure'
+      error: 'Tandem durability qualification requires PostgreSQL'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ''
+      operator: '=='
+      stack: |-
+        setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:28:109)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        TestContext.test (node:internal/test_runner/test:373:20)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:28:65)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      ...
+    # Subtest: hardened
+    not ok 2 - hardened
+      ---
+      duration_ms: 0.065666
+      type: 'test'
+      location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:2554'
+      failureType: 'testCodeFailure'
+      error: 'Tandem durability qualification requires PostgreSQL'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ''
+      operator: '=='
+      stack: |-
+        setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:28:109)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        TestContext.test (node:internal/test_runner/test:373:20)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:28:65)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..2
+not ok 270 - lost capture answer creates a true duplicate in baseline; hardened target reads the original order
+  ---
+  duration_ms: 0.305625
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:2386'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: unavailable original read stays checking without fulfillment or a second charge
+not ok 271 - unavailable original read stays checking without fulfillment or a second charge
+  ---
+  duration_ms: 0.120875
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:3135'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:30:118)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: pending payment is never a paid ticket in hardened target; baseline defect remains observable
+    # Subtest: faulty
+    not ok 1 - faulty
+      ---
+      duration_ms: 1.280417
+      type: 'test'
+      location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:3790'
+      failureType: 'testCodeFailure'
+      error: 'Tandem durability qualification requires PostgreSQL'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ''
+      operator: '=='
+      stack: |-
+        setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:31:218)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        TestContext.test (node:internal/test_runner/test:373:20)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:31:174)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      ...
+    # Subtest: hardened
+    not ok 2 - hardened
+      ---
+      duration_ms: 0.178333
+      type: 'test'
+      location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:3790'
+      failureType: 'testCodeFailure'
+      error: 'Tandem durability qualification requires PostgreSQL'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ''
+      operator: '=='
+      stack: |-
+        setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:31:218)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        TestContext.test (node:internal/test_runner/test:373:20)
+        TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:31:174)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..2
+not ok 272 - pending payment is never a paid ticket in hardened target; baseline defect remains observable
+  ---
+  duration_ms: 3.717625
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:3627'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: known never-sent failure produces no financial read or provider resource
+not ok 273 - known never-sent failure produces no financial read or provider resource
+  ---
+  duration_ms: 0.105666
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:4152'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:32:111)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lost create response retains the original unknown operation and never invents an order lookup
+not ok 274 - lost create response retains the original unknown operation and never invents an order lookup
+  ---
+  duration_ms: 0.204416
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:4562'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:33:132)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: malformed successful capture response reconciles actual preserved resource
+not ok 275 - malformed successful capture response reconciles actual preserved resource
+  ---
+  duration_ms: 0.0825
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:5165'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:34:113)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: six simultaneous Python workers share a durable claim and one ticket
+not ok 276 - six simultaneous Python workers share a durable claim and one ticket
+  ---
+  duration_ms: 0.069792
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:5685'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:35:107)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: partial capture and remaining-hold release preserve captured money and do not pretend to refund
+not ok 277 - partial capture and remaining-hold release preserve captured money and do not pretend to refund
+  ---
+  duration_ms: 0.077541
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:6177'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:37:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: parallel refunds atomically reserve remainder and same-operation replay does not send another refund
+not ok 278 - parallel refunds atomically reserve remainder and same-operation replay does not send another refund
+  ---
+  duration_ms: 0.070792
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:7170'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:45:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lost partial-capture answer has no exact capture id and cannot be inferred from the authorization balance
+not ok 279 - lost partial-capture answer has no exact capture id and cannot be inferred from the authorization balance
+  ---
+  duration_ms: 0.102292
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:7985'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:51:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lost refund response holds its exact reservation; changed payload and larger refunds are rejected
+not ok 280 - lost refund response holds its exact reservation; changed payload and larger refunds are rejected
+  ---
+  duration_ms: 0.068041
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:8801'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:56:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: database/process restart retains original captures and operation claims
+not ok 281 - database/process restart retains original captures and operation claims
+  ---
+  duration_ms: 0.065417
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:9643'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:60:114)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: worker crash after committed capture frame is recovered from the original order on a fresh invocation
+not ok 282 - worker crash after committed capture frame is recovered from the original order on a fresh invocation
+  ---
+  duration_ms: 0.062792
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:10189'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:62:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: revocation between claim and dispatch blocks the original write; another tenant cannot read the run
+not ok 283 - revocation between claim and dispatch blocks the original write; another tenant cannot read the run
+  ---
+  duration_ms: 0.064166
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:10833'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:70:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: bridge rejects duplicate, crossed and expired frames without forwarding any request
+not ok 284 - bridge rejects duplicate, crossed and expired frames without forwarding any request
+  ---
+  duration_ms: 0.078958
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:11431'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:75:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: strict frame parser rejects duplicate nested keys and excessive nesting
+ok 285 - strict frame parser rejects duplicate nested keys and excessive nesting
+  ---
+  duration_ms: 0.557875
+  type: 'test'
+  ...
+# Subtest: cancelled target can reconcile the original uncertain capture using reads only
+not ok 286 - cancelled target can reconcile the original uncertain capture using reads only
+  ---
+  duration_ms: 0.075875
+  type: 'test'
+  location: '/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:1:12682'
+  failureType: 'testCodeFailure'
+  error: 'Tandem durability qualification requires PostgreSQL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ''
+  operator: '=='
+  stack: |-
+    setup (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:13:10)
+    TestContext.<anonymous> (/Users/yadneshsalvi/code/hackathons/paypal-ai-hackathon/fracture-lab/tests/tandem.test.ts:88:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: raw Request evidence is revision-bound; comments cannot create findings
+ok 287 - raw Request evidence is revision-bound; comments cannot create findings
+  ---
+  duration_ms: 4.570916
+  type: 'test'
+  ...
+# Subtest: endpoint identity and generic-only identity have different findings
+ok 288 - endpoint identity and generic-only identity have different findings
+  ---
+  duration_ms: 0.923584
+  type: 'test'
+  ...
+# Subtest: dynamic and spread headers cannot be called absent
+ok 289 - dynamic and spread headers cannot be called absent
+  ---
+  duration_ms: 0.349666
+  type: 'test'
+  ...
+# Subtest: SDK aliases require package provenance and preserve adapter identity
+ok 290 - SDK aliases require package provenance and preserve adapter identity
+  ---
+  duration_ms: 0.992
+  type: 'test'
+  ...
+# Subtest: shadowed aliases do not borrow evidence from another scope
+ok 291 - shadowed aliases do not borrow evidence from another scope
+  ---
+  duration_ms: 0.539542
+  type: 'test'
+  ...
+# Subtest: reassigned and parameter-shadowed receivers stay unresolved
+ok 292 - reassigned and parameter-shadowed receivers stay unresolved
+  ---
+  duration_ms: 0.3875
+  type: 'test'
+  ...
+# Subtest: later spread cannot prove an endpoint header survives
+ok 293 - later spread cannot prove an endpoint header survives
+  ---
+  duration_ms: 0.25525
+  type: 'test'
+  ...
+# Subtest: outer option spreads cannot prove an explicit header survives
+ok 294 - outer option spreads cannot prove an explicit header survives
+  ---
+  duration_ms: 0.200083
+  type: 'test'
+  ...
+# Subtest: mutated option objects do not borrow stale initializer evidence
+ok 295 - mutated option objects do not borrow stale initializer evidence
+  ---
+  duration_ms: 0.7995
+  type: 'test'
+  ...
+# Subtest: readonly calls and unrelated hosts do not become mutation risks
+ok 296 - readonly calls and unrelated hosts do not become mutation risks
+  ---
+  duration_ms: 0.428125
+  type: 'test'
+  ...
+# Subtest: catch classification stays risk until runtime proof
+ok 297 - catch classification stays risk until runtime proof
+  ---
+  duration_ms: 0.394333
+  type: 'test'
+  ...
+# Subtest: actual faulty fixture supplies its real callsites
+ok 298 - actual faulty fixture supplies its real callsites
+  ---
+  duration_ms: 5.77425
+  type: 'test'
+  ...
+1..298
+# tests 304
+# suites 0
+# pass 248
+# fail 53
+# cancelled 0
+# skipped 3
+# todo 0
+# duration_ms 5496.983625

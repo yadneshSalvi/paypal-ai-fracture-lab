@@ -1,0 +1,28 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type CaptureStatusDetails } from "./capture-status-details.js";
+import { type CaptureStatus } from "./capture-status.js";
+import { DisbursementMode } from "./disbursement-mode.js";
+import { type LinkDescription } from "./link-description.js";
+import { type Money } from "./money.js";
+import { type NetworkTransaction } from "./network-transaction.js";
+import { type ProcessorResponse } from "./processor-response.js";
+import { type SellerProtection } from "./seller-protection.js";
+import { type SellerReceivableBreakdown } from "./seller-receivable-breakdown.js";
+export type OrdersCapture = {
+    status?: CaptureStatus;
+    statusDetails?: CaptureStatusDetails;
+    id?: string;
+    amount?: Money;
+    invoiceId?: string;
+    customId?: string;
+    networkTransactionReference?: NetworkTransaction;
+    sellerProtection?: SellerProtection;
+    finalCapture?: boolean;
+    sellerReceivableBreakdown?: SellerReceivableBreakdown;
+    disbursementMode?: DisbursementMode;
+    links?: LinkDescription[];
+    processorResponse?: ProcessorResponse;
+    createTime?: string;
+    updateTime?: string;
+};
+export declare const ordersCaptureSchema: Schema<OrdersCapture>;

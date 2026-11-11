@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "kind": "api_binding_qualification",
+  "studyTask": false,
+  "qualityMeasurement": false,
+  "passed": false,
+  "model": "gpt-6.1-sol",
+  "provider": "openai",
+  "result": {
+    "schemaVersion": 1,
+    "kind": "model_generation",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "status": "infrastructure_failure",
+    "source": null,
+    "sourceHash": null,
+    "summary": null,
+    "errorCode": "provider_400",
+    "calls": [
+      {
+        "index": 0,
+        "http": {
+          "provider": "openai",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "requestHash": "f30e96377e4c0ed44402aa2a274c5f0952f0a9e62fdd00173b90c935eebaf0ff",
+          "startedAt": "2026-11-11T08:16:49.438Z",
+          "finishedAt": "2026-11-11T08:16:50.974Z",
+          "durationMs": 1536,
+          "httpStatus": 200,
+          "requestId": "req_74ddc84035a84c1eb20f0349b34ce169",
+          "responseHash": "6cf8d9cacf7bcaf0a19b411cd33fa08f8338eb5b5b87b286907add891e4380bd",
+          "errorCode": null
+        },
+        "responseId": "resp_080d4691a69a15f7016af4247195a087d2b4653b7359bc6762",
+        "reportedModel": "gpt-6.1-sol",
+        "status": "completed",
+        "usage": {
+          "inputTokens": 357,
+          "cachedInputTokens": 0,
+          "outputTokens": 29,
+          "reasoningTokens": 0,
+          "totalTokens": 386,
+          "raw": {
+            "input_tokens": 357,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 29,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 386
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "fc_080d4691a69a15f7016af42472a70c87d29d4cd1784ce74d6e",
+            "call_id": "call_fJHTiHH0ru9Fa2Og3MPmAp68",
+            "name": "read_file",
+            "arguments": "{\"path\":\"qualification.txt\",\"startLine\":1,\"lineCount\":10}"
+          }
+        ],
+        "estimatedCostUsd": 0.001004,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 1,
+        "http": {
+          "provider": "openai",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "requestHash": "4714e26788a2380e9abeae6799f9fcb7c523a08c6df5ef67a9f0c92051b56c94",
+          "startedAt": "2026-11-11T08:16:50.975Z",
+          "finishedAt": "2026-11-11T08:16:51.217Z",
+          "durationMs": 242,
+          "httpStatus": 400,
+          "requestId": "req_a96ae46f93ea4ce3bcacb1669410f67b",
+          "responseHash": "99f9f27ff4a989c96755305cf6d704fcc589604da01803ca439bfde5d2ceec78",
+          "errorCode": "provider_400",
+          "errorDetail": {
+            "type": "invalid_request_error",
+            "code": "unsupported_parameter",
+            "parameter": "previous_response_id",
+            "message": "Previous response cannot be used for this organization due to Zero Data Retention."
+          }
+        },
+        "responseId": null,
+        "reportedModel": null,
+        "status": null,
+        "usage": null,
+        "visibleOutput": null,
+        "estimatedCostUsd": null,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      }
+    ],
+    "toolAccesses": [
+      {
+        "index": 0,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "startLine": 1,
+          "lineCount": 10
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      }
+    ],
+    "inputTokens": 357,
+    "outputTokens": 29,
+    "reasoningTokens": 0,
+    "totalTokens": 386,
+    "estimatedCostUsd": 0.001004,
+    "unpricedCalls": 1,
+    "durationMs": 1786,
+    "finishedAt": "2026-11-11T08:16:51.218Z",
+    "receiptHash": "8434d505eb4c41208d457720ef2e538b0c2adac7e1f8741171a74c66f899e68a"
+  },
+  "eventsHash": "23787ca3c56a952376f866913d4ea81e503576faa42f7bdc619dc4467e7a1c82"
+}

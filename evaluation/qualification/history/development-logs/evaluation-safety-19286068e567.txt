@@ -1,0 +1,7 @@
+{"probe":"host-files","passed":true}
+{"probe":"environment","passed":true}
+{"probe":"egress","passed":true}
+{"probe":"reflection","passed":true}
+{"probe":"subprocess","passed":true}
+{"probe":"python-egress","passed":true}
+{"stage":"safety_qualified","probes":8,"evaluatorHash":"538875d870d0105a44c311b93ab508ef45e3d869498a0510ddda0bb9aae40258","imageId":"sha256:95922199683acaa3c388c78a156091217b20622a2421a8fb638282f0320b231e"}

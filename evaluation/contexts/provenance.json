@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-11-11T08:10:04.749Z",
+  "pins": {
+    "skills": "7cbdf85dc95f09d9ede8c5d349506686684fa0d4",
+    "typescript": "5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2",
+    "python": "143e57f2a3729d7df3727386b8c9ddf023d9a5df",
+    "rest": "90e8041ffe02d80c452d2b476bedd59a8d219bdc"
+  },
+  "completeOperationsCharacters": 99097,
+  "records": [
+    {
+      "path": "evaluation/contexts/licenses/APIMatic-MIT.txt",
+      "sha256": "a11e80a65da73f24ff1277bc92da4c22ad72ade5670718b42ef865cbfe5175f7",
+      "bytes": 1076,
+      "source": "https://github.com/context-plugins/plugin-marketplace/blob/7cbdf85dc95f09d9ede8c5d349506686684fa0d4/LICENSE",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/licenses/PayPal-Apache-2.0.txt",
+      "sha256": "aca29b3892ad5c363440c50a618247cf50272b970e1862d837dcc8e1a37336d3",
+      "bytes": 10752,
+      "source": "https://raw.githubusercontent.com/paypal/paypal-rest-api-specifications/90e8041ffe02d80c452d2b476bedd59a8d219bdc/LICENSE",
+      "license": "Apache-2.0",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/sources/typescript/sdk-map.md",
+      "sha256": "e1a0aee8a9b39b780bd268f8f61b7de95d2f0f7142270b6056c118a0b7b0a721",
+      "bytes": 39407,
+      "source": "https://raw.githubusercontent.com/context-plugins/paypal-typescript-sdk/5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2/sdk-map.md",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/sources/typescript/orders.md",
+      "sha256": "6ecaf4343ad4b2f6ee0eb64b3d541a6d4c0b8815818c747aab4aeee0414f3aa5",
+      "bytes": 13338,
+      "source": "https://raw.githubusercontent.com/context-plugins/paypal-typescript-sdk/5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2/map/operations/orders.md",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/sources/typescript/payments.md",
+      "sha256": "8898df208da649a561e692f5002726a99c0960e381a7b121a9829d7ad40c49fb",
+      "bytes": 11748,
+      "source": "https://raw.githubusercontent.com/context-plugins/paypal-typescript-sdk/5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2/map/operations/payments.md",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/typescript-B.md",
+      "sha256": "b311b9e2a2e73b30ed50a41273c2df9b286743b7d04149b1260b350b99a45665",
+      "bytes": 350668,
+      "source": "APIMatic typescript skills and pinned SDK maps",
+      "license": "MIT",
+      "transform": "Verbatim named skill/reference/map sections concatenated in declared order; no generated advice."
+    },
+    {
+      "path": "evaluation/contexts/sources/python/sdk-map.md",
+      "sha256": "2a476e9f6fb1496411f273495deaaec84305a565724c6a137ec8935649e95c54",
+      "bytes": 16196,
+      "source": "https://raw.githubusercontent.com/context-plugins/paypal-python-sdk/143e57f2a3729d7df3727386b8c9ddf023d9a5df/sdk-map.md",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/sources/python/orders.md",
+      "sha256": "b7bf0b4c33e20ae4e3691f961aa8e41aad1faea0d9aa23772ff9ee121ae578b9",
+      "bytes": 10300,
+      "source": "https://raw.githubusercontent.com/context-plugins/paypal-python-sdk/143e57f2a3729d7df3727386b8c9ddf023d9a5df/map/operations/orders.md",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/sources/python/payments.md",
+      "sha256": "1be4ca401224c8e2dd1f55ef4b38150e67e2e47c7a65b1838a501b6a4df103fb",
+      "bytes": 8906,
+      "source": "https://raw.githubusercontent.com/context-plugins/paypal-python-sdk/143e57f2a3729d7df3727386b8c9ddf023d9a5df/map/operations/payments.md",
+      "license": "MIT",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/python-B.md",
+      "sha256": "fe11a93870eb46378e74c9e5f8c4963532e193d1f6400f557f5ef7c38520876e",
+      "bytes": 212970,
+      "source": "APIMatic python skills and pinned SDK maps",
+      "license": "MIT",
+      "transform": "Verbatim named skill/reference/map sections concatenated in declared order; no generated advice."
+    },
+    {
+      "path": "evaluation/contexts/sources/rest/checkout_orders_v2.json",
+      "sha256": "14db0b9e0d7440e38595b823724599edc7ab8b7a2b41ac442463e81b7d477fd6",
+      "bytes": 971284,
+      "source": "https://raw.githubusercontent.com/paypal/paypal-rest-api-specifications/90e8041ffe02d80c452d2b476bedd59a8d219bdc/openapi/checkout_orders_v2.json",
+      "license": "Apache-2.0",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/sources/rest/payments_payment_v2.json",
+      "sha256": "ecd8bc60e133bd4bc54de10daae3011a451e3a69e971ddf19c09213aa0f15c21",
+      "bytes": 504391,
+      "source": "https://raw.githubusercontent.com/paypal/paypal-rest-api-specifications/90e8041ffe02d80c452d2b476bedd59a8d219bdc/openapi/payments_payment_v2.json",
+      "license": "Apache-2.0",
+      "transform": "verbatim"
+    },
+    {
+      "path": "evaluation/contexts/rest-full.md",
+      "sha256": "efea6e07b067f13a2a7386c6f8e42a1d714b9fe6595720cb4990640f73f41cd6",
+      "bytes": 457155,
+      "source": "Official REST sources at 90e8041ffe02d80c452d2b476bedd59a8d219bdc",
+      "license": "Apache-2.0",
+      "transform": "Six complete operation blocks, path parameters/security, then breadth-first transitive schema references; no SDK method guidance."
+    }
+  ],
+  "limitations": [
+    "Types convey API information in every arm; A means no added natural-language bundle.",
+    "These contexts and offline fixtures do not establish new live provider facts.",
+    "C is a raw official REST specification with a predeclared prefix truncation order, not SDK usage guidance."
+  ]
+}

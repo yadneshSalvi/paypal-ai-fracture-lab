@@ -1,0 +1,18 @@
+{
+  "sourceHash": "6ca96a30482072d8974b2976d1beee6ebfeae9a5a240a1e1be3d434f2f8aba5c",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "receipt-enqueued/receipt",
+      "passed": true,
+      "detail": "A paid purchase creates an entitlement and one local receipt message."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

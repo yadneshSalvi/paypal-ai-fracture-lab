@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d1-ts-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:49:31.975Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d1-ts-heldout.json.gz",
+    "sha256": "bb137fe5fc7b2ea2468e715ad000716f35ab0f4cde848896947fdd6793a193ff"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "5eb7ca836a2e9421255c3b77c792422606fa959bb2bdaa3eec6087629325ac99",
+      "receiptHash": "a7d2b51c6763127027b6dc791a7df8a20febd50be3bd446a8371706b42a66e71",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "approved-reservation/approved",
+          "passed": true,
+          "detail": "A valid approved reservation becomes paid."
+        },
+        {
+          "id": "two-approvals-one-reservation/winner",
+          "passed": false,
+          "detail": "One winning order is charged; the other approval remains untouched."
+        },
+        {
+          "id": "two-approvals-one-reservation/reconciled-winner",
+          "passed": true,
+          "detail": "A retry through the losing order finds the winning capture."
+        },
+        {
+          "id": "two-approvals-one-reservation/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "mapped-but-foreign-provider-order/provider-binding",
+          "passed": false,
+          "detail": "A corrupt local mapping cannot authorize another purchase resource."
+        },
+        {
+          "id": "unreadable-winning-result/no-fallback-capture",
+          "passed": false,
+          "detail": "A failed read never permits capture of a second approved order."
+        },
+        {
+          "id": "unreadable-winning-result/uncertainty-visible",
+          "passed": false,
+          "detail": "The caller sees the unavailable authoritative result."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "7e636d38628f79509b02c4a3d7190c4db14ecc337308d409e7e3ca8af4373e38",
+      "receiptHash": "6a6151a97369d833f7d7966df3404cff2cbbdd3c6f8db03a5db1383ee24c60ce",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "approved-reservation/approved",
+          "passed": true,
+          "detail": "A valid approved reservation becomes paid."
+        },
+        {
+          "id": "two-approvals-one-reservation/winner",
+          "passed": true,
+          "detail": "One winning order is charged; the other approval remains untouched."
+        },
+        {
+          "id": "two-approvals-one-reservation/reconciled-winner",
+          "passed": true,
+          "detail": "A retry through the losing order finds the winning capture."
+        },
+        {
+          "id": "two-approvals-one-reservation/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "mapped-but-foreign-provider-order/provider-binding",
+          "passed": true,
+          "detail": "A corrupt local mapping cannot authorize another purchase resource."
+        },
+        {
+          "id": "unreadable-winning-result/no-fallback-capture",
+          "passed": true,
+          "detail": "A failed read never permits capture of a second approved order."
+        },
+        {
+          "id": "unreadable-winning-result/uncertainty-visible",
+          "passed": true,
+          "detail": "The caller sees the unavailable authoritative result."
+        }
+      ]
+    }
+  ]
+}

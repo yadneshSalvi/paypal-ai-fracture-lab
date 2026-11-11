@@ -1,0 +1,22 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type AppSwitchContext } from "./app-switch-context.js";
+import { type CallbackConfiguration } from "./callback-configuration.js";
+import { PayPalExperienceLandingPage } from "./pay-pal-experience-landing-page.js";
+import { PayPalExperienceUserAction } from "./pay-pal-experience-user-action.js";
+import { PayPalWalletContactPreference } from "./pay-pal-wallet-contact-preference.js";
+import { PayPalWalletContextShippingPreference } from "./pay-pal-wallet-context-shipping-preference.js";
+import { PayeePaymentMethodPreference } from "./payee-payment-method-preference.js";
+export type PayPalWalletExperienceContext = {
+    brandName?: string;
+    locale?: string;
+    shippingPreference?: PayPalWalletContextShippingPreference;
+    contactPreference?: PayPalWalletContactPreference;
+    returnUrl?: string;
+    cancelUrl?: string;
+    appSwitchContext?: AppSwitchContext;
+    landingPage?: PayPalExperienceLandingPage;
+    userAction?: PayPalExperienceUserAction;
+    paymentMethodPreference?: PayeePaymentMethodPreference;
+    orderUpdateCallbackConfig?: CallbackConfiguration;
+};
+export declare const payPalWalletExperienceContextSchema: Schema<PayPalWalletExperienceContext>;

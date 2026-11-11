@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d2-py-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:11.075Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d2-py-development.json.gz",
+    "sha256": "cff6d97ca43f728b8cecb3312e119b8b8b82254d4e0af4ebc2b5924548951e64"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "d0cac6708058c61034cfab4254206383084db5d3010963aff76ea9183d34f83a",
+      "receiptHash": "16858f34f4bb6e0cfe169991271454d84105e062b573a2d4ce3499e7f6e1730c",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "ready-order/ready",
+          "passed": true,
+          "detail": "A successful creation returns an actual order identifier."
+        },
+        {
+          "id": "lost-create-response/unknown",
+          "passed": false,
+          "detail": "No optional or malformed value is invented as an order ID."
+        },
+        {
+          "id": "lost-create-response/protected",
+          "passed": false,
+          "detail": "The unknown create has no supported lookup and is not dispatched again."
+        },
+        {
+          "id": "lost-create-response/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "malformed-create-response/unknown",
+          "passed": false,
+          "detail": "No optional or malformed value is invented as an order ID."
+        },
+        {
+          "id": "malformed-create-response/protected",
+          "passed": false,
+          "detail": "The unknown create has no supported lookup and is not dispatched again."
+        },
+        {
+          "id": "malformed-create-response/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "missing-create-response/unknown",
+          "passed": false,
+          "detail": "No optional or malformed value is invented as an order ID."
+        },
+        {
+          "id": "missing-create-response/protected",
+          "passed": false,
+          "detail": "The unknown create has no supported lookup and is not dispatched again."
+        },
+        {
+          "id": "missing-create-response/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "oauth-before-dispatch/not-sent",
+          "passed": false,
+          "detail": "An OAuth provider refusal is distinguished from a dispatched order write."
+        },
+        {
+          "id": "oauth-before-dispatch/retry",
+          "passed": true,
+          "detail": "A fixed authentication configuration permits one order."
+        },
+        {
+          "id": "replay-and-independent-intent/stable-business-order",
+          "passed": false,
+          "detail": "A known successful create is returned across worker restarts."
+        },
+        {
+          "id": "replay-and-independent-intent/independent",
+          "passed": false,
+          "detail": "A colliding delivery label cannot merge distinct purchase intents."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "1a4b98f2fa5182bf8d13144d28b93b57053f471d085429437798eca934a4563b",
+      "receiptHash": "21e420357b149860079429f07f8e257ff9ca03be209e281426272713162f7529",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "ready-order/ready",
+          "passed": true,
+          "detail": "A successful creation returns an actual order identifier."
+        },
+        {
+          "id": "lost-create-response/unknown",
+          "passed": true,
+          "detail": "No optional or malformed value is invented as an order ID."
+        },
+        {
+          "id": "lost-create-response/protected",
+          "passed": true,
+          "detail": "The unknown create has no supported lookup and is not dispatched again."
+        },
+        {
+          "id": "lost-create-response/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "malformed-create-response/unknown",
+          "passed": true,
+          "detail": "No optional or malformed value is invented as an order ID."
+        },
+        {
+          "id": "malformed-create-response/protected",
+          "passed": true,
+          "detail": "The unknown create has no supported lookup and is not dispatched again."
+        },
+        {
+          "id": "malformed-create-response/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "missing-create-response/unknown",
+          "passed": true,
+          "detail": "No optional or malformed value is invented as an order ID."
+        },
+        {
+          "id": "missing-create-response/protected",
+          "passed": true,
+          "detail": "The unknown create has no supported lookup and is not dispatched again."
+        },
+        {
+          "id": "missing-create-response/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "oauth-before-dispatch/not-sent",
+          "passed": true,
+          "detail": "An OAuth provider refusal is distinguished from a dispatched order write."
+        },
+        {
+          "id": "oauth-before-dispatch/retry",
+          "passed": true,
+          "detail": "A fixed authentication configuration permits one order."
+        },
+        {
+          "id": "replay-and-independent-intent/stable-business-order",
+          "passed": true,
+          "detail": "A known successful create is returned across worker restarts."
+        },
+        {
+          "id": "replay-and-independent-intent/independent",
+          "passed": true,
+          "detail": "A colliding delivery label cannot merge distinct purchase intents."
+        }
+      ]
+    }
+  ]
+}

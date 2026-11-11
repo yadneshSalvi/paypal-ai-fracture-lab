@@ -1,0 +1,4 @@
+{"stage":"tokenized","provider":"openai","language":"typescript","B":84908,"C":84847,"differencePercent":0.0718424647854148}
+{"stage":"tokenized","provider":"openai","language":"python","B":50865,"C":50818,"differencePercent":0.0924014548314165}
+{"stage":"tokenized","provider":"gemini","language":"typescript","B":89735,"C":89707,"differencePercent":0.031202986571571854}
+{"stage":"tokenized","provider":"gemini","language":"python","B":54799,"C":54750,"differencePercent":0.089417690103834}

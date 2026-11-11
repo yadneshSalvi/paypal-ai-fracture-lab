@@ -1,0 +1,18 @@
+{
+  "sourceHash": "a1402db4a1705e47550b0cf580b435d3b5e6642c36b0fdaf3d434c91061e4d6c",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "ordinary-capture/paid",
+      "passed": true,
+      "detail": "An ordinary confirmed capture grants its entitlement."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

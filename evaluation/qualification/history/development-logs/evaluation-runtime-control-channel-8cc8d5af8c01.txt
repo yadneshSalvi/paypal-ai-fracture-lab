@@ -1,0 +1,60 @@
+#0 building with "colima-fracture-lab" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.08kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22.22.3-bookworm-slim@sha256:e21fc383b50d5347dc7a9f1cae45b8f4e2f0d39f7ade28e4eef7d2934522b752
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/10] FROM docker.io/library/node:22.22.3-bookworm-slim@sha256:e21fc383b50d5347dc7a9f1cae45b8f4e2f0d39f7ade28e4eef7d2934522b752
+#4 resolve docker.io/library/node:22.22.3-bookworm-slim@sha256:e21fc383b50d5347dc7a9f1cae45b8f4e2f0d39f7ade28e4eef7d2934522b752 done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 26.49kB done
+#5 DONE 0.0s
+
+#6 [ 4/10] COPY package.json package-lock.json ./
+#6 CACHED
+
+#7 [ 6/10] COPY requirements.txt ./
+#7 CACHED
+
+#8 [ 2/10] RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-venv git ca-certificates && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [ 3/10] WORKDIR /runtime
+#9 CACHED
+
+#10 [ 5/10] RUN git config --global url.https://github.com/.insteadOf ssh://git@github.com/ && npm ci --no-audit --no-fund && npm cache clean --force
+#10 CACHED
+
+#11 [ 7/10] RUN python3 -m venv /runtime/venv && /runtime/venv/bin/pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [ 8/10] COPY runtime/ ./
+#12 DONE 0.0s
+
+#13 [ 9/10] COPY api.ts api.py ./
+#13 DONE 0.0s
+
+#14 [10/10] RUN find /runtime/node_modules -type f ( -name '*.md' -o -name '*.map' ) -delete && rm -rf /runtime/node_modules/paypal/src /runtime/node_modules/paypal/map && chmod -R a-w /runtime
+#14 DONE 6.8s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 3.2s done
+#15 exporting manifest sha256:6abd2b20147305261573d18d6a17b17cb913bc39ee89765c4dc92aaf90492e91 done
+#15 exporting config sha256:66d36b315df8244c7757846f643c5bc12d8bac3fccbbaeaca7840007fd5be04d done
+#15 exporting attestation manifest sha256:9b79ae6c5a773d54c29703a55f890f07956bbd9b94c2e92e0dad100137c9e975 done
+#15 exporting manifest list sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847 done
+#15 naming to docker.io/library/fracture-evaluation:1-a25552bfb621 done
+#15 unpacking to docker.io/library/fracture-evaluation:1-a25552bfb621
+#15 unpacking to docker.io/library/fracture-evaluation:1-a25552bfb621 0.9s done
+#15 DONE 4.2s
+{"stage":"image_prepared","imageId":"sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847","snapshotHash":"a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584","realCredentials":false}

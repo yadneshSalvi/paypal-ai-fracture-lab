@@ -1,0 +1,22 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type AuthenticationResponse } from "./authentication-response.js";
+import { type BinDetails } from "./bin-details.js";
+import { type CardAttributesResponse } from "./card-attributes-response.js";
+import { type CardBrand } from "./card-brand.js";
+import { type CardFromRequest } from "./card-from-request.js";
+import { type CardStoredCredential } from "./card-stored-credential.js";
+import { type CardType } from "./card-type.js";
+export type CardResponse = {
+    name?: string;
+    lastDigits?: string;
+    brand?: CardBrand;
+    availableNetworks?: CardBrand[];
+    type?: CardType;
+    authenticationResult?: AuthenticationResponse;
+    attributes?: CardAttributesResponse;
+    fromRequest?: CardFromRequest;
+    expiry?: string;
+    binDetails?: BinDetails;
+    storedCredential?: CardStoredCredential;
+};
+export declare const cardResponseSchema: Schema<CardResponse>;

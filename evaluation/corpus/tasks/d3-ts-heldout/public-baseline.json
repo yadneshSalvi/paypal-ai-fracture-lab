@@ -1,0 +1,18 @@
+{
+  "sourceHash": "5e4bdd175664f698d2a274b54e651860a37d4b29386cb488d5adc76f26dda24a",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "paid-projection/projection",
+      "passed": true,
+      "detail": "A completed capture creates paid access."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

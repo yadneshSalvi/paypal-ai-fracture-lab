@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only model availability, not task quality or study outcomes.",
+  "results": [
+    {
+      "provider": "openai",
+      "status": 200,
+      "checkedAt": "2026-11-11T07:59:36.356Z",
+      "model": {
+        "id": "gpt-6.1-sol",
+        "created": 1790552874,
+        "owned_by": "system"
+      },
+      "requestId": "f01ef88a-1e7f-4c2e-bb2d-742fae011283"
+    },
+    {
+      "provider": "gemini",
+      "status": 200,
+      "checkedAt": "2026-11-11T07:59:36.632Z",
+      "model": {
+        "name": "models/gemini-3.8-flash",
+        "version": "3.0",
+        "inputTokenLimit": 1048576,
+        "outputTokenLimit": 65536,
+        "supportedGenerationMethods": [
+          "generateContent",
+          "countTokens",
+          "createCachedContent",
+          "batchGenerateContent"
+        ]
+      },
+      "requestId": null
+    }
+  ]
+}

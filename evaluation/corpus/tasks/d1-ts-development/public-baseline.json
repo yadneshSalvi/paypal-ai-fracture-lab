@@ -1,0 +1,23 @@
+{
+  "sourceHash": "0658044afc12d679b9b1326efbb9705de09f5330a36f99da24cf7c69138ec378",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "ordinary-purchases/liveness",
+      "passed": true,
+      "detail": "Two independent authorized purchases each complete."
+    },
+    {
+      "id": "ordinary-purchases/effects",
+      "passed": true,
+      "detail": "Each purchase has its own completed capture and entitlement."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

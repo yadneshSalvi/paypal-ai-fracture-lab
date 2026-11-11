@@ -1,0 +1,18 @@
+{
+  "sourceHash": "a09c0b247509ef2faa0c66a9f1f8c353cf50f71a0a42fdcf7f59fc79bf92f719",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "ordinary-refund/refund",
+      "passed": true,
+      "detail": "An authorized partial refund completes."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

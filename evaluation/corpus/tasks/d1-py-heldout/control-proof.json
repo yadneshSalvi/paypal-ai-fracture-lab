@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d1-py-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:49:49.784Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d1-py-heldout.json.gz",
+    "sha256": "8911b32488f16796074191694cfa1c238658f851d893702d3c56d068d6ad641f"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "0eb78f2fea7b698b7ef022a20645926e673529f57a3b29d2ed7204fe79cb1311",
+      "receiptHash": "b9943b699a320b8c9cfa903c72f6062a59bd39f82267ed94ce773c0beed8ab70",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "active-quote/purchase",
+          "passed": true,
+          "detail": "The current authorized quote completes."
+        },
+        {
+          "id": "amended-cart-distinct-intent/amendment-liveness",
+          "passed": false,
+          "detail": "An amended cart has a new approved quote and a separate real capture."
+        },
+        {
+          "id": "amended-cart-distinct-intent/quote-records",
+          "passed": false,
+          "detail": "Purchase records are scoped to immutable quotes, not the mutable cart."
+        },
+        {
+          "id": "alternative-approval-after-loss/one-quote-charge",
+          "passed": false,
+          "detail": "A second approved order is not a second charge for the same quote."
+        },
+        {
+          "id": "alternative-approval-after-loss/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "stale-quote-and-mismatched-amount/quote-authority",
+          "passed": false,
+          "detail": "Neither stale authority nor an underpriced provider order authorizes a capture."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "402afed9dd3249a873819476c90b47421d716d275df3ff0c665e237537002737",
+      "receiptHash": "defe6ecec4c741f64355c1402322dc84a3db5d85bc01a738afd2f1829fd2e515",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "active-quote/purchase",
+          "passed": true,
+          "detail": "The current authorized quote completes."
+        },
+        {
+          "id": "amended-cart-distinct-intent/amendment-liveness",
+          "passed": true,
+          "detail": "An amended cart has a new approved quote and a separate real capture."
+        },
+        {
+          "id": "amended-cart-distinct-intent/quote-records",
+          "passed": true,
+          "detail": "Purchase records are scoped to immutable quotes, not the mutable cart."
+        },
+        {
+          "id": "alternative-approval-after-loss/one-quote-charge",
+          "passed": true,
+          "detail": "A second approved order is not a second charge for the same quote."
+        },
+        {
+          "id": "alternative-approval-after-loss/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "stale-quote-and-mismatched-amount/quote-authority",
+          "passed": true,
+          "detail": "Neither stale authority nor an underpriced provider order authorizes a capture."
+        }
+      ]
+    }
+  ]
+}

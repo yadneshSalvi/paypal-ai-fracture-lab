@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d5-py-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:52:07.622Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d5-py-heldout.json.gz",
+    "sha256": "7fce1c7669a2cde1dfac603c216c68f87bab6cb35f301725fe9197c1dbd4d6ff"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "0e00471f9093e645ba14bc77e6962a43c17ccd491a8994529d83894eccdda17a",
+      "receiptHash": "c63a20a67f573d00224d0ead84aecd6f27dff2ee31f3a9ed79c0d5c628479667",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "approved-two-step-plan/plan-completes",
+          "passed": true,
+          "detail": "The approved create/capture plan can complete normally."
+        },
+        {
+          "id": "new-model-calls-and-lost-capture/create-step-stability",
+          "passed": false,
+          "detail": "A replanned create tool returns the original plan order."
+        },
+        {
+          "id": "new-model-calls-and-lost-capture/capture-step-stability",
+          "passed": false,
+          "detail": "A lost capture answer is reconciled without restarting either plan step."
+        },
+        {
+          "id": "new-model-calls-and-lost-capture/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "create-unknown-stops-plan/unknown-create",
+          "passed": false,
+          "detail": "A missing creation ID cannot restart the approved plan or invent a lookup."
+        },
+        {
+          "id": "ordered-scoped-steps/step-order",
+          "passed": false,
+          "detail": "Capture requires the persisted successful create step."
+        },
+        {
+          "id": "ordered-scoped-steps/resource-binding",
+          "passed": false,
+          "detail": "An agent cannot redirect the approved capture to a different resource."
+        },
+        {
+          "id": "revoked-plan-and-pending-capture/pending",
+          "passed": false,
+          "detail": "A pending capture cannot complete the payment plan."
+        },
+        {
+          "id": "revoked-plan-and-pending-capture/revocation",
+          "passed": true,
+          "detail": "Revocation is enforced even when the plan already has provider resources."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "c015fce0d414e412a0d21629c1656f4efba32a9ff2dcaaaad0fdd6d9489850d0",
+      "receiptHash": "b653d64e587d1ec29218bc3f9b97500261a756129ef4e43ee67dbfab0620367f",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "approved-two-step-plan/plan-completes",
+          "passed": true,
+          "detail": "The approved create/capture plan can complete normally."
+        },
+        {
+          "id": "new-model-calls-and-lost-capture/create-step-stability",
+          "passed": true,
+          "detail": "A replanned create tool returns the original plan order."
+        },
+        {
+          "id": "new-model-calls-and-lost-capture/capture-step-stability",
+          "passed": true,
+          "detail": "A lost capture answer is reconciled without restarting either plan step."
+        },
+        {
+          "id": "new-model-calls-and-lost-capture/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "create-unknown-stops-plan/unknown-create",
+          "passed": true,
+          "detail": "A missing creation ID cannot restart the approved plan or invent a lookup."
+        },
+        {
+          "id": "ordered-scoped-steps/step-order",
+          "passed": true,
+          "detail": "Capture requires the persisted successful create step."
+        },
+        {
+          "id": "ordered-scoped-steps/resource-binding",
+          "passed": true,
+          "detail": "An agent cannot redirect the approved capture to a different resource."
+        },
+        {
+          "id": "revoked-plan-and-pending-capture/pending",
+          "passed": true,
+          "detail": "A pending capture cannot complete the payment plan."
+        },
+        {
+          "id": "revoked-plan-and-pending-capture/revocation",
+          "passed": true,
+          "detail": "Revocation is enforced even when the plan already has provider resources."
+        }
+      ]
+    }
+  ]
+}

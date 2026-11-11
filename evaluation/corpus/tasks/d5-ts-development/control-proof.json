@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d5-ts-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:51:34.250Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d5-ts-development.json.gz",
+    "sha256": "4af9ca1c5161b5fa87dde0188778cc6c2f50327b8ff3be2a5d2c82f183018c45"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "355f8cde8d15af89022c5602cd0d750ab583db5bb6db9e93fb13c606003d5ea6",
+      "receiptHash": "97d6e31a646fca8e34f6ab63dfb71ed3c686379b092de4e7fead3cf26ec45dd2",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "approved-tool-job/ready",
+          "passed": true,
+          "detail": "An approved create tool produces a confirmed order."
+        },
+        {
+          "id": "new-tool-call-same-job/business-identity",
+          "passed": false,
+          "detail": "Model replanning does not create a second order for one approved job."
+        },
+        {
+          "id": "new-tool-call-same-job/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "unknown-is-not-auto-retry/recovery-instruction",
+          "passed": false,
+          "detail": "The agent receives an explicit non-retryable unknown outcome."
+        },
+        {
+          "id": "unknown-is-not-auto-retry/no-second-create",
+          "passed": false,
+          "detail": "A new tool call cannot invent a missing-order lookup or another create."
+        },
+        {
+          "id": "argument-authority-and-local-store-error/approved-arguments",
+          "passed": false,
+          "detail": "The tool argument cannot exceed or replace the approved quote."
+        },
+        {
+          "id": "argument-authority-and-local-store-error/no-swallowed-store-error",
+          "passed": false,
+          "detail": "A failed durable claim escapes and prevents dispatch."
+        },
+        {
+          "id": "typed-refusal-and-oauth-recovery/typed-issue",
+          "passed": false,
+          "detail": "The typed refusal issue reaches the agent without a reconciliation read."
+        },
+        {
+          "id": "typed-refusal-and-oauth-recovery/auth-not-sent",
+          "passed": false,
+          "detail": "Lazy OAuth failure is a fixable pre-dispatch failure."
+        },
+        {
+          "id": "typed-refusal-and-oauth-recovery/fixed-auth-retry",
+          "passed": true,
+          "detail": "An explicit retry after fixing OAuth creates only one order."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "dc62356b419b978d4d8fbbbdf3c70e8448055c72e89be12cf422335cbc7dfce4",
+      "receiptHash": "20a9aca78ac09a03ba950c050c9d4f4c0f88f49e207bd32af65b9b32eba32ce8",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "approved-tool-job/ready",
+          "passed": true,
+          "detail": "An approved create tool produces a confirmed order."
+        },
+        {
+          "id": "new-tool-call-same-job/business-identity",
+          "passed": true,
+          "detail": "Model replanning does not create a second order for one approved job."
+        },
+        {
+          "id": "new-tool-call-same-job/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "unknown-is-not-auto-retry/recovery-instruction",
+          "passed": true,
+          "detail": "The agent receives an explicit non-retryable unknown outcome."
+        },
+        {
+          "id": "unknown-is-not-auto-retry/no-second-create",
+          "passed": true,
+          "detail": "A new tool call cannot invent a missing-order lookup or another create."
+        },
+        {
+          "id": "argument-authority-and-local-store-error/approved-arguments",
+          "passed": true,
+          "detail": "The tool argument cannot exceed or replace the approved quote."
+        },
+        {
+          "id": "argument-authority-and-local-store-error/no-swallowed-store-error",
+          "passed": true,
+          "detail": "A failed durable claim escapes and prevents dispatch."
+        },
+        {
+          "id": "typed-refusal-and-oauth-recovery/typed-issue",
+          "passed": true,
+          "detail": "The typed refusal issue reaches the agent without a reconciliation read."
+        },
+        {
+          "id": "typed-refusal-and-oauth-recovery/auth-not-sent",
+          "passed": true,
+          "detail": "Lazy OAuth failure is a fixable pre-dispatch failure."
+        },
+        {
+          "id": "typed-refusal-and-oauth-recovery/fixed-auth-retry",
+          "passed": true,
+          "detail": "An explicit retry after fixing OAuth creates only one order."
+        }
+      ]
+    }
+  ]
+}

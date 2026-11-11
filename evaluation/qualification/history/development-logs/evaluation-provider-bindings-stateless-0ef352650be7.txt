@@ -1,0 +1,1 @@
+{"stage":"provider_binding","provider":"openai","model":"gpt-6.1-sol","passed":true,"status":"completed","errorCode":null,"requests":2,"tokens":816,"estimatedCostUsd":0.002048}

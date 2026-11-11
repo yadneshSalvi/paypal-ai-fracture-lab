@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": "API configuration and published-rate estimation; no task quality measurement",
+  "openai": {
+    "model": "gpt-6.1-sol",
+    "api": "https://api.openai.com/v1/responses",
+    "reasoningEffort": "max",
+    "store": false,
+    "continuation": "Stateless input history with reasoning.encrypted_content, required by this organization's Zero Data Retention policy",
+    "serviceTier": "default",
+    "seed": null,
+    "temperature": null,
+    "maximumOutputTokensPerAttemptIncludingReasoning": 65536,
+    "standardUsdPerMillion": {
+      "input": 2,
+      "cachedInput": 0.1,
+      "cacheWrite": 2.5,
+      "outputIncludingReasoning": 10
+    },
+    "above272000InputTokensUsdPerMillion": {
+      "input": 4,
+      "cachedInput": 0.2,
+      "cacheWrite": 5,
+      "outputIncludingReasoning": 15
+    },
+    "sources": [
+      "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "https://developers.openai.com/api/docs/pricing",
+      "https://developers.openai.com/api/docs/guides/reasoning",
+      "https://developers.openai.com/api/docs/guides/function-calling"
+    ]
+  },
+  "gemini": {
+    "model": "gemini-3.8-flash",
+    "api": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "apiRevision": "2026-05-20",
+    "thinkingLevel": "high",
+    "store": true,
+    "continuation": "previous_interaction_id with function_result steps",
+    "seed": null,
+    "temperature": null,
+    "maximumOutputTokensPerAttemptIncludingThought": 65536,
+    "standardUsdPerMillionThrough2026December31": {
+      "input": 0.75,
+      "cachedInput": 0.075,
+      "outputIncludingThought": 3.75
+    },
+    "usageAccounting": "Interactions total_output_tokens excludes total_thought_tokens; the cumulative attempt budget and estimate include both",
+    "sources": [
+      "https://aistudio.google.com/docs/models/gemini-3.8-flash",
+      "https://aistudio.google.com/docs/pricing#gemini-3.8-flash",
+      "https://aistudio.google.com/docs/function-calling",
+      "https://aistudio.google.com/api-reference/interactions-api/create-interaction"
+    ]
+  },
+  "tokenization": {
+    "openai": "https://api.openai.com/v1/responses/input_tokens",
+    "gemini": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:countTokens",
+    "provenance": "Each exact text hash, provider response hash, count, status, request ID where provided, and timestamp is retained in evaluation/contexts/tokenization/",
+    "sources": [
+      "https://developers.openai.com/api/reference/resources/responses/subresources/input_tokens/methods/count",
+      "https://aistudio.google.com/docs/tokens"
+    ]
+  },
+  "limitations": [
+    "Provider model identifiers and the available version metadata are recorded; hosted weights are not controlled by the laboratory.",
+    "Reasoning settings and tokenizer units differ between providers. Comparisons are stratified by model and language.",
+    "Cost figures are estimates at the published standard text rates, not invoices. Unreported cache-write billing and failed-call charges may differ; unpriced calls are retained.",
+    "Binding qualification failures are preserved separately from the 600 scheduled study attempts. They do not count as task results."
+  ],
+  "recordedAt": "2026-11-11T08:32:57.584Z"
+}

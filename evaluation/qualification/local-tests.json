@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-11T08:58:04.678Z",
+  "fullSuite": {
+    "passed": 369,
+    "failed": 0,
+    "skipped": 0,
+    "log": "evaluation/qualification/history/development-logs/evaluation-full-tests-postgres-e914f8cc12d1.txt",
+    "database": "isolated disposable schema",
+    "originalTablesTouched": false,
+    "cleanupVerified": true
+  },
+  "evaluationUnits": {
+    "passed": 20,
+    "failed": 0,
+    "log": "evaluation/qualification/history/development-logs/evaluation-final-units-7356016a844c.txt"
+  },
+  "typecheck": {
+    "passed": true,
+    "log": "evaluation/qualification/history/development-logs/evaluation-final-typecheck-2cdcd85b3d54.txt"
+  },
+  "scope": "Local software checks and fictional provider transports, not study outcomes or new live payment evidence"
+}

@@ -1,0 +1,18 @@
+{
+  "sourceHash": "0eb78f2fea7b698b7ef022a20645926e673529f57a3b29d2ed7204fe79cb1311",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "active-quote/purchase",
+      "passed": true,
+      "detail": "The current authorized quote completes."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

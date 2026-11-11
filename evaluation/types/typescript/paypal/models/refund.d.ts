@@ -1,0 +1,23 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type LinkDescription } from "./link-description.js";
+import { type Money } from "./money.js";
+import { type PayeeBase } from "./payee-base.js";
+import { type RefundStatusDetails } from "./refund-status-details.js";
+import { type RefundStatus } from "./refund-status.js";
+import { type SellerPayableBreakdown } from "./seller-payable-breakdown.js";
+export type Refund = {
+    status?: RefundStatus;
+    statusDetails?: RefundStatusDetails;
+    id?: string;
+    amount?: Money;
+    invoiceId?: string;
+    customId?: string;
+    acquirerReferenceNumber?: string;
+    noteToPayer?: string;
+    sellerPayableBreakdown?: SellerPayableBreakdown;
+    payer?: PayeeBase;
+    links?: LinkDescription[];
+    createTime?: string;
+    updateTime?: string;
+};
+export declare const refundSchema: Schema<Refund>;

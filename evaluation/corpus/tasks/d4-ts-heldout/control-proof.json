@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d4-ts-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:51:06.208Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d4-ts-heldout.json.gz",
+    "sha256": "70451c636d68d8d4e632652a6ef9ac6a2ff0ff7a0f0c07621c0a50b428e298c1"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "8cc6f45d9febaf89d860f41652c5039fe11ae9088c79bc37bca5afadbeadf2ad",
+      "receiptHash": "baf167af98a5f63fdbf82d1002a8c17df2a23fbcd67288fed9fba56b046c25aa",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "approved-return-line/line",
+          "passed": true,
+          "detail": "A valid return line creates its authorized partial refund."
+        },
+        {
+          "id": "new-attempt-same-line/same-operation",
+          "passed": false,
+          "detail": "A new transport attempt returns the same refund resource."
+        },
+        {
+          "id": "new-attempt-same-line/provider-identity",
+          "passed": false,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "new-attempt-same-line/identity-before-dispatch",
+          "passed": false,
+          "detail": "The explicit provider request identity is durably stored before the write."
+        },
+        {
+          "id": "separate-lines-and-changed-payload/line-granularity",
+          "passed": false,
+          "detail": "Separate approved case lines remain separate refund intents."
+        },
+        {
+          "id": "separate-lines-and-changed-payload/payload-conflict",
+          "passed": false,
+          "detail": "A changed amount is rejected locally even after a successful earlier refund."
+        },
+        {
+          "id": "lost-answer-and-scope/unknown-is-protected",
+          "passed": false,
+          "detail": "A missing refund reference cannot be replaced with another refund."
+        },
+        {
+          "id": "lost-answer-and-scope/scope-on-replay",
+          "passed": false,
+          "detail": "Replays still enforce the original account authority."
+        },
+        {
+          "id": "same-line-concurrent/unique-line-claim",
+          "passed": false,
+          "detail": "Concurrent independent workers share one immutable case-line operation."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "3bbefa441f1c2ad6d2a81686b30195908455eda162f0197520891bc7cb2dfe5f",
+      "receiptHash": "175521bdc48dbb67324d83fc49ad9e6ecebf1a1737cc276176a7347c2bb6702e",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "approved-return-line/line",
+          "passed": true,
+          "detail": "A valid return line creates its authorized partial refund."
+        },
+        {
+          "id": "new-attempt-same-line/same-operation",
+          "passed": true,
+          "detail": "A new transport attempt returns the same refund resource."
+        },
+        {
+          "id": "new-attempt-same-line/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "new-attempt-same-line/identity-before-dispatch",
+          "passed": true,
+          "detail": "The explicit provider request identity is durably stored before the write."
+        },
+        {
+          "id": "separate-lines-and-changed-payload/line-granularity",
+          "passed": true,
+          "detail": "Separate approved case lines remain separate refund intents."
+        },
+        {
+          "id": "separate-lines-and-changed-payload/payload-conflict",
+          "passed": true,
+          "detail": "A changed amount is rejected locally even after a successful earlier refund."
+        },
+        {
+          "id": "lost-answer-and-scope/unknown-is-protected",
+          "passed": true,
+          "detail": "A missing refund reference cannot be replaced with another refund."
+        },
+        {
+          "id": "lost-answer-and-scope/scope-on-replay",
+          "passed": true,
+          "detail": "Replays still enforce the original account authority."
+        },
+        {
+          "id": "same-line-concurrent/unique-line-claim",
+          "passed": true,
+          "detail": "Concurrent independent workers share one immutable case-line operation."
+        }
+      ]
+    }
+  ]
+}

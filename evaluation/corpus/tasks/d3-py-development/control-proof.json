@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d3-py-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:40.928Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d3-py-development.json.gz",
+    "sha256": "fd44197bc0632adc754d8548fe21e03bcb84d27bd1ba826fdb646a6cbae1c21f"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "6ca96a30482072d8974b2976d1beee6ebfeae9a5a240a1e1be3d434f2f8aba5c",
+      "receiptHash": "899fa6f986e98a67740a2246cc35e9de46e85de1a23a344df81d94ac51babe1a",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "receipt-enqueued/receipt",
+          "passed": true,
+          "detail": "A paid purchase creates an entitlement and one local receipt message."
+        },
+        {
+          "id": "two-event-ids-one-effect/business-effect-key",
+          "passed": false,
+          "detail": "Distinct notification IDs do not create two purchase receipts."
+        },
+        {
+          "id": "two-event-ids-one-effect/authoritative-read",
+          "passed": false,
+          "detail": "The effect is backed by actual read-only SDK calls."
+        },
+        {
+          "id": "outbox-failure-before-receipt/local-error-visible",
+          "passed": true,
+          "detail": "A local persistence failure escapes the payment error translation."
+        },
+        {
+          "id": "outbox-failure-before-receipt/retry-finishes-outbox",
+          "passed": false,
+          "detail": "A fresh worker completes the missing outbox effect without duplicating fulfillment."
+        },
+        {
+          "id": "read-failure-and-envelope-reuse/retry-read",
+          "passed": false,
+          "detail": "The unavailable read leaves the notification retryable."
+        },
+        {
+          "id": "read-failure-and-envelope-reuse/conflicting-envelope",
+          "passed": false,
+          "detail": "Authenticated event-ID reuse cannot overwrite a processed envelope."
+        },
+        {
+          "id": "pending-is-not-receipted/pending-no-effects",
+          "passed": false,
+          "detail": "A pending canonical capture produces neither access nor a paid receipt."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "989b57a40837b1ddc02e8e2b58f8b52cc305cf3ead4eae9411f69f2539f0a46d",
+      "receiptHash": "0163390a3e04cd84db66f4ac161ced155472436d5476ea19c2d9e5f60550149a",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "receipt-enqueued/receipt",
+          "passed": true,
+          "detail": "A paid purchase creates an entitlement and one local receipt message."
+        },
+        {
+          "id": "two-event-ids-one-effect/business-effect-key",
+          "passed": true,
+          "detail": "Distinct notification IDs do not create two purchase receipts."
+        },
+        {
+          "id": "two-event-ids-one-effect/authoritative-read",
+          "passed": true,
+          "detail": "The effect is backed by actual read-only SDK calls."
+        },
+        {
+          "id": "outbox-failure-before-receipt/local-error-visible",
+          "passed": true,
+          "detail": "A local persistence failure escapes the payment error translation."
+        },
+        {
+          "id": "outbox-failure-before-receipt/retry-finishes-outbox",
+          "passed": true,
+          "detail": "A fresh worker completes the missing outbox effect without duplicating fulfillment."
+        },
+        {
+          "id": "read-failure-and-envelope-reuse/retry-read",
+          "passed": true,
+          "detail": "The unavailable read leaves the notification retryable."
+        },
+        {
+          "id": "read-failure-and-envelope-reuse/conflicting-envelope",
+          "passed": true,
+          "detail": "Authenticated event-ID reuse cannot overwrite a processed envelope."
+        },
+        {
+          "id": "pending-is-not-receipted/pending-no-effects",
+          "passed": true,
+          "detail": "A pending canonical capture produces neither access nor a paid receipt."
+        }
+      ]
+    }
+  ]
+}

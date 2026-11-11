@@ -1,0 +1,20 @@
+import type { EnumSchema } from "../core/validation/schema.js";
+export declare const PaymentAdviceCode: {
+    readonly _01: "01";
+    readonly _02: "02";
+    readonly _03: "03";
+    readonly _04: "04";
+    readonly _21: "21";
+    readonly _22: "22";
+    readonly _24: "24";
+    readonly _25: "25";
+    readonly _26: "26";
+    readonly _27: "27";
+    readonly _28: "28";
+    readonly _29: "29";
+    readonly _30: "30";
+    readonly _40: "40";
+    readonly _43: "43";
+};
+export type PaymentAdviceCode = (typeof PaymentAdviceCode)[keyof typeof PaymentAdviceCode] | (string & {});
+export declare const paymentAdviceCodeSchema: EnumSchema<PaymentAdviceCode>;

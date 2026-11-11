@@ -1,0 +1,18 @@
+{
+  "sourceHash": "8cc6f45d9febaf89d860f41652c5039fe11ae9088c79bc37bca5afadbeadf2ad",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "approved-return-line/line",
+      "passed": true,
+      "detail": "A valid return line creates its authorized partial refund."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

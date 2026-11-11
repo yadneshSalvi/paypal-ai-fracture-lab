@@ -1,0 +1,19 @@
+from enum import Enum
+from typing import Annotated, TypeAlias
+from ...core import open_enum_validator
+
+class CaptureIncompleteReason(str, Enum):
+    BUYER_COMPLAINT = 'BUYER_COMPLAINT'
+    CHARGEBACK = 'CHARGEBACK'
+    ECHECK = 'ECHECK'
+    INTERNATIONAL_WITHDRAWAL = 'INTERNATIONAL_WITHDRAWAL'
+    OTHER = 'OTHER'
+    PENDING_REVIEW = 'PENDING_REVIEW'
+    RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION = 'RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION'
+    REFUNDED = 'REFUNDED'
+    TRANSACTION_APPROVED_AWAITING_FUNDING = 'TRANSACTION_APPROVED_AWAITING_FUNDING'
+    UNILATERAL = 'UNILATERAL'
+    VERIFICATION_REQUIRED = 'VERIFICATION_REQUIRED'
+    DECLINED_BY_RISK_FRAUD_FILTERS = 'DECLINED_BY_RISK_FRAUD_FILTERS'
+    __str__ = str.__str__
+CaptureIncompleteReasonOrStr: TypeAlias = Annotated[CaptureIncompleteReason | str, open_enum_validator(CaptureIncompleteReason)]

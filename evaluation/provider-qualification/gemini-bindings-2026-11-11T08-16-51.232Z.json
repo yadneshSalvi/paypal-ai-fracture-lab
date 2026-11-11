@@ -1,0 +1,1663 @@
+{
+  "schemaVersion": 1,
+  "kind": "api_binding_qualification",
+  "studyTask": false,
+  "qualityMeasurement": false,
+  "passed": true,
+  "model": "gemini-3.8-flash",
+  "provider": "gemini",
+  "result": {
+    "schemaVersion": 1,
+    "kind": "model_generation",
+    "provider": "gemini",
+    "model": "gemini-3.8-flash",
+    "status": "completed",
+    "source": "QUALIFIED_READ_ONLY_BINDING",
+    "sourceHash": "c04ce04fa90c2690076a2e9ca286c93422d1f37c6575d80caea3b7dc12de0b76",
+    "summary": "binding checked",
+    "errorCode": null,
+    "calls": [
+      {
+        "index": 0,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "c37f16555bdd1bb3cdefdc4f9433a46e8a43f55e075b45f5495ad9fa8d07d5d1",
+          "startedAt": "2026-11-11T08:16:51.233Z",
+          "finishedAt": "2026-11-11T08:16:57.560Z",
+          "durationMs": 6327,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "1b9b7b2ffa9b997ac4b18c10b859b5623dfc83d0ce8f261afa55181afbd3da9b",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXY3lUMGFxYXVNT1BWZzhVUHVPNnk0UXM",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 418,
+          "cachedInputTokens": 0,
+          "outputTokens": 131,
+          "reasoningTokens": 102,
+          "totalTokens": 549,
+          "raw": {
+            "total_tokens": 549,
+            "total_input_tokens": 418,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 418
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 29,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 102,
+            "initial_input_tokens": 418
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_2762931340615520427",
+            "name": "read_file",
+            "arguments": {
+              "path": "qualification.txt",
+              "lineCount": 10,
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00080475,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 1,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "2dc1ab9a3d2ca1390924b31c1fde1c5395e2ba8ac23b3f7fc245c073973ae763",
+          "startedAt": "2026-11-11T08:16:57.561Z",
+          "finishedAt": "2026-11-11T08:17:06.569Z",
+          "durationMs": 9008,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "37c81153824becd543386ba5d3d751a035368a37f03297daa8c0ff0155d06b7e",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIWZWlUMGFvU0NLNGlCM0xVUHZhdTJNUQ",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 570,
+          "cachedInputTokens": 0,
+          "outputTokens": 359,
+          "reasoningTokens": 349,
+          "totalTokens": 929,
+          "raw": {
+            "total_tokens": 929,
+            "total_input_tokens": 570,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 570
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 10,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 349,
+            "initial_input_tokens": 570
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_15261431561572898907",
+            "name": "inspect_baseline",
+            "arguments": {}
+          }
+        ],
+        "estimatedCostUsd": 0.00177375,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 2,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "53bbe20d3f8e5395df7ec101588a0dc34fbb3cfd2f76163561d1dcf6432fc2de",
+          "startedAt": "2026-11-11T08:17:06.570Z",
+          "finishedAt": "2026-11-11T08:17:12.900Z",
+          "durationMs": 6330,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "f9c1c41725fecb6e9b3948cfc643789645846f33e04d038393906310ef7ffe2b",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIWZ3lUMGFwR2hNS25FMV9vUDRQeTdjQQ",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 946,
+          "cachedInputTokens": 0,
+          "outputTokens": 74,
+          "reasoningTokens": 51,
+          "totalTokens": 1020,
+          "raw": {
+            "total_tokens": 1020,
+            "total_input_tokens": 946,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 946
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 23,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 51,
+            "initial_input_tokens": 946
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_2748250739477210096",
+            "name": "list_files",
+            "arguments": {
+              "limit": 1,
+              "offset": 0,
+              "prefix": ""
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.000987,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 3,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "78b78b1f1d6cf73d0d6e4fd13d75b6db4658832f45360a792650dcb04764a920",
+          "startedAt": "2026-11-11T08:17:12.901Z",
+          "finishedAt": "2026-11-11T08:17:19.143Z",
+          "durationMs": 6242,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "5c6f23cfec08da4ced0ca33b26a4473fb49968c85f170fe6d407f42de3d9ab19",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXaWlUMGFvcUFCNUR0Njk0UGhzSE82QWM",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1037,
+          "cachedInputTokens": 0,
+          "outputTokens": 37,
+          "reasoningTokens": 11,
+          "totalTokens": 1074,
+          "raw": {
+            "total_tokens": 1074,
+            "total_input_tokens": 1037,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1037
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 26,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 11,
+            "initial_input_tokens": 1037
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_14480639720107835355",
+            "name": "search_files",
+            "arguments": {
+              "offset": 0,
+              "prefix": "",
+              "query": "QUALIFIED"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.0009165,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 4,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "fb7bb232ab9e8631c084a0d16a21d959266cd9f959325a81389534ecb33dfc4c",
+          "startedAt": "2026-11-11T08:17:19.144Z",
+          "finishedAt": "2026-11-11T08:17:25.145Z",
+          "durationMs": 6001,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "57cff915905c64ed245a85971515553d8e9d4688716df730e61660686a19642f",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXa0NUMGFzN0tJbzd2cWZrUGxKMno2QUk",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1091,
+          "cachedInputTokens": 0,
+          "outputTokens": 62,
+          "reasoningTokens": 34,
+          "totalTokens": 1153,
+          "raw": {
+            "total_tokens": 1153,
+            "total_input_tokens": 1091,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1091
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 34,
+            "initial_input_tokens": 1091
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_5056136966179988760",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "startLine": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00105075,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 5,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "19daba380daa3a16ea4be62b43059d519ca2ffc70801f0896e821a4723de7c16",
+          "startedAt": "2026-11-11T08:17:25.146Z",
+          "finishedAt": "2026-11-11T08:17:32.617Z",
+          "durationMs": 7471,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "4d2eedac9077bb3e0a9a4e87b84fbfdaa9aea1783894c0cbd406267524777cee",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXbGlUMGFwNnNGTTM1Njk0UHNwUGJtUU0",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1174,
+          "cachedInputTokens": 0,
+          "outputTokens": 34,
+          "reasoningTokens": 6,
+          "totalTokens": 1208,
+          "raw": {
+            "total_tokens": 1208,
+            "total_input_tokens": 1174,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1174
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 6,
+            "initial_input_tokens": 1174
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_10844474286260096139",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "lineCount": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.001008,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 6,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "55d9fdde3929e289518fcee12f2afc177d75d435238b1f0fb798a1db8dabd764",
+          "startedAt": "2026-11-11T08:17:32.618Z",
+          "finishedAt": "2026-11-11T08:17:38.991Z",
+          "durationMs": 6373,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "a57b28813e4c0b279a823237f488432bdf8fb2c69adcd3c5d9cb15903aaf46b5",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXblNUMGFxUG1PYkx2ejdzUDBjLXcwUXM",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1229,
+          "cachedInputTokens": 0,
+          "outputTokens": 38,
+          "reasoningTokens": 10,
+          "totalTokens": 1267,
+          "raw": {
+            "total_tokens": 1267,
+            "total_input_tokens": 1229,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1229
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 10,
+            "initial_input_tokens": 1229
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_5510271388030451170",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "startLine": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00106425,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 7,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "2ee04d8149a26b372424eed24cff63225a99fe0ce01e9c5d70fcf69606791acc",
+          "startedAt": "2026-11-11T08:17:38.992Z",
+          "finishedAt": "2026-11-11T08:17:45.694Z",
+          "durationMs": 6702,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "afa9a397ba4e0a3899a3a961f821be4c3ed991c92c07a6a479875625ce5feb70",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXcENUMGFxSzRGcGlhNjk0UHNkR0E4UXc",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1288,
+          "cachedInputTokens": 0,
+          "outputTokens": 38,
+          "reasoningTokens": 10,
+          "totalTokens": 1326,
+          "raw": {
+            "total_tokens": 1326,
+            "total_input_tokens": 1288,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1288
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 10,
+            "initial_input_tokens": 1288
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_3457550484701388856",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "lineCount": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.0011085,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 8,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "c575010c4c23c8d7bf5a956ea95a262669b3739f2d845f2769a2d64e59e3700c",
+          "startedAt": "2026-11-11T08:17:45.695Z",
+          "finishedAt": "2026-11-11T08:17:51.858Z",
+          "durationMs": 6163,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "78aba2a0447453159b168cbee764498db62ff7442726efbf770f9042c8060bb2",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXcXlUMGFvYWFCWlh3NC1FUDhQdXF3QW8",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1347,
+          "cachedInputTokens": 0,
+          "outputTokens": 42,
+          "reasoningTokens": 14,
+          "totalTokens": 1389,
+          "raw": {
+            "total_tokens": 1389,
+            "total_input_tokens": 1347,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1347
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 14,
+            "initial_input_tokens": 1347
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_10664408351298633025",
+            "name": "read_file",
+            "arguments": {
+              "path": "qualification.txt",
+              "lineCount": 1,
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00116775,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 9,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "3e690195efff295c9e9a32ead6db761c0b44339d163ae2c0387cc1f5c151b96e",
+          "startedAt": "2026-11-11T08:17:51.859Z",
+          "finishedAt": "2026-11-11T08:17:58.143Z",
+          "durationMs": 6284,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "b12e9e660198fd6828ea77b877ff781248a89d000ad56197aa04955eecbd657c",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXc1NUMGFvekVES19sNjk0UDI1S01pUWc",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1410,
+          "cachedInputTokens": 0,
+          "outputTokens": 34,
+          "reasoningTokens": 6,
+          "totalTokens": 1444,
+          "raw": {
+            "total_tokens": 1444,
+            "total_input_tokens": 1410,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1410
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 6,
+            "initial_input_tokens": 1410
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_11643403206818625847",
+            "name": "read_file",
+            "arguments": {
+              "path": "qualification.txt",
+              "startLine": 1,
+              "lineCount": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.001185,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 10,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "403f62faea5ebcf0961ee9efb03ec4d25435d6a4141ddafd92f41fd8edf22896",
+          "startedAt": "2026-11-11T08:17:58.144Z",
+          "finishedAt": "2026-11-11T08:18:05.326Z",
+          "durationMs": 7182,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "2b4b33f4b861407be1c760095e5854ff13f04c94a29a6efef34f4d37fa292ec1",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIWdHlUMGFxNjZHYU81Njk0UDFkSHlBUQ",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1465,
+          "cachedInputTokens": 0,
+          "outputTokens": 36,
+          "reasoningTokens": 8,
+          "totalTokens": 1501,
+          "raw": {
+            "total_tokens": 1501,
+            "total_input_tokens": 1465,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1465
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 8,
+            "initial_input_tokens": 1465
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_1532257885418497193",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "lineCount": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00123375,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 11,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "bd94208f037a32fdcbf65f3b376a8a9644ffeee86ed8c7a4b41812596e783677",
+          "startedAt": "2026-11-11T08:18:05.327Z",
+          "finishedAt": "2026-11-11T08:18:10.344Z",
+          "durationMs": 5017,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "da2dc8d245bb2a64efa9f8f6bcbd3aec3e70adc97d83b4969bb3b8b99df3cfcc",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXdmlUMGF0RHlIOG5ONjk0UGhLVFp5QWs",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1522,
+          "cachedInputTokens": 0,
+          "outputTokens": 32,
+          "reasoningTokens": 4,
+          "totalTokens": 1554,
+          "raw": {
+            "total_tokens": 1554,
+            "total_input_tokens": 1522,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1522
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 4,
+            "initial_input_tokens": 1522
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_14369963730501023997",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "startLine": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.0012615,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 12,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "255589ae32c8f4eb68efb5bc4a4c36aafdd31397ab59597d65a0ca9cfb2fdd68",
+          "startedAt": "2026-11-11T08:18:10.345Z",
+          "finishedAt": "2026-11-11T08:18:16.732Z",
+          "durationMs": 6387,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "9a9103a2d7bbedcd6ab754b275523f85230fe06cc80289a2d12f9758d495b33e",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXd3lUMGF0dnpKTUhnNjk0UHdKM0VxUXM",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1575,
+          "cachedInputTokens": 0,
+          "outputTokens": 38,
+          "reasoningTokens": 10,
+          "totalTokens": 1613,
+          "raw": {
+            "total_tokens": 1613,
+            "total_input_tokens": 1575,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1575
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 10,
+            "initial_input_tokens": 1575
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_9471451298842389873",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "startLine": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00132375,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 13,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "979a1b8166edb36ec48fa0bbcaac8a1f6c9c302bea7085a9e6a8e6534f478024",
+          "startedAt": "2026-11-11T08:18:16.734Z",
+          "finishedAt": "2026-11-11T08:18:22.744Z",
+          "durationMs": 6010,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "06a46fb17c7b12df0849d6021fdd492841cd89cc687cebfcd0b9c7f7a887e496",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXeVNUMGFwZkNPdlMtNjk0UDRlaTQ4UU0",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1634,
+          "cachedInputTokens": 0,
+          "outputTokens": 38,
+          "reasoningTokens": 10,
+          "totalTokens": 1672,
+          "raw": {
+            "total_tokens": 1672,
+            "total_input_tokens": 1634,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1634
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 10,
+            "initial_input_tokens": 1634
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_9589415113208029792",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "startLine": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.001368,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 14,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "1a574fde15c240773056020de0d1f83f57f8334f70eb537f694e8be27e4471d6",
+          "startedAt": "2026-11-11T08:18:22.746Z",
+          "finishedAt": "2026-11-11T08:18:29.195Z",
+          "durationMs": 6449,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "7edaf88742f5ccebaf680e912d6d7748d1f6d6d677c9deb2cca7ed6d86ac08aa",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXMENUMGF2LUJINkxJM0xVUHNjeWlnQWc",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1693,
+          "cachedInputTokens": 0,
+          "outputTokens": 33,
+          "reasoningTokens": 5,
+          "totalTokens": 1726,
+          "raw": {
+            "total_tokens": 1726,
+            "total_input_tokens": 1693,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1693
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 5,
+            "initial_input_tokens": 1693
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_2518944231287727627",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "path": "qualification.txt",
+              "lineCount": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.0013935,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 15,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "5fc07785a04d6c5e3d23380f07ad697b0bd82dfca3958553d157ec6e5b2160f7",
+          "startedAt": "2026-11-11T08:18:29.196Z",
+          "finishedAt": "2026-11-11T08:18:35.805Z",
+          "durationMs": 6609,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "6fd1d359c7eecc0dc15e53f969e43d380f84640d4a6e34cc19eff7f4036c624b",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXMWlUMGF2Yl9JOTJuNjk0UGhZdTctUWM",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1747,
+          "cachedInputTokens": 0,
+          "outputTokens": 32,
+          "reasoningTokens": 4,
+          "totalTokens": 1779,
+          "raw": {
+            "total_tokens": 1779,
+            "total_input_tokens": 1747,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1747
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 4,
+            "initial_input_tokens": 1747
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_17508993143258414011",
+            "name": "read_file",
+            "arguments": {
+              "path": "qualification.txt",
+              "lineCount": 1,
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00143025,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 16,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "94e2cf0003fa40c646fafa65c17afc3a6efc1aefe54761e1a09628ad0445e5b2",
+          "startedAt": "2026-11-11T08:18:35.806Z",
+          "finishedAt": "2026-11-11T08:18:41.627Z",
+          "durationMs": 5821,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "fa425f09bd35a2e9c907844cf93c274bc3a7f39bb35d52983200f4ad05e509d6",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXM1NUMGFxdm9DdWJHNjk0UGlKT0M0UTg",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1800,
+          "cachedInputTokens": 0,
+          "outputTokens": 35,
+          "reasoningTokens": 7,
+          "totalTokens": 1835,
+          "raw": {
+            "total_tokens": 1835,
+            "total_input_tokens": 1800,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1800
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 7,
+            "initial_input_tokens": 1800
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_15697935309874241519",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "path": "qualification.txt",
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00148125,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 17,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "8bca03b50608d6db2fd84e3aba87742ffe541fbe3607e053bd03d82b05fe7db6",
+          "startedAt": "2026-11-11T08:18:41.628Z",
+          "finishedAt": "2026-11-11T08:18:48.832Z",
+          "durationMs": 7204,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "2acb8f4d99785dd641cbf9c50397b9bc19d5140539648a8416bb007bb8c83fdd",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXNGlUMGFzQ3RPZHExNjk0UDBfZUN1UTA",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1856,
+          "cachedInputTokens": 0,
+          "outputTokens": 40,
+          "reasoningTokens": 12,
+          "totalTokens": 1896,
+          "raw": {
+            "total_tokens": 1896,
+            "total_input_tokens": 1856,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1856
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 12,
+            "initial_input_tokens": 1856
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_626249156613865556",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "lineCount": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.001542,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 18,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "9d46f3a07221764fb9c39387480ae9427dab918d359d98b5454eae957b013744",
+          "startedAt": "2026-11-11T08:18:48.834Z",
+          "finishedAt": "2026-11-11T08:18:55.808Z",
+          "durationMs": 6974,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "6ff41ebcc596af198d493b6571676580e471e92a9f9a0aef7f749cba008bfb10",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXNmlUMGFwMjFINlhrMV9vUHBxXzBpUWs",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1917,
+          "cachedInputTokens": 0,
+          "outputTokens": 40,
+          "reasoningTokens": 12,
+          "totalTokens": 1957,
+          "raw": {
+            "total_tokens": 1957,
+            "total_input_tokens": 1917,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1917
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 12,
+            "initial_input_tokens": 1917
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_14079071822089055562",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "path": "qualification.txt",
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00158775,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 19,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "f6cbfadf9855d2387c2b3054b799ccc3acb4d96b227b00e41147097c9f221f04",
+          "startedAt": "2026-11-11T08:18:55.810Z",
+          "finishedAt": "2026-11-11T08:19:03.479Z",
+          "durationMs": 7669,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "53a59a76e7998320c9db86f0249e66c9a1c24bc586b2ff813371b0d082328996",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXOFNUMGFxYjROTTdRcWZrUHA0MlJ1UVU",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 1978,
+          "cachedInputTokens": 0,
+          "outputTokens": 36,
+          "reasoningTokens": 8,
+          "totalTokens": 2014,
+          "raw": {
+            "total_tokens": 2014,
+            "total_input_tokens": 1978,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1978
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 8,
+            "initial_input_tokens": 1978
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_3045675231346727940",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "path": "qualification.txt",
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.0016185,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 20,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "357b6eab6c33aea7fc8a0698e149a8bad5956b064f606229dc8773895b24b0ab",
+          "startedAt": "2026-11-11T08:19:03.481Z",
+          "finishedAt": "2026-11-11T08:19:11.516Z",
+          "durationMs": 8035,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "06d70bc0dacc3d02d36eda5c271f838737429d038f7f3d0c613dd2ba6b9e8096",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXLVNUMGF0bThCYjZENjk0UHdjRDZ3QWM",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 2035,
+          "cachedInputTokens": 0,
+          "outputTokens": 32,
+          "reasoningTokens": 4,
+          "totalTokens": 2067,
+          "raw": {
+            "total_tokens": 2067,
+            "total_input_tokens": 2035,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 2035
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 4,
+            "initial_input_tokens": 2035
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_7769773149215974475",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "path": "qualification.txt",
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00164625,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 21,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "1fa6caa5d2f6ffdf1820fcabac7fc82bb6a7c0da00385415687a24dc6361a090",
+          "startedAt": "2026-11-11T08:19:11.518Z",
+          "finishedAt": "2026-11-11T08:19:18.595Z",
+          "durationMs": 7077,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "62480229b31dfbd5b3cc969dd214c80d3a6c8f819ca54a2a779cb734a98c81ad",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXQVNYMGFyeklCTWlqNjk0UDE4eXA4UU0",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 2088,
+          "cachedInputTokens": 0,
+          "outputTokens": 38,
+          "reasoningTokens": 10,
+          "totalTokens": 2126,
+          "raw": {
+            "total_tokens": 2126,
+            "total_input_tokens": 2088,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 2088
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 10,
+            "initial_input_tokens": 2088
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_1389317497145896747",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "lineCount": 1,
+              "path": "qualification.txt"
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.0017085,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 22,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "89ab0505ae53fcb47db86b9b16d9b9e347f353e8b616b928b8f841bae6bc69fb",
+          "startedAt": "2026-11-11T08:19:18.597Z",
+          "finishedAt": "2026-11-11T08:19:24.969Z",
+          "durationMs": 6372,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "30852735814632052862951988f49d9fd656532891a29001e132e76d4efe0c9b",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXQ0NYMGFyYVBCUENDNjk0UGw4T2MyUTg",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 2147,
+          "cachedInputTokens": 0,
+          "outputTokens": 32,
+          "reasoningTokens": 4,
+          "totalTokens": 2179,
+          "raw": {
+            "total_tokens": 2179,
+            "total_input_tokens": 2147,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 2147
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 4,
+            "initial_input_tokens": 2147
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_692292298986930718",
+            "name": "read_file",
+            "arguments": {
+              "lineCount": 1,
+              "path": "qualification.txt",
+              "startLine": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00173025,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 23,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "90a46b74700f7cc5457c69f0b0eee57af48fca61b076c6e8fd2760986d354d14",
+          "startedAt": "2026-11-11T08:19:24.972Z",
+          "finishedAt": "2026-11-11T08:19:31.338Z",
+          "durationMs": 6366,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "b1c809dbaee15d3828843e84df5211b3d889a287f3c053da562ee0550d92b3c1",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXRGlYMGF1cXhHSlhpNjk0UG1ySHJzQU0",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "requires_action",
+        "usage": {
+          "inputTokens": 2200,
+          "cachedInputTokens": 0,
+          "outputTokens": 33,
+          "reasoningTokens": 5,
+          "totalTokens": 2233,
+          "raw": {
+            "total_tokens": 2233,
+            "total_input_tokens": 2200,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 2200
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 5,
+            "initial_input_tokens": 2200
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "function_call",
+            "id": "call_14188503115443817504",
+            "name": "read_file",
+            "arguments": {
+              "startLine": 1,
+              "path": "qualification.txt",
+              "lineCount": 1
+            }
+          }
+        ],
+        "estimatedCostUsd": 0.00177375,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      },
+      {
+        "index": 24,
+        "http": {
+          "provider": "gemini",
+          "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+          "requestHash": "02a70d2a69eb9069addc89aba3f7634f471acd3fc7de86916f32b14026c4b42d",
+          "startedAt": "2026-11-11T08:19:31.340Z",
+          "finishedAt": "2026-11-11T08:19:37.523Z",
+          "durationMs": 6183,
+          "httpStatus": 200,
+          "requestId": null,
+          "responseHash": "a484531aae6383e473f611dca03aa87fe4a12e3e05af58cbb821ba0163832b35",
+          "errorCode": null
+        },
+        "responseId": "v1_ChdjeVQwYXFhdU1PUFZnOFVQdU82eTRRcxIXRkNYMGF1TEZNY0tUNjk0UHc2YUxpUWc",
+        "reportedModel": "gemini-3.8-flash",
+        "status": "completed",
+        "usage": {
+          "inputTokens": 1922,
+          "cachedInputTokens": 0,
+          "outputTokens": 23,
+          "reasoningTokens": 5,
+          "totalTokens": 1945,
+          "raw": {
+            "total_tokens": 1945,
+            "total_input_tokens": 1922,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 1922
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 18,
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 5,
+            "initial_input_tokens": 1922
+          }
+        },
+        "visibleOutput": [
+          {
+            "type": "model_output",
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"source\":\"QUALIFIED_READ_ONLY_BINDING\",\"summary\":\"binding checked\"}"
+              }
+            ]
+          }
+        ],
+        "estimatedCostUsd": 0.00152775,
+        "costBasis": "Published standard text rates, including reported cached/reasoning tokens; unreported cache-write billing and failed-call charges are not an invoice."
+      }
+    ],
+    "toolAccesses": [
+      {
+        "index": 0,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "lineCount": 10,
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 1,
+        "name": "inspect_baseline",
+        "arguments": {},
+        "result": {
+          "error": "FILE_NOT_ALLOWED"
+        }
+      },
+      {
+        "index": 2,
+        "name": "list_files",
+        "arguments": {
+          "limit": 1,
+          "offset": 0,
+          "prefix": ""
+        },
+        "result": {
+          "error": "FILE_NOT_ALLOWED"
+        }
+      },
+      {
+        "index": 3,
+        "name": "search_files",
+        "arguments": {
+          "offset": 0,
+          "prefix": "",
+          "query": "QUALIFIED"
+        },
+        "result": {
+          "error": "FILE_NOT_ALLOWED"
+        }
+      },
+      {
+        "index": 4,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "startLine": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 5,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "lineCount": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 6,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "startLine": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 7,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "lineCount": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 8,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "lineCount": 1,
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 9,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "startLine": 1,
+          "lineCount": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 10,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "lineCount": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 11,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "startLine": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 12,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "startLine": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 13,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "startLine": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 14,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "path": "qualification.txt",
+          "lineCount": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 15,
+        "name": "read_file",
+        "arguments": {
+          "path": "qualification.txt",
+          "lineCount": 1,
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 16,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "path": "qualification.txt",
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 17,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "lineCount": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 18,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "path": "qualification.txt",
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 19,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "path": "qualification.txt",
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 20,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "path": "qualification.txt",
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 21,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "lineCount": 1,
+          "path": "qualification.txt"
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 22,
+        "name": "read_file",
+        "arguments": {
+          "lineCount": 1,
+          "path": "qualification.txt",
+          "startLine": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      },
+      {
+        "index": 23,
+        "name": "read_file",
+        "arguments": {
+          "startLine": 1,
+          "path": "qualification.txt",
+          "lineCount": 1
+        },
+        "result": {
+          "content": "QUALIFIED_READ_ONLY_BINDING"
+        }
+      }
+    ],
+    "inputTokens": 38089,
+    "outputTokens": 1367,
+    "reasoningTokens": 701,
+    "totalTokens": 39456,
+    "estimatedCostUsd": 0.033693,
+    "unpricedCalls": 0,
+    "durationMs": 166291,
+    "finishedAt": "2026-11-11T08:19:37.523Z",
+    "receiptHash": "7006e51f84203226b744632e61ccc1fd678ab49dd50caf93ce603728c0cb34ea"
+  },
+  "eventsHash": "79e895f0de071209ac8c255d174bb946711f796587d13a2c12314f158f027237"
+}

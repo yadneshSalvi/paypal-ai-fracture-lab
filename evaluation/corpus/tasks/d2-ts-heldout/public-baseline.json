@@ -1,0 +1,18 @@
+{
+  "sourceHash": "419d6edd216bc58e5aeab6a8b13980a1a74177530683216d96ae23add3ffc927",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "known-completed-refund/completed",
+      "passed": true,
+      "detail": "A matching known completed refund settles its local intent."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

@@ -1,0 +1,26 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type CheckoutOption } from "./checkout-option.js";
+import { type Money } from "./money.js";
+import { type TaxAmount } from "./tax-amount.js";
+export type ItemDetails = {
+    itemCode?: string;
+    itemName?: string;
+    itemDescription?: string;
+    itemOptions?: string;
+    itemQuantity?: string;
+    itemUnitPrice?: Money;
+    itemAmount?: Money;
+    discountAmount?: Money;
+    adjustmentAmount?: Money;
+    giftWrapAmount?: Money;
+    taxPercentage?: string;
+    taxAmounts?: TaxAmount[];
+    basicShippingAmount?: Money;
+    extraShippingAmount?: Money;
+    handlingAmount?: Money;
+    insuranceAmount?: Money;
+    totalItemAmount?: Money;
+    invoiceNumber?: string;
+    checkoutOptions?: CheckoutOption[];
+};
+export declare const itemDetailsSchema: Schema<ItemDetails>;

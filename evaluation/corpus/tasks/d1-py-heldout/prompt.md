@@ -1,0 +1,7 @@
+# Orchard: a cart amendment is a new approved quote
+
+An Orchard cart can be amended after an earlier purchase. `carts[cartId]` contains accountId and activeQuoteId. Each immutable `intents[quoteId]` stores cartId, amountMinor, currency, authorized and the order IDs approved for that quote in orderIds. A command is `{cartId,quoteId,orderId,accountId,deliveryId}`. Validate all bindings and current quote authority before a provider write. Inactive quotes return stale/409; a foreign account or order returns forbidden/403.
+
+Repair purchase completion. Duplicate deliveries and alternative approved orders for one quote must produce only one capture. A genuinely new active quote on the same cart must be payable independently. Read a known winning order after response loss; do not capture an alternative order while the first outcome is unknown. A paid result requires the provider purchase identity, captured currency, exact quoted amount, and COMPLETED capture status. Save one `purchases[quoteId]` record containing quoteId, cartId and captureId. Pending or unreadable results must remain protected.
+
+Return paid/200 with captureId, pending/202, unknown/202, refused/422, not_sent/503, stale/409, forbidden/403, or missing/404. The endpoint never creates an order. The SDK has optional UNSET fields; do not equate order completion with capture completion. Keep unexpected exceptions visible and follow the workspace contract.

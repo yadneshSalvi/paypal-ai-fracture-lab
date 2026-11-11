@@ -1,0 +1,18 @@
+{
+  "sourceHash": "d7c6394828eccfe8b97383b850cf76f7a2d185474e1de9f49ab474004ed54d56",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "group-tickets/group-fulfillment",
+      "passed": true,
+      "detail": "One group payment fulfills its three quoted seats."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

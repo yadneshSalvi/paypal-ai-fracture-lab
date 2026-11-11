@@ -1,0 +1,18 @@
+{
+  "sourceHash": "20a854d02981c275ef3092b251f207df418c894d955e0d212eba404b38b5473f",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "Success: no issues found in 2 source files\n",
+  "tests": [
+    {
+      "id": "confirmed-refund-tool/completed",
+      "passed": true,
+      "detail": "A scoped refund tool returns an executed completed refund."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

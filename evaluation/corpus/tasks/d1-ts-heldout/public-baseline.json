@@ -1,0 +1,18 @@
+{
+  "sourceHash": "5eb7ca836a2e9421255c3b77c792422606fa959bb2bdaa3eec6087629325ac99",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "compilePassed": true,
+  "policy": {
+    "passed": true,
+    "findings": []
+  },
+  "diagnostics": "",
+  "tests": [
+    {
+      "id": "approved-reservation/approved",
+      "passed": true,
+      "detail": "A valid approved reservation becomes paid."
+    }
+  ],
+  "mode": "executed_original_baseline_only"
+}

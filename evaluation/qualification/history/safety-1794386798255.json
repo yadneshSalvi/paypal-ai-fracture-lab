@@ -1,0 +1,1028 @@
+{
+  "schemaVersion": 1,
+  "executedAt": "2026-11-11T08:46:38.254Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "allPassed": true,
+  "controlChannel": "authenticated_fd3",
+  "probes": [
+    {
+      "id": "host-files",
+      "passed": true,
+      "sourceHash": "171256e830c7390fcaca15c605e4d2cf0c170f57736f73bcffa33814fd8e7378",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "IMPORT_BOUNDARY"
+            }
+          ]
+        },
+        "sourceHash": "171256e830c7390fcaca15c605e4d2cf0c170f57736f73bcffa33814fd8e7378",
+        "diagnostics": "",
+        "runtime": "v22.22.3",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "f65031dd9fba9b9ce292bfe04ea9592e54e899100116ba955c6a07d4e5d65275",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "171256e830c7390fcaca15c605e4d2cf0c170f57736f73bcffa33814fd8e7378",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:06.823Z",
+        "finishedAt": "2026-11-11T08:46:08.658Z"
+      }
+    },
+    {
+      "id": "environment",
+      "passed": true,
+      "sourceHash": "6d17abb38eef068ab3839432a58876520d1bf6c7f0222e6608cda6ed8085f424",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "AMBIENT_CAPABILITY"
+            }
+          ]
+        },
+        "sourceHash": "6d17abb38eef068ab3839432a58876520d1bf6c7f0222e6608cda6ed8085f424",
+        "diagnostics": "",
+        "runtime": "v22.22.3",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "27c7ea37e75e87b8954494ef4659f7efb7da0e834fc664dbbef96775709515d0",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "6d17abb38eef068ab3839432a58876520d1bf6c7f0222e6608cda6ed8085f424",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:08.710Z",
+        "finishedAt": "2026-11-11T08:46:10.236Z"
+      }
+    },
+    {
+      "id": "egress",
+      "passed": true,
+      "sourceHash": "2b4c3194123323b7ed0d25b21b34af8b7d865661f2f97816504d907225ed0f7e",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "AMBIENT_CAPABILITY"
+            },
+            {
+              "line": 1,
+              "code": "REFLECTION_OR_TRANSPORT"
+            }
+          ]
+        },
+        "sourceHash": "2b4c3194123323b7ed0d25b21b34af8b7d865661f2f97816504d907225ed0f7e",
+        "diagnostics": "",
+        "runtime": "v22.22.3",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "22bfba6368a9fa60bb444519c9633ad76d129234c5c69b6bf2e317d0325df309",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "2b4c3194123323b7ed0d25b21b34af8b7d865661f2f97816504d907225ed0f7e",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:10.283Z",
+        "finishedAt": "2026-11-11T08:46:11.856Z"
+      }
+    },
+    {
+      "id": "reflection",
+      "passed": true,
+      "sourceHash": "c4abd5c9177cc16ddebcedac51e15ece02e6c2bb15a6875d83f6fba82828e02e",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "REFLECTION_OR_TRANSPORT"
+            }
+          ]
+        },
+        "sourceHash": "c4abd5c9177cc16ddebcedac51e15ece02e6c2bb15a6875d83f6fba82828e02e",
+        "diagnostics": "",
+        "runtime": "v22.22.3",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "a802951056f50bbaabad3095eba8ca8e8a8163ecb7c94c92a746004db5597691",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "c4abd5c9177cc16ddebcedac51e15ece02e6c2bb15a6875d83f6fba82828e02e",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:11.905Z",
+        "finishedAt": "2026-11-11T08:46:13.468Z"
+      }
+    },
+    {
+      "id": "subprocess",
+      "passed": true,
+      "sourceHash": "a49628002db76b5c2c0051ae67551e9acc1eb8a1fd4db2d06b244d4f8f7841dc",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "IMPORT_BOUNDARY"
+            }
+          ]
+        },
+        "sourceHash": "a49628002db76b5c2c0051ae67551e9acc1eb8a1fd4db2d06b244d4f8f7841dc",
+        "diagnostics": "Success: no issues found in 2 source files\n",
+        "runtime": "python3.11",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "901e9540dc7f9b51718eec5782c51e209073d3e0ab54cc34e6e549c793e2e1ff",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "a49628002db76b5c2c0051ae67551e9acc1eb8a1fd4db2d06b244d4f8f7841dc",
+        "language": "Python",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:13.532Z",
+        "finishedAt": "2026-11-11T08:46:15.266Z"
+      }
+    },
+    {
+      "id": "python-egress",
+      "passed": true,
+      "sourceHash": "aca20198120bf649fcf3c8c7037406e1f6dd37bd56ae1d974365de719e454ec1",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 4,
+              "code": "NETWORK_CAPABILITY"
+            }
+          ]
+        },
+        "sourceHash": "aca20198120bf649fcf3c8c7037406e1f6dd37bd56ae1d974365de719e454ec1",
+        "diagnostics": "Success: no issues found in 2 source files\n",
+        "runtime": "python3.11",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "9fc6edd003e8a9c078bb03c8e8788ef86d9ed7561b19cfe31e0f88a2ba385935",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "aca20198120bf649fcf3c8c7037406e1f6dd37bd56ae1d974365de719e454ec1",
+        "language": "Python",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:15.318Z",
+        "finishedAt": "2026-11-11T08:46:16.959Z"
+      }
+    },
+    {
+      "id": "control-descriptor-write",
+      "passed": true,
+      "sourceHash": "4a3420b19f3ae41e3c4509c8d6ca31835aa7ddc295d1c73de5836bacfd411816",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "IMPORT_BOUNDARY"
+            }
+          ]
+        },
+        "sourceHash": "4a3420b19f3ae41e3c4509c8d6ca31835aa7ddc295d1c73de5836bacfd411816",
+        "diagnostics": "",
+        "runtime": "v22.22.3",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "d635fb8cefe67272a914e698d6e38db3f4b38f3f74b203e9cf2f7d9c0a285097",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "4a3420b19f3ae41e3c4509c8d6ca31835aa7ddc295d1c73de5836bacfd411816",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:17.008Z",
+        "finishedAt": "2026-11-11T08:46:18.508Z"
+      }
+    },
+    {
+      "id": "private-console-pipe",
+      "passed": true,
+      "sourceHash": "1277e13169752d60a6ec254f68540c848f0899e5329920add1b35816ef5a0b32",
+      "ready": {
+        "kind": "ready",
+        "compilePassed": true,
+        "policy": {
+          "passed": false,
+          "findings": [
+            {
+              "line": 1,
+              "code": "PRIVATE_CAPABILITY"
+            },
+            {
+              "line": 1,
+              "code": "PRIVATE_CAPABILITY"
+            }
+          ]
+        },
+        "sourceHash": "1277e13169752d60a6ec254f68540c848f0899e5329920add1b35816ef5a0b32",
+        "diagnostics": "",
+        "runtime": "v22.22.3",
+        "errorCode": null
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "cc3f1d45575c2bb6f0b712a4b31d9565f346b02e823d710940664137893a7fc3",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "1277e13169752d60a6ec254f68540c848f0899e5329920add1b35816ef5a0b32",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:18.556Z",
+        "finishedAt": "2026-11-11T08:46:20.080Z"
+      }
+    },
+    {
+      "id": "forged-grade",
+      "passed": true,
+      "receipt": {
+        "schemaVersion": 1,
+        "source": "deterministic_offline_sdk",
+        "taskId": "d1-ts-development",
+        "sourceHash": "ee8f98ef9f99166027ee8ce5128983352b07a035e45a5eef0d5f98d2d0667cca",
+        "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+        "compilePassed": true,
+        "policyPassed": true,
+        "hiddenPassed": false,
+        "diagnostics": "",
+        "policy": {
+          "passed": true,
+          "findings": []
+        },
+        "tests": [
+          {
+            "id": "ordinary-purchases/liveness",
+            "passed": false,
+            "detail": "Two independent authorized purchases each complete."
+          },
+          {
+            "id": "ordinary-purchases/effects",
+            "passed": false,
+            "detail": "Each purchase has its own completed capture and entitlement."
+          },
+          {
+            "id": "lost-capture-and-new-deliveries/single-charge",
+            "passed": false,
+            "detail": "A lost capture answer cannot turn one purchase into a second order."
+          },
+          {
+            "id": "lost-capture-and-new-deliveries/recovered",
+            "passed": false,
+            "detail": "A fresh worker reconciles the captured order and grants once."
+          },
+          {
+            "id": "lost-capture-and-new-deliveries/authoritative-read",
+            "passed": false,
+            "detail": "The missing answer is resolved by a supported order read."
+          },
+          {
+            "id": "lost-capture-and-new-deliveries/provider-identity",
+            "passed": false,
+            "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+          },
+          {
+            "id": "simultaneous-browser-retries/concurrent-one-charge",
+            "passed": false,
+            "detail": "Concurrent delivery IDs do not become separate purchase identities."
+          },
+          {
+            "id": "simultaneous-browser-retries/concurrent-one-entitlement",
+            "passed": false,
+            "detail": "A durable unique purchase claim survives independent processes."
+          },
+          {
+            "id": "scope-and-uncertain-creation/scope",
+            "passed": false,
+            "detail": "An account mismatch has no provider effects."
+          },
+          {
+            "id": "scope-and-uncertain-creation/unknown-no-invented-lookup",
+            "passed": false,
+            "detail": "An unknown create without a resource ID remains protected and cannot be searched by request ID."
+          },
+          {
+            "id": "pending-capture-is-not-paid/pending",
+            "passed": false,
+            "detail": "Order COMPLETED does not imply its capture is COMPLETED."
+          },
+          {
+            "id": "pending-capture-is-not-paid/pending-protection",
+            "passed": false,
+            "detail": "Pending money stays protected across repeated deliveries."
+          }
+        ],
+        "cases": [
+          {
+            "id": "ordinary-purchases",
+            "visibility": "public",
+            "checks": [
+              {
+                "id": "ordinary-purchases/liveness",
+                "passed": false,
+                "detail": "Two independent authorized purchases each complete."
+              },
+              {
+                "id": "ordinary-purchases/effects",
+                "passed": false,
+                "detail": "Each purchase has its own completed capture and entitlement."
+              }
+            ],
+            "observation": {
+              "orders": [],
+              "captures": [],
+              "refunds": [],
+              "rows": [
+                {
+                  "table": "intents",
+                  "key": "purchase-one",
+                  "value": {
+                    "accountId": "account-one",
+                    "amountMinor": 1200,
+                    "currency": "USD",
+                    "authorized": true,
+                    "version": 1
+                  }
+                },
+                {
+                  "table": "intents",
+                  "key": "purchase-two",
+                  "value": {
+                    "accountId": "account-one",
+                    "amountMinor": 2475,
+                    "currency": "USD",
+                    "authorized": true,
+                    "version": 1
+                  }
+                }
+              ],
+              "observations": [
+                {
+                  "sequence": 1,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "purchase-one",
+                      "accountId": "account-one",
+                      "attemptId": "delivery-1"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 2,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "purchase-two",
+                      "accountId": "account-one",
+                      "attemptId": "delivery-2"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "lost-capture-and-new-deliveries",
+            "visibility": "hidden",
+            "checks": [
+              {
+                "id": "lost-capture-and-new-deliveries/single-charge",
+                "passed": false,
+                "detail": "A lost capture answer cannot turn one purchase into a second order."
+              },
+              {
+                "id": "lost-capture-and-new-deliveries/recovered",
+                "passed": false,
+                "detail": "A fresh worker reconciles the captured order and grants once."
+              },
+              {
+                "id": "lost-capture-and-new-deliveries/authoritative-read",
+                "passed": false,
+                "detail": "The missing answer is resolved by a supported order read."
+              },
+              {
+                "id": "lost-capture-and-new-deliveries/provider-identity",
+                "passed": false,
+                "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+              }
+            ],
+            "observation": {
+              "orders": [],
+              "captures": [],
+              "refunds": [],
+              "rows": [
+                {
+                  "table": "intents",
+                  "key": "membership-north",
+                  "value": {
+                    "accountId": "account-one",
+                    "amountMinor": 1875,
+                    "currency": "USD",
+                    "authorized": true,
+                    "version": 1
+                  }
+                }
+              ],
+              "observations": [
+                {
+                  "sequence": 1,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "membership-north",
+                      "accountId": "account-one",
+                      "attemptId": "delivery-1"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 2,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "membership-north",
+                      "accountId": "account-one",
+                      "attemptId": "new-browser-approval"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "simultaneous-browser-retries",
+            "visibility": "hidden",
+            "checks": [
+              {
+                "id": "simultaneous-browser-retries/concurrent-one-charge",
+                "passed": false,
+                "detail": "Concurrent delivery IDs do not become separate purchase identities."
+              },
+              {
+                "id": "simultaneous-browser-retries/concurrent-one-entitlement",
+                "passed": false,
+                "detail": "A durable unique purchase claim survives independent processes."
+              }
+            ],
+            "observation": {
+              "orders": [],
+              "captures": [],
+              "refunds": [],
+              "rows": [
+                {
+                  "table": "intents",
+                  "key": "concurrent-membership",
+                  "value": {
+                    "accountId": "account-one",
+                    "amountMinor": 2999,
+                    "currency": "USD",
+                    "authorized": true,
+                    "version": 1
+                  }
+                }
+              ],
+              "observations": [
+                {
+                  "sequence": 1,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "concurrent-membership",
+                      "accountId": "account-one",
+                      "attemptId": "delivery-1"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 2,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "concurrent-membership",
+                      "accountId": "account-one",
+                      "attemptId": "second-tab"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 3,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "concurrent-membership",
+                      "accountId": "account-one",
+                      "attemptId": "after-restart"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "scope-and-uncertain-creation",
+            "visibility": "hidden",
+            "checks": [
+              {
+                "id": "scope-and-uncertain-creation/scope",
+                "passed": false,
+                "detail": "An account mismatch has no provider effects."
+              },
+              {
+                "id": "scope-and-uncertain-creation/unknown-no-invented-lookup",
+                "passed": false,
+                "detail": "An unknown create without a resource ID remains protected and cannot be searched by request ID."
+              }
+            ],
+            "observation": {
+              "orders": [],
+              "captures": [],
+              "refunds": [],
+              "rows": [
+                {
+                  "table": "intents",
+                  "key": "scoped-checkout",
+                  "value": {
+                    "accountId": "account-one",
+                    "amountMinor": 1200,
+                    "currency": "USD",
+                    "authorized": true,
+                    "version": 1
+                  }
+                }
+              ],
+              "observations": [
+                {
+                  "sequence": 1,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "scoped-checkout",
+                      "accountId": "different-account",
+                      "attemptId": "delivery-1"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 2,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "scoped-checkout",
+                      "accountId": "account-one",
+                      "attemptId": "delivery-1"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 3,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "scoped-checkout",
+                      "accountId": "account-one",
+                      "attemptId": "retry-without-order-id"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "pending-capture-is-not-paid",
+            "visibility": "hidden",
+            "checks": [
+              {
+                "id": "pending-capture-is-not-paid/pending",
+                "passed": false,
+                "detail": "Order COMPLETED does not imply its capture is COMPLETED."
+              },
+              {
+                "id": "pending-capture-is-not-paid/pending-protection",
+                "passed": false,
+                "detail": "Pending money stays protected across repeated deliveries."
+              }
+            ],
+            "observation": {
+              "orders": [],
+              "captures": [],
+              "refunds": [],
+              "rows": [
+                {
+                  "table": "intents",
+                  "key": "pending-checkout",
+                  "value": {
+                    "accountId": "account-one",
+                    "amountMinor": 3350,
+                    "currency": "USD",
+                    "authorized": true,
+                    "version": 1
+                  }
+                }
+              ],
+              "observations": [
+                {
+                  "sequence": 1,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "pending-checkout",
+                      "accountId": "account-one",
+                      "attemptId": "delivery-1"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                },
+                {
+                  "sequence": 2,
+                  "actor": "trusted-grader",
+                  "kind": "invocation-result",
+                  "input": {
+                    "command": {
+                      "intentId": "pending-checkout",
+                      "accountId": "account-one",
+                      "attemptId": "later"
+                    }
+                  },
+                  "result": {
+                    "value": {
+                      "status": "completed",
+                      "httpStatus": 200,
+                      "passed": true,
+                      "hiddenPassed": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "isolation": {
+          "schemaVersion": 1,
+          "containerId": "8254d4b15bf21dc4b6e98d562a33f934dfdbc82f34ff34ec58eb3acbc6bf0b85",
+          "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+          "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+          "sourceHash": "ee8f98ef9f99166027ee8ce5128983352b07a035e45a5eef0d5f98d2d0667cca",
+          "language": "TypeScript",
+          "networkMode": "none",
+          "readOnlyRoot": true,
+          "mountCount": 0,
+          "user": "1000:1000",
+          "memoryBytes": 536870912,
+          "pidsLimit": 96,
+          "nanoCpus": 1000000000,
+          "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+          "capabilitiesDropped": [
+            "ALL"
+          ],
+          "securityOptions": [
+            "no-new-privileges"
+          ],
+          "credentialEnvironmentForwarded": false,
+          "hiddenTestsInsideContainer": false,
+          "startedAt": "2026-11-11T08:46:20.143Z",
+          "finishedAt": "2026-11-11T08:46:23.113Z"
+        },
+        "durationMs": 3032,
+        "receiptHash": "3116f5cc580387e5a9989a979d9e56d222569efd249ec579ae933c183bde65f0"
+      }
+    },
+    {
+      "id": "stdout-cannot-forge-sdk-wire",
+      "passed": true,
+      "sourceHash": "3e7b985725b3d5949898bd04f78ef78e8b98b417cba61b9053b41e5e6a1132e5",
+      "returned": {
+        "value": {
+          "status": "completed",
+          "httpStatus": 200
+        }
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "cd5cbec64b13aa31bf3ebbf443df9e6129213415200eb79272f3e29128978b28",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "3e7b985725b3d5949898bd04f78ef78e8b98b417cba61b9053b41e5e6a1132e5",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:23.165Z",
+        "finishedAt": "2026-11-11T08:46:24.738Z"
+      }
+    },
+    {
+      "id": "bounded-execution",
+      "passed": true,
+      "elapsedMs": 12014,
+      "result": {
+        "error": {
+          "code": "TARGET_TIMEOUT"
+        }
+      },
+      "isolation": {
+        "schemaVersion": 1,
+        "containerId": "d707ac60e2d572834d0a4627c5d098b86478d72795fe1849744fb4031e05dce5",
+        "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+        "snapshotHash": "a25552bfb621222e732fe039c85e826e4f95ef6d1ee640533331eeb007f64584",
+        "sourceHash": "1beb7ce3a8dbb9e9817286d0339865673cb45e232530683100b8b3c1b53dd490",
+        "language": "TypeScript",
+        "networkMode": "none",
+        "readOnlyRoot": true,
+        "mountCount": 0,
+        "user": "1000:1000",
+        "memoryBytes": 536870912,
+        "pidsLimit": 96,
+        "nanoCpus": 1000000000,
+        "temporaryFilesystem": "rw,nosuid,nodev,noexec,size=128m",
+        "capabilitiesDropped": [
+          "ALL"
+        ],
+        "securityOptions": [
+          "no-new-privileges"
+        ],
+        "credentialEnvironmentForwarded": false,
+        "hiddenTestsInsideContainer": false,
+        "startedAt": "2026-11-11T08:46:24.786Z",
+        "finishedAt": "2026-11-11T08:46:38.250Z"
+      }
+    }
+  ],
+  "receiptHash": "7d35968a7d35971ea9e9a2c87dfc52ccf9a4ea00b412feec8c51ae6b878a7699"
+}

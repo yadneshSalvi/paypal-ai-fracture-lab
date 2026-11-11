@@ -1,0 +1,23 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type LinkDescription } from "./link-description.js";
+import { type MerchantPreferences } from "./merchant-preferences.js";
+import { type PaymentPreferences } from "./payment-preferences.js";
+import { type SubscriptionBillingCycle } from "./subscription-billing-cycle.js";
+import { type SubscriptionPlanStatus } from "./subscription-plan-status.js";
+import { type Taxes } from "./taxes.js";
+export type BillingPlan = {
+    id?: string;
+    productId?: string;
+    name?: string;
+    status?: SubscriptionPlanStatus;
+    description?: string;
+    billingCycles?: SubscriptionBillingCycle[];
+    paymentPreferences?: PaymentPreferences;
+    merchantPreferences?: MerchantPreferences;
+    taxes?: Taxes;
+    quantitySupported?: boolean;
+    createTime?: string;
+    updateTime?: string;
+    links?: LinkDescription[];
+};
+export declare const billingPlanSchema: Schema<BillingPlan>;

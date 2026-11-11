@@ -43,7 +43,17 @@ test('retained first submission permits only one linked predeclared infrastructu
  assert.throws(()=>validateGrades(p,[runnerFailure,{...second,sourceHash:digest('changed'),retryOf:digest(canonical(runnerFailure))}]),/same original/);
 });
 test('a success cannot hide missing tests, receipt hashes, policy failure or an unknown candidate',()=>{
- const p=protocol(),g=grade(p);assert.throws(()=>validateGrades(p,[{...g,tests:[]}]),/nonempty/);assert.throws(()=>validateGrades(p,[{...g,providerReceiptHash:null}]),/receipts/);assert.throws(()=>validateGrades(p,[{...g,candidateId:'f'.repeat(40)}]),/frozen protocol/);assert.throws(()=>validateGrades(p,[{...g,graderHash:hash}]),/different frozen/);assert.equal(validateGrades(p,[{...g,policyPassed:false}]).find(r=>r.grade)?.passed,false);
+ const p=protocol(),g=grade(p);assert.throws(()=>validateGrades(p,[{...g,tests:[]}]),/nonempty/);assert.throws(()=>validateGrades(p,[{...g,providerReceiptHash:null}]),/receipts/);assert.throws(()=>validateGrades(p,[{...g,candidateId:'f'.repeat(40)}]),/frozen protocol/);assert.throws(()=>validateGrades(p,[{...g,graderHash:hash}]),/different frozen/);assert.throws(()=>validateGrades(p,[{...g,policyPassed:false}]),/requires compilation, policy/);assert.equal(validateGrades(p,[{...g,policyPassed:false,hiddenPassed:false}]).find(r=>r.grade)?.passed,false);
+});
+test('executable protocol binds four language-specific token budgets and equal provider workers',()=>{
+ const legacy=protocol(),p={...legacy,schemaVersion:2,contexts:legacy.contexts.flatMap(c=>languages.map(language=>({...c,language}))),execution:{maximumToolCalls:24,maximumToolResultCharacters:24000,maximumSourceBytes:120000,providerDeadlineMs:900000,providerConcurrency:4,gradingConcurrency:1,allowedTools:['list_files','read_file','search_files','inspect_baseline'],outputBudgetAccounting:'cumulative_provider_output_including_reasoning',accessPolicy:'explicit_frozen_files_only',firstSubmission:'one_final_source_no_edited_draft_execution'}};
+ assert.equal(parseProtocol(p).contexts.length,4);assert.throws(()=>parseProtocol({...p,contexts:p.contexts.slice(0,2)}),/model and language/);assert.throws(()=>parseProtocol({...p,execution:{...p.execution,providerConcurrency:3}}),/equal worker/);
+ const duplicated=structuredClone(p);duplicated.contexts[1]!.language='TypeScript';assert.throws(()=>parseProtocol(duplicated),/model and language/);
+});
+test('invalid final model output is a retained scored failure, never a free infrastructure retry',()=>{
+ const p=protocol(),g=grade(p),failure={...g,stage:'submission_failure',sourceHash:null,compilePassed:false,policyPassed:false,hiddenPassed:false,tests:[],runnerReceiptHash:null,errorCode:'INVALID_FINAL_SOURCE'};
+ const report=summarize(p,[failure]);assert.equal(report.graded,1);assert.equal(report.missing,599);assert.equal(report.infrastructureFailures,0);assert.equal(validateGrades(p,[failure]).find(r=>r.grade)?.passed,false);
+ assert.throws(()=>validateGrades(p,[failure,{...g,attemptNumber:2,retryOf:digest(canonical(failure))}]),/predeclared infrastructure/);
 });
 test('paired bootstrap uses task clusters, reports neutral and negative comparisons, and is reproducible',()=>{
  assert.deepEqual(pairedInterval([0,0,0,0,0],'same'),{estimate:0,low:0,high:0,clusters:5,resamples:10000});assert.equal(pairedInterval([1],'same'),null);const interval=pairedInterval([-.4,.2,0,-.2,.4],'same');assert.deepEqual(interval,pairedInterval([-.4,.2,0,-.2,.4],'same'));

@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "scope": "Pre-study development qualification logs. These are not any of the 600 scheduled model attempts.",
+  "granularity": "Earlier control/probe raw JSON files were overwritten during development; these retained logs are the available history. Final controls and subsequent qualification history retain full executed receipts.",
+  "records": [
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-blind-boundary-6621e527a5e0.txt",
+      "originalLog": "evaluation-blind-boundary.log",
+      "bytes": 176,
+      "sha256": "6621e527a5e0e9ab9ec6fffe9652ed20d5d378f6836521ac88f4c3602749b19c"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-blind-final-e9baa8ede4d2.txt",
+      "originalLog": "evaluation-blind-final.log",
+      "bytes": 176,
+      "sha256": "e9baa8ede4d23b62c1a1d0df3d76dd2d1409cff9541163d36c4d3686e01abf08"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-build-33630148c5cf.txt",
+      "originalLog": "evaluation-build.log",
+      "bytes": 2622,
+      "sha256": "33630148c5cf4fd416f5a3c2ddac2dfc382ff9b9deb22486e12e803bd1966dc3"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-context-preparation-a5b7f08f776a.txt",
+      "originalLog": "evaluation-context-preparation.log",
+      "bytes": 91,
+      "sha256": "a5b7f08f776a268c98ac1a9184978958562c051e59d02d89f0e2d65dc2ed6bfb"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-controls-12e483ae90f3.txt",
+      "originalLog": "evaluation-controls.log",
+      "bytes": 4729,
+      "sha256": "12e483ae90f35a4b2fe73c5ac1859c4df8ef7ef8ffd5789d31b6e88a29a7e59d"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-controls-authenticated-channel-b00875b1ef16.txt",
+      "originalLog": "evaluation-controls-authenticated-channel.log",
+      "bytes": 12409,
+      "sha256": "b00875b1ef16f62c720094773299819795c2cd63f3e450296ff479780d780dc6"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-controls-final-098d24185a85.txt",
+      "originalLog": "evaluation-controls-final.log",
+      "bytes": 13217,
+      "sha256": "098d24185a85f4acc64641f1b7a0bd35f6834c2c7cf07627ab55a186fb774027"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-controls-frozen-20edfe9856ba.txt",
+      "originalLog": "evaluation-controls-frozen.log",
+      "bytes": 12362,
+      "sha256": "20edfe9856ba687fa8d83bd5237f1fad5b4212a37f92dbdae58de3d47ef4b2e2"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-controls-qualified-b00875b1ef16.txt",
+      "originalLog": "evaluation-controls-qualified.log",
+      "bytes": 12409,
+      "sha256": "b00875b1ef16f62c720094773299819795c2cd63f3e450296ff479780d780dc6"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-d3-controls-8fe231d575ad.txt",
+      "originalLog": "evaluation-d3-controls.log",
+      "bytes": 2257,
+      "sha256": "8fe231d575add9a87a88d449ad5b4fc9fe364032759e4cc59e6098bf05c38996"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-d4-controls-06d4e8b32e09.txt",
+      "originalLog": "evaluation-d4-controls.log",
+      "bytes": 2489,
+      "sha256": "06d4e8b32e093cb2478ff61ebf2f1aaff57ff108285a08d6f2efee57dbbfd1a5"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-d5-controls-aa2779c6dce7.txt",
+      "originalLog": "evaluation-d5-controls.log",
+      "bytes": 2838,
+      "sha256": "aa2779c6dce7fa6160e58df8dedeca4fa235126c541b6b628cb44002b0703b67"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-final-typecheck-2cdcd85b3d54.txt",
+      "originalLog": "evaluation-final-typecheck.log",
+      "bytes": 48,
+      "sha256": "2cdcd85b3d544f91b4735215c04e67e50bd83c9435dcce3fd0190524e8d8921d"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-final-units-7356016a844c.txt",
+      "originalLog": "evaluation-final-units.log",
+      "bytes": 5118,
+      "sha256": "7356016a844c5009d70e7b938e22a3a87d9c7bbc09d5a042d4a25c733487a0f5"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-full-tests-791b2682af69.txt",
+      "originalLog": "evaluation-full-tests.log",
+      "bytes": 116381,
+      "sha256": "791b2682af69253bbaefb5b40ae0aef45fd185b5798daf0bba7ffff07257f62f"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-full-tests-postgres-e914f8cc12d1.txt",
+      "originalLog": "evaluation-full-tests-postgres.log",
+      "bytes": 83787,
+      "sha256": "e914f8cc12d111313a33c4617e7382dd808c445b33b89a97644220f30e6c7663"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-provider-bindings-4fc5be1e98c1.txt",
+      "originalLog": "evaluation-provider-bindings.log",
+      "bytes": 397,
+      "sha256": "4fc5be1e98c1afd1de8697e53fc856c827032b691b97929573f0ba7a142baf65"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-provider-bindings-final-561dd1e3175d.txt",
+      "originalLog": "evaluation-provider-bindings-final.log",
+      "bytes": 363,
+      "sha256": "561dd1e3175de2f950a3cfb3793b83c43e5a325e343db0ee26d74e05fa551ccc"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-provider-bindings-second-0a9d0d039655.txt",
+      "originalLog": "evaluation-provider-bindings-second.log",
+      "bytes": 386,
+      "sha256": "0a9d0d039655b4e5702c0232a5e8a9c953c1f0e9e41f0ae65db5f4c65ce50bb7"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-provider-bindings-stateless-0ef352650be7.txt",
+      "originalLog": "evaluation-provider-bindings-stateless.log",
+      "bytes": 177,
+      "sha256": "0ef352650be7fa86ad865501fb6931da9737751e53d4d802fdb562e593b2549f"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-runtime-build-4ded20983474.txt",
+      "originalLog": "evaluation-runtime-build.log",
+      "bytes": 2622,
+      "sha256": "4ded2098347444266727e7584c0d71fa6fd25d81d526123dadc4fd93988afec9"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-runtime-build-final-d08c34fd8ad7.txt",
+      "originalLog": "evaluation-runtime-build-final.log",
+      "bytes": 2622,
+      "sha256": "d08c34fd8ad7b9b3fea80cd7d74e68d788b95929c8971f35dcf768891b39c9de"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-runtime-control-channel-8cc8d5af8c01.txt",
+      "originalLog": "evaluation-runtime-control-channel.log",
+      "bytes": 2622,
+      "sha256": "8cc8d5af8c010b64c5f85be7138cde9881649ace84bea7dc27ffe687b1187330"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-safety-19286068e567.txt",
+      "originalLog": "evaluation-safety.log",
+      "bytes": 429,
+      "sha256": "19286068e5677d2bb30a60ca84a8bc5dafe94aff2b0f8ce1b19f173476e2c71d"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-safety-authenticated-channel-6a57ef83c30f.txt",
+      "originalLog": "evaluation-safety-authenticated-channel.log",
+      "bytes": 528,
+      "sha256": "6a57ef83c30f21c0fba925b3735f97fb1ecc9ebbe395cbddd9d0a699745891d7"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-safety-final-9a2b7f3b8e4d.txt",
+      "originalLog": "evaluation-safety-final.log",
+      "bytes": 429,
+      "sha256": "9a2b7f3b8e4d39bbda4979c15c8d8a91e0c0e0464b45e084f7afaf64d298681f"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-safety-frozen-c1f40f45a1a9.txt",
+      "originalLog": "evaluation-safety-frozen.log",
+      "bytes": 429,
+      "sha256": "c1f40f45a1a916dc3a6b7e190562577c392a80f59e3daac545b44af27581f542"
+    },
+    {
+      "path": "evaluation/qualification/history/development-logs/evaluation-tokenization-b9777d4fb297.txt",
+      "originalLog": "evaluation-tokenization.log",
+      "bytes": 493,
+      "sha256": "b9777d4fb297b6afa01cb8da3bc7f122dc914d7a2896964997abab9e86e09e34"
+    }
+  ]
+}

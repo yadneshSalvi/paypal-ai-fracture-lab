@@ -1,0 +1,22 @@
+import type { Schema } from "../core/validation/schema.js";
+import { type AuthorizationStatusDetails } from "./authorization-status-details.js";
+import { type AuthorizationStatus } from "./authorization-status.js";
+import { type LinkDescription } from "./link-description.js";
+import { type Money } from "./money.js";
+import { type NetworkTransaction } from "./network-transaction.js";
+import { type SellerProtection } from "./seller-protection.js";
+export type Authorization = {
+    status?: AuthorizationStatus;
+    statusDetails?: AuthorizationStatusDetails;
+    id?: string;
+    amount?: Money;
+    invoiceId?: string;
+    customId?: string;
+    networkTransactionReference?: NetworkTransaction;
+    sellerProtection?: SellerProtection;
+    expirationTime?: string;
+    links?: LinkDescription[];
+    createTime?: string;
+    updateTime?: string;
+};
+export declare const authorizationSchema: Schema<Authorization>;

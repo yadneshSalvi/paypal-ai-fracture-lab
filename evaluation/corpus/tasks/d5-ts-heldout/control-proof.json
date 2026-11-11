@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d5-ts-heldout",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:51:41.246Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d5-ts-heldout.json.gz",
+    "sha256": "a768e9264a606f51e782b27d093e23cabd02fac5b5d48cd7e4a269303959983e"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "c21e2a9bc04dd4e7113d57add064e2cc6c473ef68ef2af6deb64e39e0ce73fd4",
+      "receiptHash": "4d40d142b5d058a0639a3c293b538af26ddb941929514b0cb2ec9d227e016249",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "confirmed-tool-capture/completed",
+          "passed": true,
+          "detail": "The capture tool reports an executed confirmed capture."
+        },
+        {
+          "id": "provider-401/classified",
+          "passed": false,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-401/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-403/classified",
+          "passed": false,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-403/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-422/classified",
+          "passed": false,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-422/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-429/classified",
+          "passed": false,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-429/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-429/same-retry-identity",
+          "passed": false,
+          "detail": "A caller retry after a known rate refusal preserves the semantic provider identity."
+        },
+        {
+          "id": "provider-418/classified",
+          "passed": false,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-418/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/unknown-not-retryable",
+          "passed": false,
+          "detail": "A missing answer and missing read do not invite another payment write."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/read-recovers",
+          "passed": false,
+          "detail": "The next tool call recovers the original known order."
+        },
+        {
+          "id": "pending-and-proven-auth-failure/pending-classification",
+          "passed": false,
+          "detail": "The agent cannot treat a pending capture as completed."
+        },
+        {
+          "id": "pending-and-proven-auth-failure/auth-classification",
+          "passed": false,
+          "detail": "An auth failure is distinguished from an uncertain capture and triggers no reread."
+        },
+        {
+          "id": "tool-resource-scope/scoped-resource",
+          "passed": false,
+          "detail": "A valid tool grant cannot be redirected to a different order."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "65d6afe03844b9b0ea09dc61ad1f98a9aeb331fcd883aa5fffba85162a85bfb3",
+      "receiptHash": "5009c73571e85f6c3fdce57377cb095ba952d013ae24a72b8fc4c40c7852a093",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "confirmed-tool-capture/completed",
+          "passed": true,
+          "detail": "The capture tool reports an executed confirmed capture."
+        },
+        {
+          "id": "provider-401/classified",
+          "passed": true,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-401/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-403/classified",
+          "passed": true,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-403/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-422/classified",
+          "passed": true,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-422/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-429/classified",
+          "passed": true,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-429/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "provider-429/same-retry-identity",
+          "passed": true,
+          "detail": "A caller retry after a known rate refusal preserves the semantic provider identity."
+        },
+        {
+          "id": "provider-418/classified",
+          "passed": true,
+          "detail": "A definite provider response maps to its predeclared recovery action, including unknown error bodies."
+        },
+        {
+          "id": "provider-418/no-reconciliation",
+          "passed": true,
+          "detail": "A definite refusal does not trigger an unknown-write reread."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/unknown-not-retryable",
+          "passed": true,
+          "detail": "A missing answer and missing read do not invite another payment write."
+        },
+        {
+          "id": "lost-result-and-unavailable-read/read-recovers",
+          "passed": true,
+          "detail": "The next tool call recovers the original known order."
+        },
+        {
+          "id": "pending-and-proven-auth-failure/pending-classification",
+          "passed": true,
+          "detail": "The agent cannot treat a pending capture as completed."
+        },
+        {
+          "id": "pending-and-proven-auth-failure/auth-classification",
+          "passed": true,
+          "detail": "An auth failure is distinguished from an uncertain capture and triggers no reread."
+        },
+        {
+          "id": "tool-resource-scope/scoped-resource",
+          "passed": true,
+          "detail": "A valid tool grant cannot be redirected to a different order."
+        }
+      ]
+    }
+  ]
+}

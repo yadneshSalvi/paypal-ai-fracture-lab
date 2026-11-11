@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 2,
+  "taskId": "d4-ts-development",
+  "qualified": true,
+  "executedAt": "2026-11-11T08:50:58.994Z",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "rawReceipt": {
+    "path": "evaluation/controls/d4-ts-development.json.gz",
+    "sha256": "d5dd9c795c7bfa2bc9ca4417161b092f431688cf56615da83e41e792c28a5439"
+  },
+  "controls": [
+    {
+      "control": "baseline",
+      "sourceHash": "a09c0b247509ef2faa0c66a9f1f8c353cf50f71a0a42fdcf7f59fc79bf92f719",
+      "receiptHash": "9e22a3ac7e870e20023d1da47938d0136bffeb1f88981416706048a7e8e63ad8",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": false,
+      "tests": [
+        {
+          "id": "ordinary-refund/refund",
+          "passed": true,
+          "detail": "An authorized partial refund completes."
+        },
+        {
+          "id": "competing-refunds-local-admission/atomic-capacity",
+          "passed": false,
+          "detail": "Competing partial refunds are admitted atomically before provider dispatch."
+        },
+        {
+          "id": "competing-refunds-local-admission/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "lost-holds-capacity/no-release",
+          "passed": false,
+          "detail": "An uncertain or pending refund retains capacity and is not dispatched again."
+        },
+        {
+          "id": "lost-holds-capacity/visible-state",
+          "passed": false,
+          "detail": "The original uncertainty or pending state remains visible."
+        },
+        {
+          "id": "pending-holds-capacity/no-release",
+          "passed": false,
+          "detail": "An uncertain or pending refund retains capacity and is not dispatched again."
+        },
+        {
+          "id": "pending-holds-capacity/visible-state",
+          "passed": false,
+          "detail": "The original uncertainty or pending state remains visible."
+        },
+        {
+          "id": "immutable-command-and-separate-capture/frozen-authority",
+          "passed": false,
+          "detail": "A completed refund intent cannot be reused with a changed payload."
+        },
+        {
+          "id": "immutable-command-and-separate-capture/independent-balance",
+          "passed": true,
+          "detail": "Independent captures retain their own refundable capacity."
+        },
+        {
+          "id": "refusal-releases-only-proven-capacity/known-refusal",
+          "passed": true,
+          "detail": "Only an explicit provider refusal releases the unused reservation."
+        }
+      ]
+    },
+    {
+      "control": "golden",
+      "sourceHash": "2e8120aafa169295ea3df92f01c3694178f1a541bc2f9fe0aa882ae284eef994",
+      "receiptHash": "6bd55a2eb5d8eff736b22a1342e5f1ad8b21c4d870254a21b6fa7a9831497f00",
+      "compilePassed": true,
+      "policyPassed": true,
+      "hiddenPassed": true,
+      "tests": [
+        {
+          "id": "ordinary-refund/refund",
+          "passed": true,
+          "detail": "An authorized partial refund completes."
+        },
+        {
+          "id": "competing-refunds-local-admission/atomic-capacity",
+          "passed": true,
+          "detail": "Competing partial refunds are admitted atomically before provider dispatch."
+        },
+        {
+          "id": "competing-refunds-local-admission/provider-identity",
+          "passed": true,
+          "detail": "Every dispatched write carries an explicit conservative provider request UUID."
+        },
+        {
+          "id": "lost-holds-capacity/no-release",
+          "passed": true,
+          "detail": "An uncertain or pending refund retains capacity and is not dispatched again."
+        },
+        {
+          "id": "lost-holds-capacity/visible-state",
+          "passed": true,
+          "detail": "The original uncertainty or pending state remains visible."
+        },
+        {
+          "id": "pending-holds-capacity/no-release",
+          "passed": true,
+          "detail": "An uncertain or pending refund retains capacity and is not dispatched again."
+        },
+        {
+          "id": "pending-holds-capacity/visible-state",
+          "passed": true,
+          "detail": "The original uncertainty or pending state remains visible."
+        },
+        {
+          "id": "immutable-command-and-separate-capture/frozen-authority",
+          "passed": true,
+          "detail": "A completed refund intent cannot be reused with a changed payload."
+        },
+        {
+          "id": "immutable-command-and-separate-capture/independent-balance",
+          "passed": true,
+          "detail": "Independent captures retain their own refundable capacity."
+        },
+        {
+          "id": "refusal-releases-only-proven-capacity/known-refusal",
+          "passed": true,
+          "detail": "Only an explicit provider refusal releases the unused reservation."
+        }
+      ]
+    }
+  ]
+}
