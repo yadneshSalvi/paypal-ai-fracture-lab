@@ -23,6 +23,14 @@ The hardened target records checking before reading its original order and captu
 
 One purchase intent allows one capture up to USD12 and one fulfillment. Fulfillment requires a completed capture. Historical captures remain facts after compensation. Refund authority names the exact duplicate capture, amount, immutable digest and current balance. Actor state, provider resources, and lab observations are separate stores.
 
+### Current Sample authority representation
+
+The curated Sample session's persisted run is the scoped purchase grant. `store.record(run.id, sessionId)` provides current ownership, immutable purchase data and cancellation state. A matching, active run authorizes the original USD12 purchase unless its approval has been revoked; no separate allow row is required. This is an application fixture convention, not a live buyer-consent mechanism.
+
+Revocation is represented by the **presence** of a row in `lab_faults` with both `run_id = run.id` and `fault_key = 'approval-revoked'`. The row's JSON document is observation metadata, not a `FaultPlan` or an allow/deny object. Query this exact key under current run ownership immediately before any new commercial write. Other rows in `lab_faults` record consumed fault injections and do not determine authority. An empty revocation query means no recorded revocation, not absent purchase permission; database errors still propagate and must not be converted to permission. Cancellation, changed purchase money/identity and an expired application grant also prevent new writes. Previously recorded provider facts remain facts when authority changes.
+
+`FaultPlan.policyDenial` describes an injected harness safety refusal; it is not the persisted purchase-policy shape. A target does not earn a passing authority check merely because the harness blocked it. The candidate must enforce the current application authority itself. These schema semantics are public authoring context; the independent regression assertions and runtime snapshots remain unchanged.
+
 ## OPTIONAL FIELDS AND REFUSALS
 
 Only amount, custom identity, stable provider request identity and representation preference are supplied. No generic SDK idempotency header is treated as provider protection. Definite 4xx errors remain refusals; dropped connections and malformed successful responses are unknown; non-provider bugs propagate. Explicit logging is off. Sample credentials are dummy literals and the injected fetch has no network path.

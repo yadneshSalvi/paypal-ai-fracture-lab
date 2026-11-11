@@ -33,7 +33,7 @@ export async function queueRepairJob(store: LabStore, sessionId: string, run: Ru
   if (run.source !== "sample" || run.projectId !== "bramble" || run.revision !== "faulty" || run.sourceHash !== context.baseHash) throw new LabError("REPAIR_SOURCE_CHANGED", "Select a current faulty Bramble Sample run.", 409);
   if (kind === "verify_generated" || repairId) {
     const patch = await getGeneratedPatch(store, sessionId, repairId ?? "");
-    if (patch.repair.runId !== run.id || (kind === "verify_generated" && patch.repair.status === "rejected") || patch.repair.baseHash !== context.baseHash || patch.contextDigest !== context.digest) throw new LabError("REPAIR_NOT_VERIFIABLE", "This exact candidate is rejected or its source/context is stale.", 409);
+    if (patch.repair.runId !== run.id || (kind === "verify_generated" && (patch.repair.status === "rejected" || patch.contextDigest !== context.digest)) || patch.repair.baseHash !== context.baseHash) throw new LabError("REPAIR_NOT_VERIFIABLE", "This exact candidate is rejected or its source/context is stale.", 409);
   }
   await store.rateLimit(`repair:${sessionId}:${kind}`, kind === "generate" ? 6 : 20);
   const job: RepairJob = { id: `repair:${sessionId}:${actionId}`, sessionId, runId: run.id, actionId, kind, baseHash: context.baseHash, contextDigest: context.digest, repairId: repairId ?? null, createdAt: new Date().toISOString() };
@@ -111,7 +111,7 @@ async function executeClaimedRepair(store:LabStore,job:RepairJob,owner:string,op
     const load = options.loadContext ?? loadRepairContext; const context = await currentContext(job, load);
     if (job.kind === "generate") {
       const prior=job.repairId?await getGeneratedPatch(store,job.sessionId,job.repairId):null;
-      const feedback=prior?{repairId:prior.repair.id,sourceHash:prior.sourceHash,source:prior.source,tests:prior.repair.tests,policyChecks:prior.repair.policyChecks}:undefined;
+      const feedback=prior?{repairId:prior.repair.id,sourceHash:prior.sourceHash,source:prior.source,tests:prior.repair.tests,policyChecks:prior.repair.policyChecks,contextDigest:prior.contextDigest}:undefined;
       const patch = await generateRepair(await store.run(job.runId, job.sessionId), job.sessionId, context, options.modelFactory?.(job.actionId) ?? new BackgroundRepairModel(store, job.actionId, fetch, abort.signal),feedback);
       await currentContext(job, load);
       await commitJob(store, job, owner, async tx => {
