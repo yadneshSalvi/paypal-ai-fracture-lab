@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-11T16:09:02.437Z",
+  "sourceCommit": "1bb3a1c",
+  "deploymentId": "dpl_7m1JTQ1o47deAVx5S2y7d2gmfFCj",
+  "url": "https://paypal-ai-fracture-lab.vercel.app",
+  "readyState": "READY",
+  "hostedSmoke": {
+    "deployment": "https://paypal-ai-fracture-jmhgdikd4-yadneshsalvis-projects.vercel.app",
+    "anonymousStatus": 401,
+    "persistedWorkspaceStatus": 200,
+    "sessionPersisted": true,
+    "source": "sample",
+    "runCount": 2,
+    "evidenceCount": 32,
+    "sampleOnly": true,
+    "actualProviderCalls": 0,
+    "initialHarnessCorrection": "Creation returns HTTP 201. Initial harness expected 200; original successful response and cookie reused, no replacement session created."
+  },
+  "stableNative": {
+    "existingSessionLoaded": true,
+    "originalRunStillAwaitingApproval": true,
+    "originalRunGrossMinor": 1200,
+    "originalRunCaptureCount": 1,
+    "source": "sample",
+    "idleWorkspaceRequests": 0,
+    "requestCaptureTruncated": false,
+    "existingRunAdvanced": false
+  },
+  "privateInputScan": {
+    "files": 1489,
+    "privateValuesCompared": 55,
+    "findings": 0,
+    "localEvaluationBuildDirectoriesExcluded": true
+  },
+  "actualProviderRequests": 0,
+  "limitations": [
+    "The full preceding 5GB egress cannot be attributed from the available application logs.",
+    "Idle request reduction does not eliminate active-work, evidence or provider-worker traffic."
+  ]
+}
