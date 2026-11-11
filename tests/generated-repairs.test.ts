@@ -44,6 +44,13 @@ for(const adapter of adapters){
   assert.equal((await f.service.store.evidence(f.session.id)).filter(e=>e.id===saved.verificationEvidenceId).length,1);
  });
  test(`${adapter}: unresolved contract binding blocks code generation before dispatch`,async t=>{const f=await setup(t,adapter);const m=model(f.context,(body,call)=>{if(call.role==="repair_contract_plan")body.contextDigest="0".repeat(64);});await assert.rejects(generateRepair(f.run,f.session.id,f.context,m),{code:"REPAIR_PLAN_INVALID"});assert.deepEqual(m.calls,["repair_contract_plan"]);});
+ test(`${adapter}: excess and duplicate contract categories fail before author dispatch`,async t=>{
+  const f=await setup(t,adapter);
+  for(const excess of [true,false]){
+   const m=model(f.context,(body,call)=>{if(call.role!=="repair_contract_plan")return;const schema=call.schema as {properties:{bindings:{minItems:number;maxItems:number}}};assert.equal(schema.properties.bindings.minItems,5);assert.equal(schema.properties.bindings.maxItems,5);const bindings=body.bindings as Record<string,unknown>[];if(excess)bindings.push({...bindings[2]!});else bindings[4]={...bindings[2]!};});
+   await assert.rejects(generateRepair(f.run,f.session.id,f.context,m),{code:excess?"REPAIR_PLAN_INVALID":"REPAIR_PLAN_UNRESOLVED"});assert.deepEqual(m.calls,["repair_contract_plan"]);
+  }
+ });
  test(`${adapter}: stale or forged patch citations are rejected with attempts retained`,async t=>{const f=await setup(t,adapter);const m=model(f.context,(body,call)=>{if(call.role==="repair_candidate_source")body.citations=[{path:"not-supplied.ts",hash:"0".repeat(64),section:"invalid source",firstChangedLine:1,lastChangedLine:2}];});await assert.rejects(generateRepair(f.run,f.session.id,f.context,m),{code:"REPAIR_CITATION_INVALID"});assert.equal(m.calls.length,2);});
  test(`${adapter}: queue payload mutation fails before a model call`,async t=>{const f=await setup(t,adapter);await queue(f);await f.db.query("UPDATE lab_repair_jobs SET input_hash=$1",["0".repeat(64)]);let calls=0;const result=await processRepairJob(f.service.store,{modelFactory:()=>{calls++;return model(f.context);}});assert.equal(result?.errorCode,"REPAIR_JOB_INVALID");assert.equal(calls,0);});
  test(`${adapter}: context changes after queue block model dispatch`,async t=>{const f=await setup(t,adapter);await queue(f);let calls=0;const result=await processRepairJob(f.service.store,{loadContext:async()=>({...f.context,digest:"0".repeat(64)}),modelFactory:()=>{calls++;return model(f.context);}});assert.equal(result?.errorCode,"REPAIR_SOURCE_CHANGED");assert.equal(calls,0);});

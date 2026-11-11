@@ -72,3 +72,10 @@ dialog{border:0;padding:0;color:var(--text);background:#191e27;max-height:calc(1
   .repair-workspace .work-progress>div { min-width: 0; flex-basis: calc(100% - 32px); }
   .repair-workspace .repair-action-row>div { flex-wrap: wrap; }
 }
+
+/* Keep compiled-but-failing candidates visually distinct from verified repairs. */
+.repair-summary.needs-refinement{border-color:#886346;background:linear-gradient(110deg,#50301e44,#1d1b24)}
+.repair-summary.needs-refinement h2{color:#e7cfb9}
+.repair-summary.needs-refinement p{color:#bea187}
+.repair-outcome{margin:16px 0;padding:16px 20px;border:1px solid #4b5361;border-radius:8px;background:#181e28;color:#d1d8e4}
+.repair-outcome strong{font-size:14px}.repair-outcome p{margin:6px 0 0;font-size:13px;line-height:1.65;color:#9cabc0}
