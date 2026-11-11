@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-11T02:10:45.355Z",
+  "source": "sample",
+  "passed": true,
+  "pythonTests": {
+    "passed": 58,
+    "failed": 0
+  },
+  "postgresDomainTests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0
+  },
+  "typecheck": {
+    "typescript": "passed",
+    "pythonStrictMypy": "passed"
+  },
+  "sourceHashes": {
+    "apps/fixtures/tandem/sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+    "apps/fixtures/tandem/protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+    "apps/fixtures/tandem/domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+    "apps/fixtures/tandem/worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af",
+    "packages/tandem/src/store.ts": "f806d67200cf1c2afae26705b69056b736eb2a835e615d78087180cd19d81d2b",
+    "packages/tandem/src/provider.ts": "b0b59d35c7581debb026769265829111d44711e9081dffb5c631908051e751c5",
+    "packages/tandem/src/bridge.ts": "a70a13649590eb6e2392efc2d1bcb1d2dad4d9351d9bd9be399a64cdd73afcf5",
+    "packages/tandem/src/source.ts": "929df5f9dfbbcab2bdfa2e487a2235625a61a239a0d74ffc4d7eaf2bb7e820f3",
+    "packages/tandem/src/local.ts": "d15b1a52b9ed291bf5b56361322f0ac53b25a6b6b007c2e3199c1911d30ec119",
+    "packages/tandem/src/cloud.ts": "1b75c49804ddd1364c6fae4f4c5ec5c3d223c69fc4a620e233b6199f17c2827a",
+    "tests/tandem.test.ts": "4637190065b7b7e93b2437861543bc34a1d2e2e387f574fdac1968462d22ed64"
+  },
+  "cloudProof": "tandem-cloud-domain-qualification.json",
+  "limits": [
+    "Actual pinned SDK requests and real PostgreSQL durability; provider responses are controlled Sample data.",
+    "Local subprocess tests execute trusted fixed fixture source. They are not an arbitrary-code isolation claim.",
+    "Hosted source executes as a nonroot candidate in a denied-network Vercel Sandbox with no credential environment.",
+    "No independent 600-attempt context evaluation or new PayPal financial transaction is claimed."
+  ]
+}

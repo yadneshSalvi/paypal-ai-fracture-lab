@@ -1,0 +1,1185 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-11T02:10:45.355Z",
+  "scope": "Actual pinned Python SDK and ticket targets in offline nonroot Vercel Sandbox workers; real PostgreSQL parent store, explicitly Sample provider resources.",
+  "passed": true,
+  "externalProviderCalls": 0,
+  "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+  "sourceHashes": {
+    "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+    "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+    "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+    "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af"
+  },
+  "cases": [
+    {
+      "variant": "hardened-lost-answer",
+      "passed": true,
+      "captureCount": 1,
+      "grossMinor": 4800,
+      "ticketCount": 1,
+      "invocations": [
+        {
+          "version": 1,
+          "type": "complete",
+          "invocationId": "d211efd7-40a7-4e42-960a-491af0eb720e",
+          "source": "sample",
+          "result": {
+            "status": "paid",
+            "resourceId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897"
+          },
+          "requests": 16,
+          "runner": {
+            "engine": "vercel_sandbox",
+            "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+            "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+            "sourceHashes": {
+              "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+              "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+              "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+              "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af"
+            },
+            "networkPolicy": "deny-all",
+            "user": "candidate",
+            "sourceReadOnly": true,
+            "credentialEnvironmentForwarded": false,
+            "maximumSeconds": 50,
+            "elapsedMs": 10869,
+            "disposal": "stopped"
+          }
+        }
+      ],
+      "history": {
+        "run": {
+          "id": "898fd222-f4fd-4e0d-8e25-7a5543086413",
+          "minor": 4800,
+          "faults": [
+            "drop_capture_once"
+          ],
+          "intent": "one-evening-ticket",
+          "source": "sample",
+          "ticket": {
+            "status": "paid",
+            "resourceId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897"
+          },
+          "revoked": false,
+          "version": 1,
+          "currency": "USD",
+          "expiresAt": "2026-11-11T03:10:01.667Z",
+          "sessionId": "2eada6ba-52b9-44b4-89b1-692324bd01c8",
+          "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1"
+        },
+        "resources": [
+          {
+            "id": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+            "body": {
+              "id": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+              "amount": {
+                "value": "48.00",
+                "currency_code": "USD"
+              },
+              "status": "COMPLETED",
+              "custom_id": "one-evening-ticket",
+              "supplementary_data": {
+                "related_ids": {
+                  "order_id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3"
+                }
+              }
+            },
+            "kind": "capture",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+            "requestId": "TD-495908c8610643e34b87a8733de9934e"
+          },
+          {
+            "id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+            "body": {
+              "id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+              "intent": "CAPTURE",
+              "status": "COMPLETED",
+              "purchase_units": [
+                {
+                  "amount": {
+                    "value": "48.00",
+                    "currency_code": "USD"
+                  },
+                  "payments": {
+                    "captures": [
+                      {
+                        "id": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+                        "amount": {
+                          "value": "48.00",
+                          "currency_code": "USD"
+                        },
+                        "status": "COMPLETED",
+                        "custom_id": "one-evening-ticket",
+                        "supplementary_data": {
+                          "related_ids": {
+                            "order_id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3"
+                          }
+                        }
+                      }
+                    ],
+                    "authorizations": []
+                  },
+                  "custom_id": "one-evening-ticket",
+                  "reference_id": "one-evening-ticket"
+                }
+              ]
+            },
+            "kind": "order",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": null,
+            "requestId": "TD-06475c92cf542f353beb8d77cf2769d1"
+          }
+        ],
+        "operations": [
+          {
+            "key": "purchase:create",
+            "code": "RESOURCE_CONFIRMED",
+            "owner": "d211efd7-40a7-4e42-960a-491af0eb720e",
+            "action": {
+              "kind": "create",
+              "minor": 4800,
+              "intent": "one-evening-ticket",
+              "currency": "USD",
+              "authorize": false,
+              "resourceId": null,
+              "finalCapture": false
+            },
+            "status": "succeeded",
+            "evidence": {
+              "id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+              "intent": "CAPTURE",
+              "status": "APPROVED",
+              "purchase_units": [
+                {
+                  "amount": {
+                    "value": "48.00",
+                    "currency_code": "USD"
+                  },
+                  "payments": {
+                    "captures": [],
+                    "authorizations": []
+                  },
+                  "custom_id": "one-evening-ticket",
+                  "reference_id": "one-evening-ticket"
+                }
+              ]
+            },
+            "resourceId": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+            "payloadHash": "05b0b388b92aefcea7eba044c1478f230611f599e1adbec9d01216b446576448",
+            "authorityVersion": 1,
+            "providerRequestId": "TD-06475c92cf542f353beb8d77cf2769d1"
+          },
+          {
+            "key": "purchase:capture_order",
+            "code": "RESOURCE_CONFIRMED",
+            "owner": "d211efd7-40a7-4e42-960a-491af0eb720e",
+            "action": {
+              "kind": "capture_order",
+              "minor": 4800,
+              "intent": "one-evening-ticket",
+              "currency": "USD",
+              "authorize": false,
+              "resourceId": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+              "finalCapture": false
+            },
+            "status": "succeeded",
+            "evidence": {
+              "id": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+              "amount": {
+                "value": "48.00",
+                "currency_code": "USD"
+              },
+              "status": "COMPLETED",
+              "custom_id": "one-evening-ticket",
+              "final_capture": false,
+              "disbursement_mode": "INSTANT",
+              "supplementary_data": {
+                "related_ids": {
+                  "order_id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3"
+                }
+              }
+            },
+            "resourceId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+            "payloadHash": "f5cb58502e66596f85e2ad5a4a10cb14268a986dd03354c6d834069a1d555bf1",
+            "authorityVersion": 1,
+            "providerRequestId": "TD-495908c8610643e34b87a8733de9934e"
+          }
+        ],
+        "entitlements": [
+          {
+            "key": "one-evening-ticket",
+            "minor": 4800,
+            "captureId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+            "deduplicate": true
+          }
+        ],
+        "events": [
+          {
+            "sequence": "1",
+            "kind": "target.operation_claimed",
+            "document": {
+              "key": "purchase:create",
+              "kind": "create",
+              "minor": 4800,
+              "payloadHash": "05b0b388b92aefcea7eba044c1478f230611f599e1adbec9d01216b446576448",
+              "providerRequestId": "TD-06475c92cf542f353beb8d77cf2769d1"
+            }
+          },
+          {
+            "sequence": "2",
+            "kind": "target.operation_dispatching",
+            "document": {
+              "key": "purchase:create",
+              "code": "DISPATCHING",
+              "resourceId": null
+            }
+          },
+          {
+            "sequence": "3",
+            "kind": "provider.request",
+            "document": {
+              "body": {
+                "intent": "CAPTURE",
+                "purchase_units": [
+                  {
+                    "amount": {
+                      "value": "48.00",
+                      "currency_code": "USD"
+                    },
+                    "custom_id": "one-evening-ticket",
+                    "reference_id": "one-evening-ticket"
+                  }
+                ]
+              },
+              "path": "/v2/checkout/orders",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "b3616950-8333-49d6-997d-d59737a164d3",
+                "paypal-request-id": "TD-06475c92cf542f353beb8d77cf2769d1"
+              }
+            }
+          },
+          {
+            "sequence": "4",
+            "kind": "sample.buyer_approval",
+            "document": {
+              "orderId": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+              "purpose": "Scripted Sample buyer under the frozen fixture manifest; not an external approval."
+            }
+          },
+          {
+            "sequence": "5",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders"
+            }
+          },
+          {
+            "sequence": "6",
+            "kind": "target.operation_succeeded",
+            "document": {
+              "key": "purchase:create",
+              "code": "RESOURCE_CONFIRMED",
+              "resourceId": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3"
+            }
+          },
+          {
+            "sequence": "7",
+            "kind": "target.operation_claimed",
+            "document": {
+              "key": "purchase:capture_order",
+              "kind": "capture_order",
+              "minor": 4800,
+              "payloadHash": "f5cb58502e66596f85e2ad5a4a10cb14268a986dd03354c6d834069a1d555bf1",
+              "providerRequestId": "TD-495908c8610643e34b87a8733de9934e"
+            }
+          },
+          {
+            "sequence": "8",
+            "kind": "target.operation_dispatching",
+            "document": {
+              "key": "purchase:capture_order",
+              "code": "DISPATCHING",
+              "resourceId": null
+            }
+          },
+          {
+            "sequence": "9",
+            "kind": "provider.request",
+            "document": {
+              "body": {},
+              "path": "/v2/checkout/orders/SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3/capture",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "66f5e22c-f91d-419d-98a6-850b1447e780",
+                "paypal-request-id": "TD-495908c8610643e34b87a8733de9934e"
+              }
+            }
+          },
+          {
+            "sequence": "10",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders/SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3/capture"
+            }
+          },
+          {
+            "sequence": "11",
+            "kind": "fault.response_lost",
+            "document": {
+              "source": "sample",
+              "endpoint": "POST /v2/checkout/orders/SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3/capture"
+            }
+          },
+          {
+            "sequence": "12",
+            "kind": "target.operation_unknown",
+            "document": {
+              "key": "purchase:capture_order",
+              "code": "ORIGINAL_OUTCOME_UNRESOLVED",
+              "resourceId": null
+            }
+          },
+          {
+            "sequence": "13",
+            "kind": "provider.request",
+            "document": {
+              "body": null,
+              "path": "/v2/checkout/orders/SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+              "method": "GET",
+              "source": "sample",
+              "headers": {}
+            }
+          },
+          {
+            "sequence": "14",
+            "kind": "provider.resource_read",
+            "document": {
+              "id": "SAMPLE-ORDER-b0cc4335-fa92-4604-96ee-d128bd0638b3",
+              "kind": "order",
+              "found": true,
+              "source": "sample"
+            }
+          },
+          {
+            "sequence": "15",
+            "kind": "target.operation_succeeded",
+            "document": {
+              "key": "purchase:capture_order",
+              "code": "RESOURCE_CONFIRMED",
+              "resourceId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897"
+            }
+          },
+          {
+            "sequence": "16",
+            "kind": "target.ticket_issued",
+            "document": {
+              "captureId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897",
+              "deduplicate": true
+            }
+          },
+          {
+            "sequence": "17",
+            "kind": "target.ticket_projection",
+            "document": {
+              "status": "paid",
+              "resourceId": "SAMPLE-CAPTURE-e75e9452-640a-4323-8ecd-e49aec1dc897"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "variant": "faulty-lost-answer",
+      "passed": true,
+      "captureCount": 2,
+      "grossMinor": 9600,
+      "ticketCount": 1,
+      "invocations": [
+        {
+          "version": 1,
+          "type": "complete",
+          "invocationId": "5a0cd781-1eab-4306-b319-d46055ea6245",
+          "source": "sample",
+          "result": {
+            "status": "failed",
+            "resourceId": null
+          },
+          "requests": 3,
+          "runner": {
+            "engine": "vercel_sandbox",
+            "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+            "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+            "sourceHashes": {
+              "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+              "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+              "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+              "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af"
+            },
+            "networkPolicy": "deny-all",
+            "user": "candidate",
+            "sourceReadOnly": true,
+            "credentialEnvironmentForwarded": false,
+            "maximumSeconds": 50,
+            "elapsedMs": 7829,
+            "disposal": "stopped"
+          }
+        },
+        {
+          "version": 1,
+          "type": "complete",
+          "invocationId": "738792c5-92e8-4810-a218-70ff249019b1",
+          "source": "sample",
+          "result": {
+            "status": "paid",
+            "resourceId": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b"
+          },
+          "requests": 4,
+          "runner": {
+            "engine": "vercel_sandbox",
+            "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+            "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+            "sourceHashes": {
+              "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+              "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+              "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+              "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af"
+            },
+            "networkPolicy": "deny-all",
+            "user": "candidate",
+            "sourceReadOnly": true,
+            "credentialEnvironmentForwarded": false,
+            "maximumSeconds": 50,
+            "elapsedMs": 5691,
+            "disposal": "stopped"
+          }
+        }
+      ],
+      "history": {
+        "run": {
+          "id": "a87aa178-e4c4-4426-a7a8-522bb4c602e4",
+          "minor": 4800,
+          "faults": [
+            "drop_capture_once"
+          ],
+          "intent": "one-evening-ticket",
+          "source": "sample",
+          "ticket": {
+            "status": "paid",
+            "resourceId": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b"
+          },
+          "revoked": false,
+          "version": 1,
+          "currency": "USD",
+          "expiresAt": "2026-11-11T03:10:12.543Z",
+          "sessionId": "cd33116b-7bab-4a05-8370-152ed00447ad",
+          "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1"
+        },
+        "resources": [
+          {
+            "id": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b",
+            "body": {
+              "id": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b",
+              "amount": {
+                "value": "48.00",
+                "currency_code": "USD"
+              },
+              "status": "COMPLETED",
+              "custom_id": "one-evening-ticket",
+              "supplementary_data": {
+                "related_ids": {
+                  "order_id": "SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb"
+                }
+              }
+            },
+            "kind": "capture",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": "SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb",
+            "requestId": null
+          },
+          {
+            "id": "SAMPLE-CAPTURE-fca125a1-4727-4a1e-9634-e1857705501e",
+            "body": {
+              "id": "SAMPLE-CAPTURE-fca125a1-4727-4a1e-9634-e1857705501e",
+              "amount": {
+                "value": "48.00",
+                "currency_code": "USD"
+              },
+              "status": "COMPLETED",
+              "custom_id": "one-evening-ticket",
+              "supplementary_data": {
+                "related_ids": {
+                  "order_id": "SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1"
+                }
+              }
+            },
+            "kind": "capture",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": "SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1",
+            "requestId": null
+          },
+          {
+            "id": "SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb",
+            "body": {
+              "id": "SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb",
+              "intent": "CAPTURE",
+              "status": "COMPLETED",
+              "purchase_units": [
+                {
+                  "amount": {
+                    "value": "48.00",
+                    "currency_code": "USD"
+                  },
+                  "payments": {
+                    "captures": [
+                      {
+                        "id": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b",
+                        "amount": {
+                          "value": "48.00",
+                          "currency_code": "USD"
+                        },
+                        "status": "COMPLETED",
+                        "custom_id": "one-evening-ticket",
+                        "supplementary_data": {
+                          "related_ids": {
+                            "order_id": "SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb"
+                          }
+                        }
+                      }
+                    ],
+                    "authorizations": []
+                  },
+                  "custom_id": "one-evening-ticket",
+                  "reference_id": "one-evening-ticket"
+                }
+              ]
+            },
+            "kind": "order",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": null,
+            "requestId": null
+          },
+          {
+            "id": "SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1",
+            "body": {
+              "id": "SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1",
+              "intent": "CAPTURE",
+              "status": "COMPLETED",
+              "purchase_units": [
+                {
+                  "amount": {
+                    "value": "48.00",
+                    "currency_code": "USD"
+                  },
+                  "payments": {
+                    "captures": [
+                      {
+                        "id": "SAMPLE-CAPTURE-fca125a1-4727-4a1e-9634-e1857705501e",
+                        "amount": {
+                          "value": "48.00",
+                          "currency_code": "USD"
+                        },
+                        "status": "COMPLETED",
+                        "custom_id": "one-evening-ticket",
+                        "supplementary_data": {
+                          "related_ids": {
+                            "order_id": "SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1"
+                          }
+                        }
+                      }
+                    ],
+                    "authorizations": []
+                  },
+                  "custom_id": "one-evening-ticket",
+                  "reference_id": "one-evening-ticket"
+                }
+              ]
+            },
+            "kind": "order",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": null,
+            "requestId": null
+          }
+        ],
+        "operations": [],
+        "entitlements": [
+          {
+            "key": "one-evening-ticket",
+            "minor": 4800,
+            "captureId": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b",
+            "deduplicate": false
+          }
+        ],
+        "events": [
+          {
+            "sequence": "18",
+            "kind": "provider.request",
+            "document": {
+              "body": {
+                "intent": "CAPTURE",
+                "purchase_units": [
+                  {
+                    "amount": {
+                      "value": "48.00",
+                      "currency_code": "USD"
+                    },
+                    "custom_id": "one-evening-ticket",
+                    "reference_id": "one-evening-ticket"
+                  }
+                ]
+              },
+              "path": "/v2/checkout/orders",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "5b02f7af-cc9d-44f6-98fe-90413d019540"
+              }
+            }
+          },
+          {
+            "sequence": "19",
+            "kind": "sample.buyer_approval",
+            "document": {
+              "orderId": "SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1",
+              "purpose": "Scripted Sample buyer under the frozen fixture manifest; not an external approval."
+            }
+          },
+          {
+            "sequence": "20",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders"
+            }
+          },
+          {
+            "sequence": "21",
+            "kind": "provider.request",
+            "document": {
+              "body": {},
+              "path": "/v2/checkout/orders/SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1/capture",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "5156bb82-31bf-47cb-ba3c-c1dbdd491ca0"
+              }
+            }
+          },
+          {
+            "sequence": "22",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders/SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1/capture"
+            }
+          },
+          {
+            "sequence": "23",
+            "kind": "fault.response_lost",
+            "document": {
+              "source": "sample",
+              "endpoint": "POST /v2/checkout/orders/SAMPLE-ORDER-bdca6d8d-6ebf-4b33-8869-5e8bd23df1e1/capture"
+            }
+          },
+          {
+            "sequence": "24",
+            "kind": "target.ticket_projection",
+            "document": {
+              "status": "failed",
+              "resourceId": null
+            }
+          },
+          {
+            "sequence": "25",
+            "kind": "provider.request",
+            "document": {
+              "body": {
+                "intent": "CAPTURE",
+                "purchase_units": [
+                  {
+                    "amount": {
+                      "value": "48.00",
+                      "currency_code": "USD"
+                    },
+                    "custom_id": "one-evening-ticket",
+                    "reference_id": "one-evening-ticket"
+                  }
+                ]
+              },
+              "path": "/v2/checkout/orders",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "a9c64943-654e-403a-bb87-af7c0e76ecf0"
+              }
+            }
+          },
+          {
+            "sequence": "26",
+            "kind": "sample.buyer_approval",
+            "document": {
+              "orderId": "SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb",
+              "purpose": "Scripted Sample buyer under the frozen fixture manifest; not an external approval."
+            }
+          },
+          {
+            "sequence": "27",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders"
+            }
+          },
+          {
+            "sequence": "28",
+            "kind": "provider.request",
+            "document": {
+              "body": {},
+              "path": "/v2/checkout/orders/SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb/capture",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "b394c0b4-85d2-46ec-9fd3-67d4ba9e7800"
+              }
+            }
+          },
+          {
+            "sequence": "29",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders/SAMPLE-ORDER-43085b17-315c-4509-adc1-cffe1b6c49bb/capture"
+            }
+          },
+          {
+            "sequence": "30",
+            "kind": "target.ticket_issued",
+            "document": {
+              "captureId": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b",
+              "deduplicate": false
+            }
+          },
+          {
+            "sequence": "31",
+            "kind": "target.ticket_projection",
+            "document": {
+              "status": "paid",
+              "resourceId": "SAMPLE-CAPTURE-9a58cb05-3e92-4bb2-9770-dd83511f367b"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "variant": "crash-restart",
+      "passed": true,
+      "captureCount": 1,
+      "grossMinor": 4800,
+      "ticketCount": 1,
+      "invocations": [
+        {
+          "controlledCrashAfterCommittedFrame": 11
+        },
+        {
+          "version": 1,
+          "type": "complete",
+          "invocationId": "158e2848-bf41-4c74-b054-7e556f30cdb2",
+          "source": "sample",
+          "result": {
+            "status": "paid",
+            "resourceId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5"
+          },
+          "requests": 8,
+          "runner": {
+            "engine": "vercel_sandbox",
+            "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+            "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+            "sourceHashes": {
+              "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+              "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+              "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+              "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af"
+            },
+            "networkPolicy": "deny-all",
+            "user": "candidate",
+            "sourceReadOnly": true,
+            "credentialEnvironmentForwarded": false,
+            "maximumSeconds": 50,
+            "elapsedMs": 10313,
+            "disposal": "stopped"
+          }
+        }
+      ],
+      "history": {
+        "run": {
+          "id": "d767e6f0-c57c-41c5-83be-0270c980a384",
+          "minor": 4800,
+          "faults": [],
+          "intent": "one-evening-ticket",
+          "source": "sample",
+          "ticket": {
+            "status": "paid",
+            "resourceId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5"
+          },
+          "revoked": false,
+          "version": 1,
+          "currency": "USD",
+          "expiresAt": "2026-11-11T03:10:26.068Z",
+          "sessionId": "d8573438-7c03-4eb6-a21a-264a6d46ab67",
+          "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1"
+        },
+        "resources": [
+          {
+            "id": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+            "body": {
+              "id": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+              "amount": {
+                "value": "48.00",
+                "currency_code": "USD"
+              },
+              "status": "COMPLETED",
+              "custom_id": "one-evening-ticket",
+              "supplementary_data": {
+                "related_ids": {
+                  "order_id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1"
+                }
+              }
+            },
+            "kind": "capture",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+            "requestId": "TD-88bce0f29eb9e2bf45164cc7f470c15d"
+          },
+          {
+            "id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+            "body": {
+              "id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+              "intent": "CAPTURE",
+              "status": "COMPLETED",
+              "purchase_units": [
+                {
+                  "amount": {
+                    "value": "48.00",
+                    "currency_code": "USD"
+                  },
+                  "payments": {
+                    "captures": [
+                      {
+                        "id": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+                        "amount": {
+                          "value": "48.00",
+                          "currency_code": "USD"
+                        },
+                        "status": "COMPLETED",
+                        "custom_id": "one-evening-ticket",
+                        "supplementary_data": {
+                          "related_ids": {
+                            "order_id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1"
+                          }
+                        }
+                      }
+                    ],
+                    "authorizations": []
+                  },
+                  "custom_id": "one-evening-ticket",
+                  "reference_id": "one-evening-ticket"
+                }
+              ]
+            },
+            "kind": "order",
+            "minor": 4800,
+            "intent": "one-evening-ticket",
+            "status": "COMPLETED",
+            "parentId": null,
+            "requestId": "TD-66bf01affe34c55da8186081dd961088"
+          }
+        ],
+        "operations": [
+          {
+            "key": "purchase:create",
+            "code": "RESOURCE_CONFIRMED",
+            "owner": "c569fcee-2cf0-41a0-a8e2-078f448d2793",
+            "action": {
+              "kind": "create",
+              "minor": 4800,
+              "intent": "one-evening-ticket",
+              "currency": "USD",
+              "authorize": false,
+              "resourceId": null,
+              "finalCapture": false
+            },
+            "status": "succeeded",
+            "evidence": {
+              "id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+              "intent": "CAPTURE",
+              "status": "APPROVED",
+              "purchase_units": [
+                {
+                  "amount": {
+                    "value": "48.00",
+                    "currency_code": "USD"
+                  },
+                  "payments": {
+                    "captures": [],
+                    "authorizations": []
+                  },
+                  "custom_id": "one-evening-ticket",
+                  "reference_id": "one-evening-ticket"
+                }
+              ]
+            },
+            "resourceId": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+            "payloadHash": "05b0b388b92aefcea7eba044c1478f230611f599e1adbec9d01216b446576448",
+            "authorityVersion": 1,
+            "providerRequestId": "TD-66bf01affe34c55da8186081dd961088"
+          },
+          {
+            "key": "purchase:capture_order",
+            "code": "RESOURCE_CONFIRMED",
+            "owner": "c569fcee-2cf0-41a0-a8e2-078f448d2793",
+            "action": {
+              "kind": "capture_order",
+              "minor": 4800,
+              "intent": "one-evening-ticket",
+              "currency": "USD",
+              "authorize": false,
+              "resourceId": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+              "finalCapture": false
+            },
+            "status": "succeeded",
+            "evidence": {
+              "id": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+              "amount": {
+                "value": "48.00",
+                "currency_code": "USD"
+              },
+              "status": "COMPLETED",
+              "custom_id": "one-evening-ticket",
+              "final_capture": false,
+              "disbursement_mode": "INSTANT",
+              "supplementary_data": {
+                "related_ids": {
+                  "order_id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1"
+                }
+              }
+            },
+            "resourceId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+            "payloadHash": "60f131f033320b2ddaee3cd38b4ce22729a86307674a84a8560c679b0784acb3",
+            "authorityVersion": 1,
+            "providerRequestId": "TD-88bce0f29eb9e2bf45164cc7f470c15d"
+          }
+        ],
+        "entitlements": [
+          {
+            "key": "one-evening-ticket",
+            "minor": 4800,
+            "captureId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+            "deduplicate": true
+          }
+        ],
+        "events": [
+          {
+            "sequence": "32",
+            "kind": "target.operation_claimed",
+            "document": {
+              "key": "purchase:create",
+              "kind": "create",
+              "minor": 4800,
+              "payloadHash": "05b0b388b92aefcea7eba044c1478f230611f599e1adbec9d01216b446576448",
+              "providerRequestId": "TD-66bf01affe34c55da8186081dd961088"
+            }
+          },
+          {
+            "sequence": "33",
+            "kind": "target.operation_dispatching",
+            "document": {
+              "key": "purchase:create",
+              "code": "DISPATCHING",
+              "resourceId": null
+            }
+          },
+          {
+            "sequence": "34",
+            "kind": "provider.request",
+            "document": {
+              "body": {
+                "intent": "CAPTURE",
+                "purchase_units": [
+                  {
+                    "amount": {
+                      "value": "48.00",
+                      "currency_code": "USD"
+                    },
+                    "custom_id": "one-evening-ticket",
+                    "reference_id": "one-evening-ticket"
+                  }
+                ]
+              },
+              "path": "/v2/checkout/orders",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "975198ab-abe3-49f5-93a3-3590b05a87c1",
+                "paypal-request-id": "TD-66bf01affe34c55da8186081dd961088"
+              }
+            }
+          },
+          {
+            "sequence": "35",
+            "kind": "sample.buyer_approval",
+            "document": {
+              "orderId": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+              "purpose": "Scripted Sample buyer under the frozen fixture manifest; not an external approval."
+            }
+          },
+          {
+            "sequence": "36",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders"
+            }
+          },
+          {
+            "sequence": "37",
+            "kind": "target.operation_succeeded",
+            "document": {
+              "key": "purchase:create",
+              "code": "RESOURCE_CONFIRMED",
+              "resourceId": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1"
+            }
+          },
+          {
+            "sequence": "38",
+            "kind": "target.operation_claimed",
+            "document": {
+              "key": "purchase:capture_order",
+              "kind": "capture_order",
+              "minor": 4800,
+              "payloadHash": "60f131f033320b2ddaee3cd38b4ce22729a86307674a84a8560c679b0784acb3",
+              "providerRequestId": "TD-88bce0f29eb9e2bf45164cc7f470c15d"
+            }
+          },
+          {
+            "sequence": "39",
+            "kind": "target.operation_dispatching",
+            "document": {
+              "key": "purchase:capture_order",
+              "code": "DISPATCHING",
+              "resourceId": null
+            }
+          },
+          {
+            "sequence": "40",
+            "kind": "provider.request",
+            "document": {
+              "body": {},
+              "path": "/v2/checkout/orders/SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1/capture",
+              "method": "POST",
+              "source": "sample",
+              "headers": {
+                "prefer": "return=representation",
+                "idempotency-key": "29217b2d-f2ec-41c6-9f2c-03ceaf2400df",
+                "paypal-request-id": "TD-88bce0f29eb9e2bf45164cc7f470c15d"
+              }
+            }
+          },
+          {
+            "sequence": "41",
+            "kind": "provider.response_committed",
+            "document": {
+              "source": "sample",
+              "status": 201,
+              "endpoint": "POST /v2/checkout/orders/SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1/capture"
+            }
+          },
+          {
+            "sequence": "42",
+            "kind": "provider.request",
+            "document": {
+              "body": null,
+              "path": "/v2/checkout/orders/SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+              "method": "GET",
+              "source": "sample",
+              "headers": {}
+            }
+          },
+          {
+            "sequence": "43",
+            "kind": "provider.resource_read",
+            "document": {
+              "id": "SAMPLE-ORDER-2aa531c1-a059-4420-871b-6bcd0599c5c1",
+              "kind": "order",
+              "found": true,
+              "source": "sample"
+            }
+          },
+          {
+            "sequence": "44",
+            "kind": "target.operation_succeeded",
+            "document": {
+              "key": "purchase:capture_order",
+              "code": "RESOURCE_CONFIRMED",
+              "resourceId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5"
+            }
+          },
+          {
+            "sequence": "45",
+            "kind": "target.ticket_issued",
+            "document": {
+              "captureId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5",
+              "deduplicate": true
+            }
+          },
+          {
+            "sequence": "46",
+            "kind": "target.ticket_projection",
+            "document": {
+              "status": "paid",
+              "resourceId": "SAMPLE-CAPTURE-3934b1e1-41f6-4c56-b130-f0ba0bfc8df5"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "This is controlled Sample financial behavior, not new PayPal sandbox transactions.",
+    "This suite does not qualify arbitrary candidate code or the planned 600-attempt context study."
+  ]
+}

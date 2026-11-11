@@ -1718,18 +1718,18 @@ Unrequested fields: no payPalMockResponse, partner attribution, auth assertions,
 
 
 
-## Invariants and implementation bindings (TBD code locations only)
+## Tandem durable invariants and implementation bindings
 
 Every hardened write follows durable claim → SDK call → record. The store owns unique tenant/run/business-operation identity plus immutable payload hash, original provider request ID and current approval version. Losing claims raise an explicit DuplicateClaim which the worker catches and returns the existing operation; no pre-read-only dedupe. Refusals release only according to explicit known-refusal policy; unknown dispatch retains protection. This is target application behavior, never silently imposed on the faulty target by the observer.
 
 | Write | Claim / rejection | Unknown recovery | Where in code |
 |---|---|---|---|
-| create_order | durable unique purchase/create | supported known original order read only; otherwise unknown, no invented search-by-request-ID | TBD claim then SDK functions |
-| authorize_order | durable unique original order/authorize | get_order of same owned order and inspect its exact authorizations | TBD claim then SDK functions |
-| capture_order | durable unique intent capture | get_order original order, exact capture/amount/status | TBD claim then SDK functions |
-| capture_authorized_payment | unique capture intent plus atomic authorization remainder reservation | known capture GET; parent authorization GET alone cannot prove the particular capture | TBD claim then SDK functions |
-| refund_captured_payment | unique refund intent plus atomic refundable remainder reservation | known refund GET; capture balance change alone is not exact-operation proof | TBD claim then SDK functions |
-| void_payment | unique remaining-authorization release | get_authorized_payment same original id; VOIDED doesn't imply refund of captured funds | TBD claim then SDK functions |
+| create_order | durable unique purchase/create | supported known original order read only; otherwise unknown, no invented search-by-request-ID | `TandemStore.claim` → `HardenedTickets.execute` / `_dispatch` → `SdkGateway.create_order`; tested lost-create/no-invented-read and six-worker uniqueness |
+| authorize_order | durable unique original order/authorize | get_order of same owned order and inspect its exact authorizations | `TandemStore.claim` → `HardenedTickets.execute` / `_dispatch` → `SdkGateway.authorize_order`; tested reserve→partial capture→void lifecycle |
+| capture_order | durable unique intent capture | get_order original order, exact capture/amount/status | `TandemStore.claim` → `HardenedTickets.execute` / `_dispatch` → `SdkGateway.capture_order`; tested dropped response, malformed response, six-worker race and crash after frame11 |
+| capture_authorized_payment | unique capture intent plus atomic authorization remainder reservation | known capture GET; parent authorization GET alone cannot prove the particular capture | `TandemStore.claim` atomic remainder → `HardenedTickets.execute` / `_dispatch` → `SdkGateway.capture_authorization`; tested partial capture and missing exact capture identity |
+| refund_captured_payment | unique refund intent plus atomic refundable remainder reservation | known refund GET; capture balance change alone is not exact-operation proof | `TandemStore.claim` atomic remainder → `HardenedTickets.execute` / `_dispatch` → `SdkGateway.refund_capture`; tested two competing refunds, changed payload and lost-response reservation |
+| void_payment | unique remaining-authorization release | get_authorized_payment same original id; VOIDED doesn't imply refund of captured funds | `TandemStore.claim` → `HardenedTickets.execute` / `_dispatch` → `SdkGateway.void_authorization` → `_recover` / `get_authorization`; tested actual empty204 plus original authorization GET |
 
 Unknown operations with no supported exact lookup stay unknown; no re-POST merely to escape uncertainty. Always read the original authorization after void, including an empty or undecodable response. Preserve gross capture history after refunds. Successful partial capture consumes only captured amount; remaining authorization is separately released or expires. No paid ticket without exact completed capture. One semantic ticket entitlement across callback/restart races. Review/cancel/revoke checks occur immediately before dispatch. Pre-send authentication/encoding failures do not trigger financial reconciliation; actual response loss does. Pending capture doesn't fulfill; pending refund retains reservation. No cross-tenant resource access. Distinct signed webhook event identity/monotonic reducers are a separate adapter, not assumed in this SDK.
 
@@ -1741,7 +1741,7 @@ MUST load python-integrate-paypal, python-getting-started, python-client-initial
 
 Meaningful SDK wire tests cover stable versus generic identity, body omission versus typed {}, defaults/UNSET, typed/Raw refusals, success decode failure, transport before/after dispatch, no SDK retries, exact resource linkage, read-only recovery and current authority. Concurrent claim/refund races and restart proofs use the actual durable app store; Python strict mypy plus pytest are required. Baseline and hardened invariants use the same provider observations without the harness repairing the baseline. Child process/environment/no-network isolation is a separately measured boundary. Hosted Python VM snapshot, complete fixture UI, actual ticket scenario execution, live write qualification and evaluation are not implemented by these planning notes.
 
-No open SDK lookup is intentionally left for listed calls; code/test bindings remain TBD until authored. Before applying to root plan, recheck that desired transport/store architecture has been finalized and no additional SDK operation is introduced. Do not mark row verified until exact unchanged-source checks execute.
+All six listed write rows bind to actual code. `TandemStore.claim` catches PostgreSQL 23505 only after its transaction rolls back, verifies immutable payload, and reports DuplicateClaim to the Python target. Refused/not-sent reservations stop contributing to remainder while their history persists; no implicit resend is added. `tests/tandem.test.ts` executes 24 cases/subcases against isolated real PostgreSQL schemas and actual Python SDK workers. 58 Python SDK/protocol tests and strict mypy also pass. Cloud proof additionally binds this exact source to five offline VMs across three cases. These are Sample-provider domain results; they are not real-provider lifecycle proof or the 600-attempt study.
 
 ## Runtime and transport design resolved after actual host qualification
 
