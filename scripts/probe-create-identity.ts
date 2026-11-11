@@ -4,14 +4,15 @@ import { resolve } from 'node:path';
 import pg from 'pg';
 import { prepareManifest, hash } from '../packages/provider-probes/src/contract';
 import { ProbeStore } from '../packages/provider-probes/src/store';
+import { probeDatabaseConnections } from '../packages/provider-probes/src/connection';
 import { ProbeRunner } from '../packages/provider-probes/src/runner';
 import { probeReport } from '../packages/provider-probes/src/report';
-const paths=['packages/provider-probes/src/contract.ts','packages/provider-probes/src/store.ts','packages/provider-probes/src/runner.ts','packages/provider-probes/src/report.ts','scripts/probe-create-identity.ts'];
+const paths=['packages/provider-probes/src/contract.ts','packages/provider-probes/src/store.ts','packages/provider-probes/src/connection.ts','packages/provider-probes/src/runner.ts','packages/provider-probes/src/report.ts','scripts/probe-create-identity.ts'];
 const sourceHashes=Object.fromEntries(await Promise.all(paths.map(async path=>[path,hash(await readFile(path,'utf8'))])));
 const directory=resolve('.artifacts/provider-probes');await mkdir(directory,{recursive:true});
 const [action,id]=process.argv.slice(2);if(!['prepare','run','report'].includes(action??''))throw Error('Use prepare, run <campaign UUID>, or report <campaign UUID>.');
 if(!process.env.DATABASE_URL)throw Error('DATABASE_URL required');
-const pool=new pg.Pool({connectionString:process.env.DATABASE_URL,max:4}),store=new ProbeStore(pool);
+const connections=probeDatabaseConnections(process.env),pool=new pg.Pool({connectionString:connections.query,max:4}),lockPool=connections.lock===connections.query?pool:new pg.Pool({connectionString:connections.lock,max:1,connectionTimeoutMillis:8000,idleTimeoutMillis:15000}),store=new ProbeStore(pool,lockPool);
 try{
  await store.initialize();
  if(action==='prepare'){
@@ -29,4 +30,4 @@ try{
   }
   const report=probeReport(manifest,await store.calls(id));await writeFile(`${directory}/${id}.report.json`,JSON.stringify(report,null,2)+'\n',{mode:0o600});console.log(JSON.stringify({report:`.artifacts/provider-probes/${id}.report.json`,interpretation:report.interpretation,completedMatchedTrials:report.completedMatchedTrials,attemptedCalls:report.attemptedCalls,verifiedCalls:report.verifiedCalls}));
  }
-}finally{await pool.end();}
+}finally{if(lockPool!==pool)await lockPool.end();await pool.end();}
