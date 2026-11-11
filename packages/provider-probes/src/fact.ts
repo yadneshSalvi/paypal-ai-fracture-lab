@@ -1,0 +1,16 @@
+import type {EvidenceDTO,ProviderFactDTO} from '@fracture/contracts';
+/** Published evidence is historical: never imply that a current judge run made these requests. */
+export function createIdentityFact(evidence:EvidenceDTO):ProviderFactDTO|null{
+ const p=evidence.body;
+ if(p.factId!=='F9'||p.source!=='live_sandbox'||p.endpoint!=='POST /v2/checkout/orders'||p.sdkCommit!=='5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2'||p.plannedTrials!==5||p.plannedCalls!==40||!Array.isArray(p.pairs)||p.pairs.length!==20)return null;
+ const pairs=p.pairs as {trial?:unknown;arm?:unknown;result?:unknown;calls?:unknown}[];
+ const armIds=['provider_same','provider_different','generic_same','generic_different'];
+ const exact=pairs.every(pair=>Number.isInteger(pair.trial)&&Number(pair.trial)>=1&&Number(pair.trial)<=5&&armIds.includes(String(pair.arm)))&&new Set(pairs.map(pair=>`${pair.trial}:${pair.arm}`)).size===20;
+ const valid=(pair:typeof pairs[number])=>Array.isArray(pair.calls)&&pair.calls.length===2&&pair.calls.every((call:Record<string,unknown>)=>call.state==='verified'&&call.readStatus==='CREATED'&&typeof call.orderIdHash==='string'&&/^[a-f0-9]{64}$/.test(call.orderIdHash))&&pair.result===(pair.calls[0].orderIdHash===pair.calls[1].orderIdHash?'same_resource':'distinct_resources');
+ const completed=exact?[1,2,3,4,5].filter(trial=>pairs.filter(pair=>pair.trial===trial).every(valid)).length:0;
+ const controls=pairs.filter(pair=>pair.arm==='provider_same').every(pair=>pair.result==='same_resource')&&pairs.filter(pair=>pair.arm==='provider_different'||pair.arm==='generic_different').every(pair=>pair.result==='distinct_resources');
+ const repeated=completed===5&&p.attemptedCalls===40&&p.verifiedCalls===40&&controls;
+ const contradicted=repeated&&pairs.filter(pair=>pair.arm==='generic_same').every(pair=>pair.result==='distinct_resources');
+ const supported=repeated&&pairs.filter(pair=>pair.arm==='generic_same').every(pair=>pair.result==='same_resource');
+ return {id:'F9',title:'Generic versus endpoint idempotency headers',endpoint:'/v2/checkout/orders',method:'POST',sdkCommit:String(p.sdkCommit),status:contradicted?'contradicted_observation':supported?'supported_observation':'inconclusive',statement:contradicted?'In five matched create-order trials, the same generic Idempotency-Key produced two distinct orders. The same PayPal-Request-Id returned one order.':supported?'In five matched create-order trials, the same generic Idempotency-Key returned one order. This observed behavior is not a documented generic-header guarantee.':'The recorded create-order campaign does not support a conclusive repeated-observation claim.',limitation:'One isolated sandbox merchant and the measured short windows only. All orders were independently read as CREATED; no approval or captured funds. Capture/refund behavior and retention duration remain unqualified.',scope:'Historical controlled campaign · isolated US sandbox merchant · USD1.00 unapproved orders',source:'live_sandbox',observedAt:typeof p.completedAt==='string'?p.completedAt:null,repetitions:completed,requiredRepetitions:5,documentationUrl:'https://developer.paypal.com/api/rest/reference/idempotency/',evidenceIds:[evidence.id]};
+}

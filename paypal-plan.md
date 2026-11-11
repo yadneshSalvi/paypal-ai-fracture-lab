@@ -1750,3 +1750,40 @@ Vercel snapshot snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv now contains Python3.11.15 and
 Planned worker: apps/fixtures/tandem/worker.py reads strictly bounded versioned JSON frames; sdk_adapter.py owns the long-lived pinned SDK with custom HttpClient. Target faulty.py and hardened.py independently decide their purchase operations. The parent bridge packages/tandem/src/bridge.ts fixes session/run scope and permits only typed operation claims, target-state writes, target-owned entitlement operations, authority reads and bounded Sample provider requests. No arbitrary SQL, filesystem path, URL or resource from another run can be requested. Source hash and worker version bind every invocation. The Python SDK still encodes real request channels; no hidden wrapper adds business identity to the faulty target.
 
 Durability: target operation claims and provider-model state reside in separate app PostgreSQL tables. Each operation is committed before the parent acknowledges its frame; the frame request ID is separate from the business operation identity. A lost worker answer cannot lose an already recorded provider effect. A new worker resumes from saved target operations and performs exact read-only reconciliation; the provider observer does not fix the faulty target. Parent lease/deadline/current actor checks stop stale workers, while an uncertain remote frame leaves the originating operation pending. Authorization, capture and refund money remain separately recorded. This bridge requires meaningful concurrent/restart/partial-message tests before the UI can claim durable parity.
+
+## 2026-11-11 — F9 bounded create-order header experiment
+
+This extension uses only the already-resolved `orders.createOrder` and `orders.getOrder` contracts above. Installed 2.29.0 map was reread; no SDK or API lookup remains. Node22/ESM/strict project conventions and the existing 290-test/typecheck/build baseline apply. All nine named TypeScript skills were loaded in this conversation; integration/getting-started/map were refreshed for this extension. This is an owner CLI campaign, never a public judge write endpoint.
+
+**Question:** for one isolated sandbox merchant and POST /v2/checkout/orders, does reusing only generic `Idempotency-Key` join two calls? Five matched trials each have four randomized arms: stable PayPal-Request-Id/changing generic; changing PayPal-Request-Id/changing generic; absent PayPal-Request-Id/stable generic; absent PayPal-Request-Id/changing generic. Each arm makes two independently claimed calls. The same minimal body is used throughout a trial: CAPTURE intent, one USD1.00 purchase unit, trial customId; no invoice ID, wallet, payer, approval, itemization, experience, authorization or capture. Up to40 create calls,40 unapproved orders, **zero captured funds**. Existing orders expire normally; no refund is needed. All outcomes, refusals and incomplete pairs remain in the denominator. Classification uses actual resource identity and independent GET, never HTTP status alone. A result concerns only this endpoint, account, SDK and measured short window; refund behavior and retention remain unqualified.
+
+**Optional fields:** create payPalRequestId only in its two declared arms; generic header is explicitly controlled through ClientOptions.fetch solely for this experiment; prefer=return=representation for identity/status/amount observation; purchaseUnit.customId binds the trial. Other optional fields omitted, SDK defaults retained. GET uses only the owned observed id. Client uses explicit sandbox baseUrl, isolated merchant credentials, retry.maxRetries0, logging.off and25s signal. Transport forwards Request+signal, refuses all routes except OAuth, exact create and GET of campaign-owned IDs, records only allowlisted non-secret headers, and never records OAuth data. A copy of Request changes only the declared generic header; caller-provided PayPal-Request-Id remains exactly encoded by the SDK.
+
+### DURABLE WRITES / DUPLICATE CLAIMS
+| Write | Claim store | Duplicate refusal | Catch | Where |
+|---|---|---|---|---|
+| One preregistered create-call slot | PostgreSQL probe campaign + calls, UNIQUE(campaign_id,call_key) | Atomic insert conflict; immutable input hash must match | Read existing completed result; any uncertain/claimed slot stops without redispatch | ProbeStore.claim + ProbeRunner.call; tests/provider-probes.test.ts durable duplicate claims |
+
+The campaign manifest and every call identity are frozen before any provider mutation. An advisory lock serializes a campaign; the unique call slot remains protection after process death. Different slots are intentional experimental calls, not operational retries. No caller can add a slot, change a key/body, call an arbitrary URL, or approve an order.
+
+### UNKNOWN OUTCOMES
+| Write | Reread | Reference | Where | Test |
+|---|---|---|---|---|
+| createOrder | getOrder when original response trace durably retained a valid order id; otherwise no supported search exists | Exact campaign-owned original id | ProbeRunner.call/readback | tests/provider-probes.test.ts lost create, malformed original success, never-sent credential refusal |
+
+A connection/decode/cancel after dispatch remains unknown unless an original resource can be independently read. Unknown slots never release their claim or resend. Original-read recovery changes only observation state, never the experimental call. Without an id the campaign stops visibly; this documented capability limit is preserved, not guessed around. Auth/encode before create transport is not_sent, performs no resource reread, and remains in the original campaign. Other HTTP refusals are retained and stop the campaign; no automatic write retry.
+
+### CROSS-OPERATION INVARIANTS
+| Invariant | Legal set | Enforcement | Test |
+|---|---|---|---|
+| Only frozen call slots/body/headers | Immutable preregistered manifest hash | ProbeStore.claim + ProbeRunner transport | crossed slot and immutable manifest test |
+| Only observed campaign resource IDs may be read | Saved create trace/result in that same campaign | ProbeRunner transport + ProbeStore.owns | failed original read / no invented lookup tests |
+| No financial operation | Exact method/route allowlist and no wallet/payer in frozen body | ProbeRunner transport and validateManifest | exact actual SDK wire/body campaign test |
+| All repeated-observation claims need5 complete matched trials | Forty slots plus independent GETs and trace validation | probeReport | matched campaign, contrary outcome and unqualified positive-control tests |
+
+### WHEN THE API SAYS NO
+Create error arms and GET error arms are the exact tables above. Persist status and allowlisted provider reason from the correctly narrowed operation result; omit personal fields and credential payloads. Operator reports distinguish refused, not_sent, unknown and verified. Credentials/401/403 use fixed credential failure;429 fixed quota failure;5xx fixed provider unavailable. Unknown non-family exceptions remain application errors; state is conservatively retained before rethrow. Nothing maps an absent response to a conclusive provider refusal.
+
+**Required reading:** MUST load typescript-integrate-paypal, typescript-getting-started, typescript-error-handling, typescript-client-initialization, typescript-authentication, typescript-calling-endpoints, typescript-models, typescript-configuration-resilience, typescript-testing — all previously loaded; exact current operation map and this extension reread before implementation. Release replaces each TBD with the implemented source/test binding and executed hash evidence.
+
+Implementation binding:12 meaningful real-SDK/PostgreSQL fixture tests pass on2026-11-11; isolated disposable schemas only, no provider traffic. The transport uses FetchLike=typeof fetch, narrows its actual Request and reads forwarded.clone() after preserving signal; this fixes a locally observed consumed-body test failure before any sandbox dispatch. No live result yet.

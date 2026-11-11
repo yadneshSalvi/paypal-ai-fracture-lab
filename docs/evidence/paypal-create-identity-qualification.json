@@ -1,0 +1,604 @@
+{
+  "schemaVersion": 1,
+  "factId": "F9",
+  "source": "live_sandbox",
+  "campaignId": "ef2bb79f-e6bc-472e-9307-9bd0e70fabd3",
+  "protocolHash": "3837df3ebe46d74feb999e691eff1d31dded5750dd148151f8fff10cda580575",
+  "sdkCommit": "5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2",
+  "documentation": {
+    "url": "https://developer.paypal.com/api/rest/reference/idempotency/",
+    "sha256": "1a8e6ca73b005e3b4cd64120f8e3ae6244ddece04ac95a1f606818d70cbc3c19"
+  },
+  "sourceHashes": {
+    "scripts/probe-create-identity.ts": "f3eef687f38cc60cc6d775c233d6c6b10b3afe631516d70a0384b1dd80fe5fbb",
+    "packages/provider-probes/src/store.ts": "abd7d3d1d1b6c11246c784f3cb1c692498982fe58449d5c8addcfbf510680c6c",
+    "packages/provider-probes/src/report.ts": "a854e82d647de1759d01eb85a248ad05558ea1f043385721fa78428d1c5fdb01",
+    "packages/provider-probes/src/runner.ts": "87a56c9c011f1a974fe0cc2ad870afd9a836eb9852eddd08e7a3ba7af6d57b4a",
+    "packages/provider-probes/src/contract.ts": "addcda3c5d87321da0c4e6735c4cc4169440a0e193e1cbb0fee5725e69bb897e"
+  },
+  "endpoint": "POST /v2/checkout/orders",
+  "scope": "One isolated US sandbox merchant, USD1.00 unapproved create-order requests",
+  "startedAt": "2026-11-11T03:01:23.551Z",
+  "completedAt": "2026-11-11T03:02:46.566Z",
+  "plannedTrials": 5,
+  "completedMatchedTrials": 5,
+  "plannedCalls": 40,
+  "attemptedCalls": 40,
+  "verifiedCalls": 40,
+  "controlsQualified": true,
+  "interpretation": "generic_header_did_not_deduplicate",
+  "pairs": [
+    {
+      "trial": 1,
+      "arm": "provider_same",
+      "result": "same_resource",
+      "elapsedBetweenRequestsMs": 2321,
+      "calls": [
+        {
+          "key": "1:provider_same:1",
+          "state": "verified",
+          "orderIdHash": "da9ee1860b92c3dff21a504017870f5861750caa4b4259c561a10cd08658c500",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "99b8daecde9b542606164bdd289241e587982d70f5495c0a05d9d4893bcdaaf1",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:34.647Z"
+        },
+        {
+          "key": "1:provider_same:2",
+          "state": "verified",
+          "orderIdHash": "da9ee1860b92c3dff21a504017870f5861750caa4b4259c561a10cd08658c500",
+          "httpStatus": 200,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "99b8daecde9b542606164bdd289241e587982d70f5495c0a05d9d4893bcdaaf1",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:36.691Z"
+        }
+      ]
+    },
+    {
+      "trial": 1,
+      "arm": "provider_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2446,
+      "calls": [
+        {
+          "key": "1:provider_different:1",
+          "state": "verified",
+          "orderIdHash": "a293f31d3e05e0331c211aad329ceda2aae0826bdeab404898375c34002ce59c",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "632df22cf3976aa9972611e19449bd6615bc280e9b12eae4efb99a04ad24c6b0",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:39.136Z"
+        },
+        {
+          "key": "1:provider_different:2",
+          "state": "verified",
+          "orderIdHash": "ce7ed1273799743fe0f92422ab238a8891fda11dcf6af1dc1a1db4ef8ad5554f",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "2d9651bf7f194a55cd1c158578923eae0eb4cd193e1b3f7b3dd60fe0ffb733f0",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:41.268Z"
+        }
+      ]
+    },
+    {
+      "trial": 1,
+      "arm": "generic_same",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2320,
+      "calls": [
+        {
+          "key": "1:generic_same:1",
+          "state": "verified",
+          "orderIdHash": "401859e6aa1a265153c11a2969637e002ced3f558eaf0a29334963ad09eca8c3",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "36264d992128f4062bf774b60771279b98851b043cc4faafe652431d8228c508",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:30.006Z"
+        },
+        {
+          "key": "1:generic_same:2",
+          "state": "verified",
+          "orderIdHash": "cfd937cf6918fb3e7c2f4af6b19076e3fe46cc6d094cff03f968e26b0883243d",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "d89bf458ad786a1c1083739b32b3d165f5ceee77121fe386e5a7003c83454a04",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:32.326Z"
+        }
+      ]
+    },
+    {
+      "trial": 1,
+      "arm": "generic_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1734,
+      "calls": [
+        {
+          "key": "1:generic_different:1",
+          "state": "verified",
+          "orderIdHash": "c52eb3d5629b0c0d107104519674087c3725ad21ed3153a2df5e9f4c0a65a160",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "76accf82c0cbe3168c71f4b1e946227230a4a04fbccc69b8949de4f2dd639498",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:25.281Z"
+        },
+        {
+          "key": "1:generic_different:2",
+          "state": "verified",
+          "orderIdHash": "fb8c0efecbf1f7b4707072b0e3def640e1decce9b500333ee98773eb76924836",
+          "httpStatus": 201,
+          "requestBodyHash": "09486ca3bf6d11788f3f0aed08e38b6d11bec241e8e90011bcff1c293b9309f1",
+          "responseBodyHash": "2cae35e5c18221c5c1da05b272e27650ba9f2a07658cd41763155a89177d811d",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:27.687Z"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "arm": "provider_same",
+      "result": "same_resource",
+      "elapsedBetweenRequestsMs": 2226,
+      "calls": [
+        {
+          "key": "2:provider_same:1",
+          "state": "verified",
+          "orderIdHash": "a0d1353ddf679af167f321dd21a998d0a70ea8c6a4bb1cafe6c587aff525c765",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "60fb5966ab76880adad5c8f3c1b0f47f356822020ebc58d7b28fefa304be511b",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:43.492Z"
+        },
+        {
+          "key": "2:provider_same:2",
+          "state": "verified",
+          "orderIdHash": "a0d1353ddf679af167f321dd21a998d0a70ea8c6a4bb1cafe6c587aff525c765",
+          "httpStatus": 200,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "60fb5966ab76880adad5c8f3c1b0f47f356822020ebc58d7b28fefa304be511b",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:45.869Z"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "arm": "provider_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2162,
+      "calls": [
+        {
+          "key": "2:provider_different:1",
+          "state": "verified",
+          "orderIdHash": "a74819fdf82cd39b627e77f799f2448d88ae439b742e6935b387064ba1630fe0",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "e1ece922e5c2945f6d139742826b465de9207d37bed294a3ba9acd5a73419144",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:55.071Z"
+        },
+        {
+          "key": "2:provider_different:2",
+          "state": "verified",
+          "orderIdHash": "0b67211d742f190aa0e00387d5e411b8fe8f991a980d2977f829fa694742349a",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "f639543e36381d988f68d5e954b44a571c8091e6776be1dca92d8403fa9e5e25",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:57.382Z"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "arm": "generic_same",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1477,
+      "calls": [
+        {
+          "key": "2:generic_same:1",
+          "state": "verified",
+          "orderIdHash": "c561bbe8887c1f654bd7fce7514f84041026063a9f28fd49d0b3d511a94a5514",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "952d8b58c4abf57111c2c960b51f080f00f5e4084d869c0f8a1603a38e99bd8f",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:47.348Z"
+        },
+        {
+          "key": "2:generic_same:2",
+          "state": "verified",
+          "orderIdHash": "1848312051d6c755f5d10e38835c74bcc578b66f89d7dd1ed1b419ff51510753",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "8cf079ac0406cece2fa541258faf1bd6519a50cba4c12602346749965850083f",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:48.879Z"
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "arm": "generic_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1707,
+      "calls": [
+        {
+          "key": "2:generic_different:1",
+          "state": "verified",
+          "orderIdHash": "3a5d2b814e63a613052d24e3deb4dbf723c4d33fadc26575f7ce8c59ed3e192d",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "d32d83258252e7ef122b76095df6e52827ed5f4213f96ea6de7b5e796582bb32",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:50.589Z"
+        },
+        {
+          "key": "2:generic_different:2",
+          "state": "verified",
+          "orderIdHash": "a2f5da07d2c23c0d20a8f0bc47a835aef8d9c96a49156185ea8a1db3cc351b34",
+          "httpStatus": 201,
+          "requestBodyHash": "9e8563cf216fc3e407f7e6a1004d815ea16238cf5953e0bbd9bce5e2c7963128",
+          "responseBodyHash": "0be6fded014b2d730e2222042d86d5b8b921a4a0e148e7c0bc8039cba4f505bf",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:52.907Z"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "arm": "provider_same",
+      "result": "same_resource",
+      "elapsedBetweenRequestsMs": 2248,
+      "calls": [
+        {
+          "key": "3:provider_same:1",
+          "state": "verified",
+          "orderIdHash": "59b2b32050769939933b3e302ec8d9453d83ba22d248f578e51a7107d36f7e54",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "3e3023f2b1365bed0b9404cf974cc28758f209d09bd832e79353e7a615a2317c",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:11.544Z"
+        },
+        {
+          "key": "3:provider_same:2",
+          "state": "verified",
+          "orderIdHash": "59b2b32050769939933b3e302ec8d9453d83ba22d248f578e51a7107d36f7e54",
+          "httpStatus": 200,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "3e3023f2b1365bed0b9404cf974cc28758f209d09bd832e79353e7a615a2317c",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:13.343Z"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "arm": "provider_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2208,
+      "calls": [
+        {
+          "key": "3:provider_different:1",
+          "state": "verified",
+          "orderIdHash": "4c06938a75d597e8fda2ba1f5a6104bdb142e6660cebbf4bb3951e1d761829f1",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "6ea7e938ab2abdfb6ea153e6024d41ad6d3114097880747501ea81128eb47db9",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:01:59.591Z"
+        },
+        {
+          "key": "3:provider_different:2",
+          "state": "verified",
+          "orderIdHash": "80faec5ef4f701665f02e0fcb43d6348ce15052fc0c0e694f1d88df0c3010b0f",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "ebfdbd420816e173b46bd637e6ffe60045ae0a83015f6200a6b6b2c60e448ddc",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:01.929Z"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "arm": "generic_same",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1726,
+      "calls": [
+        {
+          "key": "3:generic_same:1",
+          "state": "verified",
+          "orderIdHash": "aef9ebfd68a6cc316f3d58f26002660d2c11fb3e853006f961f135f6957fbc6b",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "e66ecb1a2abfd1f58a7b1ebdfb5f03406608ed7fb91065eb35aafe03ce5d0e57",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:06.986Z"
+        },
+        {
+          "key": "3:generic_same:2",
+          "state": "verified",
+          "orderIdHash": "1a8cbebf3fde878df0fe88630cd30b2f80b48790555cf558a49a531fbf377953",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "4753ba55452bf3a1ccaf0d73d6fca64ad188e5553d82c3e283f028996ae3f735",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:09.295Z"
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "arm": "generic_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1727,
+      "calls": [
+        {
+          "key": "3:generic_different:1",
+          "state": "verified",
+          "orderIdHash": "c2b5cdd1c6d7d1bb667fd8dcb9f70fa4328f2e06d5dae1b020c7f02f7d80f741",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "c5ad866a31707305666c379b0fa2148f4912ae765a52b9b532946b1f4261834e",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:03.656Z"
+        },
+        {
+          "key": "3:generic_different:2",
+          "state": "verified",
+          "orderIdHash": "f0fa7edba6365e2e4db66ee4541d299bbe23d4fa337e513e3420679708c03335",
+          "httpStatus": 201,
+          "requestBodyHash": "d13d6c786b3b7fcda17eedc86d2734938b591206d663def8711e0e2777b13122",
+          "responseBodyHash": "acd7bcd25aca49ffa7533e8660aec779c302355905bc98c3c19484d6155aaa95",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:05.261Z"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "arm": "provider_same",
+      "result": "same_resource",
+      "elapsedBetweenRequestsMs": 1981,
+      "calls": [
+        {
+          "key": "4:provider_same:1",
+          "state": "verified",
+          "orderIdHash": "253ed3100c61b011e147042ff61663ca5768bad5ec96d40ecda91581de777037",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "fc4a6399d9fbfd4536b273d7a4c3c02569a4f3a38b47361ff1d8093845320463",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:23.342Z"
+        },
+        {
+          "key": "4:provider_same:2",
+          "state": "verified",
+          "orderIdHash": "253ed3100c61b011e147042ff61663ca5768bad5ec96d40ecda91581de777037",
+          "httpStatus": 200,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "fc4a6399d9fbfd4536b273d7a4c3c02569a4f3a38b47361ff1d8093845320463",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:25.444Z"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "arm": "provider_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1788,
+      "calls": [
+        {
+          "key": "4:provider_different:1",
+          "state": "verified",
+          "orderIdHash": "cee2aef367bab89b79945810b42788a01da33273df790e5867f951eb5804c643",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "4a269f7b7b8d0e9d9155fd5698b80777550c8476d87bd730d8cfe783f81d3f24",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:15.133Z"
+        },
+        {
+          "key": "4:provider_different:2",
+          "state": "verified",
+          "orderIdHash": "facdaaf8ea6cb5f95353f82361b6bb3a03c96a23224e6d03a3dacbff69f16971",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "e8e238c36843dc1a1bbf0247071e941236cc9c0e8acf7acf12612cfadcc8dd50",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:17.475Z"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "arm": "generic_same",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1539,
+      "calls": [
+        {
+          "key": "4:generic_same:1",
+          "state": "verified",
+          "orderIdHash": "3e9d2534b5546b13ef155b2466d070774b9ee8a9c22e9df68b9643509e9cc990",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "e7b46bf211c7b4a7045e41a6ef951d14321059d038ee30454d2cb9952756d08e",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:19.014Z"
+        },
+        {
+          "key": "4:generic_same:2",
+          "state": "verified",
+          "orderIdHash": "ca4efb04167c54569cd25e6b4e626e4217dad519f9b412ecfef7b57814b1b602",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "23ba0953f36e9b1f955ff9dc723e12fc3ba8eace33eab97b9c6c328f2a366c28",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:21.361Z"
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "arm": "generic_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2327,
+      "calls": [
+        {
+          "key": "4:generic_different:1",
+          "state": "verified",
+          "orderIdHash": "e5ffad6dc30928e79c242fa27b031206e8ee79660f697e947c80e62a5c2dc9e4",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "db5b27a593f2f9667c0833368c04964717e114e50a33f8e97b0033183b751795",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:27.770Z"
+        },
+        {
+          "key": "4:generic_different:2",
+          "state": "verified",
+          "orderIdHash": "88819c38b063387491bbf0b66ea579fc4e3b7cb72bffce02191d688b43e13ed0",
+          "httpStatus": 201,
+          "requestBodyHash": "49130bf5651e2ad6407f1fbb990bec1757a46889cad3ab5dfddffa3ba84a7b19",
+          "responseBodyHash": "60b8fa838ddd6fc8f85f567691cecf7fc11332b22e462508d6b609b4dd96407d",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:29.815Z"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "arm": "provider_same",
+      "result": "same_resource",
+      "elapsedBetweenRequestsMs": 1550,
+      "calls": [
+        {
+          "key": "5:provider_same:1",
+          "state": "verified",
+          "orderIdHash": "81883bbda345eea773c62582bd0c223e65ae1daf5fd58927c2c5543b73f3cf44",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "7e7b2c5e12ec43b672b4ad95e37d739b90a298520cd6e86969c6de1f13f8a834",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:31.365Z"
+        },
+        {
+          "key": "5:provider_same:2",
+          "state": "verified",
+          "orderIdHash": "81883bbda345eea773c62582bd0c223e65ae1daf5fd58927c2c5543b73f3cf44",
+          "httpStatus": 200,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "7e7b2c5e12ec43b672b4ad95e37d739b90a298520cd6e86969c6de1f13f8a834",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:33.482Z"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "arm": "provider_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2329,
+      "calls": [
+        {
+          "key": "5:provider_different:1",
+          "state": "verified",
+          "orderIdHash": "b3c2c7eb01dd942ecc8be3eb0c411c4c164d68c29b0e8ecfcf451cb0b0075646",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "55d052ad06c49fb6e6a5ee4b02a8b7728abe98e69913d6beb41efb7f30a65ac3",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:44.471Z"
+        },
+        {
+          "key": "5:provider_different:2",
+          "state": "verified",
+          "orderIdHash": "4ce7b389ad6b21510951ac3f54bdbfe26085fc0fd9884f61777ae6d1903aa8f5",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "910a7ae4a1664e586c578b83b475d1ec34df87e9be8e1811d35733826c4eb98b",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:46.566Z"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "arm": "generic_same",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 2107,
+      "calls": [
+        {
+          "key": "5:generic_same:1",
+          "state": "verified",
+          "orderIdHash": "1e87473ba391805aed83f925459fbf867219d8883f7c9485aa7666531a59c81b",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "caf9a038b949b250dc50317078793a4fbfbbfc8be66e3ea882374dbfcbe25603",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:35.591Z"
+        },
+        {
+          "key": "5:generic_same:2",
+          "state": "verified",
+          "orderIdHash": "1b0673c9b14bebf11f24f4c4ff64ee85bd88bd3c77a741b3d178c163f06f4618",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "0c1f9a95f485053e72bdf1e69975e8a573117bdab991468e52a9bbd7fc4f3b48",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:38.146Z"
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "arm": "generic_different",
+      "result": "distinct_resources",
+      "elapsedBetweenRequestsMs": 1828,
+      "calls": [
+        {
+          "key": "5:generic_different:1",
+          "state": "verified",
+          "orderIdHash": "0bbfe1b89476819111abd477c7b41b05305c8e20971917f7ddb1265b40d2e4d4",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "9bd18b3ebf3c85d37b28037a6343b9eba2f3bbbc6c93093d491585d051ed5711",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:39.976Z"
+        },
+        {
+          "key": "5:generic_different:2",
+          "state": "verified",
+          "orderIdHash": "81fe123cf732609b4f4cbce776ae519a329973087d62482f6a99520e5de70a22",
+          "httpStatus": 201,
+          "requestBodyHash": "f9ae7f30174738082607ea77ab843068c051f2d633adfb5c5016271e259676f0",
+          "responseBodyHash": "52cba6dd698b6f148895979aa9113094a8dbddde251ed311e789ab9a133e2899",
+          "readStatus": "CREATED",
+          "readAt": "2026-11-11T03:02:42.142Z"
+        }
+      ]
+    }
+  ],
+  "financialOperations": {
+    "approvals": 0,
+    "authorizations": 0,
+    "captures": 0,
+    "refunds": 0
+  },
+  "limits": [
+    "Observed create-order behavior only; this does not qualify capture or partial-refund idempotency.",
+    "Short measured windows, one merchant and pinned SDK; no retention duration or universal provider guarantee.",
+    "Generic header changes are confined to this declared probe; ordinary target traffic is not altered.",
+    "Original refused, unknown and incomplete calls are retained; no create call is automatically replayed."
+  ]
+}

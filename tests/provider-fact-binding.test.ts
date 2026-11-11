@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import type {EvidenceDTO} from '../packages/contracts/src/index';
+import {createIdentityFact} from '../packages/provider-probes/src/fact';
+import {hash} from '../packages/provider-probes/src/contract';
+const body=JSON.parse(await readFile('docs/evidence/paypal-create-identity-qualification.json','utf8')) as Record<string,unknown>;
+const evidence:EvidenceDTO={id:'artifact:paypal-create-identity-qualification.json',runId:null,title:'Historical create identity experiment',kind:'receipt',source:'live_sandbox',createdAt:String(body.completedAt),sha256:hash(body),summary:'Historical experiment',body,redactions:[]};
+test('published F9 result is bound to all independently checked matched pairs',()=>{const fact=createIdentityFact(evidence);assert.equal(fact?.status,'contradicted_observation');assert.equal(fact.repetitions,5);assert.match(fact.limitation,/retention duration remain unqualified/);});
+test('missing or duplicated pair prevents the repeated observation claim',()=>{for(const change of ['missing','duplicate','unknown','wrong_hash'] as const){const copy=structuredClone(evidence);const pairs=copy.body.pairs as {calls:{state:string;orderIdHash:string}[]}[];if(change==='missing')pairs.pop();if(change==='duplicate')pairs[1]=structuredClone(pairs[0]!);if(change==='unknown')pairs[0]!.calls[0]!.state='unknown';if(change==='wrong_hash')pairs[0]!.calls[0]!.orderIdHash='unverified';assert.notEqual(createIdentityFact(copy)?.status,'contradicted_observation');}});
+test('changing only a conclusion string cannot manufacture another observed result',()=>{const copy=structuredClone(evidence);copy.body.interpretation='generic_header_observed_deduplication';assert.equal(createIdentityFact(copy)?.status,'contradicted_observation');});
