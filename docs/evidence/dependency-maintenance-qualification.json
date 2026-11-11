@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-11-11T02:41:32.740Z",
+  "packageJsonSha256": "e0677605ba62146328e9145619820ae2ba67164a042bf4f7d63287567b1a2654",
+  "packageLockSha256": "db9565eef71eaabce0d8f1563ec4de0da3146102e000bd2ab6f14d18926b4da6",
+  "before": {
+    "info": 0,
+    "low": 0,
+    "moderate": 18,
+    "high": 17,
+    "critical": 0,
+    "total": 35
+  },
+  "after": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 8,
+    "critical": 0,
+    "total": 8
+  },
+  "directZod": "4.6.7",
+  "overrides": {
+    "@langchain/core": "0.3.80",
+    "mathjs": "15.2.0",
+    "jsondiffpatch": "0.7.7",
+    "minimatch": "11.0.7",
+    "uuid": "11.1.1",
+    "langsmith": "0.6.0",
+    "zod@>=4.0.0 <4.6.6": "4.6.7"
+  },
+  "regression": {
+    "tests": 290,
+    "passed": 290,
+    "failed": 0,
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "remainingDirectAdvisories": [
+    {
+      "name": "@ai-sdk/provider-utils",
+      "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+      "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+      "range": "<3.0.28"
+    },
+    {
+      "name": "ai",
+      "title": "Vercel’s AI SDK's filetype whitelists can be bypassed when uploading files",
+      "url": "https://github.com/advisories/GHSA-rwvc-j5jr-mgvh",
+      "range": "<5.0.52"
+    },
+    {
+      "name": "zod",
+      "title": "Zod can exhaust memory while validating oversized constrained collections",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "range": "<4.6.6"
+    }
+  ],
+  "limits": [
+    "This is not a zero-advisory dependency graph. Eight records remain, including transitive propagation.",
+    "The remaining Zod3 dependency is required by the pinned PayPal Toolkit. Blanket replacement with Zod4 would change the Toolkit contract.",
+    "Errand admits only the exact frozen $12 sample arguments before creating a separate worker, with a 20-second timeout and sample-only credentials. Its OpenAI adapter does not import the AI SDK or LangChain adapters.",
+    "Application JSON is bounded to 32 KiB before parsing; direct application and Vercel Zod4 copies are patched.",
+    "The existing immutable Bramble isolated runner and Python runtime images have not been rebuilt or claimed patched by this web dependency change."
+  ]
+}

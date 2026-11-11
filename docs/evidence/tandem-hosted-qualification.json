@@ -1,0 +1,91 @@
+{
+  "at": "2026-11-11T02:34:12.469Z",
+  "sourceCommit": "ec571de",
+  "passed": true,
+  "externalPaymentCalls": 0,
+  "checks": [
+    "health",
+    "session required",
+    "foreign origin denied",
+    "six registered source-bound scenarios",
+    "duplicate HTTP start keeps original experiment and two jobs",
+    "same request with changed scenario refused",
+    "hosted Workflow ran both original Python targets",
+    "explicit baseline retry creates two captures versus guarded one",
+    "all three hosted workers have workflow identities and confirmed isolated VM disposal",
+    "complete evidence export has valid canonical SHA256",
+    "another session cannot read the experiment",
+    "scheduler requires secret"
+  ],
+  "workers": [
+    {
+      "revision": "faulty",
+      "stage": "completed",
+      "workflowIdentityPresent": true,
+      "runner": {
+        "user": "candidate",
+        "engine": "vercel_sandbox",
+        "disposal": "stopped",
+        "elapsedMs": 3250,
+        "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+        "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+        "sourceHashes": {
+          "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+          "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af",
+          "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+          "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28"
+        },
+        "networkPolicy": "deny-all",
+        "maximumSeconds": 50,
+        "sourceReadOnly": true,
+        "credentialEnvironmentForwarded": false
+      }
+    },
+    {
+      "revision": "hardened",
+      "stage": "completed",
+      "workflowIdentityPresent": true,
+      "runner": {
+        "user": "candidate",
+        "engine": "vercel_sandbox",
+        "disposal": "stopped",
+        "elapsedMs": 4591,
+        "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+        "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+        "sourceHashes": {
+          "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+          "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af",
+          "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+          "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28"
+        },
+        "networkPolicy": "deny-all",
+        "maximumSeconds": 50,
+        "sourceReadOnly": true,
+        "credentialEnvironmentForwarded": false
+      }
+    },
+    {
+      "revision": "faulty",
+      "stage": "completed",
+      "workflowIdentityPresent": true,
+      "runner": {
+        "user": "candidate",
+        "engine": "vercel_sandbox",
+        "disposal": "stopped",
+        "elapsedMs": 3390,
+        "snapshotId": "snap_EFcaBKBJJA5lJIp97fGgSxdwMfOv",
+        "sourceHash": "9e54933d216a8fdfceb396b816080addd848c1fa66a2a0273b96bd440b9751a1",
+        "sourceHashes": {
+          "domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+          "worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af",
+          "protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+          "sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28"
+        },
+        "networkPolicy": "deny-all",
+        "maximumSeconds": 50,
+        "sourceReadOnly": true,
+        "credentialEnvironmentForwarded": false
+      }
+    }
+  ]
+}
