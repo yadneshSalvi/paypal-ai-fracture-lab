@@ -3,6 +3,7 @@ import type { SqlDatabase } from "@fracture/paypal-core";
 import { requiredConfig } from "./config";
 
 const schema=[
+  `CREATE TABLE IF NOT EXISTS lab_errand_operations(run_id TEXT PRIMARY KEY,request_id TEXT NOT NULL,payload_hash TEXT NOT NULL,stage TEXT NOT NULL,order_id TEXT,attempts INTEGER NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS lab_background_models(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,action_id TEXT NOT NULL,document TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS lab_locks(id TEXT PRIMARY KEY)`,
   `INSERT INTO lab_locks(id) VALUES('worker-capacity') ON CONFLICT DO NOTHING`,

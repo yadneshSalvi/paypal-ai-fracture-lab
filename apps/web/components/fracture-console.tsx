@@ -42,6 +42,7 @@ export function FractureConsole({ screen, runId, projectId, repairId }: { screen
   else if (screen === "errand") content = <ErrandView />;
   else if (screen === "judge") content = <JudgeView />;
   else if (screen === "report") content = run ? <ReportView run={run} /> : <NoRun />;
+  else if(projectId === "errand" || run?.projectId === "errand") content = <ErrandView />;
   else content = run ? <RunWorkbench run={run} /> : <NoRun />;
   return <AppShell>{content}</AppShell>;
 }

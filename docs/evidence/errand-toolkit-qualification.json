@@ -1,0 +1,180 @@
+{
+  "version": "1.0",
+  "verifiedAt": "2026-11-11T00:26:54.680Z",
+  "source": "sample",
+  "toolkit": {
+    "version": "1.11.0",
+    "distribution": "openai/index.js",
+    "sha256": "4bc5b11ffeeed7241e18431551c80ed0719fe18809192c7c0d2d5f217927e532"
+  },
+  "sourceHashes": {
+    "apps/fixtures/errand/toolkit-worker.mjs": "9096f50b5d13b33a39ae3305d669a6e90e3386917d42db212d9f0ccd01367b3c",
+    "apps/fixtures/errand/toolkit.ts": "3978608ea6de0e2eab26ea1fbc802b57624a32b4bb55519f5c9249246878b118",
+    "apps/fixtures/errand/control.ts": "6db93b04f3fab94e09a193e56b41113d8e1cbfd095872a2053611caacc229fa5",
+    "apps/fixtures/errand/execute.ts": "f5b0544ce4babdb502aab754819c2f9db37871bb1132e258a68fa37673c08051"
+  },
+  "externalRequests": 0,
+  "modelDecision": false,
+  "arms": [
+    {
+      "revision": "faulty",
+      "verdict": "fail",
+      "sourceHash": "5aaa265fa69b228254a5244b26ad9e9be360411504cc771f0cfb1cf956f98715",
+      "orderIds": [
+        "SAMPLE-ORDER-3d0b2860-ac8",
+        "SAMPLE-ORDER-45f0a6f9-a66"
+      ],
+      "captures": 0,
+      "fulfilled": 0,
+      "toolResults": [
+        {
+          "title": "The order answer is missing",
+          "requestId": "879c53d7-6f92-4401-b87d-c51258b7310b",
+          "orderId": null
+        },
+        {
+          "title": "The tool returns an order",
+          "requestId": "937ecb15-662d-4cfc-94ce-5b1cbd8b6e14",
+          "orderId": "SAMPLE-ORDER-3d0b2860-ac8"
+        }
+      ],
+      "wire": [
+        {
+          "method": "POST",
+          "path": "/v2/checkout/orders",
+          "payloadHash": "fb0efbb100c430f0de895e67c4575a161c369275e620413aa51809e446de6ce4",
+          "requestId": "879c53d7-6f92-4401-b87d-c51258b7310b"
+        },
+        {
+          "method": "POST",
+          "path": "/v2/checkout/orders",
+          "payloadHash": "fb0efbb100c430f0de895e67c4575a161c369275e620413aa51809e446de6ce4",
+          "requestId": "937ecb15-662d-4cfc-94ce-5b1cbd8b6e14"
+        }
+      ],
+      "independentResources": [
+        {
+          "id": "SAMPLE-ORDER-3d0b2860-ac8",
+          "kind": "order",
+          "status": "CREATED",
+          "approved": false
+        },
+        {
+          "id": "SAMPLE-ORDER-45f0a6f9-a66",
+          "kind": "order",
+          "status": "CREATED",
+          "approved": false
+        }
+      ],
+      "invariants": [
+        {
+          "id": "E1",
+          "name": "One intent, one created order",
+          "description": "A tool retry must retain the original business operation.",
+          "verdict": "fail",
+          "reason": "Different request keys produced distinct local orders for the same intent.",
+          "expected": "At most one order",
+          "observed": "2",
+          "witnessEventIds": [
+            "40eb76ef-ab65-441b-85ab-a9b73ef80039",
+            "72746f86-2d14-421c-8efb-a2729e469481"
+          ],
+          "version": "1.0.0",
+          "observationWindow": "6 persisted observations"
+        },
+        {
+          "id": "E2",
+          "name": "An order is not a charge",
+          "description": "Order creation does not approve or capture funds.",
+          "verdict": "pass",
+          "reason": "The evaluator inspects independent persisted resource types.",
+          "expected": "Zero captures and zero fulfillment",
+          "observed": "0 capture resources",
+          "witnessEventIds": [],
+          "version": "1.0.0",
+          "observationWindow": "Complete fixture run"
+        }
+      ],
+      "durationMs": 1508
+    },
+    {
+      "revision": "hardened",
+      "verdict": "pass",
+      "sourceHash": "fee789b9dd216621af1824b66c3afc379e72efd6ca9177bc0dc8935bc822c17e",
+      "orderIds": [
+        "SAMPLE-ORDER-6df1662d-5df"
+      ],
+      "captures": 0,
+      "fulfilled": 0,
+      "toolResults": [
+        {
+          "title": "The order answer is missing",
+          "requestId": "2248ec14-7fd0-4b8d-bc13-df80480c2694",
+          "orderId": null
+        },
+        {
+          "title": "The tool returns an order",
+          "requestId": "2248ec14-7fd0-4b8d-bc13-df80480c2694",
+          "orderId": "SAMPLE-ORDER-6df1662d-5df"
+        }
+      ],
+      "wire": [
+        {
+          "method": "POST",
+          "path": "/v2/checkout/orders",
+          "payloadHash": "fb0efbb100c430f0de895e67c4575a161c369275e620413aa51809e446de6ce4",
+          "requestId": "2248ec14-7fd0-4b8d-bc13-df80480c2694"
+        },
+        {
+          "method": "POST",
+          "path": "/v2/checkout/orders",
+          "payloadHash": "fb0efbb100c430f0de895e67c4575a161c369275e620413aa51809e446de6ce4",
+          "requestId": "2248ec14-7fd0-4b8d-bc13-df80480c2694"
+        }
+      ],
+      "independentResources": [
+        {
+          "id": "SAMPLE-ORDER-6df1662d-5df",
+          "kind": "order",
+          "status": "CREATED",
+          "approved": false
+        }
+      ],
+      "invariants": [
+        {
+          "id": "E1",
+          "name": "One intent, one created order",
+          "description": "A tool retry must retain the original business operation.",
+          "verdict": "pass",
+          "reason": "The retry recovered the original local order.",
+          "expected": "At most one order",
+          "observed": "1",
+          "witnessEventIds": [
+            "a64e50e3-0e9e-4970-88e7-9d0353742702",
+            "b2051a3e-a538-4268-8643-dbc2fc9fb408"
+          ],
+          "version": "1.0.0",
+          "observationWindow": "6 persisted observations"
+        },
+        {
+          "id": "E2",
+          "name": "An order is not a charge",
+          "description": "Order creation does not approve or capture funds.",
+          "verdict": "pass",
+          "reason": "The evaluator inspects independent persisted resource types.",
+          "expected": "Zero captures and zero fulfillment",
+          "observed": "0 capture resources",
+          "witnessEventIds": [],
+          "version": "1.0.0",
+          "observationWindow": "Complete fixture run"
+        }
+      ],
+      "durationMs": 782
+    }
+  ],
+  "limitations": [
+    "Actual installed Toolkit executes against the persisted local provider model.",
+    "This is scripted fixture qualification, not live PayPal behavior, an AI decision, or a held-out evaluation.",
+    "Zero payer approvals, captures, real goods or funds movement."
+  ]
+}

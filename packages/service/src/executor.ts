@@ -8,6 +8,7 @@ import { hardenedCheckout } from "../../../apps/fixtures/bramble/hardened";
 import type { BrambleContext } from "../../../apps/fixtures/bramble/contract";
 import { LabStore } from "./store";
 import type { RunInput } from "./types";
+import { executeErrand } from '../../../apps/fixtures/errand/execute';
 
 export function newRun(input:RunInput,scenario:ScenarioDTO,project:ProjectDTO):RunDTO{
   const now=new Date().toISOString();return {id:randomUUID(),projectId:project.id,projectName:project.name,revision:input.revision,sourceHash:project.revisions.find(revision=>revision.id===input.revision)?.sourceHash??project.sourceHash,scenarioId:scenario.id,scenarioTitle:scenario.title,scenarioHash:scenario.hash,seed:input.seed,stage:"created",verdict:"inconclusive",source:input.mode,faultSource:scenario.faultSource,createdAt:now,updatedAt:now,durationMs:0,businessIntentId:`purchase-${randomUUID()}`,amountMinor:1200,currency:"USD",captureCount:0,capturedMinor:0,refundedMinor:0,fulfillmentCount:0,phoneState:"ready",applicationStatus:"UNPAID",providerStatus:"NO PAYMENT",orderIds:[],captures:[],refunds:[],events:[],invariants:[],diagnosis:null,repairIds:[],comparisonRunId:null,remediation:"not_needed",summary:"Experiment created; no payment observation yet.",limitations:["Sample: a persistent local provider model. No real money or provider request occurs.","The real pinned SDK serializes the hardened target; the faulty target uses independent raw HTTP.","A scripted local buyer explicitly approves each distinct order. This is not a real buyer approval."],nextAction:"Run the purchase"};
@@ -31,6 +32,7 @@ export async function executeRun(store:LabStore,runId:string,sessionId:string){
       await store.emit(runId,{lane:"lab",kind:"worker_recovery_uncertain",title:"Recovered an interrupted worker",detail:"The prior worker ended at a write boundary. Its command is not blindly replayed; persisted resources and history are retained.",facts:{checkpoint:row.checkpoint}});
       const recovered=await refreshRun(store,runId,false);return store.updateRun(runId,item=>({...item,stage:"inconclusive",verdict:"inconclusive",summary:"An interrupted write requires explicit reconciliation.",nextAction:"Run a read-only diagnosis",limitations:[...recovered.limitations,"Worker recovery stopped at a potentially dispatched write; no automatic new order was attempted."]}),"recovery_required");
     }
+    if(run.projectId==='errand')return await executeErrand(store,run,sessionId,owner);
     const transport=new LocalPayPalTransport(store,runId,scenarioFaults(run.scenarioId),owner);const context:BrambleContext={run,sessionId,store,transport};const checkout=run.revision==="faulty"?faultyCheckout:hardenedCheckout;
     if(row.checkpoint==="start"||row.checkpoint==="preflight"){
       await store.stage(runId,"preflight","preflight");

@@ -1,0 +1,11 @@
+# Errand: installed Toolkit, isolated provider
+
+This fixture executes `@paypal/agent-toolkit` 1.11.0's real `create_order` implementation. It is a scripted tool caller, not a model decision or a live PayPal operation. Its local provider never approves or captures an order. The separately gated L8 case still requires real sandbox qualification.
+
+Source lookups: installed `openai/index.mjs` lines 437–465 (item/create schemas), 790–855 (wire payload), 1599–1617 (create transport), 2044–2120 (client and `context.request_id` forwarding), 3010–3018 (action configuration), 4344–4351 (`handleToolCall`). `actions` filters exposed definitions but does not authorize direct dispatch; our worker admits exactly `create_order` independently.
+
+The fixture supplies one $12 digital publication, quantity 1, zero tax. Toolkit defaults add zero shipping/discount and an experience context; these serialized defaults are preserved in wire evidence. Both arms use identical arguments and the same installed code. Each isolated worker intercepts Axios requests through an in-memory bridge to the parent provider model. Credentials are fixed nonfunctional sample strings, the worker receives no app environment, and only OAuth plus order-create paths are admitted. No global server Axios state changes.
+
+The baseline repeats the same business intent with a new request ID. The control commits a durable semantic claim and payload hash before dispatch; an explicit second fixture step may replay the same request ID while its outcome is unknown. That demonstrates the local provider's declared idempotent-create contract. It does not claim PayPal offers request-ID search, or that retry is safe beyond a provider's retention window. A known response, concurrent duplicate caller, changed payload or revoked run never starts a replacement operation. Lost worker responses remain unknown.
+
+Independent observations count unique order resources, inspect serialized request headers, require zero captures/fulfillments, and preserve the first missing response. Tests cover both arms, concurrent control callers, changed payload, current cancellation, unexposed tools and cross-session access. Public source and tests are not a held-out study.
