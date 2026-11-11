@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "source": "sample",
-  "testedAt": "2026-11-10T21:29:50.182Z",
-  "startedAt": "2026-11-10T21:29:25.681Z",
+  "testedAt": "2026-11-11T01:15:42.957Z",
+  "startedAt": "2026-11-11T01:15:22.639Z",
   "nodeVersion": "v22.22.3",
   "command": "npm run verify:app",
   "providerTraffic": "none; local persistent provider model",
@@ -12,24 +12,182 @@
     "postgresql",
     "sqlite"
   ],
-  "passed": 31,
+  "passed": 38,
   "failed": 0,
   "typecheck": "passed",
-  "build": "passed",
+  "build": "not_run",
   "happyPath": {
     "passed": 4,
     "total": 4,
     "scope": "Faulty and hardened original purchase behavior on each database adapter; this is not a chaos-invariant pass."
   },
+  "testCases": [
+    {
+      "name": "model-selected diagnosis performs a real scoped read and cannot dispatch money",
+      "status": "pass"
+    },
+    {
+      "name": "an out-of-scope model tool argument is rejected before resource access",
+      "status": "pass"
+    },
+    {
+      "name": "model transport persists attempts without authorization and excludes private reasoning",
+      "status": "pass"
+    },
+    {
+      "name": "incomplete model response remains a failed retained attempt including usage",
+      "status": "pass"
+    },
+    {
+      "name": "SQL cancellation aborts an in-flight model request and prevents late publication",
+      "status": "pass"
+    },
+    {
+      "name": "cancelled authority and diagnosis commit are checked atomically",
+      "status": "pass"
+    },
+    {
+      "name": "fragmented UTF-8 SSE accepts only terminal output and never retains reasoning deltas",
+      "status": "pass"
+    },
+    {
+      "name": "a disconnected stream cannot promote a partial generated answer",
+      "status": "pass"
+    },
+    {
+      "name": "streamed incomplete output retains usage and never becomes a completed model receipt",
+      "status": "pass"
+    },
+    {
+      "name": "background work resumes from a new worker with one create and one immutable receipt",
+      "status": "pass"
+    },
+    {
+      "name": "a lost background create response is retained and never automatically resubmitted",
+      "status": "pass"
+    },
+    {
+      "name": "background checkpoint rejects changed input and a foreign response identity",
+      "status": "pass"
+    },
+    {
+      "name": "cancelled background work retains its exact provider identity through failed cleanup",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: baseline and control both pass the original happy-path purchase",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: S0 faulty retry creates two approved orders, control reconciles one",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: interactive retry and repeated HTTP command identities do not duplicate the experiment",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: unavailable reread remains checking without another purchase",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: never-sent authentication has no provider mutation or invented reconciliation",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: malformed success is reconciled by control and misreported by baseline",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: pending capture cannot back fulfillment and does not become completed money",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: harness safety intervention cannot count as target pass",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: partial compensation preserves gross duplicate history and original failure",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: session ownership, signed cookies, and immutable command payloads",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: reload reads durable evidence through a fresh database connection",
+      "status": "pass"
+    },
+    {
+      "name": "sqlite: expired worker at dispatch boundary cannot blindly replay",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: baseline and control both pass the original happy-path purchase",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: S0 faulty retry creates two approved orders, control reconciles one",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: interactive retry and repeated HTTP command identities do not duplicate the experiment",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: unavailable reread remains checking without another purchase",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: never-sent authentication has no provider mutation or invented reconciliation",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: malformed success is reconciled by control and misreported by baseline",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: pending capture cannot back fulfillment and does not become completed money",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: harness safety intervention cannot count as target pass",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: partial compensation preserves gross duplicate history and original failure",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: session ownership, signed cookies, and immutable command payloads",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: reload reads durable evidence through a fresh database connection",
+      "status": "pass"
+    },
+    {
+      "name": "postgres: expired worker at dispatch boundary cannot blindly replay",
+      "status": "pass"
+    },
+    {
+      "name": "repair policy rejects weakened assertions and secret access before execution",
+      "status": "pass"
+    }
+  ],
   "sourceHashes": {
     "apps/fixtures/bramble/contract.ts": "5849fa0572b767e983ae339e0f1673c17597013a93d7efe027f47694675c5e80",
     "apps/fixtures/bramble/faulty.ts": "36098191e41a5f5c84259501fc70fb93397b59a9f282adeebadf435320891943",
     "apps/fixtures/bramble/hardened.ts": "d59119477e5991c94007c1fe697da5cc5cb9d06fa4ee0f166b403eb06b7155ad",
-    "apps/fixtures/bramble/paypal-plan.md": "a76ab9275efcdad5aac3f60c52034ea9d0666904f2e484d997dbe331bf639b3d",
+    "apps/fixtures/bramble/paypal-plan.md": "1c299e44953f6e1ae3e8725e87d19e6d36fb2f94caea211f82026ff5998bd008",
+    "apps/fixtures/errand/control.ts": "6db93b04f3fab94e09a193e56b41113d8e1cbfd095872a2053611caacc229fa5",
+    "apps/fixtures/errand/execute.ts": "f5b0544ce4babdb502aab754819c2f9db37871bb1132e258a68fa37673c08051",
+    "apps/fixtures/errand/toolkit.ts": "3978608ea6de0e2eab26ea1fbc802b57624a32b4bb55519f5c9249246878b118",
     "apps/web/app/api/campaigns/route.ts": "51419635407c2f24f36b8881b64eb463716e6aaa80bfc3aeb824189bf69b2855",
+    "apps/web/app/api/cron/repairs/route.ts": "852f5a1c2a3b34e35a543a55d100ad4e3a58daee8953894bc226dcfb3ce61fc9",
     "apps/web/app/api/health/route.ts": "165505aa5c491c46ec13770147b7b3da64c6f1d9ae9688740d1b3aa005577902",
     "apps/web/app/api/judge/sessions/route.ts": "61626534747ab5cfd890d9344a1ec2092659ba5fa21439adf30a2b45d05b9ea5",
-    "apps/web/app/api/runs/[runId]/actions/route.ts": "d95eda922a321c3406e74183b7f000e8bf575d242eb94411659e8a1b424ff0da",
+    "apps/web/app/api/runs/[runId]/actions/route.ts": "5cb829f090d394e005a92a5ff43ea08b7a5941be12c0d8eee79d6980c2d3df8d",
     "apps/web/app/api/runs/[runId]/events/route.ts": "37cc470c79413bce2c01a13ad196b7bb640a1c511ed1fa14c76a450b0c7a1dba",
     "apps/web/app/api/runs/[runId]/report/route.ts": "628c137e91d3f721eb9a6caec817dc512540f666ac1bee7e24125fba441197da",
     "apps/web/app/api/runs/[runId]/route.ts": "03c1b9573e5e1a7900596576fe9fe53960c4d6c5d92c4d13fb9d1a9ebec3c066",
@@ -55,40 +213,46 @@
     "apps/web/app/reports/[runId]/page.tsx": "c023d835403b9fca778e286fc15d730e940a84937388d2a2061eb1a17a3e3c30",
     "apps/web/app/runs/[runId]/page.tsx": "f37ebdf46e75f93396dd3ad2b0c6f40158ad299aec737f83ed039da42470d901",
     "apps/web/app/scenario-studio/page.tsx": "dd1ccf625960133dde35920b6d8f64c04c2da8070623b6aa86e159c9e467226e",
-    "apps/web/components/app-shell.tsx": "a38dcb2d45a1e0e6af77aa32a2134fe60406e6859aa57db418513c57a054ba60",
+    "apps/web/components/app-shell.tsx": "e6b7be7d20b4f99acbf4cddc04db885cfe059576c54ec7adaab8a2b0e98c9dea",
     "apps/web/components/bramble-phone.tsx": "b1a15e9105b018417b642166ae3e2f5aa7def14ad1687dc9609790cec2e64f7a",
-    "apps/web/components/fracture-console.tsx": "80611e639f131e5a80e1d7aa00096b12f73957f02146b7ae43a56b198a63ee54",
+    "apps/web/components/fracture-console.tsx": "5c1cad137a149e479952a1a0659b70129ceb7738824cdbec3b59df989b8826eb",
     "apps/web/components/primitives.tsx": "226a1fc385835ff8aa9d4afe7ba1c4537d05cd045861aae837da3a7979cfcafa",
-    "apps/web/components/project-views.tsx": "c47346efa07b2b807159180d621abec8071e7c129fe6182760d963a2ebcbbaae",
+    "apps/web/components/project-views.tsx": "a591741fcf27e930c0bdf580df20362645cb4b10e2b7296eea33d136a75b37e6",
     "apps/web/components/proof-views.tsx": "d79f819ff2a0f082679372c7d416ebb45315eec499b928ce5c610f8184a96b60",
-    "apps/web/components/repair-views.tsx": "a6538f6d4ed8a6e95c283a574af9a1ed1b59e47d20d4d3cf38363a7e2951048e",
-    "apps/web/components/report-view.tsx": "6d01387a416d005bd223940033baec7c6945177cb9b5f44f2b7a5816adbc281d",
-    "apps/web/components/research-views.tsx": "ed91a97b2495f7c8da361961a2104b55c4c121f2a3b9c378fbf782a911963de1",
+    "apps/web/components/repair-views.tsx": "b8fdb042ec0592b43ff0b25fe6d3ae158bbca19ab78f9cded7c256d380ab31f5",
+    "apps/web/components/report-view.tsx": "45297e4fd6512d0cdfc8125eb70d7a9e4a705d39bd039011987c801fd679fe98",
+    "apps/web/components/research-views.tsx": "c9a3c892d954fe1db2550b9323a9a557c78f72001c6cbf3561beb85a51ccbc5b",
     "apps/web/components/run-workbench.tsx": "ec47e36c82c8fce806d42e99f679376278266986db7d0e3de3cb735fd5e2d545",
-    "apps/web/components/work-progress.tsx": "78556649e619cc40577bac5f813182f3d40ea224fb37854e99f9081484ce599e",
-    "apps/web/components/workspace-provider.tsx": "cbf77b67bc0e6f597e3d393274b59da6530ffd63bcd5bc89a3387b647c89ad60",
+    "apps/web/components/work-progress.tsx": "4ae2b4030b2b3915cec1f7c09513bc8b5cd120b2a3a26542ed1f5809310b8c13",
+    "apps/web/components/workspace-provider.tsx": "3413ff5304fbd59915cfcf50988f3f578784904abd1eda50f610933237ffa3e7",
     "apps/web/lib/http.ts": "1958d65619010876c8586ec4e9004f25e2ad2cdae6e21e7e7110bbcf3a09825e",
+    "apps/web/lib/repair-dispatch.ts": "d7e02b970948f16b6eb688487a9b9d9b1a29e4a6f6df189e9330638bb6a8cb84",
     "apps/web/next-env.d.ts": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b",
-    "apps/web/next.config.ts": "d340fcb628004771804a8b585a0853a705eca1fa854403dd175c310df642bb3a",
+    "apps/web/next.config.ts": "9391b227fe890fb52aeaa2af9e8ddaab416e404c2ef334dc5c06a4440fb6587e",
+    "apps/web/workflows/repair-step.ts": "681fb3b71569395274c73d19f0b181890134d02a81fc069208d0afc7d6c4beb6",
+    "apps/web/workflows/repair.ts": "b2e1b41be663522289664f9a652b02f788f5ab5531e1ec418243ef02e3f48175",
+    "packages/ai/src/background.ts": "812b059c603b9cca8e2c6655e4cd1c70f6bfb83f14bc4a5ce4889f07e989e150",
     "packages/ai/src/diagnosis.ts": "e872dbf14088fe01909602a7d1878c1450caf48984a7f5e8778bd0ce97db7d0c",
-    "packages/ai/src/model.ts": "34709d378c9dc1387add0a95575591a10a245383b254651f2f100cd2338949cf",
-    "packages/contracts/src/index.ts": "da8ccca1bf2f643cd84a0e2dd80666979c357aeb2cf4e8bbc6e3aa2f21b599ee",
+    "packages/ai/src/model.ts": "ce2aa81ec90e433ea880fffccc6c18134986d5f47e39af399d72bf53740e278b",
+    "packages/ai/src/repair.ts": "1e0c1674431a2e39a440acc5fcc3bbc331b59128f870740271be66b9f0e0f377",
+    "packages/contracts/src/index.ts": "e7e8d605da2ffc3f1deac4d0f8e7df168f810dcbe85189d62f03bd56f9b07091",
     "packages/invariants/src/index.ts": "3a6b2470c9e69eefe82b866cf09283fe5aece89d9a573a3b079690e9f46a8dc0",
     "packages/runner/src/local-provider.ts": "fca5e548dd8c12cebcd2ddf221a6cab709753c35a1968994f4e548758c1dee33",
-    "packages/scenarios/src/index.ts": "a12f64dd5b220183b72cd78ca551128efe3bf7bfd786d9d38846a5250ab9dbd7",
+    "packages/scenarios/src/index.ts": "aa0fdc4c62e3e49d0f20008f8230eac2e6669d1c309c8f0839fa429faf1f4cfa",
     "packages/service/src/auth.ts": "2cf49f966c7577be9b988c6c2164bdbf99d68a9451e3ce0fbd73abab6ee9e1cb",
-    "packages/service/src/catalog.ts": "0dbd26375ff53397e955285dea50e508ae840ef25732423caf2859cc611e2415",
-    "packages/service/src/config.ts": "37ac02f9c21366a405f13a096245da0aafb42cea129f36962e10208f75fcd53d",
-    "packages/service/src/database.ts": "6a8b965d3c3a22ce2aaa499117f55040dce85f31d26c3ab8bac42c24636c7d68",
+    "packages/service/src/catalog.ts": "0cf1ef0566d1dbedfb70589e40bc29993bb8ddcfaa9b213ec5ab065ac4792cf9",
+    "packages/service/src/config.ts": "6a04c2cb88438861b50da542948b8fce4922e830ed253461ed1298c46de657ba",
+    "packages/service/src/database.ts": "dbf5dcb6533127f9665fd0ef537b4e37ed327591b4d2c1acae5c5ed4de342ece",
     "packages/service/src/errors.ts": "2ecf95205a4921b9b0f9447fd257d636a6408b909618d365c95a70f636ed7292",
-    "packages/service/src/executor.ts": "a7af4b476564f2da2d49bc75d8a2f1044f695f5410540452f40da857bf538320",
-    "packages/service/src/index.ts": "581cf6c2a0b220b0a00a6f9a425b00c1c89989c55ca9b655e78e9e31d8677307",
-    "packages/service/src/repairs.ts": "098138db54e1127d705b113ec5e2b32bd03ebcd81d9a39667f2425203bc4a90a",
+    "packages/service/src/executor.ts": "bc037761c9940204c96e350ff170120e04704d75eb3c2e64f5749cbbf6585a14",
+    "packages/service/src/generated-repairs.ts": "94db0c6faba9bb6c0d6d8e11eaa7437a9206307ef60a7fd55f606831f7beab87",
+    "packages/service/src/index.ts": "1aa1999b9239e8ffdc401463d3ec8c8907bad4410db568e0b9a652f73ecc0b71",
+    "packages/service/src/repairs.ts": "7093698578835a77b5336afc99ab18fc88ad6bd39e594d9dc0696c09c22e7813",
     "packages/service/src/store.ts": "82dcdd7c3297defb62423865209d39550b313b8895e8e2a33cf5b5989b8f37d8",
     "packages/service/src/types.ts": "54a473586ea1f6f3ee12ef82276533c4d4d969dd6f392cd299ce4f803d78b6e9",
-    "tests/ai.test.ts": "8980a82a1433d3b0967c9695c7521ff3b9a153788ebf2187817ba573c80f12a0",
-    "tests/application.test.ts": "e709d79e402f62326e4f7b6dce33e849be3c0d762ed8834e7d88847bfc0e8e40",
+    "tests/ai.test.ts": "fcd9189bb9f4077aadebcfce9d9d00faa458d8f14054143f268176813b597bbe",
+    "tests/application.test.ts": "d24c608d22246330e4737e29e2d8fb127874e159f9e7c6ff2655c371778ac560",
     "vendor/fracture-paypal-core-0.2.2.tgz": "eb23321fafb98dbf85d3eafdddd249b4c8d50010c5c44f91dd80bc817392d660"
   },
-  "tapHash": "68b444de801d0d054da351e1291ed4e002320a1bd01dd81d4e80b0facdd8d87d"
+  "tapHash": "85614975c73b6c6a1f8231914bae4d4d38a1e456092cf7454f7bd18c581ee387"
 }

@@ -12,7 +12,7 @@ const repairContextFiles = ["../../paypal-plan.md", "../../apps/fixtures/bramble
 
 const config: NextConfig = {
   outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
-  outputFileTracingIncludes: {"/api/**":repairContextFiles,"/.well-known/workflow/**":repairContextFiles},
+  outputFileTracingIncludes: {"/api/**":[...repairContextFiles,"../../tests/application.test.ts","../../packages/{service,runner,invariants}/src/*.ts","../../vendor/fracture-paypal-core-0.2.2.tgz"],"/.well-known/workflow/**":repairContextFiles},
   outputFileTracingExcludes: {"/**":["../../.env*","../../plans/**","../../.artifacts/**","../../.setup-evidence/**","../../.git/**"]},
   turbopack: {root:fileURLToPath(new URL("../..", import.meta.url))},
   serverExternalPackages: ["pg", "better-sqlite3", "paypal", "@paypal/agent-toolkit"],

@@ -67,7 +67,7 @@ export function JudgeView() {
   const current = tourSteps[step]!;
   const Icon = current.icon;
   async function fresh() {
-    const scenario = workspace?.scenarios.find(item => item.fixtureIds.includes("bramble") && item.available && item.id.includes("lost"));
+    const scenario = workspace?.scenarios.find(item => item.fixtureIds.includes("bramble") && item.available && item.id === "S0");
     if (!scenario) return;
     const result = await createRun("bramble", scenario.id, "faulty");
     if (result) router.push(`/runs/${result.id}`);
