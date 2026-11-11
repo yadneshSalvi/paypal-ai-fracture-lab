@@ -53,9 +53,10 @@ export function BramblePageClient({ runId, sequence }: { runId?: string; sequenc
   const { workspace, loading, busy, act, error, refresh } = useWorkspace();
   const selected = useSelectedRun(runId, "bramble");
   const run = runId ? workspace?.runs.find(item => item.id === runId && item.projectId === "bramble") : selected;
-  if (loading) return <div className="bramble-standalone-loading">Opening the sample storefront…</div>;
+  if (loading) return <div className="bramble-standalone-loading">Opening the saved storefront…</div>;
   if (!workspace) return <div className="bramble-standalone-loading"><span>The workspace service is disconnected.</span><button onClick={() => void refresh()}>Reconnect</button><Link href="/">Return to the lab</Link></div>;
   if (!run) return <div className="bramble-standalone-loading">This run isn’t available. <Link href="/">Return to Fracture Lab</Link></div>;
+  if (run.source === "live_sandbox") return <div className="bramble-standalone-loading"><Link className="button primary" href={`/live-bramble?runId=${run.id}`}>Continue the live sandbox experiment</Link></div>;
   const event = run.events.find(item => item.sequence === sequence) ?? run.events.at(-1);
   const projection = event?.projection ?? { phoneState: run.phoneState, applicationStatus: run.applicationStatus, providerStatus: run.providerStatus, capturedMinor: run.capturedMinor, refundedMinor: run.refundedMinor, captureCount: run.captureCount, fulfillmentCount: run.fulfillmentCount, currency: run.currency };
   return <main className="bramble-standalone"><div className="bramble-lab-banner"><Link href={`/runs/${run.id}`}>← Fracture Lab</Link><SourceChip source={run.source} /><span>Fictional merchant</span></div><div className="standalone-storefront"><BrambleStorefront run={run} projection={projection} busy={Boolean(busy)} onAdvance={() => void act(run.id, "advance")} /></div>{error ? <p className="bramble-error" role="alert">{error}</p> : null}<p className="standalone-provenance">This page renders a deterministic sample run.<br />It does not call PayPal or collect a payment.</p></main>;

@@ -30,7 +30,7 @@ export class LabStore {
       const active=await tx.query("SELECT id FROM lab_runs WHERE session_id=$1 AND stage IN ('created','preflight','provisioning','executing','observing','evaluating','awaiting_approval')",[sessionId]);
       if(active.rowCount)throw new LabError("RUN_ALREADY_ACTIVE","Finish or cancel the active journey before starting another run.",409);
       await tx.query("INSERT INTO lab_runs(id,session_id,request_id,input_hash,project_id,stage,checkpoint,source,created_at,updated_at,document) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",[run.id,sessionId,input.requestId,inputHash,run.projectId,run.stage,"start",run.source,run.createdAt,run.updatedAt,JSON.stringify(run)]);
-      await tx.query("INSERT INTO lab_jobs(id,session_id,run_id,kind,stage,available_at,document) VALUES($1,$2,$3,$4,$5,$6,$7)",[`execute:${run.id}`,sessionId,run.id,"run","queued",run.createdAt,JSON.stringify(input)]);
+      await tx.query("INSERT INTO lab_jobs(id,session_id,run_id,kind,stage,available_at,document) VALUES($1,$2,$3,$4,$5,$6,$7)",[`execute:${run.id}`,sessionId,run.id,"run",run.source==="live_sandbox"?"waiting":"queued",run.createdAt,JSON.stringify(input)]);
       await tx.query("UPDATE lab_sessions SET selected_run_id=$2 WHERE id=$1",[sessionId,run.id]);
       return {created:true,run};
     });

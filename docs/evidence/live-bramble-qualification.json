@@ -1,0 +1,908 @@
+{
+  "schemaVersion": 1,
+  "kind": "browser-approved-live-bramble-qualification",
+  "observedAt": "2026-11-11T04:59:44.999Z",
+  "source": "live_sandbox",
+  "faultSource": "local response-only interruption",
+  "checks": [
+    {
+      "name": "Actual separate live sandbox L2 revisions",
+      "passed": true
+    },
+    {
+      "name": "Baseline records two distinct orders and completed gross captures",
+      "passed": true
+    },
+    {
+      "name": "Baseline gives one book only after the second response",
+      "passed": true
+    },
+    {
+      "name": "Separate compensation preserves the original failed verdict",
+      "passed": true
+    },
+    {
+      "name": "Refund is bound to the exact second capture",
+      "passed": true
+    },
+    {
+      "name": "Independent provider reads confirm both original baseline captures",
+      "passed": true
+    },
+    {
+      "name": "Independent provider read confirms the original completed refund",
+      "passed": true
+    },
+    {
+      "name": "Hardened target retains one original order, capture and book",
+      "passed": true
+    },
+    {
+      "name": "Hardened unchanged payment invariants pass",
+      "passed": true
+    },
+    {
+      "name": "Independent provider read confirms the original control capture",
+      "passed": true
+    },
+    {
+      "name": "faulty: capture was observed before the controlled response loss",
+      "passed": true
+    },
+    {
+      "name": "faulty: every distinct order has a buyer approval receipt",
+      "passed": true
+    },
+    {
+      "name": "hardened: capture was observed before the controlled response loss",
+      "passed": true
+    },
+    {
+      "name": "hardened: every distinct order has a buyer approval receipt",
+      "passed": true
+    },
+    {
+      "name": "Baseline reports failure before the separate customer retry",
+      "passed": true
+    },
+    {
+      "name": "Hardened checking precedes resource reconciliation and fulfillment",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "summary": {
+    "baseline": {
+      "grossMinor": 2400,
+      "refundMinor": 1200,
+      "fulfillments": 1,
+      "verdict": "fail"
+    },
+    "control": {
+      "grossMinor": 1200,
+      "fulfillments": 1,
+      "verdict": "pass"
+    }
+  },
+  "runs": [
+    {
+      "id": "2a850002-2df8-456f-b760-59c1055ccaea",
+      "revision": "faulty",
+      "sourceHash": "61b06912303d96bb8b9f27f6707bf682c4d5588e342a7489bf7ef300ae21a4a2",
+      "scenarioHash": "cc468b6346ef48908a0b2de11e9266e4e7e22cf2c23da07d665d6290b082e23c",
+      "businessIntentId": "purchase-0d368aa4-f6dd-4365-9647-c77f8455914f",
+      "orderIds": [
+        "7KN35440AK973631C",
+        "54142017F86464930"
+      ],
+      "captures": [
+        {
+          "id": "5X59700848833580D",
+          "orderId": "7KN35440AK973631C",
+          "status": "COMPLETED",
+          "amountMinor": 1200,
+          "currency": "USD",
+          "observedAt": "2026-11-11T04:53:07.761Z",
+          "source": "live_sandbox",
+          "evidenceId": "409871be-b7b5-4167-ac5c-d89a7d300267"
+        },
+        {
+          "id": "6PL28570JN503694M",
+          "orderId": "54142017F86464930",
+          "status": "COMPLETED",
+          "amountMinor": 1200,
+          "currency": "USD",
+          "observedAt": "2026-11-11T04:57:16.789Z",
+          "source": "live_sandbox",
+          "evidenceId": "00545861-f793-4a88-8820-84173e24062a"
+        }
+      ],
+      "refunds": [
+        {
+          "id": "2TY77369FW268003W",
+          "captureId": "6PL28570JN503694M",
+          "status": "COMPLETED",
+          "amountMinor": 1200,
+          "currency": "USD",
+          "observedAt": "2026-11-11T04:57:18.715Z",
+          "source": "live_sandbox",
+          "evidenceId": "3aaf6ecb-0729-45ac-a1e0-b190a8f8a6c9"
+        }
+      ],
+      "events": [
+        {
+          "id": "92d2dacd-8cbe-4c54-8366-a1df70a7b2bf",
+          "sequence": 1,
+          "kind": "checkout_started",
+          "lane": "application",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "NO PAYMENT",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "e79d7eec-2e65-4ff4-8368-05e8a426e279",
+          "sequence": 2,
+          "kind": "order_payer_action_required",
+          "lane": "provider",
+          "resourceId": "7KN35440AK973631C",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER CREATED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "6f09f01f-2b44-4fad-89f9-600ec78c9622",
+          "sequence": 3,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "7KN35440AK973631C",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER CREATED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "03ed9d4f-330a-4f42-ba63-4abd15f334e5",
+          "sequence": 4,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "7KN35440AK973631C",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER APPROVED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "fc767dea-7b85-4169-93e4-1a86f2c53c6a",
+          "sequence": 5,
+          "kind": "buyer_approved",
+          "lane": "customer",
+          "resourceId": "7KN35440AK973631C",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER APPROVED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "daa34376-1123-4f11-a218-87fc13776029",
+          "sequence": 6,
+          "kind": "capture_completed",
+          "lane": "provider",
+          "resourceId": "5X59700848833580D",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "fb54204a-42d1-460d-b403-34e49fedadb0",
+          "sequence": 7,
+          "kind": "response_dropped",
+          "lane": "lab",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "39f2231c-4892-4bdc-bad6-1ec79735ce51",
+          "sequence": 8,
+          "kind": "unknown_outcome_presented_failed",
+          "lane": "application",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "failed",
+            "applicationStatus": "FAILED",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "90e3d1df-7700-4157-98c8-371f12d92d85",
+          "sequence": 9,
+          "kind": "customer_retry",
+          "lane": "customer",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "failed",
+            "applicationStatus": "FAILED",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "3930507a-3d15-4135-bc6d-6c9ab35dc22d",
+          "sequence": 10,
+          "kind": "order_payer_action_required",
+          "lane": "provider",
+          "resourceId": "54142017F86464930",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "failed",
+            "applicationStatus": "FAILED",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "28481838-3d34-4aa7-8300-b9f7de168733",
+          "sequence": 11,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "54142017F86464930",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "4809cd57-b195-446c-8495-4fa824be48e6",
+          "sequence": 12,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "54142017F86464930",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "5b9a1be7-a506-402c-a52d-9e5e611385c1",
+          "sequence": 13,
+          "kind": "buyer_approved",
+          "lane": "customer",
+          "resourceId": "54142017F86464930",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "4a1becc9-4e74-43ee-869b-07d56c86e5d4",
+          "sequence": 14,
+          "kind": "capture_completed",
+          "lane": "provider",
+          "resourceId": "6PL28570JN503694M",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 0,
+            "captureCount": 2,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "9528feca-9c28-43e2-9b76-8d5f46db6345",
+          "sequence": 15,
+          "kind": "fulfilled",
+          "lane": "application",
+          "resourceId": "6PL28570JN503694M",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 0,
+            "captureCount": 2,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "46738660-05fd-4099-abbb-2d23e5759c76",
+          "sequence": 16,
+          "kind": "live_compensation_approved",
+          "lane": "lab",
+          "resourceId": "6PL28570JN503694M",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 0,
+            "captureCount": 2,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "bf82fee2-5e54-47e3-8ec1-01f371b76d28",
+          "sequence": 17,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "6PL28570JN503694M",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 0,
+            "captureCount": 2,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "86fac83d-eb1f-450b-9408-1f5366349a17",
+          "sequence": 18,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "6PL28570JN503694M",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 0,
+            "captureCount": 2,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "cc1bee91-c96a-4b5f-908d-1f56cfa1a20c",
+          "sequence": 19,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "6PL28570JN503694M",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 0,
+            "captureCount": 2,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "bde51b9d-76cf-4386-bcd5-6147b4ad1849",
+          "sequence": 20,
+          "kind": "refund_completed",
+          "lane": "provider",
+          "resourceId": "2TY77369FW268003W",
+          "requestId": "3d74f946-c02f-4d6e-8eb7-054073143b19",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "REFUND COMPLETED",
+            "capturedMinor": 2400,
+            "refundedMinor": 1200,
+            "captureCount": 2,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        }
+      ],
+      "independentResources": [
+        {
+          "kind": "order",
+          "id": "7KN35440AK973631C",
+          "status": "COMPLETED",
+          "money": null,
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:41.840Z"
+        },
+        {
+          "kind": "capture",
+          "id": "5X59700848833580D",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": "7KN35440AK973631C",
+          "observedAt": "2026-11-11T04:59:41.841Z"
+        },
+        {
+          "kind": "order",
+          "id": "54142017F86464930",
+          "status": "COMPLETED",
+          "money": null,
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:42.464Z"
+        },
+        {
+          "kind": "capture",
+          "id": "6PL28570JN503694M",
+          "status": "REFUNDED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": "54142017F86464930",
+          "observedAt": "2026-11-11T04:59:42.464Z"
+        },
+        {
+          "kind": "refund",
+          "id": "2TY77369FW268003W",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": "54142017F86464930",
+          "observedAt": "2026-11-11T04:59:42.464Z"
+        },
+        {
+          "kind": "capture",
+          "id": "5X59700848833580D",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:42.943Z"
+        },
+        {
+          "kind": "capture",
+          "id": "6PL28570JN503694M",
+          "status": "REFUNDED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:43.493Z"
+        },
+        {
+          "kind": "refund",
+          "id": "2TY77369FW268003W",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:43.970Z"
+        }
+      ]
+    },
+    {
+      "id": "e0e738d9-8221-4273-a38a-a59faa4367f3",
+      "revision": "hardened",
+      "sourceHash": "0901229e503e27fcdbdeded49583b29cc0547b0c241ecc0a1813b6e56d9e438f",
+      "scenarioHash": "cc468b6346ef48908a0b2de11e9266e4e7e22cf2c23da07d665d6290b082e23c",
+      "businessIntentId": "purchase-97709425-0ca7-4db5-802b-17e7a54fa40c",
+      "orderIds": [
+        "06S40047FT026892R"
+      ],
+      "captures": [
+        {
+          "id": "28V18548TL196491H",
+          "orderId": "06S40047FT026892R",
+          "status": "COMPLETED",
+          "amountMinor": 1200,
+          "currency": "USD",
+          "observedAt": "2026-11-11T04:57:53.414Z",
+          "source": "live_sandbox",
+          "evidenceId": "8d4f9ace-2d70-47e1-9ada-b73112145f6f"
+        }
+      ],
+      "refunds": [],
+      "events": [
+        {
+          "id": "a79bf0ba-c4f9-48bd-be26-0855413bdb12",
+          "sequence": 1,
+          "kind": "checkout_started",
+          "lane": "application",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "NO PAYMENT",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "7ddc8f37-68e9-46c6-bca7-710dd1c693f7",
+          "sequence": 2,
+          "kind": "order_payer_action_required",
+          "lane": "provider",
+          "resourceId": "06S40047FT026892R",
+          "requestId": "e4624298-df7f-43bc-a36d-420d34ec95d0",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER CREATED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "ce1eeae1-6f31-4ded-bb9e-7142ddf56ef8",
+          "sequence": 3,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "06S40047FT026892R",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER CREATED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "0d46567d-e5b0-4f85-8ef8-c04990f09613",
+          "sequence": 4,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "06S40047FT026892R",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER APPROVED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "b4766649-9abf-4069-834f-b3986d8c5770",
+          "sequence": 5,
+          "kind": "buyer_approved",
+          "lane": "customer",
+          "resourceId": "06S40047FT026892R",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER APPROVED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "dde904ca-2fb0-4840-b432-c8469f65f809",
+          "sequence": 6,
+          "kind": "checkout_claimed",
+          "lane": "application",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER APPROVED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "699b0919-f073-437e-8331-131f7a6aaea4",
+          "sequence": 7,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "06S40047FT026892R",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "ORDER APPROVED",
+            "capturedMinor": 0,
+            "refundedMinor": 0,
+            "captureCount": 0,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "3630d271-f153-4ac2-b928-e8759a8dfa13",
+          "sequence": 8,
+          "kind": "capture_completed",
+          "lane": "provider",
+          "resourceId": "28V18548TL196491H",
+          "requestId": "5d417ddc-b7fe-49b7-bcac-682cc60bc852",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "30d43fdf-374a-4dcc-8b74-9a3a8616d212",
+          "sequence": 9,
+          "kind": "response_dropped",
+          "lane": "lab",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "ready",
+            "applicationStatus": "UNPAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "8fc1b67a-7df6-44aa-9314-69c43dd0f453",
+          "sequence": 10,
+          "kind": "checking_unknown",
+          "lane": "application",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "checking",
+            "applicationStatus": "CHECKING",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "b1796388-aa4b-4efe-a8dd-41af2bbc1514",
+          "sequence": 11,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "28V18548TL196491H",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "checking",
+            "applicationStatus": "CHECKING",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "f220098e-9475-4f15-994f-b4aa4d78b97a",
+          "sequence": 12,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "28V18548TL196491H",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "checking",
+            "applicationStatus": "CHECKING",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 0,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "ef8047cf-ea48-4944-b275-717a08975468",
+          "sequence": 13,
+          "kind": "fulfilled",
+          "lane": "application",
+          "resourceId": "28V18548TL196491H",
+          "identity": "stable",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "ec8a9076-eaa0-4cbc-bb51-afd591d3520f",
+          "sequence": 14,
+          "kind": "resource_read",
+          "lane": "provider",
+          "resourceId": "28V18548TL196491H",
+          "identity": "absent",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        },
+        {
+          "id": "ea9dbab3-f2b0-431a-8b67-06803445845c",
+          "sequence": 15,
+          "kind": "recovery_read",
+          "lane": "lab",
+          "identity": "not_applicable",
+          "projection": {
+            "phoneState": "paid",
+            "applicationStatus": "PAID",
+            "providerStatus": "CAPTURE COMPLETED",
+            "capturedMinor": 1200,
+            "refundedMinor": 0,
+            "captureCount": 1,
+            "fulfillmentCount": 1,
+            "currency": "USD"
+          }
+        }
+      ],
+      "independentResources": [
+        {
+          "kind": "order",
+          "id": "06S40047FT026892R",
+          "status": "COMPLETED",
+          "money": null,
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:44.506Z"
+        },
+        {
+          "kind": "capture",
+          "id": "28V18548TL196491H",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": "06S40047FT026892R",
+          "observedAt": "2026-11-11T04:59:44.506Z"
+        },
+        {
+          "kind": "capture",
+          "id": "28V18548TL196491H",
+          "status": "COMPLETED",
+          "money": {
+            "currency": "USD",
+            "minor": 1200
+          },
+          "parentId": null,
+          "observedAt": "2026-11-11T04:59:44.999Z"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "One explicitly approved sandbox comparison, not a statistical reliability benchmark.",
+    "Response loss is controlled by the local lab after observing the real upstream response.",
+    "The first baseline purchase and its retry received separate actual payer approvals.",
+    "An earlier unapproved popup attempt was cancelled with no capture and is retained separately.",
+    "No real money or physical fulfillment is claimed."
+  ]
+}

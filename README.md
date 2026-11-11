@@ -16,6 +16,8 @@ npm run dev
 
 Open **http://localhost:4104**. The first visit creates an isolated, signed session and executes the local control plus the first faulty attempt. Press **Try again** inside Bramble to execute the second purchase action. This is a persistent local provider model, visibly labelled **Sample**; it makes no PayPal calls and moves no money.
 
+The optional `/live-bramble` runner uses real PayPal sandbox approvals and original-resource recovery. See [live checkout setup and qualification](docs/LIVE_BRAMBLE.md) for its bounded authority, refund behavior and measured result.
+
 The run page includes participant timelines, a knowledge cursor, resource receipts, eight invariant checks, paired comparisons, compensation, and JSON/HTML exports. Reloading reads the same PostgreSQL records. The interface also exposes projects, integration maps, scenario campaigns, repairs, contract bindings, provider facts, evaluations, evidence and a guided tour.
 
 For **Investigate with Astra**, configure `OPENAI_API_KEY`, `OPENAI_PLANNER_MODEL` and `OPENAI_REASONING_EFFORT`. The qualified configuration uses `gpt-6-astra` with `max`. This executes two real Responses API calls around an actual model-selected, scoped SDK resource read. Only read tools are available. Progress, elapsed time, cancellation, attempt records and the resource receipt are persisted. No static answer is presented as generated output.
@@ -51,7 +53,8 @@ On Vercel, generation uses durable Workflow continuations and persisted OpenAI b
 ## Implementation and scope
 
 - **Implemented:** authoritative PostgreSQL storage; durable run/action identities and worker leases; independent faulty and hardened Bramble targets; persistent local orders, captures and refunds; S0, S3, S4, S5, S10 and A4 executors; Errand E0 actual Toolkit/local-provider comparison; invariant evaluation; scoped API; genuine model diagnosis; durable generated-candidate and isolated verification queues; labelled reference/deceptive repair inspection; comparisons and compensation; reports and connected interface.
-- **In progress:** actual generated-repair acceptance, remaining scenario executors, authentic webhook quarantine and reconciliation, qualified live approval/proxy journeys, Tandem Python and live Errand behavior, expanded CLI/MCP execution capabilities, campaign recovery and broader source analysis.
+- **Qualified later units:** actual generated-candidate verification against ten unchanged public checks; durable isolated Python Tandem comparisons; the browser-approved live Bramble L2 baseline, hardened control and duplicate compensation. Each unit has its own scoped evidence document.
+- **In progress:** the remaining live and provider-negative application executors, live Errand behavior, expanded CLI/MCP execution capabilities, campaign recovery, minimization and broader source analysis.
 - **Unmeasured:** the 600-attempt three-arm context study, 12-revision public sample audit, and five actual user sessions. Their outcomes remain blank until executed. The evaluation protocol is currently a draft, not falsely frozen.
 
 The baseline is eight live-resource cases, three provider-negative cases and twelve local cases. Seven proposed additions target 30 qualified cases. S0 is the introductory walkthrough and is excluded from that denominator. A visible scenario definition is not an executed capability: gated cases show the missing proof.
@@ -64,7 +67,7 @@ The application consumes the immutable **@fracture/paypal-core 0.2.2** archive i
 
 Orders, authorization, capture, refund and read operations are distinct from approval experiences, saved-wallet consent, webhooks and other provider APIs. A successful HTTP request or created order is not proof of captured money. Pending and unknown writes remain unresolved. Refunds never erase the original capture history. No unqualified target is protected by a hidden core call or secret retry identifier.
 
-All keys, consent grants and provider credentials stay server-side. The public session currently enables only Sample execution. Live writes require separately qualified infrastructure and fresh scoped authority. Existing $1 wallet qualification consent was consumed and is not reusable permission for the $12 hero.
+All keys, consent grants and provider credentials stay server-side. Sample execution is the default. Deployments may explicitly enable the bounded Live Bramble runner; each run receives a one-hour, source-bound grant and every distinct order still requires actual PayPal buyer approval. Existing $1 wallet qualification consent was consumed and is not reusable permission for the $12 hero.
 
 ## Deployment and provenance
 

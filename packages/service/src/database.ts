@@ -3,6 +3,8 @@ import type { SqlDatabase } from "@fracture/paypal-core";
 import { requiredConfig } from "./config";
 
 const schema=[
+  `CREATE TABLE IF NOT EXISTS lab_live_refunds(run_id TEXT PRIMARY KEY,session_id TEXT NOT NULL,capture_id TEXT NOT NULL,created_at TEXT NOT NULL,document TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS lab_live_attempts(run_id TEXT NOT NULL,session_id TEXT NOT NULL,attempt INTEGER NOT NULL,stage TEXT NOT NULL,created_at TEXT NOT NULL,capture_at TEXT,lease_until TEXT,document TEXT NOT NULL,PRIMARY KEY(run_id,attempt))`,
   `CREATE TABLE IF NOT EXISTS lab_errand_operations(run_id TEXT PRIMARY KEY,request_id TEXT NOT NULL,payload_hash TEXT NOT NULL,stage TEXT NOT NULL,order_id TEXT,attempts INTEGER NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS lab_background_models(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,action_id TEXT NOT NULL,document TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS lab_locks(id TEXT PRIMARY KEY)`,

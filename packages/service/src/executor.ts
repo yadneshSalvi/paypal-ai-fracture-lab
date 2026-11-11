@@ -23,6 +23,7 @@ export async function refreshRun(store:LabStore,runId:string,terminal=true){
 }
 
 export async function executeRun(store:LabStore,runId:string,sessionId:string){
+  if((await store.run(runId,sessionId)).source!=='sample')throw new Error('The Sample executor cannot execute a live provider run.');
   await store.record(runId,sessionId);const owner=randomUUID();const job=await store.claimJob(runId,owner);if(!job)return store.run(runId,sessionId);
   let jobState="completed";
   try{

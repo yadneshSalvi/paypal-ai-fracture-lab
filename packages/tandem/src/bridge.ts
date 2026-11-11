@@ -28,7 +28,11 @@ export class TandemBridge {
   private inFlight=false;
   readonly provider:TandemProvider;
   constructor(readonly store:TandemStore,readonly invocationId:string,readonly expiresAt:number){id.parse(invocationId);this.provider=new TandemProvider(store);}
-  async initialize(){await this.store.db.query(`CREATE TABLE IF NOT EXISTS tandem_frames(run_id text NOT NULL,invocation_id text NOT NULL,sequence integer NOT NULL,request_hash text NOT NULL,status text NOT NULL,response jsonb,PRIMARY KEY(run_id,invocation_id,sequence))`);}
+  async initialize(){await this.store.db.transaction(async tx=>{
+    // Concurrent cold workers can race PostgreSQL's type creation despite IF NOT EXISTS.
+    if(tx.dialect==='postgres')await tx.query('SELECT pg_advisory_xact_lock(174392,hashtext(current_schema()))');
+    await tx.query(`CREATE TABLE IF NOT EXISTS tandem_frames(run_id text NOT NULL,invocation_id text NOT NULL,sequence integer NOT NULL,request_hash text NOT NULL,status text NOT NULL,response jsonb,PRIMARY KEY(run_id,invocation_id,sequence))`);
+  });}
   async handle(raw:string):Promise<Record<string,unknown>>{
     if(this.broken||this.inFlight||Date.now()>this.expiresAt||Buffer.byteLength(raw)>MAX_FRAME_BYTES||!raw.endsWith('\n'))throw new TandemRefusal('CHANNEL_CLOSED');
     this.inFlight=true;
