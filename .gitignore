@@ -32,3 +32,6 @@ artifacts/private/
 .artifacts/
 .vercel
 .env*
+
+# Next.js compiler cache
+.swc/

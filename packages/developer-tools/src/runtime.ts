@@ -14,6 +14,8 @@ export const toolDefinitions = {
   propose_scenario: { description: "Return an executable configuration for a qualified curated scenario without running it. No arbitrary code, paths, payees or live payment parameters are accepted.", schema: z.strictObject({ scenarioId: scenario, revision: z.enum(["faulty", "hardened"]) }), readOnly: true },
   run_curated_scenario: { description: "Execute a curated Bramble Sample experiment through the real LabService and pinned SDK local transport. No PayPal funds move. Reuse requestId only with identical parameters.", schema: z.strictObject({ scenarioId: scenario, revision: z.enum(["faulty", "hardened"]), seed: identity, requestId: identity }), readOnly: false },
   diagnose_run: { description: "Ask the configured model to investigate this session's Sample run using scoped read-only evidence tools. This calls the configured AI provider and saves the diagnosis; it cannot repair code or move money.", schema: z.strictObject({ runId: z.uuid(), requestId: identity }), readOnly: false },
+  propose_repair: { description: "Queue a new model-generated repair for this session's exact faulty Bramble Sample revision. A local worker reads pinned APIMatic contracts; model output is not verification.", schema: z.strictObject({ runId:z.uuid(), requestId:identity, repairId:z.uuid().optional() }), readOnly:false },
+  verify_patch: { description: "Queue independent verification of an immutable generated patch owned by this session. The local worker executes only the saved bounded candidate inside the isolated Docker runner; no caller source or paths are accepted.", schema:z.strictObject({runId:z.uuid(),repairId:z.uuid(),requestId:identity}),readOnly:false },
   export_report: { description: "Return a JSON report of an owned run and its redacted evidence. The caller chooses where to save the returned text.", schema: z.strictObject({ runId: z.uuid() }), readOnly: true },
 } as const;
 export type DeveloperToolName = keyof typeof toolDefinitions;
@@ -30,11 +32,17 @@ export class DeveloperRuntime {
     await this.service.store.rateLimit(`developer:${this.credential.id}:read`, 120, 60_000);
     const args = parsed.data as Record<string, string>;
     if (name === "get_provider_facts") return { facts: providerFacts(await publishedEvidence()), authorization: "Historical qualification only; no live payment authority.", source: "published_evidence" };
-    if (name === "list_experiments") return { source: "sample", scenarios, runs: await this.service.store.runs(session.id), limits: { fixture: "bramble", livePayments: false, arbitraryWorkspaceExecution: false, generatedPatchExecution: false } };
-    if (name === "get_run") return this.service.store.run(args.runId!, session.id);
+    if (name === "list_experiments") return { source: "sample", scenarios, runs: await this.service.store.runs(session.id), limits: { fixture: "bramble", livePayments: false, arbitraryWorkspaceExecution: false, generatedPatchExecution: "saved candidates only; qualified local worker required" } };
+    if (name === "get_run") {
+      const run=await this.service.store.run(args.runId!,session.id);
+      return {...run,repairCandidates:(await this.service.store.repairs(session.id)).filter(item=>item.runId===run.id),repairJobs:(await this.service.store.db.query("SELECT id,kind,stage,created_at,error_code FROM lab_repair_jobs WHERE session_id=$1 AND run_id=$2 ORDER BY created_at",[session.id,run.id])).rows};
+    }
     if (name === "export_report") {
       const run = await this.service.store.run(args.runId!, session.id);
-      return { schemaVersion: 1, run, evidence: (await this.service.store.evidence(session.id)).filter(item => item.runId === run.id), exportedAt: new Date().toISOString() };
+      return { schemaVersion: 1, run, repairCandidates:(await this.service.store.repairs(session.id)).filter(item=>item.runId===run.id), evidence: (await this.service.store.evidence(session.id)).filter(item => item.runId === run.id), exportedAt: new Date().toISOString() };
+    }
+    if(name === "propose_repair" || name === "verify_patch") {
+      return this.service.action(session.id,args.runId!,{action:name === "propose_repair"?"generate":"verify_generated",requestId:args.requestId!,...(args.repairId?{repairId:args.repairId}:{})});
     }
     if (name === "diagnose_run") {
       await this.service.store.run(args.runId!, session.id);

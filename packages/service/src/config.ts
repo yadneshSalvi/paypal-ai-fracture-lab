@@ -14,4 +14,4 @@ export function workspaceRoot():string {
 config({path:join(workspaceRoot(),".env"),quiet:true});
 export function requiredConfig(name:string){const value=process.env[name];if(!value)throw new Error(`Server configuration is missing ${name}.`);return value;}
 export const sessionSecret=()=>requiredConfig("JUDGE_SESSION_SECRET");
-export const artifactPath=(path:string)=>join(workspaceRoot(),path);
+export const artifactPath=(path:string)=>join(/* turbopackIgnore: true */ workspaceRoot(),path);

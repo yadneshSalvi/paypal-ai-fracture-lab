@@ -35,3 +35,40 @@ dialog{border:0;padding:0;color:var(--text);background:#191e27;max-height:calc(1
 @media print{body{background:white;color:#354653}.sidebar,.topbar,.project-header,.project-tabs,.app-footer,.report-toolbar,.toast,.error-banner{display:none!important}.app-body{margin:0;display:block}.main-content{padding:0;max-width:none}.report-paper{border:0;border-radius:0;box-shadow:none;padding:10mm 12mm;max-width:none}.report-paper{font-size:9pt}.report-header{padding-bottom:15px}.report-title{margin:18px 0}.report-title h1{font-size:27px}.report-consequence{margin:18px 0;padding:15px}.report-consequence strong{font-size:21px}.report-section{margin-top:18px;break-inside:avoid}.report-section h2{font-size:13px}.report-section p{font-size:8px}.report-table td{font-size:7px;padding:8px 6px}.report-manifest{gap:10px 22px}.report-manifest dd{font-size:6px}.report-footer{margin-top:22px;padding-top:15px}.report-paper .text-link{display:none}dialog{display:none!important}@page{size:A4;margin:8mm}}
 
 .mobile-main-navigation{display:none}.work-progress{display:flex;gap:10px;align-items:center;padding:14px;margin:15px 0;border:1px solid #49415e;border-radius:8px;background:#a78bfa09;color:#b9a0ff}.work-progress>div{display:flex;flex-direction:column;gap:7px;flex:1}.work-progress strong{font-size:11px}.work-progress span{display:flex;align-items:center;gap:5px;font-size:10px;color:#aab2c2}.work-progress>.button{font-size:10px;white-space:nowrap}@media(max-width:900px){.mobile-main-navigation{display:flex;align-items:center;gap:5px;padding:8px 12px;overflow-x:auto;border-bottom:1px solid #2a303a;background:#15181e}.mobile-main-navigation>a{display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;min-height:36px;padding:6px 9px;border-radius:6px;color:#aeb8c8;font-size:11px}.mobile-main-navigation>a[aria-current=page]{color:#c8b5ff;background:#a78bfa13}}@media(max-width:560px){.work-progress{flex-wrap:wrap}.work-progress>.button{margin-left:27px}.work-progress>div{min-width:220px}.mobile-main-navigation{gap:0;padding:6px}.mobile-main-navigation>a{padding:6px;font-size:10px;gap:3px}.mobile-main-navigation>a>svg{width:12px}}
+
+.repair-job-history { margin: 18px 0 24px; font-size: 13px; }
+.repair-job-history summary { min-height: 44px; display: flex; align-items: center; gap: 8px; color: var(--muted, #a4abb7); cursor: pointer; }
+.repair-job-history summary::before { content: "+"; color: var(--violet, #b5a3f4); font-size: 18px; }
+.repair-job-history[open] summary::before { content: "−"; }
+.repair-job-history ol { padding: 0 20px 8px 26px; margin: 0; }
+.repair-job-history li { padding: 10px 0; }
+.repair-job-history li p { margin: 6px 0 0; line-height: 1.6; color: var(--muted, #a4abb7); }
+
+.repair-workspace .repair-candidate>span:last-child { font-size: 13px; }
+.repair-workspace .repair-candidate small { font-size: 10px; }
+.repair-workspace .repair-candidate { min-height: 48px; }
+.repair-workspace .repair-summary>div { min-width: 0; }
+.repair-workspace .repair-summary h2 { font-size: 22px; overflow-wrap: anywhere; }
+.repair-workspace .repair-summary p, .repair-workspace .repair-empty p { font-size: 14px; line-height: 1.7; }
+.repair-workspace .repair-provenance, .repair-workspace .policy-strip-heading>span, .repair-workspace .policy-strip-heading .eyebrow { font-size: 11px; }
+.repair-workspace .policy-check { font-size: 11px; white-space: normal; min-height: 38px; }
+.repair-workspace .diff-code>code { font-size: 12px; line-height: 1.8; }
+.repair-workspace .diff-table { font-size: 11px; }
+.repair-workspace .test-result strong { font-size: 14px; }
+.repair-workspace .test-result p { font-size: 12px; color: #a9b5c8; }
+.repair-workspace .test-result>span, .repair-workspace .test-integrity-note { font-size: 11px; }
+.repair-workspace .citation-panel p, .repair-workspace .citation-panel code { font-size: 12px; line-height: 1.6; }
+.repair-workspace .work-progress strong { font-size: 13px; }
+.repair-workspace .work-progress span { font-size: 12px; }
+.repair-workspace .limitations p { font-size: 12px; line-height: 1.7; }
+@media(max-width:560px) {
+  .heading-actions { flex-wrap: wrap; max-width: 100%; }
+  .button, .mobile-main-navigation>a { min-height: 44px; }
+  .repair-workspace .heading-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
+  .repair-workspace .heading-actions>.button { width: 100%; font-size: 13px; }
+  .repair-workspace .repair-summary-title { flex-wrap: wrap; }
+  .repair-workspace .repair-summary h2 { font-size: 20px; }
+  .repair-workspace .diff-citation button { min-height: 44px; min-width: 44px; }
+  .repair-workspace .work-progress>div { min-width: 0; flex-basis: calc(100% - 32px); }
+  .repair-workspace .repair-action-row>div { flex-wrap: wrap; }
+}

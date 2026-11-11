@@ -3,6 +3,7 @@ import type { SqlDatabase } from "@fracture/paypal-core";
 import { requiredConfig } from "./config";
 
 const schema=[
+  `CREATE TABLE IF NOT EXISTS lab_background_models(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,action_id TEXT NOT NULL,document TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS lab_locks(id TEXT PRIMARY KEY)`,
   `INSERT INTO lab_locks(id) VALUES('worker-capacity') ON CONFLICT DO NOTHING`,
   `CREATE TABLE IF NOT EXISTS lab_sessions(id TEXT PRIMARY KEY,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,role TEXT NOT NULL,selected_run_id TEXT,seeded INTEGER NOT NULL DEFAULT 0)`,
@@ -25,7 +26,10 @@ const schema=[
   `CREATE TABLE IF NOT EXISTS lab_webhook_deliveries(id TEXT PRIMARY KEY,run_id TEXT NOT NULL,event_id TEXT NOT NULL,verified INTEGER NOT NULL,document TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS lab_target_event_claims(run_id TEXT NOT NULL,event_id TEXT NOT NULL,PRIMARY KEY(run_id,event_id))`,
   `CREATE TABLE IF NOT EXISTS lab_model_attempts(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,run_id TEXT,role TEXT NOT NULL,status TEXT NOT NULL,document TEXT NOT NULL)`,
-  `CREATE TABLE IF NOT EXISTS lab_evaluations(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,document TEXT NOT NULL)`
+  `CREATE TABLE IF NOT EXISTS lab_evaluations(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,document TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS lab_developer_grants(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,secret_hash TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,revoked_at TEXT)`,
+  `CREATE TABLE IF NOT EXISTS lab_repair_jobs(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,run_id TEXT NOT NULL,action_id TEXT NOT NULL,kind TEXT NOT NULL,stage TEXT NOT NULL,created_at TEXT NOT NULL,lease_owner TEXT,lease_until TEXT,input_hash TEXT NOT NULL,document TEXT NOT NULL,error_code TEXT)`,
+  `CREATE TABLE IF NOT EXISTS lab_generated_patches(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,run_id TEXT NOT NULL,source_hash TEXT NOT NULL,context_digest TEXT NOT NULL,document TEXT NOT NULL)`
 ];
 export async function initializeDatabase(db:SqlDatabase){for(const statement of schema)await db.query(statement);await new SqlPaymentStore(db).initialize();return db;}
 const state=globalThis as typeof globalThis&{fractureApplicationDatabase?:Promise<SqlDatabase>};

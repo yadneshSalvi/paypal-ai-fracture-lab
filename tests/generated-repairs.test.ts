@@ -1,0 +1,72 @@
+import test, {type TestContext} from "node:test";
+import assert from "node:assert/strict";
+import {execFile} from "node:child_process";
+import {promisify} from "node:util";
+import {randomUUID} from "node:crypto";
+import {mkdtemp,rm} from "node:fs/promises";
+import {join} from "node:path";
+import {tmpdir} from "node:os";
+import {canonicalJson,sha256,PostgresDatabase,SqliteDatabase,type SqlDatabase} from "@fracture/paypal-core";
+import {LabService,LabStore} from "../packages/service/src/index";
+import {initializeDatabase} from "../packages/service/src/database";
+import {generateRepair,loadRepairContext,type RepairContext,type RepairModel} from "../packages/ai/src/repair";
+import type {ModelCall,ModelReceipt} from "../packages/ai/src/model";
+import {getGeneratedPatch,processRepairJob} from "../packages/service/src/generated-repairs";
+import {sourceText} from "../packages/service/src/catalog";
+import {DeveloperAccess} from "../packages/developer-tools/src/access";
+import type {IsolationResult} from "../packages/isolation/src/local";
+const adapters=process.env.DATABASE_URL?["sqlite","postgres"] as const:["sqlite"] as const;
+const categories=["DUPLICATE CLAIMS","UNKNOWN OUTCOMES","CROSS-OPERATION INVARIANTS","OPTIONAL FIELDS","API REFUSAL"];
+const candidate='import type { BrambleContext } from "./contract";\nexport async function faultyCheckout(context: BrambleContext) { return context.run.id; }\n';
+const identity={imageId:`sha256:${"a".repeat(64)}`,snapshotHash:"b".repeat(64)};
+async function setup(t:TestContext,adapter:"sqlite"|"postgres",owner=false){
+ const dir=await mkdtemp(join(tmpdir(),"fracture-repair-"));let db:SqlDatabase;let connectionUrl:string|undefined;let cleanup=async()=>{};
+ if(adapter==="postgres"){const admin=new PostgresDatabase(process.env.DATABASE_URL!);const schema=`repair_test_${randomUUID().replaceAll("-","")}`;await admin.query(`CREATE SCHEMA ${schema}`);const url=new URL(process.env.DATABASE_URL!);url.searchParams.set("options",`-c search_path=${schema}`);connectionUrl=url.toString();db=new PostgresDatabase(connectionUrl);cleanup=async()=>{await admin.query(`DROP SCHEMA ${schema} CASCADE`);await admin.close();};}else db=new SqliteDatabase(join(dir,"db.sqlite"));
+ await initializeDatabase(db);const service=new LabService(new LabStore(db));const access=new DeveloperAccess(service);const grant=owner?await access.create():null;const session=grant?.session??await service.store.createSession();
+ t.after(async()=>{await db.close();await cleanup();await rm(dir,{recursive:true,force:true});});
+ const run=await service.startRun(session.id,{projectId:"bramble",scenarioId:"S0",revision:"faulty",mode:"sample",seed:"repair-unit-seed",requestId:randomUUID(),interactive:false});
+ const context=await loadRepairContext();return {db,service,session,run,context,access,grant,connectionUrl};
+}
+function model(context:RepairContext,mutate?:(body:Record<string,unknown>,call:ModelCall)=>unknown):RepairModel&{calls:string[]}{
+ const calls:string[]=[];return {calls,assertActive:async()=>{},call:async(_session,_run,call)=>{
+  calls.push(call.role);const file=context.files[0]!;
+  const body:Record<string,unknown>=call.role==="repair_contract_plan"?{baseHash:context.baseHash,contextDigest:context.digest,bindings:categories.map(category=>({category,mechanism:"Preserve stable purchase identity and reconcile observed provider state.",sourcePath:file.path,sourceHash:file.sha256})),limitations:["A fixture model response; not a real generation result."]}:{baseHash:context.baseHash,contextDigest:context.digest,source:candidate,title:"Fixture generated candidate",summary:"A bounded fixture candidate for job and proof identity tests.",citations:[{path:file.path,hash:file.sha256,section:"Stable business operation identity",firstChangedLine:1,lastChangedLine:2}],limitations:["Fixture output, not behavioral evidence."]};
+  mutate?.(body,call);return {attemptId:randomUUID(),evidenceId:randomUUID(),durationMs:0,inputHash:sha256(canonicalJson(body)),response:{id:randomUUID(),model:"fixture",status:"completed",output:[{type:"message",content:[{type:"output_text",text:JSON.stringify(body)}]}]}} satisfies ModelReceipt;
+ }};
+}
+async function queue(f:Awaited<ReturnType<typeof setup>>,kind:"generate"|"verify_generated"="generate",repairId?:string){const requestId=randomUUID();await f.service.action(f.session.id,f.run.id,{action:kind,requestId,...(repairId?{repairId}:{})});return requestId;}
+async function generated(f:Awaited<ReturnType<typeof setup>>){await queue(f);const result=await processRepairJob(f.service.store,{modelFactory:()=>model(f.context)});assert.equal(result?.stage,"completed");return (await f.service.store.repairs(f.session.id))[0]!;}
+async function proof(source:string):Promise<IsolationResult>{return {schemaVersion:1,stage:"evaluated",passed:true,candidateHash:sha256(source),suiteHash:sha256(await sourceText("packages/isolation/runner/suite.ts")),tests:["compile","happy","lost","malformed","unavailable","pending","auth","concurrent","revoked","payload"].map(id=>({id,name:id,status:"pass",hidden:false,durationMs:0,detail:"Injected runner proof fixture."})),policy:[],runnerReceipt:{...identity,networkMode:"none",readOnlyRoot:true,hostMountCount:0,user:"1000:1000",credentialEnvironmentForwarded:false}};}
+for(const adapter of adapters){
+ test(`${adapter}: generated jobs retain source/context bindings, provenance and exact verification`,async t=>{
+  const f=await setup(t,adapter);const repair=await generated(f);assert.equal(repair.provenance,"model_generated");assert.equal(repair.status,"proposed");assert.equal(repair.tests[0]?.status,"pending");assert.equal((await getGeneratedPatch(f.service.store,f.session.id,repair.id)).source,candidate);
+  await queue(f,"verify_generated",repair.id);const result=await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:proof});assert.equal(result?.stage,"completed");const saved=(await f.service.store.repairs(f.session.id))[0]!;assert.equal(saved.status,"verified");assert.ok(saved.verificationEvidenceId);assert.equal(saved.verificationRunId,null);
+  assert.equal((await f.service.store.evidence(f.session.id)).filter(e=>e.id===saved.verificationEvidenceId).length,1);
+ });
+ test(`${adapter}: unresolved contract binding blocks code generation before dispatch`,async t=>{const f=await setup(t,adapter);const m=model(f.context,(body,call)=>{if(call.role==="repair_contract_plan")body.contextDigest="0".repeat(64);});await assert.rejects(generateRepair(f.run,f.session.id,f.context,m),{code:"REPAIR_PLAN_INVALID"});assert.deepEqual(m.calls,["repair_contract_plan"]);});
+ test(`${adapter}: stale or forged patch citations are rejected with attempts retained`,async t=>{const f=await setup(t,adapter);const m=model(f.context,(body,call)=>{if(call.role==="repair_candidate_source")body.citations=[{path:"not-supplied.ts",hash:"0".repeat(64),section:"invalid source",firstChangedLine:1,lastChangedLine:2}];});await assert.rejects(generateRepair(f.run,f.session.id,f.context,m),{code:"REPAIR_CITATION_INVALID"});assert.equal(m.calls.length,2);});
+ test(`${adapter}: queue payload mutation fails before a model call`,async t=>{const f=await setup(t,adapter);await queue(f);await f.db.query("UPDATE lab_repair_jobs SET input_hash=$1",["0".repeat(64)]);let calls=0;const result=await processRepairJob(f.service.store,{modelFactory:()=>{calls++;return model(f.context);}});assert.equal(result?.errorCode,"REPAIR_JOB_INVALID");assert.equal(calls,0);});
+ test(`${adapter}: context changes after queue block model dispatch`,async t=>{const f=await setup(t,adapter);await queue(f);let calls=0;const result=await processRepairJob(f.service.store,{loadContext:async()=>({...f.context,digest:"0".repeat(64)}),modelFactory:()=>{calls++;return model(f.context);}});assert.equal(result?.errorCode,"REPAIR_SOURCE_CHANGED");assert.equal(calls,0);});
+ test(`${adapter}: cancellation racing the model cannot publish a candidate`,async t=>{const f=await setup(t,adapter);await queue(f);const m=model(f.context);const result=await processRepairJob(f.service.store,{modelFactory:()=>({...m,call:async(...args)=>{const response=await m.call(...args);if(args[2].role==="repair_candidate_source")await f.service.action(f.session.id,f.run.id,{action:"cancel_work",requestId:randomUUID()});return response;}})});assert.equal(result?.errorCode,"WORK_CANCELLED");assert.equal((await f.service.store.repairs(f.session.id)).length,0);});
+ test(`${adapter}: expired and revoked authority stop queued work`,async t=>{const f=await setup(t,adapter,true);await queue(f);await f.access.revoke(f.grant!.credential);const result=await processRepairJob(f.service.store,{modelFactory:()=>{throw new Error("must not call");}});assert.equal(result?.errorCode,"WORK_CANCELLED");assert.equal((await f.service.store.repairs(f.session.id)).length,0);});
+ test(`${adapter}: concurrent workers produce one saved candidate`,async t=>{const f=await setup(t,adapter);await queue(f);const m=model(f.context);const results=await Promise.all([processRepairJob(f.service.store,{modelFactory:()=>m}),processRepairJob(f.service.store,{modelFactory:()=>m})]);assert.equal(results.filter(Boolean).length,1);assert.equal(m.calls.length,2);assert.equal((await f.service.store.repairs(f.session.id)).length,1);});
+ test(`${adapter}: cross-session and mutated candidate records cannot execute`,async t=>{const f=await setup(t,adapter);const repair=await generated(f);const other=await f.service.store.createSession();await assert.rejects(getGeneratedPatch(f.service.store,other.id,repair.id),{code:"GENERATED_PATCH_NOT_FOUND"});await f.db.query("UPDATE lab_generated_patches SET source_hash=$2 WHERE id=$1",[repair.id,"0".repeat(64)]);await assert.rejects(queue(f,"verify_generated",repair.id),{code:"REPAIR_RECORD_INVALID"});});
+ test(`${adapter}: a different runner or candidate hash cannot produce verified status`,async t=>{const f=await setup(t,adapter);const repair=await generated(f);await queue(f,"verify_generated",repair.id);const result=await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:async source=>({...await proof(source),candidateHash:"0".repeat(64)})});assert.equal(result?.errorCode,"REPAIR_PROOF_IDENTITY");assert.equal((await f.service.store.repairs(f.session.id))[0]!.status,"proposed");});
+ test(`${adapter}: failed behavioral checks stay failed and do not rewrite reference provenance`,async t=>{const f=await setup(t,adapter);const repair=await generated(f);await queue(f,"verify_generated",repair.id);const result=await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:async source=>{const p=await proof(source);p.tests[1]!.status="fail";p.passed=false;return p;}});assert.equal(result?.stage,"completed");const saved=(await f.service.store.repairs(f.session.id))[0]!;assert.equal(saved.status,"compiled");assert.equal(saved.tests[1]?.status,"fail");await assert.rejects(f.service.action(f.session.id,f.run.id,{action:"verify",requestId:randomUUID()}),{code:"REPAIR_REQUIRED"});assert.equal((await f.service.store.repairs(f.session.id))[0]!.provenance,"model_generated");});
+ test(`${adapter}: refinement uses exact prior failure without replacing its evidence`,async t=>{
+  const f=await setup(t,adapter);const first=await generated(f);await queue(f,"verify_generated",first.id);
+  await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:async source=>{const p=await proof(source);p.tests[1]!.status="fail";p.passed=false;return p;}});
+  const original=(await f.service.store.repairs(f.session.id))[0]!;const seen:string[]=[];
+  await queue(f,"generate",first.id);
+  const result=await processRepairJob(f.service.store,{modelFactory:()=>model(f.context,(_body,call)=>{const input=call.input as {priorCandidateFeedback:{repairId:string;sourceHash:string;source:string;tests:{status:string}[]}};const prior=input.priorCandidateFeedback;assert.equal(prior.repairId,first.id);assert.equal(sha256(prior.source),prior.sourceHash);assert.equal(prior.tests[1]!.status,"fail");seen.push(call.role);})});
+  assert.equal(result?.stage,"completed");assert.equal(seen.length,2);const repairs=await f.service.store.repairs(f.session.id);assert.equal(repairs.length,2);assert.deepEqual(repairs.find(item=>item.id===first.id),original);assert.ok(repairs.some(item=>item.id!==first.id&&item.limitations.some(line=>line.includes(first.id))));
+ });
+ test(`${adapter}: a checkpointed abandoned lease resumes its saved action`,async t=>{const f=await setup(t,adapter);const actionId=await queue(f);await f.db.query("INSERT INTO lab_background_models(id,session_id,action_id,document) VALUES($1,$2,$3,$4)",["fixture-checkpoint",f.session.id,actionId,JSON.stringify({stage:"polling",responseId:"resp_fixture"})]);await f.db.query("UPDATE lab_repair_jobs SET stage='running',lease_owner='gone',lease_until='2000-01-01T00:00:00.000Z'");const m=model(f.context);const result=await processRepairJob(f.service.store,{modelFactory:()=>m});assert.equal(result?.stage,"completed");assert.equal((await f.service.store.repairs(f.session.id)).length,1);assert.equal((await f.db.query("SELECT id FROM lab_actions WHERE id=$1 AND stage='completed'",[actionId])).rowCount,1);});
+ test(`${adapter}: abandoned leases fail visibly and are never automatically regenerated`,async t=>{const f=await setup(t,adapter);await queue(f);await f.db.query("UPDATE lab_repair_jobs SET stage='running',lease_owner='gone',lease_until='2000-01-01T00:00:00.000Z'");assert.equal(await processRepairJob(f.service.store,{modelFactory:()=>{throw new Error("An uncheckpointed stale job must never call a provider");}}),null);const work=(await f.service.workspace(f.session)).work;assert.equal(work[0]?.status,"failed");assert.equal(work[0]?.phase,"REPAIR_WORKER_INTERRUPTED");});
+}
+
+test("fresh worker process observes a revoked grant without calling the model",{skip:!process.env.DATABASE_URL},async t=>{
+ const f=await setup(t,"postgres",true);await queue(f);await f.access.revoke(f.grant!.credential);
+ const result=await promisify(execFile)(process.execPath,["--import","tsx","scripts/repair-worker.ts","--once"],{cwd:process.cwd(),env:{...process.env,DATABASE_URL:f.connectionUrl!},timeout:30000,maxBuffer:100000});
+ const record=JSON.parse(result.stdout.trim());assert.equal(record.stage,"cancelled");assert.equal(record.errorCode,"WORK_CANCELLED");assert.equal((await f.db.query("SELECT id FROM lab_model_attempts")).rowCount,0);
+});

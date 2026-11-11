@@ -69,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         const active = tab.href === "/" ? pathname === "/" || pathname.startsWith("/runs/") || /^\/projects\/[^/]+$/.test(pathname) : pathname.startsWith(tab.href);
         return <Link href={tab.href} key={tab.href} aria-current={active ? "page" : undefined} className={active ? "active" : ""}>{tab.label}{tab.badge ? <span className="tiny-tag">{tab.badge}</span> : null}</Link>;
       })}</nav>
-      <main id="main-content" className="main-content">{error ? <div className="error-banner" role="alert"><span>{error}</span><button onClick={() => void refresh()}>Reconnect</button></div> : null}{children}</main>
+      <main id="main-content" className="main-content">{error ? <div className="error-banner" role="alert"><span>{error}</span><button onClick={() => void refresh(true)}>Reconnect</button></div> : null}{children}</main>
       <footer className="app-footer"><span><span className="status-dot mint" />Evidence stays attached.</span><span><SquareTerminal size={12} />Local fixture runtime<span className="footer-dot">·</span>Sample ≠ provider execution</span></footer>
     </div>
     {notice ? <div className="toast" role="status"><ShieldCheck size={17} /><span>{notice}</span><button onClick={dismissNotice} aria-label="Dismiss notification"><X size={15} /></button></div> : null}

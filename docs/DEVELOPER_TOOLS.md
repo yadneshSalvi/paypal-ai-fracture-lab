@@ -53,9 +53,11 @@ Available tools:
 | `propose_scenario` | A qualified curated configuration; does not execute it. |
 | `run_curated_scenario` | Executes and persists the selected Sample experiment. |
 | `diagnose_run` | Calls the configured AI provider around scoped evidence reads and saves the diagnosis. Requires the existing model configuration. |
-| `export_report` | JSON for one owned run and its redacted evidence. |
+| `propose_repair` | Queues a new model candidate from exact source and pinned contracts; local worker required. |
+| `verify_patch` | Queues the exact saved candidate in the isolated evaluator; local worker required. |
+| `export_report` | JSON for one owned run, its repair candidates and redacted evidence. |
 
-Every tool invocation revalidates the credential, grant expiry/revocation, active owner session, strict argument schema and ownership. Limits are 120 calls/minute, 20 run requests/hour and 10 diagnosis requests/hour per grant. An already accepted invocation can finish; revocation denies subsequent calls, including calls on an already-connected MCP client.
+Every tool invocation revalidates the credential, grant expiry/revocation, active owner session, strict argument schema and ownership. Limits are 120 calls/minute, 20 run requests/hour and 10 diagnosis requests/hour per grant. An already accepted curated experiment can finish; revocation denies subsequent calls, including calls on an already-connected MCP client. Queued generated-repair jobs also recheck the owner grant before execution and publication.
 
 ```sh
 npm run cli -- revoke
@@ -69,4 +71,37 @@ Revocation preserves experiment history. To create a new session after expiry/re
 
 The server uses the pinned `@modelcontextprotocol/sdk` 1.32.2 maintenance line and its official `McpServer`, `Client`, and stdio transports. See the [official TypeScript SDK documentation](https://github.com/modelcontextprotocol/typescript-sdk/blob/v1.x/README.md).
 
-Generated repair execution, arbitrary workspace imports, live payment experiment tools, Python/Tandem tools, remote MCP hosting, and their complete acceptance proofs remain separate implementation work. They are not advertised as available MCP tools. The existing human-authored repair isolation qualification remains unchanged.
+Arbitrary workspace imports, live payment experiment tools, Python/Tandem tools, remote MCP hosting, and their complete acceptance proofs remain separate implementation work. They are not advertised as available MCP tools. Generated repairs are the bounded local worker workflow below; the existing human-authored reference remains a separate provenance.
+
+## Generated repairs and the local worker
+
+`propose_repair({runId, requestId, repairId?})` queues a new model-authored candidate for an owned, current faulty Bramble Sample run. It reads the complete tracked contract sheets, TypeScript integration companions, installed core declarations and bounded fixture capabilities. A separate contract-binding call must pass before the source-authoring call. Supply an owned `repairId` to refine that immutable candidate using its source and recorded policy/behavior failures. The refinement is a new candidate; prior results are never overwritten. Model attempts and rejected candidates remain visible; neither model output nor the authored reference is labeled as a verified generated fix.
+
+Start the independent local process with `npm run worker:repairs`, or process at most one queued job with `npm run worker:repairs -- --once`. The web request only commits the job. This process requires the prepared dedicated Docker runner described in the README. It never executes candidate source in the web server.
+
+`verify_patch({runId, repairId, requestId})` queues the exact saved candidate. Verification binds its source digest, context digest, frozen suite digest, image ID and snapshot hash. Compilation plus nine unchanged regressions are reported individually. These public regressions are not the separate 600-attempt context study. A failed behavior check remains failed; no human reference is silently substituted.
+
+Job IDs are scoped to the session and command. One repair worker claims a job at a time; the global experiment capacity also bounds model and container work. Expired worker leases fail visibly instead of automatically repeating model calls. Cancellation, expired sessions and revoked developer grants prevent publication of late results. Existing attempts remain available for inspection. Hosted generation and verification stay unavailable until the hosted isolated runner is separately qualified.
+
+`get_run` also returns this run’s repair candidates and saved job statuses, so a client can inspect the exact diff and wait for completion without resubmitting. The repair screen exposes the same queue and evidence, with separate labels for Astra candidates, authored references and deliberately seeded policy tests. A verified patch can be exported; export does not modify or deploy any application.
+
+### Durable model generation and hosted isolation
+
+`generate` queues an immutable action and runs the complete contract plan before candidate authoring. Each role creates one OpenAI background response (`background:true`, `store:false`), then persists its response ID. A worker releases its SQL lease between short GET polls. A lost initial create response stays unknown and is never automatically resubmitted. A new attempt is an explicit user action; earlier failures remain in history. Background responses have temporary provider retention for polling even with `store:false`.
+
+Vercel Workflow resumes the job after each durable sleep. A one-minute authenticated `/api/cron/repairs` sweep closes the SQL-queue/workflow-start gap; an action-specific hook prevents duplicate starts. Cancellation checks current authority, cancels the original response, and rejects late publication. A failed cancellation retains the response ID for another idempotent cleanup attempt.
+
+For local durable execution, build and start with `WORKFLOW_TARGET_WORLD=local` and `WORKFLOW_LOCAL_DATA_DIR` set to an absolute private directory outside `.next` (for example `.artifacts/workflow-data`). Set `PORT=4104` and `FRACTURE_DURABLE_WORKFLOW=1` when starting. Keep the workflow data directory across rebuilds. The CLI polling worker remains available when Workflow is not enabled.
+
+Hosted candidate code runs in a separate Vercel Sandbox microVM restored from a pinned snapshot, with deny-all networking, a non-root user, no host mounts or application credentials, and root-owned read-only reference files. The VM root is writable; it is not reported as a read-only root. A 55-second command deadline and independent 70-second VM lifetime bound execution. A passing result is published only after source/suite identity checks and confirmed VM disposal.
+
+To prepare a new snapshot on an authenticated owner workstation:
+
+```sh
+npm run prepare:isolation -- --context-only
+npm run prepare:isolation:cloud
+```
+
+Use Vercel OIDC authentication or explicit `VERCEL_TOKEN`, `VERCEL_TEAM_ID`, and `VERCEL_PROJECT_ID` for the trusted SDK process. These values are never sent to candidate code. Read `.artifacts/isolation-cloud/snapshot.json`, then configure its snapshot ID, input hash and suite hash as `FRACTURE_REPAIR_SNAPSHOT_ID`, `FRACTURE_REPAIR_SNAPSHOT_HASH`, and `FRACTURE_REPAIR_SUITE_HASH`. A snapshot expires after 30 days; rebuild and qualify before replacing these values. Production also requires `CRON_SECRET`, `APP_URL`, the server model key, and a PostgreSQL connection with certificate verification.
+
+The public `docs/evidence/hosted-isolation-qualification.json` records actual reference-run, network-denial, cancellation and deadline measurements. It does not claim model-generated repair success or completion of the context evaluation study.

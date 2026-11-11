@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "qualifiedAt": "2026-11-10T23:55:09.674Z",
+  "source": "sample",
+  "qualification": "Actual Vercel Sandbox execution of controlled local fixtures; no external PayPal transaction or AI-generated result is implied.",
+  "snapshotId": "snap_SGsL2vTYitUeflLcoDlNxKzD0jIp",
+  "snapshotInputHash": "a052102ff3f02d0d373b869a11ac78ccc671a67172c6827169815194ea246469",
+  "candidateProvenance": "human_authored_reference",
+  "reference": {
+    "candidateHash": "244a4815b649c73f2c5d0471e0bf6e3dcbacf1f48602101d3d5f1a21bfa1cbf3",
+    "suiteHash": "c3e3c478c3af78f82ba966e946cb578ef31b8a039855d920a65402adad190239",
+    "tests": [
+      {
+        "id": "compile",
+        "name": "Strict candidate compile",
+        "status": "pass",
+        "hidden": false,
+        "durationMs": 0,
+        "detail": "Pinned TypeScript compiler passed the candidate against the original interface."
+      },
+      {
+        "id": "happy",
+        "name": "Original happy-path purchase",
+        "status": "pass",
+        "hidden": false,
+        "durationMs": 142,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "lost",
+        "name": "Lost capture answer and repeated purchase intent",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 44,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 3 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "malformed",
+        "name": "Malformed committed success",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 29,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 3 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "unavailable",
+        "name": "Unavailable reconciliation stays uncertain",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 27,
+        "detail": "Observed 1 completed captures, 0 entitlements, checking; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "pending",
+        "name": "Pending capture never backs a download",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 24,
+        "detail": "Observed 0 completed captures, 0 entitlements, checking; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "auth",
+        "name": "Never-sent authentication has no payment effect",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 10,
+        "detail": "Observed 0 completed captures, 0 entitlements, failed; 0 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "concurrent",
+        "name": "Eight concurrent callbacks share one purchase",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 51,
+        "detail": "Observed 1 completed captures, 1 entitlements, paid; 1 authoritative reads; 0 refused/thrown calls."
+      },
+      {
+        "id": "revoked",
+        "name": "Revoked current authority blocks dispatch",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 9,
+        "detail": "Observed 0 completed captures, 0 entitlements, processing; 0 authoritative reads; 1 refused/thrown calls."
+      },
+      {
+        "id": "payload",
+        "name": "Changed amount cannot reuse an approved identity",
+        "status": "pass",
+        "hidden": true,
+        "durationMs": 26,
+        "detail": "Observed 1 completed captures, 1 entitlements, processing; 1 authoritative reads; 1 refused/thrown calls."
+      }
+    ],
+    "passed": true,
+    "disposalStatus": "stopped"
+  },
+  "boundary": {
+    "uid": 1001,
+    "fixtureWritable": false,
+    "sudoDenied": true,
+    "privateKeys": [],
+    "network": [
+      {
+        "destination": "https://example.com",
+        "blocked": true,
+        "error": "EAI_AGAIN"
+      },
+      {
+        "destination": "http://1.1.1.1",
+        "blocked": true,
+        "error": "TimeoutError"
+      }
+    ]
+  },
+  "runtime": {
+    "network": "deny-all",
+    "persistent": false,
+    "rootFilesystem": "writable_microvm",
+    "referenceFilesystem": "root_owned_read_only",
+    "applicationCredentialsForwarded": false,
+    "uid": 1001,
+    "vcpus": 2,
+    "memoryMB": 4096,
+    "executionSeconds": 55,
+    "vmLifetimeSeconds": 70
+  },
+  "cancellation": {
+    "code": "WORK_CANCELLED",
+    "elapsedMs": 8356
+  },
+  "deadline": {
+    "code": "CANDIDATE_TIMEOUT",
+    "elapsedMs": 57776,
+    "killed": true
+  },
+  "allQualificationRunnersStopped": true,
+  "limitations": [
+    "This is runner qualification, not the 600-attempt context evaluation.",
+    "Reference results cannot be attributed to the model. Generated source requires a separate hash-bound execution.",
+    "The microVM root filesystem is writable; only the pinned reference and dependencies are read-only."
+  ]
+}

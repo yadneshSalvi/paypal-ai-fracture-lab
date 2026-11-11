@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import type { ReactNode } from "react";
 import type { ApiEnvelope, ApiFailure, EvidenceDTO, Revision, RunDTO, WorkspaceDTO } from "@fracture/contracts";
 
-type RunAction = "advance" | "diagnose" | "repair" | "verify" | "remediate" | "cancel" | "cancel_work";
+type RunAction = "advance" | "diagnose" | "repair" | "verify" | "remediate" | "cancel" | "cancel_work" | "generate" | "verify_generated";
 type WorkspaceContextValue = {
   workspace: WorkspaceDTO | null;
   loading: boolean;
@@ -19,9 +19,9 @@ type WorkspaceContextValue = {
   openEvidence: (id: string) => void;
   closeEvidence: () => void;
   dismissNotice: () => void;
-  refresh: () => Promise<WorkspaceDTO | null>;
+  refresh: (dismissError?: boolean) => Promise<WorkspaceDTO | null>;
   createRun: (projectId: string, scenarioId: string, revision: Revision, seed?: string) => Promise<RunDTO | null>;
-  act: (runId: string, action: RunAction, candidate?: "grounded" | "deceptive") => Promise<WorkspaceDTO | null>;
+  act: (runId: string, action: RunAction, candidate?: "grounded" | "deceptive", repairId?: string) => Promise<WorkspaceDTO | null>;
   createCampaign: (projectId: string, revision: Revision, scenarioIds: string[]) => Promise<boolean>;
 };
 
@@ -72,15 +72,16 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [activeRunId, setActiveRunId] = useState<string | null>(null);
   const [evidenceId, setEvidenceId] = useState<string | null>(null);
   const mounted = useRef(true);
+  const errorKind = useRef<"load"|"action"|null>(null);
   const activeCommand = useRef<string|null>(null);
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (dismissError=false) => {
     try {
       const next = await readWorkspace();
-      if (mounted.current) { setWorkspace(next); setError(null); }
+      if (mounted.current) { setWorkspace(next); if(dismissError || errorKind.current === "load"){setError(null);errorKind.current=null;} }
       return next;
     } catch (cause) {
-      if (mounted.current) setError(cause instanceof Error ? cause.message : "Could not load the workspace.");
+      if (mounted.current && errorKind.current !== "action") {errorKind.current="load";setError(cause instanceof Error ? cause.message : "Could not load the workspace.");}
       return null;
     }
   }, []);
@@ -111,7 +112,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   }, [hasRunningWork, refresh]);
 
   const createRun = useCallback(async (projectId: string, scenarioId: string, revision: Revision, seed?: string) => {
-    setBusy("create-run"); setError(null);
+    setBusy("create-run"); errorKind.current="action";setError(null);
     try {
       const run = await api<RunDTO>("/api/runs", { projectId, scenarioId, revision, mode: "sample", requestId: crypto.randomUUID(), ...(seed ? { seed } : {}) });
       setActiveRunId(run.id); setActiveProjectId(projectId);
@@ -124,13 +125,15 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     } finally { setBusy(null); }
   }, [refresh]);
 
-  const act = useCallback(async (runId: string, action: RunAction, candidate?: "grounded" | "deceptive") => {
-    setBusy(`${action}:${runId}`); setError(null);
+  const act = useCallback(async (runId: string, action: RunAction, candidate?: "grounded" | "deceptive", repairId?: string) => {
+    setBusy(`${action}:${runId}`); errorKind.current="action";setError(null);
     const requestId=crypto.randomUUID(); activeCommand.current=requestId;
     try {
-      await api<unknown>(`/api/runs/${encodeURIComponent(runId)}/actions`, { action, ...(candidate ? { candidate } : {}), requestId });
+      await api<unknown>(`/api/runs/${encodeURIComponent(runId)}/actions`, { action, ...(candidate ? { candidate } : {}), ...(repairId ? {repairId} : {}), requestId });
       const next = await refresh();
       const messages: Record<RunAction, string> = {
+        generate: "Repair queued. The repair worker will save its contract bindings and generated source.",
+        verify_generated: "Verification queued for the exact saved candidate. Follow its independent results below.",
         advance: "The sample journey advanced. The saved trace is up to date.",
         diagnose: "The read-only sample experiment is recorded with its receipt.",
         repair: "The candidate is saved. Review its diff, citations, and policy checks.",
@@ -149,7 +152,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   }, [refresh]);
 
   const createCampaign = useCallback(async (projectId: string, revision: Revision, scenarioIds: string[]) => {
-    setBusy("create-campaign"); setError(null);
+    setBusy("create-campaign"); errorKind.current="action";setError(null);
     try {
       await api<unknown>("/api/campaigns", { projectId, revision, scenarioIds, requestId: crypto.randomUUID() });
       await refresh(); setNotice("Sample campaign saved. Each matrix result opens its own run.");

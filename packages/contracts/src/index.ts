@@ -68,6 +68,7 @@ export interface RepairDTO {
   policyChecks: PolicyCheckDTO[]; citations: {id:string; title:string; path:string; section:string; hash:string}[];
   tests: {id:string; name:string; status:"pass"|"fail"|"pending"; hidden:boolean; durationMs:number; detail:string}[];
   verificationRunId: string|null; source: Provenance; limitations: string[];
+  verificationEvidenceId?: string;
 }
 export interface ContractRowDTO {
   id: string; category: "DUPLICATE CLAIMS"|"UNKNOWN OUTCOMES"|"CROSS-OPERATION INVARIANTS"|"OPTIONAL FIELDS"|"API REFUSAL";
@@ -113,6 +114,7 @@ export interface WorkspaceDTO {
   campaigns: CampaignDTO[]; repairs: RepairDTO[]; providerFacts: ProviderFactDTO[];
   contractRows: ContractRowDTO[]; evaluations: EvaluationDTO[]; evidence: EvidenceDTO[]; errand: ErrandDTO;
   selectedRunId: string|null; metrics: {name:string;value:string;detail:string;source:Provenance}[];
+  repairExecution?: "local_isolated" | "cloud_isolated" | "unavailable";
   work: {id:string;runId:string;kind:string;status:string;phase:string;startedAt:string}[];
 }
 export interface ApiEnvelope<T> { data:T; requestId:string; operationId?:string; status?:string }

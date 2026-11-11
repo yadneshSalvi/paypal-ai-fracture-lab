@@ -7,32 +7,70 @@ import { LabStore } from "../../service/src/store";
 
 export interface ModelOutput {type:string;name?:string;arguments?:string;call_id?:string;content?:{type:string;text?:string;refusal?:string}[]}
 export interface ModelResponse {id:string;model:string;status:string;output:ModelOutput[];usage?:Record<string,unknown>;incomplete_details?:unknown}
-export interface ModelCall {role:string;model:string;instructions:string;input:unknown;schema?:Record<string,unknown>;tools?:Record<string,unknown>[];toolName?:string;maximumOutputTokens?:number;reasoningEffort?:string}
+export interface ModelCall {role:string;model:string;instructions:string;input:unknown;schema?:Record<string,unknown>;tools?:Record<string,unknown>[];toolName?:string;maximumOutputTokens?:number;reasoningEffort?:string;timeoutMs?:number}
 export interface ModelReceipt {attemptId:string;evidenceId:string;response:ModelResponse;durationMs:number;inputHash:string}
+
+/** Only a provider terminal event is a complete answer. Deltas (including reasoning) are discarded. */
+async function readModelResponse(result: Response): Promise<ModelResponse> {
+  if (!result.headers.get("content-type")?.includes("text/event-stream")) return await result.json() as ModelResponse;
+  if (!result.body) throw new LabError("MODEL_STREAM_INTERRUPTED", "The model stream ended without a completed response.", 502);
+  const reader = result.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let received = 0;
+  const eventResponse = (frame: string): ModelResponse | null => {
+    const data = frame.split(/\r?\n/).filter(line => line.startsWith("data:")).map(line => line.slice(5).trimStart()).join("\n");
+    if (!data || data === "[DONE]") return null;
+    let event: { type?: string; response?: ModelResponse };
+    try { event = JSON.parse(data); } catch { throw new LabError("MODEL_STREAM_INVALID", "The model returned a malformed stream event.", 502); }
+    if (event.type === "error") throw new LabError("MODEL_STREAM_ERROR", "The provider reported a stream error. No partial answer is accepted.", 502);
+    if (!["response.completed", "response.incomplete", "response.failed"].includes(event.type ?? "")) return null;
+    if (!event.response || typeof event.response.id !== "string" || event.response.status !== event.type!.slice(9)) throw new LabError("MODEL_STREAM_INVALID", "The terminal event did not contain a matching response.", 502);
+    return event.response;
+  };
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (value) received += value.byteLength;
+      buffer += decoder.decode(value, { stream: !done });
+      if (received > 8_000_000 || buffer.length > 1_000_000) throw new LabError("MODEL_STREAM_LIMIT", "The model stream exceeded its bounded response size.", 502);
+      let separator: RegExpExecArray | null;
+      while ((separator = /\r?\n\r?\n/.exec(buffer))) {
+        const frame = buffer.slice(0, separator.index);
+        buffer = buffer.slice(separator.index + separator[0].length);
+        const response = eventResponse(frame);
+        if (response) return response;
+      }
+      if (done) break;
+    }
+    throw new LabError("MODEL_STREAM_INTERRUPTED", "The model stream ended without a terminal response. Partial output is not a candidate.", 502);
+  } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
+}
 
 /** Server-side only. Call data is persisted before dispatch; auth headers never enter the record. */
 export class OpenAIModel {
-  constructor(private store:LabStore,private fetchImpl:typeof fetch=fetch,readonly actionId?:string){}
-  async assertActive(sessionId:string){if(!this.actionId)return;const result=await this.store.db.query<{stage:string}&Record<string,unknown>>("SELECT stage FROM lab_actions WHERE id=$1 AND session_id=$2",[this.actionId,sessionId]);if(result.rows[0]?.stage!=="running")throw new LabError("WORK_CANCELLED","The model investigation was cancelled. Existing evidence is preserved.",409);}
+  constructor(private store:LabStore,private fetchImpl:typeof fetch=fetch,readonly actionId?:string,readonly signal?:AbortSignal){}
+  async assertActive(sessionId:string){if(this.signal?.aborted)throw new LabError("WORK_CANCELLED","The model job lost execution authority.",409);if(!this.actionId)return;const result=await this.store.db.query<{stage:string}&Record<string,unknown>>("SELECT stage FROM lab_actions WHERE id=$1 AND session_id=$2",[this.actionId,sessionId]);if(result.rows[0]?.stage!=="running")throw new LabError("WORK_CANCELLED","The model investigation was cancelled. Existing evidence is preserved.",409);}
   async call(sessionId:string,runId:string|null,call:ModelCall):Promise<ModelReceipt>{
     await this.assertActive(sessionId);
     const key=requiredConfig("OPENAI_API_KEY");const attemptId=randomUUID();const started=Date.now();const inputHash=sha256(canonicalJson({instructions:call.instructions,input:call.input,schema:call.schema??null,tools:call.tools??null,model:call.model}));
-    const request={model:call.model,store:false,reasoning:{effort:call.reasoningEffort??process.env.OPENAI_REASONING_EFFORT??"max"},max_output_tokens:call.maximumOutputTokens??6144,input:[{role:"developer",content:call.instructions},{role:"user",content:JSON.stringify(call.input)}],...(call.schema?{text:{format:{type:"json_schema",name:call.role.replaceAll(/[^a-zA-Z0-9_]/g,"_"),strict:true,schema:call.schema}}}:{}),...(call.tools?{tools:call.tools,parallel_tool_calls:false,tool_choice:call.toolName?{type:"function",name:call.toolName}:"auto"}:{})};
+    const request={model:call.model,store:false,stream:true,reasoning:{effort:call.reasoningEffort??process.env.OPENAI_REASONING_EFFORT??"max"},max_output_tokens:call.maximumOutputTokens??6144,input:[{role:"developer",content:call.instructions},{role:"user",content:JSON.stringify(call.input)}],...(call.schema?{text:{format:{type:"json_schema",name:call.role.replaceAll(/[^a-zA-Z0-9_]/g,"_"),strict:true,schema:call.schema}}}:{}),...(call.tools?{tools:call.tools,parallel_tool_calls:false,tool_choice:call.toolName?{type:"function",name:call.toolName}:"auto"}:{})};
     const record={attemptId,actionId:this.actionId??null,role:call.role,model:call.model,inputHash,startedAt:new Date(started).toISOString(),request,status:"running",source:"model_generation"};
     await this.store.db.query("INSERT INTO lab_model_attempts(id,session_id,run_id,role,status,document) VALUES($1,$2,$3,$4,'running',$5)",[attemptId,sessionId,runId,call.role,JSON.stringify(record)]);
     const cancel=new AbortController();const timer=this.actionId?setInterval(()=>{void this.assertActive(sessionId).catch(()=>cancel.abort());},1500):null;
-    let observedResponse:ModelResponse|null=null;let jobStatus="failed";
+    let observedResponse:ModelResponse|null=null;let jobStatus="failed";let leaseTimer:ReturnType<typeof setInterval>|null=null;
     try{
       await this.store.claimAuxiliaryJob(`model:${attemptId}`,sessionId,runId,"model",{attemptId,actionId:this.actionId??null,role:call.role,model:call.model,inputHash});
-      const result=await this.fetchImpl("https://api.openai.com/v1/responses",{method:"POST",headers:{authorization:`Bearer ${key}`,"content-type":"application/json"},body:JSON.stringify(request),signal:AbortSignal.any([AbortSignal.timeout(90000),cancel.signal])});
+      leaseTimer=setInterval(()=>{void this.store.db.query("UPDATE lab_jobs SET lease_until=$2 WHERE id=$1 AND stage='running'",[`model:${attemptId}`,new Date(Date.now()+120000).toISOString()]).catch(()=>cancel.abort());},15000);
+      const result=await this.fetchImpl("https://api.openai.com/v1/responses",{method:"POST",headers:{authorization:`Bearer ${key}`,"content-type":"application/json"},body:JSON.stringify(request),signal:AbortSignal.any([AbortSignal.timeout(Math.min(900000,Math.max(1000,call.timeoutMs??90000))),cancel.signal,...(this.signal?[this.signal]:[])])});
       await this.assertActive(sessionId);
       if(!result.ok)throw new LabError(`MODEL_HTTP_${result.status}`,"The model provider refused or could not complete this request. The attempt is retained without an invented result.",502);
-      const response=await result.json() as ModelResponse;observedResponse={...response,output:Array.isArray(response.output)?response.output.filter(item=>item.type==="message"||item.type==="function_call"):[]};if(response.status!=="completed"||!Array.isArray(response.output))throw new LabError("MODEL_INCOMPLETE","The model did not return a completed response. No diagnosis or repair is inferred.",502);
+      const response=await readModelResponse(result);await this.assertActive(sessionId);observedResponse={...response,output:Array.isArray(response.output)?response.output.filter(item=>item.type==="message"||item.type==="function_call"):[]};if(response.status!=="completed"||!Array.isArray(response.output))throw new LabError("MODEL_INCOMPLETE","The model did not return a completed response. No diagnosis or repair is inferred.",502);
       if(response.output.some(item=>item.content?.some(part=>part.type==="refusal")))throw new LabError("MODEL_REFUSAL","The model declined this request. The attempt is retained.",422);
       const safeResponse=observedResponse;const durationMs=Date.now()-started;const complete={...record,status:"completed",response:safeResponse,durationMs,completedAt:new Date().toISOString()};jobStatus="completed";
       await this.store.db.query("UPDATE lab_model_attempts SET status='completed',document=$2 WHERE id=$1",[attemptId,JSON.stringify(complete)]);
       const body={attemptId,role:call.role,model:response.model,inputHash,requestHash:sha256(canonicalJson(request)),response:safeResponse,durationMs,provenance:"model_generated",provider:"OpenAI Responses API",reasoningEffort:request.reasoning.effort};const evidence:EvidenceDTO={id:randomUUID(),runId,title:`Model receipt · ${call.role}`,kind:"receipt",source:"sample",createdAt:new Date().toISOString(),sha256:sha256(canonicalJson(body)),summary:"An actual model call using redacted Sample evidence. This is model output, not a provider payment observation.",body,redactions:["Authorization headers and API keys are excluded.","Private reasoning and encrypted reasoning content are not published."]};await this.store.addEvidence(sessionId,evidence);return {attemptId,evidenceId:evidence.id,response:safeResponse,durationMs,inputHash};
-    }catch(error){const code=cancel.signal.aborted?"WORK_CANCELLED":error instanceof LabError?error.code:error instanceof Error&&error.name==="TimeoutError"?"MODEL_TIMEOUT":"MODEL_TRANSPORT_FAILURE";const status=code==="WORK_CANCELLED"?"cancelled":"failed";jobStatus=status;await this.store.db.query("UPDATE lab_model_attempts SET status=$3,document=$2 WHERE id=$1",[attemptId,JSON.stringify({...record,status,durationMs:Date.now()-started,errorCode:code,providerResponse:observedResponse}),status]);if(code==="WORK_CANCELLED")throw new LabError(code,"The model investigation was cancelled. Existing evidence is preserved.",409);if(error instanceof LabError)throw error;throw new LabError(code,"The model call did not complete. Its failed attempt is saved; no fallback output is presented as a model result.",502);}finally{if(timer)clearInterval(timer);await this.store.finishAuxiliaryJob(`model:${attemptId}`,jobStatus);}
+    }catch(error){const code=(cancel.signal.aborted||this.signal?.aborted)?"WORK_CANCELLED":error instanceof LabError?error.code:error instanceof Error&&error.name==="TimeoutError"?"MODEL_TIMEOUT":"MODEL_TRANSPORT_FAILURE";const status=code==="WORK_CANCELLED"?"cancelled":"failed";jobStatus=status;await this.store.db.query("UPDATE lab_model_attempts SET status=$3,document=$2 WHERE id=$1",[attemptId,JSON.stringify({...record,status,durationMs:Date.now()-started,errorCode:code,providerResponse:observedResponse}),status]);if(code==="WORK_CANCELLED")throw new LabError(code,"The model investigation was cancelled. Existing evidence is preserved.",409);if(error instanceof LabError)throw error;throw new LabError(code,"The model call did not complete. Its failed attempt is saved; no fallback output is presented as a model result.",502);}finally{if(timer)clearInterval(timer);if(leaseTimer)clearInterval(leaseTimer);await this.store.finishAuxiliaryJob(`model:${attemptId}`,jobStatus);}
   }
 }
 export function outputJson(response:ModelResponse):unknown{
