@@ -1,0 +1,13 @@
+{
+  "protocolHash": "5e2553c9d371c4f842fe60b0d68eeb26c58841c1738a4b71ff1d023617e37240",
+  "files": 1127,
+  "plannedAttempts": 600,
+  "heldOutAttempts": 300,
+  "sourceCommit": "1013b016aea43c56d3cee22fe3449323fdf155a4",
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "frozenAt": "2026-11-11T08:59:48.689Z",
+  "status": "protocol_frozen",
+  "executedAttempts": 0,
+  "protocolFileHash": "dde4a01e6dd4f661e6b507cfb4536eac1b0c62c01dd4cfd77509f6f633603ae6"
+}

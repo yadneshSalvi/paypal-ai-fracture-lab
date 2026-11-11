@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "evaluatorHash": "01d09e923b8b571f839b097fce084dbf74f729325fe288cb315e41f3f42198bf",
+  "imageId": "sha256:a09fcd18538d422155605f57c76506afb6e6a0c7f72669fbed778fab90bb3847",
+  "tasks": [
+    {
+      "taskId": "d1-ts-development",
+      "title": "One Bramble purchase across checkout retries",
+      "family": "D1",
+      "language": "TypeScript",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "0658044afc12d679b9b1326efbb9705de09f5330a36f99da24cf7c69138ec378",
+      "goldenHash": "ca242589a7f32e5861d5beb8a8c5805f7b35fa0c3df04917821a690b212f5ad1",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d1-ts-development/control-proof.json",
+        "sha256": "9deafe0b09c2f09f794aaeb8d4a857fb0b4e2480acd6b8d6b653bbf9e5432a76"
+      },
+      "checks": 12,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d1-ts-heldout",
+      "title": "Competing approved orders for a reservation",
+      "family": "D1",
+      "language": "TypeScript",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "5eb7ca836a2e9421255c3b77c792422606fa959bb2bdaa3eec6087629325ac99",
+      "goldenHash": "7e636d38628f79509b02c4a3d7190c4db14ecc337308d409e7e3ca8af4373e38",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d1-ts-heldout/control-proof.json",
+        "sha256": "017a521d3291467b605102cdcea4a426aba7a8ec39f222a495c022cfcb20a3eb"
+      },
+      "checks": 7,
+      "publicCases": 1,
+      "hiddenCases": 3
+    },
+    {
+      "taskId": "d1-py-development",
+      "title": "Tandem group tickets after a worker restart",
+      "family": "D1",
+      "language": "Python",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "d7c6394828eccfe8b97383b850cf76f7a2d185474e1de9f49ab474004ed54d56",
+      "goldenHash": "4b728d3db5c56160567976198b906939e87184a89c3b4388ae0cfcd0b04a06a4",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d1-py-development/control-proof.json",
+        "sha256": "c887bd2fe326721b2b2c56055cb6cb49fcde63a0e70502fb8dc939bdfb47b068"
+      },
+      "checks": 9,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d1-py-heldout",
+      "title": "Cart amendments and immutable purchase quotes",
+      "family": "D1",
+      "language": "Python",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "0eb78f2fea7b698b7ef022a20645926e673529f57a3b29d2ed7204fe79cb1311",
+      "goldenHash": "402afed9dd3249a873819476c90b47421d716d275df3ff0c665e237537002737",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d1-py-heldout/control-proof.json",
+        "sha256": "06c18697c16fae66ddb6f55fee163ced712abb4f88be2a72d668275c507befa8"
+      },
+      "checks": 6,
+      "publicCases": 1,
+      "hiddenCases": 3
+    },
+    {
+      "taskId": "d2-ts-development",
+      "title": "A missing capture answer and its authoritative order read",
+      "family": "D2",
+      "language": "TypeScript",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "a1402db4a1705e47550b0cf580b435d3b5e6642c36b0fdaf3d434c91061e4d6c",
+      "goldenHash": "cf8f00863206aa023d40aea81a18b267cede69f6a53910677795a73f0fad61d8",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d2-ts-development/control-proof.json",
+        "sha256": "8623428b64729ce94fe0e183f587ee061c2ea626110615a1cf41537edca882b6"
+      },
+      "checks": 10,
+      "publicCases": 1,
+      "hiddenCases": 5
+    },
+    {
+      "taskId": "d2-ts-heldout",
+      "title": "Correlating a refund instead of guessing from capture balance",
+      "family": "D2",
+      "language": "TypeScript",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "419d6edd216bc58e5aeab6a8b13980a1a74177530683216d96ae23add3ffc927",
+      "goldenHash": "58a49f1c3f172c05a0d024921319085bb6a91a4ad34e3400b72ddd130aef4bcd",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d2-ts-heldout/control-proof.json",
+        "sha256": "d4bba80059bf897467cee5fcc5a81865225a6ef62e2aedf0f56e839c3844177d"
+      },
+      "checks": 7,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d2-py-development",
+      "title": "Create-order uncertainty without an invented lookup",
+      "family": "D2",
+      "language": "Python",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "d0cac6708058c61034cfab4254206383084db5d3010963aff76ea9183d34f83a",
+      "goldenHash": "1a4b98f2fa5182bf8d13144d28b93b57053f471d085429437798eca934a4563b",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d2-py-development/control-proof.json",
+        "sha256": "3b5944158c32cb6056c2d1fc5a7b08fabc9501f81ee8b5be820733dcdb7eaa3f"
+      },
+      "checks": 14,
+      "publicCases": 1,
+      "hiddenCases": 5
+    },
+    {
+      "taskId": "d2-py-heldout",
+      "title": "Recovering a lost partial-refund response from a later reference",
+      "family": "D2",
+      "language": "Python",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "002b47a30a501ecb26fca23cac499249bff5737115796fea8e23e54a2c13e422",
+      "goldenHash": "524ba627fe204cce2b47ff6686f14ad18b973cae3812434d925204bfe0f72c0d",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d2-py-heldout/control-proof.json",
+        "sha256": "90515b2f666ac25bdcaa6a5b8345d04dddc65248705ef4c43c508b0a9bdc4304"
+      },
+      "checks": 7,
+      "publicCases": 1,
+      "hiddenCases": 3
+    },
+    {
+      "taskId": "d3-ts-development",
+      "title": "Authenticated notifications with one authoritative entitlement",
+      "family": "D3",
+      "language": "TypeScript",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "612d084fe8ac538b29bb96a97bd08c1678fc65cd24585df8b8596ebc68f21725",
+      "goldenHash": "afa1b9cb2c12faa6664b191cc027d82bf2527c4c69fba7a62a48c56494032004",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d3-ts-development/control-proof.json",
+        "sha256": "8580900196738a8bf6c8d32129b95ad663130a7ae056132d448416f3bd9d22e5"
+      },
+      "checks": 9,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d3-ts-heldout",
+      "title": "Monotonic access state under reverse-ordered refund events",
+      "family": "D3",
+      "language": "TypeScript",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "5e4bdd175664f698d2a274b54e651860a37d4b29386cb488d5adc76f26dda24a",
+      "goldenHash": "0e7b98a8ad1595c5c47bf993623c739c6e46462da25f271dcb47b2ec6d5fb3f4",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d3-ts-heldout/control-proof.json",
+        "sha256": "352ae8eda4880b754f14bf3ee1417e1f4869f50be89bd977cb01900f142faa78"
+      },
+      "checks": 8,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d3-py-development",
+      "title": "Webhook redelivery and a durable receipt outbox",
+      "family": "D3",
+      "language": "Python",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "6ca96a30482072d8974b2976d1beee6ebfeae9a5a240a1e1be3d434f2f8aba5c",
+      "goldenHash": "989b57a40837b1ddc02e8e2b58f8b52cc305cf3ead4eae9411f69f2539f0a46d",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d3-py-development/control-proof.json",
+        "sha256": "400de22bf33285b3cde994fdd4ee5abed7f510dc76d02d9f7a565acd80c78582"
+      },
+      "checks": 8,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d3-py-heldout",
+      "title": "Approval and capture phases under reordered notifications",
+      "family": "D3",
+      "language": "Python",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "c3774e2343bf9a6e410669556554398ec2be7a8a34361599fe6b8fb9fa78d295",
+      "goldenHash": "4a738e700e498bc5a478a5d572022a9752a15d57d035c019799c509642afeaf3",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d3-py-heldout/control-proof.json",
+        "sha256": "ddee2244bede740781a20967d70de0f178f0c6b819ea27333a3c494c69f66572"
+      },
+      "checks": 7,
+      "publicCases": 1,
+      "hiddenCases": 3
+    },
+    {
+      "taskId": "d4-ts-development",
+      "title": "Refund reservations close the concurrent balance race",
+      "family": "D4",
+      "language": "TypeScript",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "a09c0b247509ef2faa0c66a9f1f8c353cf50f71a0a42fdcf7f59fc79bf92f719",
+      "goldenHash": "2e8120aafa169295ea3df92f01c3694178f1a541bc2f9fe0aa882ae284eef994",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d4-ts-development/control-proof.json",
+        "sha256": "0ba45fbc174d2d345d938e48382d1e8729ae9ce2401174158f143041c5e971ec"
+      },
+      "checks": 10,
+      "publicCases": 1,
+      "hiddenCases": 5
+    },
+    {
+      "taskId": "d4-ts-heldout",
+      "title": "Immutable return lines preserve provider identity across retries",
+      "family": "D4",
+      "language": "TypeScript",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "8cc6f45d9febaf89d860f41652c5039fe11ae9088c79bc37bca5afadbeadf2ad",
+      "goldenHash": "3bbefa441f1c2ad6d2a81686b30195908455eda162f0197520891bc7cb2dfe5f",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d4-ts-heldout/control-proof.json",
+        "sha256": "a6d193aa52d1b6410678373234989ad1596e0da4687e32034d485536e60f11a9"
+      },
+      "checks": 9,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d4-py-development",
+      "title": "External refunds and local reservations share the same balance",
+      "family": "D4",
+      "language": "Python",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "29d9b6c4f9d76a2ba6300afc0bb8775995b195381435ec482a11da62183c0194",
+      "goldenHash": "4b462638c90b144f529c80369827f4e9441470788ce851a313b0494f72953dd9",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d4-py-development/control-proof.json",
+        "sha256": "8d18d126920de3c8696226664e1af1cc892759040b020295dcef2d06ccf48d2d"
+      },
+      "checks": 6,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d4-py-heldout",
+      "title": "Batch refunds resume per item across partial completion",
+      "family": "D4",
+      "language": "Python",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "e30f8bd6ae3c9342403cfd9cea5d60580cf6f73a6597a6094bb760d20bc73d6d",
+      "goldenHash": "3122ea5ff337c6a8e2006eb76eff7dfa1428434f33aaa0ead4683a8de15a1911",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d4-py-heldout/control-proof.json",
+        "sha256": "515a1625a76795a2a24b9a0a5ae19607053b9405952b3d3c9bcb1bab520f05a1"
+      },
+      "checks": 8,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d5-ts-development",
+      "title": "Errand create tools preserve approved job identity",
+      "family": "D5",
+      "language": "TypeScript",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "355f8cde8d15af89022c5602cd0d750ab583db5bb6db9e93fb13c606003d5ea6",
+      "goldenHash": "dc62356b419b978d4d8fbbbdf3c70e8448055c72e89be12cf422335cbc7dfce4",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d5-ts-development/control-proof.json",
+        "sha256": "7eb72bc995966ba6468bf8961c879409f381f2010eff6b4c664a944d67785708"
+      },
+      "checks": 10,
+      "publicCases": 1,
+      "hiddenCases": 4
+    },
+    {
+      "taskId": "d5-ts-heldout",
+      "title": "Capture error classes become safe agent recovery actions",
+      "family": "D5",
+      "language": "TypeScript",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "c21e2a9bc04dd4e7113d57add064e2cc6c473ef68ef2af6deb64e39e0ce73fd4",
+      "goldenHash": "65d6afe03844b9b0ea09dc61ad1f98a9aeb331fcd883aa5fffba85162a85bfb3",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d5-ts-heldout/control-proof.json",
+        "sha256": "b028cb84fbcc4786fa10518c0462093354a56a62484818fbe5a78d61a607bb55"
+      },
+      "checks": 17,
+      "publicCases": 1,
+      "hiddenCases": 8
+    },
+    {
+      "taskId": "d5-py-development",
+      "title": "Python refund tools preserve typed recovery information",
+      "family": "D5",
+      "language": "Python",
+      "split": "development",
+      "qualified": true,
+      "baselineHash": "20a854d02981c275ef3092b251f207df418c894d955e0d212eba404b38b5473f",
+      "goldenHash": "596b909ba98bcad2bcec35cc0be636a49b8a47ef0074d5f7765a746fa2bca644",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d5-py-development/control-proof.json",
+        "sha256": "48f423a3d726a3227559c1152ea71e681e93d456729fb7873f1711b559b26a67"
+      },
+      "checks": 13,
+      "publicCases": 1,
+      "hiddenCases": 7
+    },
+    {
+      "taskId": "d5-py-heldout",
+      "title": "Two-step payment plans remain stable across agent replanning",
+      "family": "D5",
+      "language": "Python",
+      "split": "held_out",
+      "qualified": true,
+      "baselineHash": "0e00471f9093e645ba14bc77e6962a43c17ccd491a8994529d83894eccdda17a",
+      "goldenHash": "c015fce0d414e412a0d21629c1656f4efba32a9ff2dcaaaad0fdd6d9489850d0",
+      "controlProof": {
+        "path": "evaluation/corpus/tasks/d5-py-heldout/control-proof.json",
+        "sha256": "00cf8d2839f2ba1034d514c513f62d655aaadf966ef26895696cdef7fb3cdd23"
+      },
+      "checks": 9,
+      "publicCases": 1,
+      "hiddenCases": 4
+    }
+  ],
+  "safety": {
+    "path": "evaluation/qualification/safety.json",
+    "sha256": "5deacac36dd5c1f01573fd098db7905e0b88b9d9b0e0c4e89b44ed505ad49a17"
+  },
+  "blindBoundary": {
+    "path": "evaluation/qualification/blind-runner.json",
+    "sha256": "af6f75ae60c801d16773c6c3b1c86e9b03fa0bbc05c4356ac5a63762c6168e41"
+  },
+  "qualifiedAt": "2026-11-11T08:59:48.401Z",
+  "source": "executed_deterministic_offline_sdk",
+  "newLiveProviderEvidence": false
+}
