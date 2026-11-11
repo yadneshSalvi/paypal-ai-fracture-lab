@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-11T02:30:49.025269+00:00",
+  "scope": "Local application, actual PostgreSQL/Python regression execution, and fenced Vercel Sandbox job qualification. Hosted application HTTP and Workflow qualification follows deployment.",
+  "source": "sample",
+  "externalPaymentCalls": 0,
+  "sourceHashes": {
+    "apps/fixtures/tandem/domain.py": "08820767ba6341cce79326b5286a5935f2b5fe347dc392fdb86efa4592750e77",
+    "apps/fixtures/tandem/protocol.py": "b0fd326ceb410d07afdba52c95fb0e10f4e500ff52138b87d9f16ba88e820e33",
+    "apps/fixtures/tandem/qualify_worker.py": "a0d318a52694700dc7b991c8f686a7f4c9323eb9d969bb1380e84720cfa0a7dc",
+    "apps/fixtures/tandem/sdk_adapter.py": "39c0347f0bde46a1d2041315f8a0642c4615270c6124c85fbc8cfe0d63ff2b28",
+    "apps/fixtures/tandem/test_protocol.py": "177bd089ffa45bf03edf174868a4c821e06e6261a3a5a0c179b054f280386250",
+    "apps/fixtures/tandem/test_sdk_adapter.py": "1d82049cb0578d60343bc135df3e1d460cfde2a536a2bcdd4941f3afaeda3a52",
+    "apps/fixtures/tandem/worker.py": "c04312eb05a9e24d976ba837d89ce1f5eb497425e4f95da31803f11f186cc4af",
+    "apps/web/app/api/tandem/[id]/evidence/route.ts": "a1d735a6c2999735a86d9ec8ace5c05be53d8142bc6ebe8231994246d4a7765e",
+    "apps/web/app/api/tandem/[id]/route.ts": "56d51cc66272e478e5d9f45527e4dc3e5eb5af485063525a482dfb25b039a276",
+    "apps/web/app/api/tandem/route.ts": "6bb50878318bfe13e660d398166dd941e72708774a11c96994229af752497b03",
+    "apps/web/components/tandem-view.tsx": "e33f8d0dd3086087307f541b385a5a4a34643405df4c648922fcdb2b9ef62f95",
+    "apps/web/next.config.ts": "48be47b405ac0b9fbb8feab82ae6e6aeeb0200a351e09b78c81ca4e150c10bb6",
+    "apps/web/workflows/tandem-step.ts": "893175f945c68ab10b603cc0bb96b3e65d0d99e17e45de26edb2b22284f301bb",
+    "apps/web/workflows/tandem.ts": "79cf7fd42e201ff56fc6fb1b915b272682b3d0e2c184decffa6b9b8eb62c6bea",
+    "packages/tandem/src/bridge.ts": "4b56ff485c11d634b7824fe128382a503ffda5047e76cacb9c371de3f1ac36c0",
+    "packages/tandem/src/cloud.ts": "06de1f79e161cba3263b291f42e2e6013ef2ac4ced1279b1c7224767695cf5c7",
+    "packages/tandem/src/experiments.ts": "91d7987e61454e7a429bf9a2616b06843d035b7438e34f5b2c307596edd0d656",
+    "packages/tandem/src/jobs.ts": "33ae429751da91cbe069f31e604f3a148043bb7fd59fc3405156ed2b8ae7c87b",
+    "packages/tandem/src/local.ts": "d15b1a52b9ed291bf5b56361322f0ac53b25a6b6b007c2e3199c1911d30ec119",
+    "packages/tandem/src/provider.ts": "b0b59d35c7581debb026769265829111d44711e9081dffb5c631908051e751c5",
+    "packages/tandem/src/source.ts": "929df5f9dfbbcab2bdfa2e487a2235625a61a239a0d74ffc4d7eaf2bb7e820f3",
+    "packages/tandem/src/sql.ts": "964a42eac7ebf56faaf0b470c957a32ba8d62016677c5d64e2303e14bf0e63ff",
+    "packages/tandem/src/store.ts": "d28f887c774f972eb448e1606bdbe08207f42c1ea9bd77c1ae64a81334f0c13f",
+    "tests/tandem-jobs.test.ts": "28b7ce198180df7c89a3d46c7a5072ff7e61d4be1a48678e21f9ed49da2d421a",
+    "tests/tandem.test.ts": "4637190065b7b7e93b2437861543bc34a1d2e2e387f574fdac1968462d22ed64"
+  },
+  "checks": {
+    "repositoryRegression": {
+      "tests": 290,
+      "pass": 290,
+      "fail": 0,
+      "skipped": 0
+    },
+    "tandemDomainAndJobs": {
+      "tests": 31,
+      "passed": 31,
+      "skipped": 0
+    },
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "cloudJobs": {
+      "vms": 8,
+      "allDisposalsConfirmed": true,
+      "artifact": "tandem-cloud-jobs-qualification.json"
+    },
+    "browser": {
+      "lostAnswer": {
+        "faultyGrossMinor": 9600,
+        "guardedGrossMinor": 4800,
+        "ticketsEach": 1,
+        "reloadPreserved": true,
+        "guardedExplicitRetryAddedCapture": false
+      },
+      "reservation": {
+        "authorizationMinor": 4800,
+        "capturedMinor": 3000,
+        "releasedMinor": 1800,
+        "refundedMinor": 3000,
+        "netMinor": 0,
+        "closedStatusVerified": true
+      },
+      "pendingCapture": {
+        "baselineTickets": 1,
+        "guardedTickets": 0,
+        "completedMinorEach": 0
+      },
+      "evidenceDownloadCanonicalHash": "verified",
+      "mobile": {
+        "width": 390,
+        "documentWidth": 390,
+        "dialogWidth": 366.59375,
+        "keyboardFocusContained": true,
+        "escapeCloses": true
+      },
+      "consoleErrors": 0,
+      "savedComparisonImmediateUpdate": "verified"
+    }
+  },
+  "limitations": [
+    "Controlled Sample provider behavior does not establish new PayPal capabilities.",
+    "This is a public regression suite, not the planned held-out context study.",
+    "The local browser used trusted fixed-source subprocesses; actual cloud jobs were separately executed in isolated VMs."
+  ]
+}

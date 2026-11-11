@@ -9,11 +9,12 @@ import { CampaignsView, MapView, ProjectsView, ScenarioStudio } from "./project-
 import { RepairsView } from "./repair-views";
 import { ContractView, EvidenceView, ProviderFactsView } from "./proof-views";
 import { ErrandView, EvaluationsView, JudgeView } from "./research-views";
+import { TandemView } from './tandem-view';
 import { ReportView } from "./report-view";
 import { NoRun, RunWorkbench } from "./run-workbench";
 import { useSelectedRun, useWorkspace } from "./workspace-provider";
 
-export type Screen = "run" | "projects" | "map" | "scenarios" | "campaigns" | "repairs" | "contract" | "facts" | "evidence" | "evaluations" | "errand" | "judge" | "report";
+export type Screen = "run" | "projects" | "map" | "scenarios" | "campaigns" | "repairs" | "contract" | "facts" | "evidence" | "evaluations" | "errand" | "tandem" | "judge" | "report";
 export function FractureConsole({ screen, runId, projectId, repairId }: { screen: Screen; runId?: string; projectId?: string; repairId?: string }) {
   const { workspace, loading, refresh, setActiveProjectId, setActiveRunId } = useWorkspace();
   const run = useSelectedRun(runId, projectId);
@@ -40,6 +41,7 @@ export function FractureConsole({ screen, runId, projectId, repairId }: { screen
   else if (screen === "evidence") content = <EvidenceView />;
   else if (screen === "evaluations") content = <EvaluationsView />;
   else if (screen === "errand") content = <ErrandView />;
+  else if (screen === 'tandem' || projectId === 'tandem') content = <TandemView />;
   else if (screen === "judge") content = <JudgeView />;
   else if (screen === "report") content = run ? <ReportView run={run} /> : <NoRun />;
   else if(projectId === "errand" || run?.projectId === "errand") content = <ErrandView />;

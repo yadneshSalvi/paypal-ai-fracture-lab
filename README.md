@@ -2,7 +2,7 @@
 
 An evidence-first laboratory for payment integrations. Reproduce a failure, compare what the buyer saw with what the provider recorded, test a diagnosis, and verify a repair against the same purchase invariants.
 
-The current executable milestone is **Bramble Books**: a fictional $12 digital bookshop. A committed capture loses its answer. The faulty raw-HTTP target says “failed,” then a customer retry creates another approved order and another capture. The hardened reference uses durable operation identity and reads the original order, yielding one capture and one entitlement. The faulty target never passes through the hardened payment core.
+The original checkout fixture is **Bramble Books**: a fictional $12 digital bookshop. A committed capture loses its answer. The faulty raw-HTTP target says “failed,” then a customer retry creates another approved order and another capture. The hardened reference uses durable operation identity and reads the original order, yielding one capture and one entitlement. The faulty target never passes through the hardened payment core.
 
 ## Run locally
 
@@ -71,3 +71,7 @@ All keys, consent grants and provider credentials stay server-side. The public s
 The current hosted checkpoint is [Fracture Lab on Vercel](https://paypal-ai-fracture-lab.vercel.app), backed by PostgreSQL, durable Workflow and isolated Sandbox execution. Node is pinned to 22.x. Runtime artifacts that the application reads are explicitly traced. Local plans, `.env`, `.artifacts`, account data and private evidence stay ignored. A hosted checkpoint does not imply every planned capability is complete.
 
 The included APIMatic context skill retains its upstream license and provenance; see [APIMATIC_SETUP.md](APIMATIC_SETUP.md). Local Geist fonts include their OFL license. Application code is MIT licensed. No synthetic physical outcome, fabricated user feedback, unexecuted evaluation result, or local injection is represented as a live provider fact.
+
+## Python ticket laboratory
+
+The Tandem workspace runs real Python SDK targets, durable comparisons and the reservation lifecycle. See [Tandem Tickets](docs/tandem.md) for the executable scenarios, isolation boundaries, setup and evidence.

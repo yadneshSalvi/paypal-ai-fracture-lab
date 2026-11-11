@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { canonicalJson, sha256 } from '@fracture/paypal-core';
 import type { SqlConnection, SqlDatabase } from '@fracture/paypal-core';
 import { z } from 'zod';
+import { transactionDatabase } from './sql';
 
 const identifier = z.string().regex(/^[A-Za-z0-9_-]{1,100}$/);
 export const actionSchema = z.object({kind:z.enum(['create','authorize','capture_order','capture_authorization','refund','void']),intent:identifier,minor:z.number().int().min(0).max(1_000_000),resourceId:identifier.nullable(),authorize:z.boolean(),finalCapture:z.boolean(),currency:z.literal('USD')}).strict();
@@ -23,7 +24,11 @@ export const tandemSchema = [
   `CREATE TABLE IF NOT EXISTS tandem_faults(run_id text NOT NULL,fault text NOT NULL,PRIMARY KEY(run_id,fault))`,
 ];
 export class TandemStore {
-  constructor(readonly db:SqlDatabase,readonly sessionId:string,readonly runId:string){}
+  constructor(readonly db:SqlDatabase,readonly sessionId:string,readonly runId:string,readonly frameGuard?: (tx:SqlConnection)=>Promise<void>){}
+  async guardedFrame<T>(work:(store:TandemStore)=>Promise<T>):Promise<T>{
+    if(!this.frameGuard)return work(this);
+    return this.db.transaction(async tx=>{await this.frameGuard!(tx);return work(new TandemStore(transactionDatabase(tx),this.sessionId,this.runId));});
+  }
   async initialize(){for(const sql of tandemSchema)await this.db.query(sql);}
   async create(input:Omit<TandemRun,'id'|'sessionId'|'version'|'revoked'|'ticket'|'source'|'currency'>){
     if(!identifier.safeParse(input.intent).success||!Number.isSafeInteger(input.minor)||input.minor<=0||input.minor>1_000_000||!Number.isFinite(Date.parse(input.expiresAt)))throw new TandemRefusal('INVALID_RUN');

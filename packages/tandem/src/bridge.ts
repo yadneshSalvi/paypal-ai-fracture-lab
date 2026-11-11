@@ -36,30 +36,32 @@ export class TandemBridge {
       const frame=requestSchema.parse(strictFrame(raw));
       if(frame.invocationId!==this.invocationId||frame.sequence!==this.sequence+1||frame.requestId!==`${this.invocationId}:${frame.sequence}`)throw new TandemRefusal('FRAME_CORRELATION_FAILED');
       this.sequence=frame.sequence;
-      await this.store.run();
-      await this.store.db.query('INSERT INTO tandem_frames(run_id,invocation_id,sequence,request_hash,status) VALUES($1,$2,$3,$4,$5)',[this.store.runId,this.invocationId,frame.sequence,sha256(raw),'dispatching']);
+      return await this.store.guardedFrame(async store=>{
+      await store.run();
+      await store.db.query('INSERT INTO tandem_frames(run_id,invocation_id,sequence,request_hash,status) VALUES($1,$2,$3,$4,$5)',[store.runId,this.invocationId,frame.sequence,sha256(raw),'dispatching']);
       let outcome:BridgeResponse;
-      try{outcome=await this.dispatch(frame.channel,frame.payload);}
+      try{outcome=await this.dispatch(frame.channel,frame.payload,store);}
       catch(error){if(error instanceof TandemRefusal||error instanceof z.ZodError)outcome={outcome:'refused',payload:{code:error instanceof TandemRefusal?error.code:'INPUT_REFUSED'}};else throw error;}
       const reply={version:1,type:'reply',invocationId:this.invocationId,sequence:frame.sequence,requestId:frame.requestId,...outcome};
       const serialized=JSON.stringify(reply);if(Buffer.byteLength(serialized)>MAX_FRAME_BYTES)throw new TandemRefusal('REPLY_TOO_LARGE');
-      await this.store.db.query('UPDATE tandem_frames SET status=$4,response=$5::jsonb WHERE run_id=$1 AND invocation_id=$2 AND sequence=$3',[this.store.runId,this.invocationId,frame.sequence,'recorded',serialized]);
+      await store.db.query('UPDATE tandem_frames SET status=$4,response=$5::jsonb WHERE run_id=$1 AND invocation_id=$2 AND sequence=$3',[store.runId,this.invocationId,frame.sequence,'recorded',serialized]);
       return reply;
+      });
     }catch(error){this.broken=true;throw error;}finally{this.inFlight=false;}
   }
-  private async dispatch(channel:string,payload:Record<string,unknown>):Promise<BridgeResponse>{
+  private async dispatch(channel:string,payload:Record<string,unknown>,store:TandemStore):Promise<BridgeResponse>{
     const ok=(value:object):BridgeResponse=>({outcome:'ok',payload:value as Record<string,unknown>});
-    if(channel==='provider.exchange')return this.provider.exchange(payload);
-    if(channel==='authority.read'){z.object({}).strict().parse(payload);return ok(await this.store.authority());}
-    if(channel==='operation.claim'){const input=z.object({key:z.string(),action:z.unknown(),authorityVersion:z.number().int()}).strict().parse(payload);return ok(await this.store.claim(input.key,input.action,input.authorityVersion,this.invocationId));}
-    if(channel==='operation.read'){const input=z.object({key:z.string()}).strict().parse(payload);return ok({operation:await this.store.operation(input.key)});}
+    if(channel==='provider.exchange')return new TandemProvider(store).exchange(payload);
+    if(channel==='authority.read'){z.object({}).strict().parse(payload);return ok(await store.authority());}
+    if(channel==='operation.claim'){const input=z.object({key:z.string(),action:z.unknown(),authorityVersion:z.number().int()}).strict().parse(payload);return ok(await store.claim(input.key,input.action,input.authorityVersion,this.invocationId));}
+    if(channel==='operation.read'){const input=z.object({key:z.string()}).strict().parse(payload);return ok({operation:await store.operation(input.key)});}
     if(channel==='operation.record'){
       const input=z.discriminatedUnion('phase',[z.object({key:z.string(),phase:z.literal('dispatching')}).strict(),z.object({key:z.string(),phase:z.literal('observed'),result:z.unknown()}).strict()]).parse(payload);
-      return ok(await this.store.record(input.key,input.phase,this.invocationId,'result'in input?input.result:undefined));
+      return ok(await store.record(input.key,input.phase,this.invocationId,'result'in input?input.result:undefined));
     }
-    if(channel==='ticket.read'){z.object({}).strict().parse(payload);return ok((await this.store.run()).ticket);}
-    if(channel==='ticket.record')return ok(await this.store.ticket(payload));
-    if(channel==='entitlement.claim')return ok(await this.store.entitlement(payload));
+    if(channel==='ticket.read'){z.object({}).strict().parse(payload);return ok((await store.run()).ticket);}
+    if(channel==='ticket.record')return ok(await store.ticket(payload));
+    if(channel==='entitlement.claim')return ok(await store.entitlement(payload));
     throw new TandemRefusal('CHANNEL_NOT_ALLOWED');
   }
 }

@@ -9,7 +9,7 @@ import type { TandemStore } from './store';
 
 const completion=z.object({version:z.literal(1),type:z.literal('complete'),invocationId:z.string(),source:z.literal('sample'),result:z.record(z.string(),z.unknown()),requests:z.number().int().nonnegative().max(512)}).strict();
 /** Parent SQL and SDK credentials remain outside the nonroot, offline Python VM. */
-export async function invokeCloudTandem(store:TandemStore,input:TandemInvocation,options:{snapshotId:string;credentials?:CloudCredentials;signal?:AbortSignal;killAfterFrame?:number}){
+export async function invokeCloudTandem(store:TandemStore,input:TandemInvocation,options:{snapshotId:string;credentials?:CloudCredentials;signal?:AbortSignal;killAfterFrame?:number;onLifecycle?:(proof:Record<string,unknown>)=>Promise<void>}){
   if(!/^snap_[A-Za-z0-9]+$/.test(options.snapshotId))throw new Error('TANDEM_RUNTIME_UNCONFIGURED');
   const run=await store.run(),source=await tandemSource(),invocationId=randomUUID(),started=Date.now();
   if(run.sourceHash!==source.sourceHash)throw new Error('TANDEM_SOURCE_CHANGED');
@@ -18,6 +18,7 @@ export async function invokeCloudTandem(store:TandemStore,input:TandemInvocation
   let sandbox:Sandbox|undefined,stopped=false;
   try{
     sandbox=await Sandbox.create({...options.credentials,name:`tandem-ticket-${randomUUID()}`,source:{type:'snapshot',snapshotId:options.snapshotId},persistent:false,resources:{vcpus:2},timeout:70000,networkPolicy:'deny-all',signal});
+    await options.onLifecycle?.({kind:'runtime.created',sandboxName:sandbox.name,snapshotId:options.snapshotId,sourceHash:source.sourceHash,at:new Date().toISOString()});
     if(sandbox.persistent!==false||sandbox.networkPolicy!=='deny-all'||Object.keys(sandbox.mounts??{}).length)throw new Error('TANDEM_BOUNDARY_MISMATCH');
     if((await sandbox.runCommand({cmd:'mkdir',args:['-p','/tandem'],sudo:true,signal})).exitCode!==0)throw new Error('TANDEM_DIRECTORY_FAILED');
     await sandbox.writeFiles(source.files.map(file=>({path:`/tandem/${file.name}`,content:file.content})),{signal});
@@ -40,8 +41,9 @@ export async function invokeCloudTandem(store:TandemStore,input:TandemInvocation
     }
     const ended=await command.wait({signal});if(ended.exitCode!==0||!result)throw new Error('TANDEM_WORKER_DID_NOT_COMPLETE');
     const disposal=await sandbox.stop({signal:AbortSignal.timeout(15000)});stopped=['stopped','failed','aborted'].includes(disposal.status);if(!stopped)throw new Error('TANDEM_DISPOSAL_UNCONFIRMED');
+    await options.onLifecycle?.({kind:'runtime.disposed',sandboxName:sandbox.name,status:disposal.status,at:new Date().toISOString()});
     return {...result,runner:{engine:'vercel_sandbox',snapshotId:options.snapshotId,sourceHash:source.sourceHash,sourceHashes:source.hashes,networkPolicy:'deny-all',user:'candidate',sourceReadOnly:true,credentialEnvironmentForwarded:false,maximumSeconds:50,elapsedMs:Date.now()-started,disposal:disposal.status}};
   }finally{
-    if(sandbox&&!stopped){const disposal=await sandbox.stop({signal:AbortSignal.timeout(15000)});stopped=['stopped','failed','aborted'].includes(disposal.status);if(!stopped)throw new Error('TANDEM_DISPOSAL_UNCONFIRMED');}
+    if(sandbox&&!stopped){const disposal=await sandbox.stop({signal:AbortSignal.timeout(15000)});stopped=['stopped','failed','aborted'].includes(disposal.status);await options.onLifecycle?.({kind:'runtime.disposed',sandboxName:sandbox.name,status:disposal.status,at:new Date().toISOString()});if(!stopped)throw new Error('TANDEM_DISPOSAL_UNCONFIRMED');}
   }
 }

@@ -22,6 +22,7 @@ const tabs = [
   { href: "/contract-sheet", label: "Contract sheet" },
   { href: "/provider-facts", label: "Provider facts" },
   { href: "/errand", label: "Errand", badge: "AI" },
+  { href: '/tandem', label: 'Tandem', badge: 'PY' },
 ];
 
 export function FractureMark({ size = 28 }: { size?: number }) {
