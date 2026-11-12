@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-11-12T07:44:32.184Z",
+  "status": "bounded_hosted_release_qualified",
+  "url": "https://paypal-ai-fracture-lab.vercel.app/campaigns",
+  "deployedSourceCommit": "46b145fd6e3cdccf13fe1fe1b5e610353ed46f04",
+  "deploymentId": "dpl_D17HAhnsvsFZ6nTee9NfDpkxriNb",
+  "sourceArchiveSha256": "abaa88bf803587fb357c0d05f87e8a54e98c2339eec28d1dfa8b4195dcacc259",
+  "cleanLocalBuildId": "C6h-5lA25Ds8S8A4RD20L",
+  "servedImmutableAssetSetSha256": "35ce46a5a9f055e492037930bf971e07f487b32117b1d98b2fd66e9996e2c80b",
+  "deploymentIdentityNote": "The local clean-build identifier is not the remote build identifier. The unique deployment and served asset hashes identify hosted output. This deployment was subsequently superseded by the Source Atlas successor recorded separately.",
+  "provenance": "Controlled Sample purchase campaigns; no model generation or payment-provider request occurred in this qualification.",
+  "campaigns": {
+    "paired": {
+      "manifestHash": "38744e306d5ceb376b6ff328c49c82e4df2d29da334be16fd985b7f514533bb9",
+      "status": "completed",
+      "counts": {
+        "planned": 12,
+        "completed": 12,
+        "interrupted": 0,
+        "pending": 0,
+        "pass": 4,
+        "fail": 4,
+        "inconclusive": 4,
+        "blocked": 0,
+        "notApplicable": 0
+      }
+    },
+    "reduction": {
+      "manifestHash": "5024c7effef9e22da2358caff35bd0bc0a44f05707de55377515005b2bb803d5",
+      "status": "completed",
+      "counts": {
+        "planned": 16,
+        "completed": 16,
+        "interrupted": 0,
+        "pending": 0,
+        "pass": 6,
+        "fail": 8,
+        "inconclusive": 2,
+        "blocked": 0,
+        "notApplicable": 0
+      }
+    },
+    "stop": {
+      "manifestHash": "2b3760c4450571a1c2bf1bac8343c0413261eea708193c62a247d16a4784da2d",
+      "status": "cancelled",
+      "counts": {
+        "planned": 12,
+        "completed": 1,
+        "interrupted": 0,
+        "pending": 0,
+        "pass": 0,
+        "fail": 1,
+        "inconclusive": 0,
+        "blocked": 11,
+        "notApplicable": 0
+      }
+    }
+  },
+  "boundedReduction": {
+    "property": "I2",
+    "originalFaultComponents": 3,
+    "smallestRetainedFaultComponents": 2,
+    "subsetsExplored": 8,
+    "baselineAndControlReceipts": 16,
+    "scope": "Smallest subset in the declared fault grammar and seed retaining this invariant failure; not a globally minimal program or provider evidence.",
+    "allFailedAndDiscardedReceiptsRetained": true
+  },
+  "operationAttempts": {
+    "session": 1,
+    "welcome-stop": 1,
+    "paired": 1,
+    "reduction": 1,
+    "stop-campaign": 1,
+    "stop-command": 1
+  },
+  "recovery": {
+    "originalWelcomeWorkStoppedOnce": true,
+    "originalWorkflowIdentitiesRetained": true,
+    "unknownMutationRedispatches": 0,
+    "originalActorExpiryPreserved": true,
+    "exportsVerified": 3
+  },
+  "native": {
+    "reviewer": "Agent-operated native in-app browser; not human user research.",
+    "existingActorUsed": true,
+    "pairedReductionAndCancellationRetainedAfterReload": true,
+    "evidenceDialogEscapeReturnsFocus": true,
+    "mobileWidthsWithoutDocumentOverflow": [
+      390,
+      360
+    ],
+    "consoleErrorsOrWarnings": 0,
+    "newAdmissions": 0,
+    "applicationCommands": 0,
+    "localPolish": "Accepted local DOM and native checks verified time-independent acknowledgements and result-heading focus after create, reduction and cancellation."
+  },
+  "database": {
+    "preReleaseTables": 45,
+    "originalLedgerRows": 2076,
+    "priorUnattributedSampleAndRateRows": 131,
+    "priorRowsCallerAttribution": "Unknown; no authorship assigned.",
+    "protectedPreReleaseRows": 2207,
+    "allProtectedRowHashesPreserved": true,
+    "qualificationAddedRows": 1093,
+    "postQualificationTables": 49,
+    "postQualificationRows": 3300,
+    "documentedAdmissionIncrement": 1,
+    "admissionAllowanceIsCallerIdentityProof": false,
+    "preexistingAdmissionRowsChanged": 0,
+    "postNativeAndCanonicalReadAudit": {
+      "tables": 49,
+      "rows": 3300,
+      "additions": 0,
+      "deletions": 0,
+      "updates": 0
+    }
+  },
+  "releaseChecks": {
+    "backupVerifiedReadable": true,
+    "schemaChange": "Four additive tables and one index; no existing-row migration.",
+    "cleanInstallTypecheckAndBuild": "passed",
+    "sourceAndPrivateValueScans": "passed",
+    "aliasAndProductionTargetMatched": true
+  },
+  "modelCallsForRelease": 0,
+  "paymentProviderCallsForRelease": 0,
+  "originalStudy": {
+    "studyId": "fracture-context-2026-11-v1",
+    "sealedCases": 600,
+    "scored": 301,
+    "infrastructureOutcomes": 299,
+    "attempts": 606,
+    "retries": 6,
+    "generations": 601,
+    "incompleteStrata": 8,
+    "comparisonIntervals": "withheld",
+    "apimaticSuperiorityClaim": false,
+    "originalOutcomesReclassified": false,
+    "studyExecutedForThisRelease": false,
+    "originalBoundFilesPreserved": 1127
+  },
+  "limitations": [
+    "These Sample cases demonstrate laboratory workflow and invariant behavior, not new PayPal provider outcomes.",
+    "The reduced witness is bounded by its original grammar and seed.",
+    "This milestone does not complete the full product or evaluation plan."
+  ],
+  "privateReceiptDigests": [
+    {
+      "description": "Hosted promotion packet",
+      "sha256": "d34f1b0d64f9b17e7c2f08f6f53e8e7a5307ebb81142ee8205d5d7b9f9f090e5"
+    },
+    {
+      "description": "Canonical preservation audit",
+      "sha256": "11a86b129d875a50e94abb45a6e12e617273fcf2e8b529b0eea56aa666380f20"
+    },
+    {
+      "description": "Hosted input and private-value qualification",
+      "sha256": "d46fcd0bae04f98c37dfb838db426769e0426099b5804d416ebd2ac353f6f6b9"
+    }
+  ]
+}

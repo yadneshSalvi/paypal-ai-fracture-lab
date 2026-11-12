@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-11-12T08:49:44.555Z",
+  "status": "bounded_hosted_release_qualified",
+  "url": "https://paypal-ai-fracture-lab.vercel.app/sources",
+  "deployedSourceCommit": "79dc075d3203eb186233e947204011f23a9a9cf5",
+  "deploymentId": "dpl_5LYkww8u2ehFue2ePQkZvWhWpJnH",
+  "sourceArchiveSha256": "7836998a9aed0d69efd8233b81017ec306dddfaf6bbee5edb7354e661d9e4dd3",
+  "cleanLocalBuildId": "tk0mPTT9nLCaSQ9KU63r-",
+  "servedImmutableAssetSetSha256": "3e16b7a96ae8ee28f8e3ab029acc4bfdd640863c15560d0d276110788eed7755",
+  "deploymentIdentityNote": "The remote output is identified by the unique deployment and served asset hashes; the clean local build has its own identifier. A later evidence-only commit does not replace this deployed source identity.",
+  "source": {
+    "kind": "Explicitly allowlisted controlled Bramble fixture root, imported through the actual owner CLI.",
+    "manifestHash": "91fea19c329e499a5e5894d6773b126aec8a4c985789a9db2888d84555924b9b",
+    "revisionHash": "57bcb46c147a2c5ada11cc60908d8d5e4f1e0673a4b4aedce9af6247ed8bfa36",
+    "files": 5,
+    "bytes": 19325,
+    "graphNodes": 84,
+    "graphEdges": 89,
+    "unverifiedStaticFindings": 5,
+    "coverage": {
+      "typescriptParsed": 3,
+      "textUnsupported": 2,
+      "staticOnly": true
+    },
+    "sourceExecution": false,
+    "applicationCommands": 0,
+    "unchangedRevisionCheck": {
+      "retainedChecks": 1,
+      "added": 0,
+      "modified": 0,
+      "deleted": 0
+    }
+  },
+  "authority": {
+    "ownerCredentialAndRootAllowlistRequired": true,
+    "explicitRemotePersistenceOptIn": true,
+    "browserScope": "One immutable source snapshot, read only, approved through the actual owner CLI.",
+    "sourceAndBrowserExpiriesUnchanged": true,
+    "originalCancelledViewRetained": true,
+    "originalOperations": {
+      "owner-init": {
+        "state": "acknowledged",
+        "attempts": 1
+      },
+      "import": {
+        "state": "acknowledged",
+        "attempts": 1
+      },
+      "changes": {
+        "state": "acknowledged",
+        "attempts": 1
+      },
+      "browser-session": {
+        "state": "acknowledged",
+        "attempts": 1
+      },
+      "connection": {
+        "state": "acknowledged",
+        "attempts": 1
+      },
+      "approval": {
+        "state": "acknowledged",
+        "attempts": 1
+      },
+      "cancel-view": {
+        "state": "acknowledged",
+        "attempts": 1
+      }
+    },
+    "separateNativeReviewGrant": {
+      "newConnectionAttempts": 1,
+      "actualCliApprovalAttempts": 1,
+      "existingActorAndImportReused": true,
+      "newActors": 0,
+      "newImports": 0,
+      "sourceExpiryExtended": false
+    },
+    "unknownMutationRedispatches": 0
+  },
+  "hostedChecks": [
+    "Unapproved browser cannot read the source.",
+    "Approved view matches the pinned file hashes and graph.",
+    "Incorrect requested hash returns 409; path traversal returns 404.",
+    "Owner and browser export checksums match.",
+    "Cancelling the original view denies its source access and retains the owner snapshot.",
+    "The separately approved native view and original cancelled view retain their identities after canonical promotion."
+  ],
+  "native": {
+    "reviewer": "Agent-operated native in-app browser; not human user research.",
+    "exactCitation": "faulty.ts L29:5\u201329:26",
+    "sourceHashMatched": true,
+    "citationSelectionFocus": "Source heading in an inline aside.",
+    "accessibleNodePages": [
+      32,
+      32,
+      20
+    ],
+    "mobileWidthsWithoutDocumentOverflow": [
+      390,
+      360
+    ],
+    "retainedRevisionAfterReload": true,
+    "consoleErrorsOrWarnings": 0,
+    "newAdmissions": 0,
+    "applicationCommands": 0,
+    "exports": 0
+  },
+  "qualification": {
+    "localNodeTests": {
+      "failed": 0,
+      "passed": 475,
+      "skipped": 0
+    },
+    "localPythonTests": {
+      "passed": 58
+    },
+    "strictMypySourceFiles": 7,
+    "localDomTests": {
+      "passed": 18,
+      "evidence": "Prior accepted run; component inputs were unchanged."
+    },
+    "typescript": "passed",
+    "cleanInstallAndProductionBuild": "passed",
+    "hostedHarnessAdversarialTests": 12,
+    "counterReconciliationTests": 4,
+    "privateInputScan": {
+      "valuesCompared": 9,
+      "sourceAndBuildFilesScanned": 3251,
+      "findings": 0
+    },
+    "originalHarnessResult": "DATABASE_PRESERVATION_FAILED",
+    "reconciliation": {
+      "passed": true,
+      "reason": "The original audit omitted four CLI rate-counter rows. Separate read-only reconciliation matched every increment to retained invocations under the accepted runtime contract.",
+      "readCounterRows": 3,
+      "readIncrements": 6,
+      "sourceCounterRows": 1,
+      "sourceIncrements": 3,
+      "originalFailedAuditAndJournalPreserved": true,
+      "originalCommandsReplayed": false,
+      "databaseWrites": 0
+    }
+  },
+  "database": {
+    "preReleaseTables": 49,
+    "protectedPreReleaseRows": 3300,
+    "allPreReleaseRowHashesPreserved": true,
+    "originalLedgerRows": 2076,
+    "priorUnattributedSampleAndRateRows": 131,
+    "priorRowsCallerAttribution": "Unknown; no authorship assigned.",
+    "initialQualificationAddedRows": 17,
+    "separateReviewGrantAddedRows": 2,
+    "separateReviewGrantCounterUpdates": {
+      "existingRows": 2,
+      "incrementPerRow": 1,
+      "eachBoundToRetainedCommand": true
+    },
+    "postNativeAndCanonicalReadAudit": {
+      "tables": 53,
+      "rows": 3319,
+      "additions": 0,
+      "deletions": 0,
+      "updates": 0
+    },
+    "backupVerifiedReadable": true,
+    "schemaChange": "Four additive tables and two indexes; no existing-row migration."
+  },
+  "retainedErrata": [
+    "The original failed rate-counter audit remains unchanged; the separate reconciliation is not a replay or replacement result.",
+    "The initial handoff incorrectly requested dialog Escape focus behavior for the inline source panel. Citation selection focuses its heading; Escape leaves that focus unchanged.",
+    "One desktop screenshot was named .png despite containing JPEG bytes. The original and a byte-identical .jpg copy were retained."
+  ],
+  "modelCallsForRelease": 0,
+  "paymentProviderCallsForRelease": 0,
+  "originalStudy": {
+    "studyId": "fracture-context-2026-11-v1",
+    "sealedCases": 600,
+    "scored": 301,
+    "infrastructureOutcomes": 299,
+    "attempts": 606,
+    "retries": 6,
+    "generations": 601,
+    "incompleteStrata": 8,
+    "comparisonIntervals": "withheld",
+    "apimaticSuperiorityClaim": false,
+    "originalOutcomesReclassified": false,
+    "studyExecutedForThisRelease": false,
+    "originalBoundFilesPreserved": 1127
+  },
+  "limitations": [
+    "Imported code was statically inspected, not executed. Static findings remain unverified hypotheses.",
+    "This qualification does not establish an isolated runner for arbitrary imported projects.",
+    "No new model or context-comparison study was run; the original incomplete study remains sealed.",
+    "This milestone does not complete the full product or evaluation plan."
+  ],
+  "privateReceiptDigests": [
+    {
+      "description": "Original failed audit",
+      "sha256": "c8f03e7e34d4e6c76261b06494eebdf47832291faa0d9417f1e3d6ea70f57616"
+    },
+    {
+      "description": "Separate counter reconciliation",
+      "sha256": "c6db8644ffca1e3a274ab469b217f27e055655c48e090cde37cbebefca576249"
+    },
+    {
+      "description": "Post-grant audit",
+      "sha256": "5206a6d1a2dace16aa64dc3125b3e7a2aadb2c7cc014abad6403eb2fc15e5ace"
+    },
+    {
+      "description": "Native observation",
+      "sha256": "881663ddfbe8289007bcec09dcb324b79236f47696fe944709f4dd994d20ad6b"
+    },
+    {
+      "description": "Post-native full preservation audit",
+      "sha256": "96dd741364f7d0ab0cd9a653bfba33576b891036890620c1d820d814391e8f80"
+    },
+    {
+      "description": "Canonical full preservation audit",
+      "sha256": "7412aac9a055c5ffcc6909e5666f9e1ecab506a857e001d2524295678585b759"
+    }
+  ]
+}
