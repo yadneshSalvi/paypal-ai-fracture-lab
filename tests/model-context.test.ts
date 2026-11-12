@@ -12,6 +12,7 @@ import { OpenAIModel } from "../packages/ai/src/model";
 import type { ModelCall, ModelResponse } from "../packages/ai/src/model";
 import { createModelTransport } from "../packages/ai/src/transport";
 import { modelDiagnosis } from "../packages/ai/src/diagnosis";
+import { modelRuntimeView } from "../packages/ai/src/runtime-view";
 
 process.env.JUDGE_SESSION_SECRET ??= "fixture-context-encryption-only";
 process.env.OPENAI_PLANNER_MODEL ??= "fixture-model";
@@ -48,6 +49,9 @@ test("a fresh worker continues with original inputs and every opaque output item
   const selected = await new OpenAIModel(store, wire, actionId).call(session.id, run.id, first);
   const continuation: ModelCall = { role: "conclusion", model: "fixture-model", instructions: "Conclude from this actual receipt.", input: { source: "sample" }, continuation: { attemptId: selected.attemptId, toolOutputs: [{ callId: "call_original", output: { orderId: "owned", status: "COMPLETED" } }] } };
   const finished = await new OpenAIModel(store, wire, actionId).call(session.id, run.id, continuation);
+  const runtime = await modelRuntimeView(store, session.id);
+  assert.equal(runtime.attempts.find(attempt => attempt.id === finished.attemptId)?.continuationFrom, selected.attemptId, "The public workbench must retain the predecessor from the actual adapter's saved request metadata.");
+  assert.equal(runtime.attempts.find(attempt => attempt.id === selected.attemptId)?.continuationFrom, null);
   assert.equal(requests.length, 2);
   const expectedPrefix = [...requests[0]!.input as unknown[], ...rawOutput, { type: "function_call_output", call_id: "call_original", output: '{"orderId":"owned","status":"COMPLETED"}' }];
   assert.deepEqual((requests[1]!.input as unknown[]).slice(0, expectedPrefix.length), expectedPrefix);

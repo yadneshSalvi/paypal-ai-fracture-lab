@@ -30,6 +30,9 @@ test("mounted workbench covers loading, empty, read recovery and original eviden
   await render(data);
   await act(async () => button("Conclude from the actual receipt").click());
   assert.equal(document.activeElement?.id, "model-attempt-title");
+  assert.match(document.querySelector("dl")!.textContent!, /Stateless continuation/);
+  assert.match(document.querySelector("dl")!.textContent!, /original-tool-selection/);
+  assert.doesNotMatch(document.querySelector("dl")!.textContent!, /Initial request/);
   await act(async () => button("Open model receipt").click());
   assert.deepEqual(opened, ["original-evidence"]);
   await render(data, false, "The connection is unavailable.");
@@ -39,6 +42,19 @@ test("mounted workbench covers loading, empty, read recovery and original eviden
   assert.equal(opened.length, 1);
   await act(async () => button("Gemini").click());
   assert.match(document.body.textContent!, /No attempts from this provider/);
+});
+
+test("continuation labels distinguish saved interactions from absent metadata", async t => {
+  document.body.innerHTML = "<div id='root'></div>";
+  const root = createRoot(document.getElementById("root")!);
+  t.after(async () => { await act(async () => root.unmount()); });
+  const render = async (row: RuntimeAttempt) => act(async () => root.render(createElement(RuntimeEvidence, { data: { ...data, attempts: [row] }, loading: false, error: null, onRefresh() {}, onEvidence() {} })));
+  await render({ ...attempt, provider: "Gemini", model: "gemini-fixture" });
+  assert.match(document.querySelector("dl")!.textContent!, /Saved-interaction continuation/);
+  assert.match(document.querySelector("dl")!.textContent!, /original-tool-selection/);
+  await render({ ...attempt, continuationFrom: null });
+  assert.match(document.querySelector("dl")!.textContent!, /No continuation recorded/);
+  assert.doesNotMatch(document.querySelector("dl")!.textContent!, /Initial request/);
 });
 
 test("terminal polling preserves inspector focus and unknown outcomes remain explicit", async t => {

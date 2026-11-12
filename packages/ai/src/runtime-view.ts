@@ -31,7 +31,7 @@ export async function modelRuntimeView(store: LabStore, sessionId: string): Prom
     usage: jsonObject(Object.fromEntries(["input_tokens", "output_tokens", "total_input_tokens", "total_output_tokens"].map(name => [name, `COALESCE(${[`response.usage.${name}`, `receipt.response.usage.${name}`, `providerResponse.usage.${name}`].map(field).join(",")})`]))),
   });
   const latestTransport = postgres ? "(document::jsonb->'transports')->-1" : "json_extract(document,'$.transports[#-1]')";
-  const projection = jsonObject({ ...Object.fromEntries(["provider", "model", "startedAt", "durationMs", "errorCode", "responseId", "inputHash", "requestHash", "continuationFrom", "context"].map(name => [name, field(name)])), response: responseChoice, receipt: jsonObject({ evidenceId: field("receipt.evidenceId"), durationMs: field("receipt.durationMs"), response: response("receipt.response") }), transport: `COALESCE(${field("transport")},${latestTransport})` });
+  const projection = jsonObject({ ...Object.fromEntries(["provider", "model", "startedAt", "durationMs", "errorCode", "responseId", "inputHash", "requestHash", "context"].map(name => [name, field(name)])), continuationFrom: `COALESCE(${field("continuationFrom")},${field("request.continuationFrom")})`, response: responseChoice, receipt: jsonObject({ evidenceId: field("receipt.evidenceId"), durationMs: field("receipt.durationMs"), response: response("receipt.response") }), transport: `COALESCE(${field("transport")},${latestTransport})` });
   const started = postgres ? "document::jsonb->>'startedAt'" : "json_extract(document,'$.startedAt')";
   const title = postgres ? "document::jsonb->>'title'" : "json_extract(document,'$.title')";
   const [rows, count, tools, ids] = await Promise.all([
