@@ -49,22 +49,24 @@ async function api<T>(path: string, body?: unknown): Promise<T> {
   return result.data;
 }
 
-async function readWorkspace() {
+async function readWorkspace(sourceOnly = false) {
     const response = await fetch("/api/workspace", { credentials: "same-origin", cache: "no-store" });
-    if (response.status === 401) return api<WorkspaceDTO>("/api/judge/sessions", {});
+    if (response.status === 401) return api<WorkspaceDTO>(sourceOnly ? "/api/source-workspaces/session" : "/api/judge/sessions", {});
     if (!response.ok) throw new Error("The workspace service is disconnected. Reconnect when the service is available.");
     const envelope = await response.json() as ApiEnvelope<WorkspaceDTO>;
     if (!envelope.data) throw new Error("The workspace response was incomplete. Try reconnecting.");
     return envelope.data;
 }
 
-function initializeWorkspace() {
-  if (!initialization) initialization = readWorkspace().catch(cause => { initialization = null; throw cause; });
+function initializeWorkspace(sourceOnly = false) {
+  if (!initialization) initialization = readWorkspace(sourceOnly).catch(cause => { initialization = null; throw cause; });
   return initialization;
 }
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
-  const researchPage=usePathname().startsWith('/evaluations');
+  const pathname = usePathname();
+  const researchPage = pathname.startsWith('/evaluations');
+  const sourcePage = pathname.startsWith('/sources');
   const [workspace, setWorkspace] = useState<WorkspaceDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -79,14 +81,14 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const refresh = useCallback(async (dismissError=false) => {
     try {
-      const next = await readWorkspace();
+      const next = await readWorkspace(sourcePage);
       if (mounted.current) { setWorkspace(next); if(dismissError || errorKind.current === "load"){setError(null);errorKind.current=null;} }
       return next;
     } catch (cause) {
       if (mounted.current && errorKind.current !== "action") {errorKind.current="load";setError(cause instanceof Error ? cause.message : "Could not load the workspace.");}
       return null;
     }
-  }, []);
+  }, [sourcePage]);
 
   useEffect(() => {
     mounted.current = true;
@@ -99,7 +101,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     async function initialize() {
       try {
-        const next = await initializeWorkspace();
+        const next = await initializeWorkspace(sourcePage);
         if (!cancelled) { setWorkspace(next); setError(null); }
       } catch (cause) {
         if (!cancelled) {errorKind.current='load';setError(cause instanceof Error ? cause.message : "Could not start your sample session.");}
@@ -109,7 +111,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }
     void initialize();
     return () => { cancelled = true; mounted.current = false; };
-  }, [researchPage]);
+  }, [researchPage, sourcePage]);
 
   const hasRunningWork = !researchPage && hasExecutingWorkspaceWork(workspace, busy);
   useEffect(() => { if (activeCommand.current && workspace?.work?.some(work => work.id === activeCommand.current && ["completed", "failed", "cancelled"].includes(work.status))) setBusy(null); }, [workspace]);

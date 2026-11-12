@@ -5,6 +5,10 @@ import { scenarios } from "../../scenarios/src/index";
 import { DeveloperAccess, type DeveloperCredential } from "./access";
 import { CampaignLab } from "../../campaigns/src/runtime";
 import type { CampaignCreateInput } from "../../contracts/src/campaign-lab";
+import type { SourceImportInput, SourceViewApprovalInput } from "../../contracts/src/source-workspaces";
+import { SourceAccessStore } from "../../source-access/src/store";
+import { sourceApprovalSchema, sourceChangeSchema, sourceFileSchema, sourceIdSchema, sourceImportSchema } from "../../source-access/src/schemas";
+import { checkLocalSourceChanges, importLocalSource, sourceRootCapabilities } from "./source-import";
 
 const identity = z.string().min(8).max(120).regex(/^[a-zA-Z0-9:_-]+$/);
 const scenario = z.string().min(2).max(8).regex(/^[ASNL][0-9]+$/);
@@ -12,6 +16,14 @@ const empty = z.strictObject({});
 const campaignIdentity = identity.max(100);
 const campaignId = z.uuid();
 export const toolDefinitions = {
+  list_source_roots: { description: "List explicitly authorized local source root aliases without exposing private absolute paths. Importing source is separate from running it; no application commands or network requests execute.", schema: empty, readOnly: true },
+  import_source_workspace: { description: "Import a bounded snapshot from a host-configured root alias and relative path, parse without executing application code, and persist sanitized file contents plus hash-bound metadata in the configured database. Remote database storage needs explicit operator opt-in. Requires the private owner grant. Reuse the same request UUID and body after an unknown response.", schema: sourceImportSchema, readOnly: false },
+  list_source_workspaces: { description: "List source snapshots within this owner's original scope. Static risk findings are unverified until separate runtime evidence exists.", schema: empty, readOnly: true },
+  get_source_workspace: { description: "Read an owned immutable source snapshot, exact AST spans, declared commands, parser coverage and the latest separately recorded change check. This never executes the imported application.", schema: sourceIdSchema, readOnly: true },
+  read_source_file: { description: "Read one exact owned source file from an accepted snapshot using its manifest hash. Reading does not reopen the mutable host repository.", schema: sourceFileSchema, readOnly: true },
+  check_source_changes: { description: "Compare the current authorized local source tree with an owned immutable snapshot and retain a separately identified change receipt. The old snapshot stays unchanged. An interrupted observation requires a new explicit request UUID.", schema: sourceChangeSchema, readOnly: false },
+  approve_source_view: { description: "Explicitly approve one browser-created connection challenge for read-only access to one exact owned source import. Confirm the displayed browser challenge and selected import. No credential is printed or placed in a URL; execution and payment authority are never transferred. Revoking the owner grant withdraws this view.", schema: sourceApprovalSchema, readOnly: false },
+  export_source_snapshot: { description: "Export an owned sanitized source snapshot with exact file bytes, AST findings, hashes and declared static-only limits. The caller chooses where to save the private report.", schema: sourceIdSchema, readOnly: true },
   get_provider_facts: { description: "Read published provider qualifications, their evidence and limitations. A historical fact is not current buyer authority.", schema: empty, readOnly: true },
   list_experiments: { description: "List curated scenarios and this developer session's persisted Sample runs.", schema: empty, readOnly: true },
   get_run: { description: "Read a run owned by this developer session, including provenance and invariant verdicts.", schema: z.strictObject({ runId: z.uuid() }), readOnly: true },
@@ -42,6 +54,19 @@ export class DeveloperRuntime {
     const session = await this.access.authorize(this.credential);
     await this.service.store.rateLimit(`developer:${this.credential.id}:read`, 120, 60_000);
     const args = parsed.data as Record<string, string>;
+    if (["list_source_roots", "import_source_workspace", "list_source_workspaces", "get_source_workspace", "read_source_file", "check_source_changes", "approve_source_view", "export_source_snapshot"].includes(name)) {
+      const sources = new SourceAccessStore(this.service.store);
+      const owner = { sessionId: session.id, grantId: this.credential.id };
+      if (name === "list_source_roots") return sourceRootCapabilities();
+      if (name === "list_source_workspaces") return sources.list(session.id);
+      if (name === "get_source_workspace") return sources.get(session.id, args.importId!);
+      if (name === "read_source_file") return sources.readFile(session.id, args.importId!, args.path!, args.expectedHash!);
+      if (name === "export_source_snapshot") return sources.report(session.id, args.importId!);
+      await this.service.store.rateLimit(`developer:${this.credential.id}:source`, 30);
+      if (name === "approve_source_view") return sources.approve(owner, parsed.data as SourceViewApprovalInput);
+      if (name === "check_source_changes") return checkLocalSourceChanges(sources, owner, args.importId!, args.requestId!);
+      return importLocalSource(sources, owner, parsed.data as SourceImportInput);
+    }
     if (["list_campaigns", "get_campaign", "create_campaign", "continue_campaign", "stop_campaign", "minimize_failure", "export_campaign"].includes(name)) {
       const campaigns = new CampaignLab(this.service.store, undefined, this.credential.id);
       if (name === "list_campaigns") return { source: "sample", campaigns: await campaigns.store.list(session.id) };

@@ -61,10 +61,17 @@ Available tools:
 | `continue_campaign` / `stop_campaign` | Continue only remaining unstarted cases, or revoke dispatch while preserving partial observations. |
 | `minimize_failure` | Queues all declared fault-component subsets and matching controls for one observed failing property. |
 | `export_campaign` | Exact manifest and case receipts, current owned evidence, resource observations and cutoff hashes. |
+| `list_source_roots` / `import_source_workspace` | Authorized local root aliases and a private sanitized source snapshot; static inspection only. |
+| `list_source_workspaces` / `get_source_workspace` | Owned source manifests, AST spans, risk findings, tool declarations and change receipts. |
+| `read_source_file` / `export_source_snapshot` | Exact owned source bytes, verified hashes and private JSON export. |
+| `check_source_changes` | A separately identified current-tree observation; the accepted snapshot and prior checks stay immutable. |
+| `approve_source_view` | Explicit read-only approval for one browser challenge and one exact source import. |
 
 Every tool invocation revalidates the credential, grant expiry/revocation, active owner session, strict argument schema and ownership. Limits are 120 calls/minute, 20 run requests/hour, 20 campaign commands/hour and 10 diagnosis requests/hour per grant. Campaign stop does not consume the campaign execution quota. An already accepted standalone curated experiment can finish; revocation denies subsequent calls, including calls on an already-connected MCP client. Queued generated-repair jobs recheck the owner grant before execution and publication. Campaign workers recheck that original grant at every Sample mutation boundary, so revocation stops further dispatches without deleting observations.
 
 See [Durable campaigns and bounded failure reduction](CAMPAIGNS.md) for the matrix, reduction certificate, local worker, exact recovery rules and CLI examples. Campaigns execute independently of the request that creates them; start `node --import tsx scripts/campaign-worker.ts` for local CLI/MCP work.
+
+See [Private source snapshots in the console](SOURCE_CONSOLE.md) for source roots, storage scope, exact browser approval and retained change observations. Source commands have a 30/hour limit. Imported application code and declared install/test scripts are never executed by this inspector. Source contents are persisted in the configured database; a remote database requires explicit operator opt-in.
 
 ```sh
 npm run cli -- revoke
@@ -78,7 +85,7 @@ Revocation preserves experiment history. To create a new session after expiry/re
 
 The server uses the pinned `@modelcontextprotocol/sdk` 1.32.2 maintenance line and its official `McpServer`, `Client`, and stdio transports. See the [official TypeScript SDK documentation](https://github.com/modelcontextprotocol/typescript-sdk/blob/v1.x/README.md).
 
-Arbitrary workspace imports, live payment experiment tools, Python/Tandem tools, remote MCP hosting, and their complete acceptance proofs remain separate implementation work. They are not advertised as available MCP tools. Generated repairs are the bounded local worker workflow below; the existing human-authored reference remains a separate provenance.
+Authorized source imports and static maps now have their own strict tools and scoped browser views. General imported-application execution, live payment experiment tools, Python/Tandem execution tools, remote MCP hosting, and their complete acceptance proofs remain separate implementation work. Generated repairs are the bounded local worker workflow below; the existing human-authored reference remains a separate provenance.
 
 ## Generated repairs and the local worker
 

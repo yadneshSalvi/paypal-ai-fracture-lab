@@ -1,0 +1,8 @@
+export const sourceAccessSchema = [
+  `CREATE TABLE IF NOT EXISTS lab_source_imports(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,grant_id TEXT NOT NULL,request_id TEXT NOT NULL,input_hash TEXT NOT NULL,root_id TEXT NOT NULL,relative_path TEXT NOT NULL,title TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,status TEXT NOT NULL,error_code TEXT,snapshot_id TEXT,revision_hash TEXT,snapshot_document TEXT,snapshot_hash TEXT,file_count INTEGER NOT NULL DEFAULT 0,total_bytes INTEGER NOT NULL DEFAULT 0,finding_count INTEGER NOT NULL DEFAULT 0,reserved_bytes INTEGER NOT NULL,UNIQUE(session_id,request_id))`,
+  `CREATE INDEX IF NOT EXISTS lab_source_imports_session ON lab_source_imports(session_id,created_at)`,
+  `CREATE TABLE IF NOT EXISTS lab_source_files(import_id TEXT NOT NULL,path TEXT NOT NULL,hash TEXT NOT NULL,bytes INTEGER NOT NULL,content TEXT NOT NULL,PRIMARY KEY(import_id,path))`,
+  `CREATE TABLE IF NOT EXISTS lab_source_browser_connections(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,request_id TEXT NOT NULL,created_at TEXT NOT NULL,approval_expires_at TEXT NOT NULL,status TEXT NOT NULL,owner_session_id TEXT,owner_grant_id TEXT,import_id TEXT,approval_request_id TEXT,approval_input_hash TEXT,view_expires_at TEXT,UNIQUE(session_id,request_id))`,
+  `CREATE INDEX IF NOT EXISTS lab_source_browser_connections_session ON lab_source_browser_connections(session_id,created_at)`,
+  `CREATE TABLE IF NOT EXISTS lab_source_changes(id TEXT PRIMARY KEY,import_id TEXT NOT NULL,session_id TEXT NOT NULL,request_id TEXT NOT NULL,input_hash TEXT NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,document TEXT,document_hash TEXT,error_code TEXT,UNIQUE(session_id,request_id))`,
+];
