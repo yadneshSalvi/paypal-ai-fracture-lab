@@ -1,0 +1,63 @@
+{
+  "verifiedAt": "2026-11-12T02:24:08.317Z",
+  "status": "bounded_release_qualified",
+  "url": "https://paypal-ai-fracture-lab.vercel.app/evaluations",
+  "deploymentId": "dpl_DUvvc6zscy16W27FMwLPMHLMeVff",
+  "deployedSourceCommit": "6265c4e918abf48c44dab9f9c1b78860d3f035da",
+  "studyId": "fracture-context-2026-11-v1",
+  "sealHash": "dc59e7326838dbe068817b557ac4ea4b9d81e5518bd313c6b69710f8a2ad19dc",
+  "qualification": {
+    "precedingDeployment": {
+      "source": "106644ef0f3e773ce697661c9fb407e78c10d754",
+      "artifactFiles": 606,
+      "candidateApis": 600,
+      "taskApis": 20,
+      "totalReadRequests": 1229,
+      "allSealedBytesMatched": true
+    },
+    "finalDelta": {
+      "changedFiles": [
+        "apps/web/components/app-shell.tsx"
+      ],
+      "otherReleaseFilesUnchanged": 2059,
+      "readRequests": 35,
+      "pageAssets": 18,
+      "stablePublicReadRequests": 4
+    },
+    "native": [
+      "Exact receipt download",
+      "Submitted code rows and contained keyboard scroll",
+      "Dialog Tab wrap, Escape and opener return",
+      "All eight sealed strata and withheld intervals on the locally qualified source",
+      "360px containment",
+      "Public research labels",
+      "Search Escape and opener return",
+      "Stable URL rendered in the in-app browser"
+    ],
+    "database": {
+      "originalTables": 45,
+      "originalRows": 2076,
+      "allOriginalRowHashesPreserved": true,
+      "addedRows": 131,
+      "addedSampleSessions": 2,
+      "addedSampleRuns": 4,
+      "additionalRateWindows": 1,
+      "attribution": "Observed home-page GETs, workspace401 and two successful Sample session POSTs; caller identity is not available in retained request logs."
+    },
+    "runtimeErrorLogEntries": 0
+  },
+  "scope": {
+    "modelCallsForRelease": 0,
+    "liveProviderCallsForRelease": 0,
+    "all600OriginalOutcomesRetained": true,
+    "infrastructureOutcomes": 299,
+    "comparisonIntervalsWithheld": 16,
+    "fullProductPlanComplete": false
+  },
+  "limitations": [
+    "This release qualifies the sealed research view, not the whole product plan.",
+    "Original infrastructure outcomes remain in the denominator; no treatment-superiority claim is supported.",
+    "The stated model usage amount is a published-rate estimate, not a reconciled invoice.",
+    "Runtime logs cover the observed qualification window; they are not continuous monitoring."
+  ]
+}
