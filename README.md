@@ -20,6 +20,8 @@ The optional `/live-bramble` runner uses real PayPal sandbox approvals and origi
 
 The run page includes participant timelines, a knowledge cursor, resource receipts, eight invariant checks, paired comparisons, compensation, and JSON/HTML exports. Reloading reads the same PostgreSQL records. The interface also exposes projects, integration maps, scenario campaigns, repairs, contract bindings, provider facts, evaluations, evidence and a guided tour.
 
+The [campaign laboratory](docs/CAMPAIGNS.md) saves paired Sample cases before execution, resumes the original identities across workers, and compares only the selected manifest's receipts. Its reduction inspector executes every declared fault-component subset and matching control before certifying a smallest witness. Cancelled and unknown writes retain their partial evidence; they are never replayed or counted as target passes.
+
 For **Investigate with Astra**, configure `OPENAI_API_KEY`, `OPENAI_PLANNER_MODEL` and `OPENAI_REASONING_EFFORT`. The qualified configuration uses `gpt-6-astra` with `max`. This executes two real Responses API calls around an actual model-selected, scoped SDK resource read. Only read tools are available. Progress, elapsed time, cancellation, attempt records and the resource receipt are persisted. No static answer is presented as generated output.
 
 ## Verification
@@ -52,15 +54,15 @@ On Vercel, generation uses durable Workflow continuations and persisted OpenAI b
 
 ## Implementation and scope
 
-- **Implemented:** authoritative PostgreSQL storage; durable run/action identities and worker leases; independent faulty and hardened Bramble targets; persistent local orders, captures and refunds; S0, S3, S4, S5, S10 and A4 executors; Errand E0 actual Toolkit/local-provider comparison; invariant evaluation; scoped API; genuine model diagnosis; durable generated-candidate and isolated verification queues; labelled reference/deceptive repair inspection; comparisons and compensation; reports and connected interface.
+- **Implemented:** authoritative PostgreSQL storage; durable run/action identities and worker leases; independent faulty and hardened Bramble targets; persistent local orders, captures and refunds; S0, S3, S4, S5, S10 and A4 executors; paired durable Sample campaigns and bounded fault-component reduction; Errand E0 actual Toolkit/local-provider comparison; invariant evaluation; scoped API; genuine model diagnosis; durable generated-candidate and isolated verification queues; labelled reference/deceptive repair inspection; comparisons and compensation; reports and connected interface.
 - **Qualified later units:** actual generated-candidate verification against ten unchanged public checks; durable isolated Python Tandem comparisons; the browser-approved live Bramble L2 baseline, hardened control and duplicate compensation. Each unit has its own scoped evidence document.
-- **In progress:** the remaining live and provider-negative application executors, live Errand behavior, expanded CLI/MCP execution capabilities, campaign recovery, minimization and broader source analysis.
+- **In progress:** the remaining live and provider-negative application executors, live Errand behavior, arbitrary source-workspace and Python/Tandem CLI/MCP capabilities, broader reduction grammars and source analysis.
 - **Sealed research:** the original 600-candidate, three-arm context study is complete. It retains 301 scored outcomes and 299 infrastructure outcomes, including all six allowed retry histories. All eight strata have incomplete target outcomes, so all comparative intervals are withheld. Explore `/evaluations` or read [the results and reproduction instructions](docs/evaluation/CONTEXT_STUDY_RESULTS.md).
 - **Unmeasured:** the 12-revision public sample audit and five actual user sessions. Their outcomes remain blank until executed.
 
 The baseline is eight live-resource cases, three provider-negative cases and twelve local cases. Seven proposed additions target 30 qualified cases. S0 is the introductory walkthrough and is excluded from that denominator. A visible scenario definition is not an executed capability: gated cases show the missing proof.
 
-The [local CLI and stdio MCP server](docs/DEVELOPER_TOOLS.md) execute qualified Sample scenarios and queue generated repair/verification through the same service, with private expiring grants, owned reports and immediate revocation for subsequent calls. Initialize with `npm run cli -- init`. Arbitrary-workspace and live-payment tools remain pending.
+The [local CLI and stdio MCP server](docs/DEVELOPER_TOOLS.md) execute qualified Sample scenarios and queue campaigns, reductions and generated repair/verification through the same service, with private expiring grants, owned reports and immediate revocation for subsequent calls. Campaign workers also enforce revocation before dispatch. Initialize with `npm run cli -- init`. Arbitrary-workspace and live-payment tools remain pending.
 
 ## Payment boundary
 

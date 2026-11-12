@@ -10,7 +10,7 @@ const refusal=(issue:string,status=422)=>response({name:"UNPROCESSABLE_ENTITY",m
 
 /** Persisted provider model. No request ever leaves this local transport. */
 export class LocalPayPalTransport {
-  constructor(readonly store:LabStore,readonly runId:string,readonly faults:FaultPlan,readonly leaseOwner?:string){}
+  constructor(readonly store:LabStore,readonly runId:string,readonly faults:FaultPlan,readonly leaseOwner?:string,readonly dispatchGuard?:((tx:SqlConnection)=>Promise<void>)|undefined){}
   readonly fetch:typeof fetch=async(input,init)=>{
     const request=input instanceof Request?input:new Request(input,init);if(request.signal.aborted)throw request.signal.reason;
     const url=new URL(request.url);if(url.origin!=="https://api-m.sandbox.paypal.com")throw new LabError("FIXTURE_HOST_DENIED","The fixture only accepts its declared endpoint.",403);
@@ -31,7 +31,9 @@ export class LocalPayPalTransport {
     const create=url.pathname==="/v2/checkout/orders";const captureMatch=url.pathname.match(/^\/v2\/checkout\/orders\/([^/]+)\/capture$/);const refundMatch=url.pathname.match(/^\/v2\/payments\/captures\/([^/]+)\/refund$/);
     if(!create&&!captureMatch&&!refundMatch)return refusal("LOCAL_OPERATION_NOT_IMPLEMENTED",404);
     if(this.faults.policyDenial&&(captureMatch||refundMatch)){await this.store.emit(this.runId,{lane:"lab",kind:"harness_safety_denied",title:"The experiment boundary blocked dispatch",detail:"The lab stopped this request. This cannot count as the target passing an invariant.",identity,facts:{path:url.pathname}});return refusal("HARNESS_SAFETY_DENIED",403);}
-    const outcome=await this.mutate(url.pathname,payload,requestId,create,captureMatch?.[1],refundMatch?.[1]);
+    let outcome:Awaited<ReturnType<LocalPayPalTransport["mutate"]>>;
+    try{outcome=await this.mutate(url.pathname,payload,requestId,create,captureMatch?.[1],refundMatch?.[1]);}
+    catch(error){if(!(error instanceof LabError)||!error.code.startsWith("CAMPAIGN_"))throw error;await this.store.emit(this.runId,{lane:"lab",kind:"harness_safety_denied",title:"Campaign authority stopped dispatch",detail:"The saved campaign no longer permits a new Sample request. This intervention cannot establish target correctness.",facts:{reason:error.code}});return refusal("HARNESS_SAFETY_DENIED",403);}
     if("error" in outcome)return refusal(outcome.error);
     const {resource,reused}=outcome;
     await this.store.emit(this.runId,{lane:"provider",kind:reused?"provider_request_reused":`${resource.kind}_${resource.status.toLowerCase()}`,title:reused?"Same request, same resource":resource.kind==="capture"?`Capture ${resource.status.toLowerCase()}`:resource.kind==="refund"?"Refund completed":"A new order exists",detail:resource.kind==="capture"?`${resource.money?.currency} ${resource.wireAmount.value} is recorded on ${resource.id}.`:`Resource ${resource.id} belongs to this purchase.`,identity,resourceId:resource.id,...(requestId?{requestId}:{}),facts:{resource,method:request.method,path:url.pathname,payloadHash:attempt.payloadHash,providerRequestIdPresent:Boolean(requestId),genericHeaderPresent:attempt.genericHeaderPresent,reused}});
@@ -50,12 +52,22 @@ export class LocalPayPalTransport {
     const all=await this.store.resources(this.runId);const captures=all.filter(item=>item.kind==="capture"&&item.parentId===resource.id);const refunds=all.filter(item=>item.kind==="refund"&&captures.some(capture=>capture.id===item.parentId));
     return {id:resource.id,status:resource.status,intent:"CAPTURE",purchase_units:[{reference_id:"default",amount:resource.wireAmount,custom_id:resource.customId,payments:{captures:await Promise.all(captures.map(item=>this.wire(item))),refunds:await Promise.all(refunds.map(item=>this.wire(item)))}}],links:[]};
   }
-  async approve(orderId:string){const resource=await this.resource(orderId);if(!resource||resource.kind!=="order")throw new LabError("ORDER_NOT_FOUND","Sample order not found.",404);if(resource.approved)return;await this.saveResource({...resource,status:"APPROVED",approved:true,observedAt:new Date().toISOString()},this.store.db);await this.store.emit(this.runId,{lane:"customer",kind:"buyer_approved",title:"Maya approves this order",detail:`The scripted Sample buyer approves ${resource.wireAmount.currency_code} ${resource.wireAmount.value} for this distinct order.`,resourceId:resource.id,facts:{explicitSampleApproval:true}});}
+  async approve(orderId:string){
+    const approved=await this.store.db.transaction(async tx=>{
+      if(this.dispatchGuard)await this.dispatchGuard(tx);
+      const resource=await this.resource(orderId,tx);if(!resource||resource.kind!=="order")throw new LabError("ORDER_NOT_FOUND","Sample order not found.",404);if(resource.approved)return null;
+      if(this.leaseOwner){const job=await tx.query<{lease_owner:string;lease_until:string;stage:string}&Record<string,unknown>>("SELECT lease_owner,lease_until,stage FROM lab_jobs WHERE id=$1 FOR UPDATE",[`execute:${this.runId}`]);const lease=job.rows[0];if(!lease||lease.lease_owner!==this.leaseOwner||lease.stage!=="running"||lease.lease_until<new Date().toISOString())throw new LabError("LEASE_LOST","The worker no longer owns this Sample approval.",409);}
+      await tx.query("SELECT id FROM lab_runs WHERE id=$1 FOR UPDATE",[this.runId]);if((await this.store.record(this.runId,undefined,tx)).cancelled)throw new LabError("HARNESS_CANCELLED","The Sample journey has been stopped.",409);
+      await this.saveResource({...resource,status:"APPROVED",approved:true,observedAt:new Date().toISOString()},tx);return resource;
+    });
+    if(approved)await this.store.emit(this.runId,{lane:"customer",kind:"buyer_approved",title:"Maya approves this order",detail:`The scripted Sample buyer approves ${approved.wireAmount.currency_code} ${approved.wireAmount.value} for this distinct order.`,resourceId:approved.id,facts:{explicitSampleApproval:true}});
+  }
   private async consume(key:string){const result=await this.store.db.query("INSERT INTO lab_faults(run_id,fault_key,document) VALUES($1,$2,$3) ON CONFLICT DO NOTHING",[this.runId,key,JSON.stringify({usedAt:new Date().toISOString(),source:"sample"})]);return result.rowCount===1;}
   private async wasUsed(key:string){return (await this.store.db.query("SELECT fault_key FROM lab_faults WHERE run_id=$1 AND fault_key=$2",[this.runId,key])).rowCount>0;}
   private async mutate(endpoint:string,payload:Record<string,unknown>,requestId:string|null,create:boolean,orderId?:string,captureId?:string):Promise<{resource:FixtureResource;reused:boolean}|{error:string}>{
     const run=await this.store.run(this.runId);const now=new Date().toISOString();const bodyHash=sha256(canonicalJson(payload));
     return this.store.db.transaction(async tx=>{
+      if(this.dispatchGuard)await this.dispatchGuard(tx);
       if(this.leaseOwner){const lease=await tx.query<{lease_owner:string;lease_until:string;stage:string}&Record<string,unknown>>("SELECT lease_owner,lease_until,stage FROM lab_jobs WHERE id=$1 FOR UPDATE",[`execute:${this.runId}`]);const current=lease.rows[0];if(!current||current.lease_owner!==this.leaseOwner||current.stage!=="running"||current.lease_until<new Date().toISOString())throw new LabError("LEASE_LOST","The experiment worker no longer owns this dispatch.",409);}
       await tx.query("SELECT id FROM lab_runs WHERE id=$1 FOR UPDATE",[this.runId]);
       const runRow=await this.store.record(this.runId,undefined,tx);if(runRow.cancelled)return {error:"HARNESS_CANCELLED"};

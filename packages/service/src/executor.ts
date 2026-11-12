@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { canonicalJson, sha256 } from "@fracture/paypal-core";
 import type { ProjectDTO, RunDTO, ScenarioDTO } from "@fracture/contracts";
 import { aggregateVerdict, evaluateRun } from "../../invariants/src/index";
 import { LocalPayPalTransport } from "../../runner/src/local-provider";
@@ -9,6 +10,9 @@ import type { BrambleContext } from "../../../apps/fixtures/bramble/contract";
 import { LabStore } from "./store";
 import type { RunInput } from "./types";
 import { executeErrand } from '../../../apps/fixtures/errand/execute';
+import { recipeFaults } from "../../campaigns/src/recipes";
+import { assertCampaignDispatch } from "../../campaigns/src/gate";
+import type { CampaignExecutionLease } from "../../campaigns/src/gate";
 
 export function newRun(input:RunInput,scenario:ScenarioDTO,project:ProjectDTO):RunDTO{
   const now=new Date().toISOString();return {id:randomUUID(),projectId:project.id,projectName:project.name,revision:input.revision,sourceHash:project.revisions.find(revision=>revision.id===input.revision)?.sourceHash??project.sourceHash,scenarioId:scenario.id,scenarioTitle:scenario.title,scenarioHash:scenario.hash,seed:input.seed,stage:"created",verdict:"inconclusive",source:input.mode,faultSource:scenario.faultSource,createdAt:now,updatedAt:now,durationMs:0,businessIntentId:`purchase-${randomUUID()}`,amountMinor:1200,currency:"USD",captureCount:0,capturedMinor:0,refundedMinor:0,fulfillmentCount:0,phoneState:"ready",applicationStatus:"UNPAID",providerStatus:"NO PAYMENT",orderIds:[],captures:[],refunds:[],events:[],invariants:[],diagnosis:null,repairIds:[],comparisonRunId:null,remediation:"not_needed",summary:"Experiment created; no payment observation yet.",limitations:["Sample: a persistent local provider model. No real money or provider request occurs.","The real pinned SDK serializes the hardened target; the faulty target uses independent raw HTTP.","A scripted local buyer explicitly approves each distinct order. This is not a real buyer approval."],nextAction:"Run the purchase"};
@@ -22,26 +26,31 @@ export async function refreshRun(store:LabStore,runId:string,terminal=true){
   return store.updateRun(runId,run=>({...run,...projection,orderIds:sorted.filter(item=>item.kind==="order").map(item=>item.id),captures:sorted.filter(item=>item.kind==="capture").map(item=>({id:item.id,orderId:item.parentId??"",status:item.status,amountMinor:item.money?.minor??0,currency:item.money?.currency??run.currency,observedAt:item.observedAt,source:item.source,evidenceId:proof(item.id)})),refunds:sorted.filter(item=>item.kind==="refund").map(item=>({id:item.id,captureId:item.parentId??"",status:item.status,amountMinor:item.money?.minor??0,currency:item.money?.currency??run.currency,observedAt:item.observedAt,source:item.source,evidenceId:proof(item.id)})),invariants,verdict,stage:terminal?(verdict==="inconclusive"?"inconclusive":"completed"):run.stage,durationMs:Math.max(0,Date.now()-Date.parse(run.createdAt)),remediation:run.remediation==="completed"?"completed":projection.captureCount>1?"approval_required":"not_needed",summary:projection.captureCount>1?"Two completed captures belong to one $12 purchase. The original failure remains visible.":projection.phoneState==="checking"?"The purchase remains uncertain. No extra charge or download was issued.":verdict==="pass"?"One durable intent, confirmed provider state, and at most one book.":"The persisted trace contains a reproducible target defect.",nextAction:terminal?(projection.captureCount>1?"Diagnose the mismatch":"Inspect the evidence"):run.nextAction}));
 }
 
-export async function executeRun(store:LabStore,runId:string,sessionId:string){
+export async function executeRun(store:LabStore,runId:string,sessionId:string,campaignLease?:CampaignExecutionLease){
   if((await store.run(runId,sessionId)).source!=='sample')throw new Error('The Sample executor cannot execute a live provider run.');
   await store.record(runId,sessionId);const owner=randomUUID();const job=await store.claimJob(runId,owner);if(!job)return store.run(runId,sessionId);
   let jobState="completed";
   try{
     const row=await store.record(runId,sessionId);let run=await store.run(runId,sessionId);
+    if(sha256(canonicalJson(job.input))!==row.input_hash)throw new Error("The durable run inputs no longer match their original claim.");
     if(row.cancelled)return run;
     if(job.recovering&&row.checkpoint.includes("dispatching")){
       await store.emit(runId,{lane:"lab",kind:"worker_recovery_uncertain",title:"Recovered an interrupted worker",detail:"The prior worker ended at a write boundary. Its command is not blindly replayed; persisted resources and history are retained.",facts:{checkpoint:row.checkpoint}});
       const recovered=await refreshRun(store,runId,false);return store.updateRun(runId,item=>({...item,stage:"inconclusive",verdict:"inconclusive",summary:"An interrupted write requires explicit reconciliation.",nextAction:"Run a read-only diagnosis",limitations:[...recovered.limitations,"Worker recovery stopped at a potentially dispatched write; no automatic new order was attempted."]}),"recovery_required");
     }
     if(run.projectId==='errand')return await executeErrand(store,run,sessionId,owner);
-    const transport=new LocalPayPalTransport(store,runId,scenarioFaults(run.scenarioId),owner);const context:BrambleContext={run,sessionId,store,transport};const checkout=run.revision==="faulty"?faultyCheckout:hardenedCheckout;
+    if(job.input.executionRecipe&&!job.input.campaign)throw new Error("A reduction recipe requires its original campaign authority.");
+    if(job.input.campaign&&!campaignLease)throw new Error("Campaign execution requires its current worker lease.");
+    const dispatchGuard=job.input.campaign?async(tx:import("@fracture/paypal-core").SqlConnection)=>assertCampaignDispatch(tx,job.input.campaign!,runId,sessionId,campaignLease!):undefined;
+    const transport=new LocalPayPalTransport(store,runId,job.input.executionRecipe?recipeFaults(job.input.executionRecipe):scenarioFaults(run.scenarioId),owner,dispatchGuard);const context:BrambleContext={run,sessionId,store,transport};const checkout=run.revision==="faulty"?faultyCheckout:hardenedCheckout;
     if(row.checkpoint==="start"||row.checkpoint==="preflight"){
       await store.stage(runId,"preflight","preflight");
-      await store.emit(runId,{lane:"lab",kind:"preflight",title:"The experiment is isolated",detail:"This run owns its provider model, purchase intent and durable observations. Fault injection cannot add idempotency to the faulty target.",facts:{source:"sample",scenarioHash:run.scenarioHash,sourceHash:run.sourceHash,seed:run.seed,revision:run.revision}});
+      await store.emit(runId,{lane:"lab",kind:"preflight",title:"The experiment is isolated",detail:"This run owns its provider model, purchase intent and durable observations. Fault injection cannot add idempotency to the faulty target.",facts:{source:"sample",scenarioHash:run.scenarioHash,sourceHash:run.sourceHash,seed:run.seed,revision:run.revision,...(job.input.campaign?{campaign:job.input.campaign,recipe:job.input.executionRecipe??null}:{})}});
       await store.stage(runId,"executing","first_dispatching");await checkout(context);await store.stage(runId,"observing","first_observed");
     }
     run=await refreshRun(store,runId,false);let state=await store.targetState(runId,run.businessIntentId);
-    const shouldRetry=run.revision==="faulty"&&retryScenarios.has(run.scenarioId)&&state.status==="failed"&&run.captureCount>0;
+    const retryAllowed=job.input.executionRecipe?job.input.executionRecipe.components.includes("customer_retry"):retryScenarios.has(run.scenarioId);
+    const shouldRetry=run.revision==="faulty"&&retryAllowed&&state.status==="failed"&&run.captureCount>0;
     if(shouldRetry&&job.input.interactive&&row.checkpoint!=="retry_queued"){
       jobState="waiting";return store.updateRun(runId,item=>({...item,stage:"awaiting_approval",nextAction:"Try again in Bramble",summary:"The shop says payment failed, but one capture already completed. The next customer retry is waiting for you."}),"awaiting_retry");
     }

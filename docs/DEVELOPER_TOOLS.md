@@ -56,8 +56,15 @@ Available tools:
 | `propose_repair` | Queues a new model candidate from exact source and pinned contracts; local worker required. |
 | `verify_patch` | Queues the exact saved candidate in the isolated evaluator; local worker required. |
 | `export_report` | JSON for one owned run, its repair candidates and redacted evidence. |
+| `list_campaigns` / `get_campaign` | Saved owned campaign manifests, exact case counts and reduction certificates. |
+| `create_campaign` | Queues qualified Bramble Sample cases with fixed revisions, seed, source bindings and deadline. |
+| `continue_campaign` / `stop_campaign` | Continue only remaining unstarted cases, or revoke dispatch while preserving partial observations. |
+| `minimize_failure` | Queues all declared fault-component subsets and matching controls for one observed failing property. |
+| `export_campaign` | Exact manifest and case receipts, current owned evidence, resource observations and cutoff hashes. |
 
-Every tool invocation revalidates the credential, grant expiry/revocation, active owner session, strict argument schema and ownership. Limits are 120 calls/minute, 20 run requests/hour and 10 diagnosis requests/hour per grant. An already accepted curated experiment can finish; revocation denies subsequent calls, including calls on an already-connected MCP client. Queued generated-repair jobs also recheck the owner grant before execution and publication.
+Every tool invocation revalidates the credential, grant expiry/revocation, active owner session, strict argument schema and ownership. Limits are 120 calls/minute, 20 run requests/hour, 20 campaign commands/hour and 10 diagnosis requests/hour per grant. Campaign stop does not consume the campaign execution quota. An already accepted standalone curated experiment can finish; revocation denies subsequent calls, including calls on an already-connected MCP client. Queued generated-repair jobs recheck the owner grant before execution and publication. Campaign workers recheck that original grant at every Sample mutation boundary, so revocation stops further dispatches without deleting observations.
+
+See [Durable campaigns and bounded failure reduction](CAMPAIGNS.md) for the matrix, reduction certificate, local worker, exact recovery rules and CLI examples. Campaigns execute independently of the request that creates them; start `node --import tsx scripts/campaign-worker.ts` for local CLI/MCP work.
 
 ```sh
 npm run cli -- revoke
@@ -67,7 +74,7 @@ Revocation preserves experiment history. To create a new session after expiry/re
 
 ## Qualification and remaining work
 
-`node --import tsx --test tests/developer-tools.test.ts` runs 13 checks when PostgreSQL is configured: five boundary checks on both SQLite and a disposable PostgreSQL schema, private credential file validation, an actual MCP SDK client/server exchange, and fresh CLI plus real stdio MCP subprocesses sharing durable state. The process test revokes through the CLI while the MCP client is connected and confirms that subsequent reads fail.
+`node --import tsx --test tests/developer-tools.test.ts tests/campaign-lab.test.ts` checks SQLite and disposable PostgreSQL schemas, private credential files, actual MCP SDK client/server exchanges, and fresh CLI, campaign-worker and stdio MCP subprocesses sharing durable state. The process test queues through MCP, runs both campaign cases in independent workers, exports their actual receipts, then revokes through CLI and confirms that a queued reduction stops and later MCP reads fail. Campaign tests also cover concurrency, unknown writes, partial cancellation, stale inputs and exhaustive property-preserving reduction.
 
 The server uses the pinned `@modelcontextprotocol/sdk` 1.32.2 maintenance line and its official `McpServer`, `Client`, and stdio transports. See the [official TypeScript SDK documentation](https://github.com/modelcontextprotocol/typescript-sdk/blob/v1.x/README.md).
 

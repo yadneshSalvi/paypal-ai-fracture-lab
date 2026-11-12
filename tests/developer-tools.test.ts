@@ -17,6 +17,8 @@ import { DeveloperAccess, initializeCredential, readCredential } from "../packag
 import { DeveloperRuntime, safeDeveloperError, toolDefinitions } from "../packages/developer-tools/src/runtime";
 import { createDeveloperMcp } from "../apps/mcp/src/server";
 import type { RunDTO } from "../packages/contracts/src/index";
+import type { CampaignLabDTO } from "../packages/contracts/src/campaign-lab";
+import { CampaignLab } from "../packages/campaigns/src/runtime";
 
 const execute = promisify(execFile);
 const adapters = process.env.DATABASE_URL ? ["sqlite", "postgres"] as const : ["sqlite"] as const;
@@ -129,8 +131,8 @@ test("MCP client discovers strict schemas, executes Sample flow, and observes im
   assert.ok(JSON.stringify(revoked).includes("DEVELOPER_ACCESS_DENIED"));
 });
 
-test("CLI and real stdio MCP share persisted owner scope across fresh processes", { skip: !process.env.DATABASE_URL }, async t => {
-  const { connectionUrl, directory } = await setup(t, "postgres");
+test("CLI, campaign worker and real stdio MCP share durable private scope across fresh processes", { skip: !process.env.DATABASE_URL }, async t => {
+  const { connectionUrl, directory, service } = await setup(t, "postgres");
   const root = workspaceRoot(); const file = join(directory, "process-session.json");
   const env = { ...process.env, DATABASE_URL: connectionUrl!, FRACTURE_WORKSPACE_ROOT: root, FRACTURE_DEVELOPER_CREDENTIAL_FILE: file };
   const cli = async (...args: string[]) => JSON.parse((await execute(process.execPath, ["--import", "tsx", "apps/cli/src/index.ts", ...args], { cwd: root, env, timeout: 30_000, maxBuffer: 4 * 1024 * 1024 })).stdout);
@@ -145,7 +147,24 @@ test("CLI and real stdio MCP share persisted owner scope across fresh processes"
   await client.connect(transport);
   const response = await client.callTool({ name: "get_run", arguments: { runId: run.id } }); assert.notEqual(response.isError, true);
   assert.ok(JSON.stringify(response).includes(run.id));
+  const campaignArgs = { scenarioIds: ["S0"], revisions: ["faulty", "hardened"], seed: "process-campaign-seed", requestId: randomUUID() };
+  const queuedResponse = await client.callTool({ name: "create_campaign", arguments: campaignArgs }); assert.notEqual(queuedResponse.isError, true);
+  const queued = JSON.parse((queuedResponse.content as { type: string; text: string }[])[0]!.text).campaign as CampaignLabDTO;
+  assert.equal(queued.status, "queued"); assert.equal((await cli("call", "create_campaign", JSON.stringify(campaignArgs))).campaign.id, queued.id);
+  const worker = () => execute(process.execPath, ["--import", "tsx", "scripts/campaign-worker.ts", "--once"], { cwd: root, env, timeout: 30_000, maxBuffer: 4 * 1024 * 1024 });
+  await worker(); await worker();
+  const completed = await cli("call", "get_campaign", JSON.stringify({ campaignId: queued.id })) as CampaignLabDTO;
+  assert.equal(completed.status, "completed"); assert.equal(completed.counts.fail, 1); assert.equal(completed.counts.pass, 1);
+  const exported = await client.callTool({ name: "export_campaign", arguments: { campaignId: queued.id } });
+  assert.notEqual(exported.isError, true);
+  const report = JSON.parse((exported.content as { type: string; text: string }[])[0]!.text);
+  assert.equal(report.document.campaign.manifestHash, completed.manifestHash); assert.equal(report.document.runs.length, 2); assert.ok(report.document.evidence.length > 20);
+  const reduction = await cli("call", "minimize_failure", JSON.stringify({ campaignId: completed.id, caseId: completed.cases[0]!.id, invariantId: "I2", requestId: randomUUID() }));
+  assert.equal(reduction.campaign.manifest.kind, "minimization"); assert.equal(reduction.campaign.cases.length, 8);
   await cli("revoke");
+  await worker();
+  const stopped = await new CampaignLab(service.store).store.get(reduction.campaign.id);
+  assert.equal(stopped.status, "cancelled"); assert.equal(stopped.counts.completed, 0);
   assert.equal((await client.callTool({ name: "get_run", arguments: { runId: run.id } })).isError, true);
   await client.close(); assert.equal(stderr, "");
 });

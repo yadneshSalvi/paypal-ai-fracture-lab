@@ -44,8 +44,10 @@ export class LabStore {
   async updateRun(runId:string,update:(run:RunDTO)=>RunDTO,checkpoint?:string){
     return this.db.transaction(async tx=>{
       const result=await tx.query<RunRow>("SELECT * FROM lab_runs WHERE id=$1 FOR UPDATE",[runId]);if(!result.rows[0])throw new LabError("RUN_NOT_FOUND","Run not found.",404);
-      const row=result.rows[0];const next=update(JSON.parse(row.document) as RunDTO);next.updatedAt=new Date().toISOString();
-      await tx.query("UPDATE lab_runs SET document=$2,stage=$3,updated_at=$4,version=version+1,checkpoint=$5 WHERE id=$1",[runId,JSON.stringify(next),next.stage,next.updatedAt,checkpoint??row.checkpoint]);return next;
+      const row=result.rows[0];const previous=JSON.parse(row.document) as RunDTO;const retained={stage:previous.stage,verdict:previous.verdict,summary:previous.summary,nextAction:previous.nextAction};const next=update(previous);next.updatedAt=new Date().toISOString();
+      const stopped=Boolean(row.cancelled)&&row.checkpoint==="campaign_stopped";
+      if(stopped)Object.assign(next,retained);
+      await tx.query("UPDATE lab_runs SET document=$2,stage=$3,updated_at=$4,version=version+1,checkpoint=$5 WHERE id=$1",[runId,JSON.stringify(next),next.stage,next.updatedAt,stopped?row.checkpoint:checkpoint??row.checkpoint]);return next;
     });
   }
   async stage(runId:string,stage:RunStage,checkpoint?:string){return this.updateRun(runId,run=>({...run,stage}),checkpoint);}

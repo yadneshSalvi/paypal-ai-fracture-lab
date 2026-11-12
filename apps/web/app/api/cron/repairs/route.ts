@@ -4,6 +4,8 @@ import { dispatchRepair } from "../../../../lib/repair-dispatch";
 import { cancelInactiveBackgroundModels } from "../../../../../../packages/ai/src/background";
 import { getTandem } from '../../../../lib/tandem';
 import { dispatchTandem } from '../../../../lib/tandem-dispatch';
+import { CampaignLab } from '../../../../../../packages/campaigns/src/runtime';
+import { dispatchCampaign } from '../../../../lib/campaign-dispatch';
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -21,6 +23,8 @@ export async function GET(request: Request) {
   const outcomes = await Promise.allSettled(jobs.rows.map(job => dispatchRepair(job.id)));
   const tandem=await getTandem();const expired=await tandem.recoverExpired();const tandemJobs=await tandem.pending();
   const tandemOutcomes=await Promise.allSettled(tandemJobs.map(dispatchTandem));
-  const failed = [...outcomes,...tandemOutcomes].filter(result => result.status === "rejected").length;
-  return Response.json({examined:jobs.rowCount+tandemJobs.length, dispatched:outcomes.length+tandemOutcomes.length-failed, failed,tandemExpired:expired}, {status:failed ? 503 : 200, headers:{"cache-control":"no-store"}});
+  const campaignJobs=await new CampaignLab(service.store).store.pending();
+  const campaignOutcomes=await Promise.allSettled(campaignJobs.map(dispatchCampaign));
+  const failed = [...outcomes,...tandemOutcomes,...campaignOutcomes].filter(result => result.status === "rejected").length;
+  return Response.json({examined:jobs.rowCount+tandemJobs.length+campaignJobs.length, dispatched:outcomes.length+tandemOutcomes.length+campaignOutcomes.length-failed, failed,tandemExpired:expired,campaignsExamined:campaignJobs.length}, {status:failed ? 503 : 200, headers:{"cache-control":"no-store"}});
 }
