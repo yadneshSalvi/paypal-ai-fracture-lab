@@ -102,7 +102,7 @@ For deliberate ephemeral local tests only, set `FRACTURE_REMOTE_MCP_ALLOW_LOOPBA
 
 ```sh
 node node_modules/typescript/bin/tsc --noEmit
-node node_modules/next/dist/bin/next build apps/web --webpack
+npm run build -- --webpack
 FRACTURE_REMOTE_MCP_BUILT=1 node --import tsx --test tests/remote-mcp*.test.ts tests/developer-tools.test.ts tests/source-access.test.ts
 node --import tsx scripts/run-context-study.ts --verify-only --protocol evaluation/studies/fracture-context-2026-11-v1/protocol.json
 ```
