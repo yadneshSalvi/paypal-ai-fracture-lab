@@ -18,6 +18,11 @@ export interface RemoteMcpOptions {
   dispatchCampaign?: (campaignId: string) => Promise<unknown>;
 }
 
+const remoteDescriptions: Record<string, string> = {
+  propose_repair: "Queue a model-authored repair or refinement for an owned faulty Sample witness. The configured durable repair worker continues the original request; inspect get_run for the saved candidate and job status. No application is changed or deployed.",
+  verify_patch: "Queue the exact saved candidate for isolated compilation and nine public product regressions. Hosted execution uses the configured Vercel Sandbox; a local deployment requires its qualified Docker worker. Inspect get_run and the execution receipt for the actual boundary and result. No application is changed or deployed.",
+};
+
 async function dispatchAccepted(runtime: DeveloperRuntime, name: string, args: Record<string, unknown>, result: unknown, options: RemoteMcpOptions): Promise<RemoteMcpDispatch | undefined> {
   const session = await runtime.access.authorize(runtime.credential);
   if (["propose_repair", "verify_patch"].includes(name)) {
@@ -46,7 +51,7 @@ function remoteServer(service: LabService, credential: DeveloperCredential, opti
   });
   for (const [name, definition] of Object.entries(toolDefinitions)) {
     if (hostedFilesystemTools.has(name)) continue;
-    server.registerTool(name, { description: definition.description, inputSchema: definition.schema, annotations: { readOnlyHint: definition.readOnly, destructiveHint: false, openWorldHint: ["diagnose_run", "propose_repair"].includes(name) } }, async (input: unknown) => {
+    server.registerTool(name, { description: remoteDescriptions[name] ?? definition.description, inputSchema: definition.schema, annotations: { readOnlyHint: definition.readOnly, destructiveHint: false, openWorldHint: ["diagnose_run", "propose_repair"].includes(name) } }, async (input: unknown) => {
       try {
         // Runtime retains strict schemas, original grant validation, quotas,
         // ownership, evidence and durable command identity. No duplicated service.

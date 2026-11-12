@@ -24,6 +24,9 @@ test("real SDK Streamable HTTP initialization, notifications, lists, calls and d
   const tools = await client.listTools();
   assert.deepEqual(tools.tools.map(tool => tool.name).sort(), Object.keys(toolDefinitions).filter(name => !hostedFilesystemTools.has(name)).sort());
   assert.equal(tools.tools.find(tool => tool.name === "run_curated_scenario")!.inputSchema.additionalProperties, false);
+  assert.match(tools.tools.find(tool => tool.name === "propose_repair")!.description!, /Queue.*durable repair worker/);
+  assert.match(tools.tools.find(tool => tool.name === "verify_patch")!.description!, /nine public product regressions.*Vercel Sandbox.*actual boundary/);
+  assert.notEqual(tools.tools.find(tool => tool.name === "verify_patch")!.description, toolDefinitions.verify_patch.description, "A hosted client must not receive the local-only execution description.");
   await client.ping();
   const notify = await f.request({ jsonrpc: "2.0", method: "notifications/initialized" });
   assert.equal(notify.status, 202); assert.equal(await notify.text(), "");

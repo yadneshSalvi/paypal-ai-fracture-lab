@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "kind": "separate_hosted_product_qualification",
+  "protocolId": "fracture-hosted-judge-2026-11-v6r1",
+  "protocolSha256": "8bcd038cb40091bf47b9efefc46c69b0f90949234f3f5a821a8823306af5e620",
+  "completedAt": "2026-11-12T13:48:50.889Z",
+  "sourceCommit": "2f05b5fe409d254a596bec313f287d6e744a7ad0",
+  "deploymentId": "dpl_6ZGvcTCdeyW3JZbNdRbZGFVJNWoP",
+  "canonicalOrigin": "https://paypal-ai-fracture-lab.vercel.app",
+  "sourceArchiveSha256": "6d6ebb435e06ff97e031ca0fa247f455df6cc7aaa2ff7631ff35f3cd6d0c3ad4",
+  "servedAssetFingerprint": "b5b628e0b88647ad5075ebe0833ae5ecb9c8647d022d56706c6fcec1dbe8dadf",
+  "scope": {
+    "financialResources": "controlled Sample provider",
+    "modelCalls": "actual OpenAI and Gemini",
+    "toolkit": "installed @paypal/agent-toolkit 1.11.0 scoped read",
+    "candidateExecution": "actual disposable Vercel Sandbox",
+    "originalSealedStudyExecuted": false
+  },
+  "originalWitness": {
+    "runId": "9240da28-1394-457e-89b0-3b4c1f235213",
+    "verdict": "fail",
+    "captures": 2,
+    "capturedMinor": 2400,
+    "currency": "USD",
+    "retained": true
+  },
+  "toolkit": {
+    "reviewId": "4db47937-b56e-481a-ad10-96444ea93e9c",
+    "completed": true,
+    "installedVersion": "1.11.0",
+    "phases": [
+      "actual Gemini selection",
+      "installed Toolkit read of one owned Sample order",
+      "actual Gemini conclusion"
+    ],
+    "paymentMutationCount": 0,
+    "reportSha256": "95785a048dd771669df7d13ebe9ee99d46d7e0e925c49e2d6abf0abbfb051285"
+  },
+  "models": [
+    {
+      "id": "d82911fe-4bf9-46d8-b7b0-f66044a02163",
+      "provider": "OpenAI",
+      "model": "gpt-6-astra",
+      "role": "repair_candidate_source",
+      "status": "completed",
+      "durationMs": 1309377
+    },
+    {
+      "id": "38c33e34-83ca-4308-8771-0a30c03551cd",
+      "provider": "OpenAI",
+      "model": "gpt-6-astra",
+      "role": "repair_contract_plan",
+      "status": "completed",
+      "durationMs": 245541
+    },
+    {
+      "id": "b65670ae-c319-45a1-a8da-d8f5b7dba838",
+      "provider": "Gemini",
+      "model": "gemini-3.8-flash",
+      "role": "toolkit_order_conclusion",
+      "status": "completed",
+      "durationMs": 8824
+    },
+    {
+      "id": "4aebd6b3-d062-46a0-afb1-183f75983735",
+      "provider": "Gemini",
+      "model": "gemini-3.8-flash",
+      "role": "toolkit_order_selection",
+      "status": "completed",
+      "durationMs": 6650
+    }
+  ],
+  "repair": {
+    "id": "f7c58e8b-f45c-49a4-98bd-bcaaf10361f9",
+    "candidateSha256": "d1a747b1be5fc158ef6ae6514f901ddca03519ce45f2f9275b43651472fe7264",
+    "proofId": "7bcf65e3-3f9d-4c60-8593-27f72252fc29",
+    "originalProofSha256": "bf8ca031a21424bf6035de99381e2810f85802d1b8c4ac485f4f0181314c891b",
+    "suiteSha256": "c3e3c478c3af78f82ba966e946cb578ef31b8a039855d920a65402adad190239",
+    "compilePassed": true,
+    "publicRegressionPassed": 9,
+    "publicRegressionTotal": 9,
+    "claim": "Ten public product checks including compilation; no hidden-suite or context-comparison claim.",
+    "rawEvidenceRewritten": false
+  },
+  "runner": {
+    "kind": "vercel_sandbox",
+    "sandboxName": "fracture-candidate-1afe926b-89a1-466c-893c-7a341d9e04f5",
+    "snapshotId": "snap_Kx4UOuUnD13OfjlkMA1ngw0cadrb",
+    "snapshotHash": "a052102ff3f02d0d373b869a11ac78ccc671a67172c6827169815194ea246469",
+    "image": "vercel/sandbox/node@sha256:bd2d289138cea47d9f3270d103a2ca66e7839bdfaac717e108f10e7d55624c92",
+    "nodeMajor": 22,
+    "elapsedMs": 6409,
+    "networkPolicy": "deny-all",
+    "persistent": false,
+    "referenceReadOnly": true,
+    "rootReadOnly": false,
+    "hostMountCount": 0,
+    "user": "candidate",
+    "vcpus": 2,
+    "memoryMB": 4096,
+    "processLimit": 96,
+    "maximumSeconds": 55,
+    "credentialEnvironmentForwarded": false,
+    "disposalStatus": "stopped",
+    "source": "sample"
+  },
+  "cancellation": {
+    "originalVerificationProofRetained": true,
+    "rehearsal": "separate queued verification",
+    "status": "cancelled",
+    "phase": "WORK_CANCELLED",
+    "claim": "Queue cancellation; no second-VM disposal receipt is claimed."
+  },
+  "requestHistory": {
+    "declaredMutations": 7,
+    "attemptsPerDeclaredMutation": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "automaticRedispatches": 0
+  },
+  "native": {
+    "mobileWidths": [
+      390,
+      360
+    ],
+    "horizontalOverflow": false,
+    "exactDrawerFocusReturns": 3,
+    "networkEvents": 233,
+    "networkUntruncated": true,
+    "observedNonReadRequests": 0,
+    "consoleWarningsErrors": 0
+  },
+  "preservation": {
+    "tables": 56,
+    "rows": 3506,
+    "canonicalAuditUnchanged": true,
+    "previousRows": 3319,
+    "protocolOwnedAddedRows": 121,
+    "separateWelcomeRowsRetained": 66,
+    "separateWelcomeRequester": "unknown",
+    "initialClassifierFailureRetained": true,
+    "originalStudy": {
+      "planned": 600,
+      "scored": 301,
+      "infrastructure": 299,
+      "attempts": 606,
+      "retries": 6,
+      "generations": 601,
+      "incompleteStrata": 8,
+      "comparativeIntervals": "withheld"
+    }
+  },
+  "limitations": [
+    "Controlled Sample payment resources are not real PayPal transactions.",
+    "The actual-model repair is one declared product qualification, not a study-arm result or reliability rate.",
+    "The original failure and all earlier model/transport failures remain retained.",
+    "The cancellation rehearsal stopped a separate queued job; direct sandbox cancellation controls have their own receipts.",
+    "The two-request model continuation used the original saved background response identities.",
+    "A separate welcome-session POST was observed before the declared protocol; the requester is unknown and all its rows remain preserved."
+  ]
+}

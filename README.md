@@ -68,6 +68,10 @@ The baseline is eight live-resource cases, three provider-negative cases and twe
 
 The [local CLI and stdio MCP server](docs/DEVELOPER_TOOLS.md) execute qualified Sample scenarios, import authorized source for static inspection, and queue campaigns, reductions and generated repair/verification through the same service, with private expiring grants, owned reports and immediate revocation for subsequent calls. Campaign workers also enforce revocation before dispatch. Initialize with `npm run cli -- init`. Imported-application execution and live-payment tools retain their separate capability gates.
 
+The [hosted model and repair qualification](docs/HOSTED_RUNTIME_QUALIFICATION.md) records the ordinary deployed Gemini → installed Toolkit → Gemini journey and actual Astra candidate verification in Vercel Sandbox. Its ten checks are public product regressions; the original Sample failure and prior study remain separate.
+
+The [completion ledger](docs/STAGE7_COMPLETION_LEDGER.md) lists the finite remaining product, editor, provider-coverage and demonstration gates. The [private remote MCP guide](docs/REMOTE_MCP.md) explains the exact-origin bridge and its qualification boundary.
+
 ## Payment boundary
 
 The application consumes the immutable **@fracture/paypal-core 0.2.2** archive in `vendor/`, SHA256 `eb23321fafb98dbf85d3eafdddd249b4c8d50010c5c44f91dd80bc817392d660`. It pins the context-plugin APIMatic `paypal` TypeScript SDK to commit `5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2`. The canonical shared-core source may advance independently; see its [README](packages/paypal-core/README.md) and [provenance](packages/paypal-core/PROVENANCE.json) for the exact current surface and limitations.
