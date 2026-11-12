@@ -1,0 +1,125 @@
+{
+  "schema": "fracture.remote-mcp-qualification-public/v1",
+  "protocol": "fracture-remote-mcp-https-2026-11-v1",
+  "startedAt": "2026-11-12T15:12:33.934Z",
+  "finishedAt": "2026-11-12T15:13:50.713Z",
+  "sourceCommit": "aa1c85172c80add3dbd9c6e87b17c28070bff60e",
+  "deploymentId": "dpl_4auME1QTbpTvM9WqiUAXgYpMz7vE",
+  "origin": "https://paypal-ai-fracture-lab.vercel.app",
+  "archiveSha256": "c2972c7d59912fe3201cf604b2718885e91ae127ff41f9929284d5955b9362d3",
+  "passed": true,
+  "authoritativeBinding": {
+    "aliasAndProjectTargetMatch": true,
+    "readyState": "READY"
+  },
+  "transport": {
+    "installedSdk": "1.32.2",
+    "actualShippedBridge": true,
+    "httpRequests": 7,
+    "declaredSourceReads": 3,
+    "operations": [
+      {
+        "operation": "initialize",
+        "status": 200,
+        "responseBytes": 819,
+        "responseSha256": "feae636bd2f7cd48d18f5c6ac70583252c04298b522a666aff174067ffa65cbf"
+      },
+      {
+        "operation": "notifications/initialized",
+        "status": 202,
+        "responseBytes": 0,
+        "responseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "operation": "tools/list",
+        "status": 200,
+        "responseBytes": 16456,
+        "responseSha256": "5f551d94935ffa35b10aaf75ece07bbefda5ed028ef625ba630b65f1e9c33872"
+      },
+      {
+        "operation": "GET",
+        "status": 405,
+        "responseBytes": 173,
+        "responseSha256": "d0e8a5637f14d75ef39f20eb6561e342a2b9b4a642eff066ff0acb7e8718c94b"
+      },
+      {
+        "operation": "tools/call:list_source_workspaces",
+        "status": 200,
+        "responseBytes": 877,
+        "responseSha256": "5ddafbf972f097ad0236c8619c549507dc123b964b9586e7fdbf74f3ee56ac67"
+      },
+      {
+        "operation": "tools/call:get_source_workspace",
+        "status": 200,
+        "responseBytes": 91479,
+        "responseSha256": "00e575f0602da5d094d3e718822da1b24df78c091456b136a9c69ef02a9905e9"
+      },
+      {
+        "operation": "tools/call:read_source_file",
+        "status": 200,
+        "responseBytes": 4330,
+        "responseSha256": "7e9c910d0dba7ebfaaf6835184d152f55c82269ada2eb7ff1e7d1bebda1cf547"
+      }
+    ],
+    "clientErrors": [],
+    "stderrEmpty": true,
+    "automaticRetries": 0
+  },
+  "boundaries": {
+    "unauthenticatedCanonicalStatus": 401,
+    "authenticatedOptionalSseStatus": 405,
+    "stagedOriginStatus": 403,
+    "stagedOriginCode": "REMOTE_MCP_DESTINATION_DENIED",
+    "canonicalPinPreserved": true,
+    "stagedResponseNoStore": true,
+    "stagedSetCookie": false
+  },
+  "originalSource": {
+    "importId": "c2efafc0-ef55-41a9-8c74-eb1aaad6d753",
+    "revisionHash": "57bcb46c147a2c5ada11cc60908d8d5e4f1e0673a4b4aedce9af6247ed8bfa36",
+    "nodes": 84,
+    "edges": 89,
+    "filePath": "faulty.ts",
+    "fileHash": "36098191e41a5f5c84259501fc70fb93397b59a9f282adeebadf435320891943",
+    "fixedGrantExpiry": "2026-11-13T08:03:07.747Z",
+    "authorityExtended": false
+  },
+  "originalHostedContinuity": {
+    "readCount": 3,
+    "allStatus200": true,
+    "proofId": "7bcf65e3-3f9d-4c60-8593-27f72252fc29",
+    "proofSha256": "bf8ca031a21424bf6035de99381e2810f85802d1b8c4ac485f4f0181314c891b",
+    "modelAttempts": 4,
+    "toolkitReviewId": "4db47937-b56e-481a-ad10-96444ea93e9c"
+  },
+  "preservation": {
+    "beforeRows": 3506,
+    "afterRows": 3508,
+    "tables": 56,
+    "allOriginalRowsRetained": true,
+    "originalTableShapesUnchanged": true,
+    "newRows": 2,
+    "onlyNewTable": "lab_rate_windows",
+    "transportCounterDelta": 7,
+    "sourceReadCounterDelta": 3,
+    "violations": []
+  },
+  "scope": {
+    "newAdmissions": 0,
+    "applicationCommands": 0,
+    "modelCalls": 0,
+    "financialProviderCalls": 0,
+    "sourceExecutions": 0,
+    "nativeEditorSession": false
+  },
+  "privateEvidenceHashes": {
+    "canonicalResultSha256": "8403cab84c0695c7b53ecbd227688d782df25ce7b5ab5f19b3ddf4e8a75631e2",
+    "stagedRefusalResultSha256": "24ba89c8115aec0608a1cfc0845f94cea92c86b1b6435b491275d213b064db9c"
+  },
+  "limitations": [
+    "Existing owner grant and original immutable source; no new grant distribution flow.",
+    "The HTTPS SDK bridge exchange is not a native editor repair-loop recording.",
+    "No imported application code was executed in this protocol.",
+    "Original study outcomes and original authority expiries are unchanged."
+  ]
+}
