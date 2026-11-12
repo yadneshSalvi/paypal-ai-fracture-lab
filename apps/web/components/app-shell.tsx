@@ -13,6 +13,7 @@ const navigation = [
   { href: "/sources", label: "Source workspaces", Icon: FileCode2 },
   { href: "/campaigns", label: "Campaigns", Icon: Layers3 },
   { href: "/repairs", label: "Repairs", Icon: Wrench },
+  { href: "/ai-workbench", label: "AI workbench", Icon: Sparkles },
   { href: "/evaluations", label: "Evaluations", Icon: FlaskConical },
   { href: "/evidence", label: "Evidence", Icon: Files },
 ];
