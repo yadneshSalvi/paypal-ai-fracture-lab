@@ -1,0 +1,147 @@
+{
+  "protocol": "fracture.source-execution.hosted-qualification/v2",
+  "qualifiedAt": "2026-11-12T17:41:18.333Z",
+  "source": "3e9e35a48ab22083ede0786d04d5b448618b3d93",
+  "deployment": "dpl_CVVwMAZ4FpuLbWQHPqgYinQactmq",
+  "origin": "https://paypal-ai-fracture-lab.vercel.app",
+  "corpus": "two newly imported controlled multi-file TypeScript fixtures shipped in this repository",
+  "unchangedSuiteSha256": "c3e3c478c3af78f82ba966e946cb578ef31b8a039855d920a65402adad190239",
+  "candidateVmCeiling": 20,
+  "priorDirectSdkCandidateVms": 2,
+  "ordinaryHostedCandidateVms": 18,
+  "models": 0,
+  "financialProviderCalls": 0,
+  "runs": [
+    {
+      "variant": "faulty",
+      "status": "failed",
+      "cases": [
+        {
+          "scenarioId": "happy",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "lost",
+          "status": "failed"
+        },
+        {
+          "scenarioId": "malformed",
+          "status": "failed"
+        },
+        {
+          "scenarioId": "unavailable",
+          "status": "failed"
+        },
+        {
+          "scenarioId": "pending",
+          "status": "failed"
+        },
+        {
+          "scenarioId": "auth",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "concurrent",
+          "status": "failed"
+        },
+        {
+          "scenarioId": "revoked",
+          "status": "failed"
+        },
+        {
+          "scenarioId": "payload",
+          "status": "failed"
+        }
+      ],
+      "receiptCount": 9,
+      "allConfirmedStopped": true,
+      "engine": "vercel-sandbox",
+      "snapshotId": "snap_Uq521AtdUYnoASMPtBIHIxVyqXUA",
+      "candidateUid": 1001,
+      "rootFilesystem": "writable",
+      "network": "deny_all",
+      "privateReportSha256": "3a52059cf8b6cb348dc113eeb5e1bea13ba35c42b3727557ef4731b7ccc89228",
+      "reportHash": "1286d1e83643205b965841e2d03768c53ad2f92a6331a07e251117625fa59a3a"
+    },
+    {
+      "variant": "corrected",
+      "status": "passed",
+      "cases": [
+        {
+          "scenarioId": "happy",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "lost",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "malformed",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "unavailable",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "pending",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "auth",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "concurrent",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "revoked",
+          "status": "passed"
+        },
+        {
+          "scenarioId": "payload",
+          "status": "passed"
+        }
+      ],
+      "receiptCount": 9,
+      "allConfirmedStopped": true,
+      "engine": "vercel-sandbox",
+      "snapshotId": "snap_Uq521AtdUYnoASMPtBIHIxVyqXUA",
+      "candidateUid": 1001,
+      "rootFilesystem": "writable",
+      "network": "deny_all",
+      "privateReportSha256": "2eb80f631fac2f3170565344f9378a8c37b22ba391d8b4783a28e45f8baab57f",
+      "reportHash": "922867eefd00ec3eee5cdcec5e9252b35367da71fe107293b679fc1051eeee22"
+    }
+  ],
+  "originalStudy": {
+    "sealedCases": 600,
+    "scored": 301,
+    "infrastructure": 299,
+    "comparisonIntervals": "withheld"
+  },
+  "scopeLimits": [
+    "Controlled Sample capabilities, not a live financial provider",
+    "Protocol client qualification, not a recorded model-driven editor repair loop",
+    "No modification, replay or reclassification of the original sealed study"
+  ],
+  "preservation": {
+    "at": "2026-11-12T17:48:25.261Z",
+    "protectedRows": 3508,
+    "protectedTables": 64,
+    "currentRows": 3734,
+    "currentTables": 64,
+    "originalRowsAndShapesPreserved": true,
+    "preQualificationUnattributedRows": 66,
+    "qualificationAddedRows": 160,
+    "unknownRequesterRetained": true,
+    "privateAuditSha256": "80b9d17fabfc6398df92ddcaaef8a9f0f43a990a91f69fbe8901e5d3b3fd3a8b"
+  },
+  "nativeReview": {
+    "passed": true,
+    "scope": "original completed job receipts; no new execution",
+    "networkWindow": "unavailable; capture returned zero events",
+    "privateReviewSha256": "1abd5f39edc63519d4c317239cb71cfc58ffdc5db36a4f1a4082fa23751a7875"
+  }
+}
