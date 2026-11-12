@@ -56,21 +56,57 @@ On Vercel, generation uses durable Workflow continuations and persisted OpenAI b
 
 **Errand** executes the installed PayPal Agent Toolkit against an isolated local provider. Its unprotected harness changes request identity after a lost create response, producing two orders; its control retains the same durable identity and observes one. Neither approves or captures an order. The source, wire identities and independent resources are recorded in [the executable qualification](docs/evidence/errand-toolkit-qualification.json). This is a scripted caller with Sample provider resources, not a live payment or model decision. Run it from `/errand` after finishing the current purchase experiment.
 
-## Implementation and scope
+## What shipped
 
-- **Implemented:** authoritative PostgreSQL storage; durable run/action identities and worker leases; authorized private source snapshots with cited static maps and scoped browser views; independent faulty and hardened Bramble targets; persistent local orders, captures and refunds; S0, S3, S4, S5, S10 and A4 executors; paired durable Sample campaigns and bounded fault-component reduction; Errand E0 actual Toolkit/local-provider comparison; invariant evaluation; scoped API; genuine model diagnosis; durable generated-candidate and isolated verification queues; labelled reference/deceptive repair inspection; comparisons and compensation; reports and connected interface.
-- **Qualified later units:** actual generated-candidate verification against ten unchanged public checks; durable isolated Python Tandem comparisons; the browser-approved live Bramble L2 baseline, hardened control and duplicate compensation. Each unit has its own scoped evidence document.
-- **In progress:** the remaining live and provider-negative application executors, live Errand behavior, qualified execution adapters for imported source, Python/Tandem CLI/MCP capabilities, and broader reduction grammars and language analysis.
-- **Sealed research:** the original 600-candidate, three-arm context study is complete. It retains 301 scored outcomes and 299 infrastructure outcomes, including all six allowed retry histories. All eight strata have incomplete target outcomes, so all comparative intervals are withheld. Explore `/evaluations` or read [the results and reproduction instructions](docs/evaluation/CONTEXT_STUDY_RESULTS.md).
-- **Unmeasured:** the 12-revision public sample audit and five actual user sessions. Their outcomes remain blank until executed.
+The judge path is a ten-step guided tour at `/judge`, in an isolated session with a reset: a Bramble Books checkout loses a capture response, the customer retries and two $12 captures result; eight money invariants catch it; a model diagnoses the cause with a read-only experiment; a generated repair is policy-checked and verified in isolation; the same fault replays on the repaired checkout; the duplicate is refunded; the contract sheet binds each claim to source and a test; and the same loop is available to coding agents.
 
-The baseline is eight live-resource cases, three provider-negative cases and twelve local cases. Seven proposed additions target 30 qualified cases. S0 is the introductory walkthrough and is excluded from that denominator. A visible scenario definition is not an executed capability: gated cases show the missing proof.
+- **Interactive runs use a local provider model and are labelled Sample.** No PayPal request is made by a Sample run.
+- **Real-provider evidence is one recorded PayPal Sandbox pair** (11 November 2026, scenario L2): the faulty checkout captured two distinct buyer-approved $12 orders for one purchase and the duplicate was refunded; the hardened control captured once. It is shown at `/observations`. Further live pairs need a fresh human buyer approval per order and were not produced.
+- **Scenarios:** 13 run on click as Sample (S0, S1, S3, S4, S5, S6, S9, S10, A1, A2, A4, A7 on Bramble; E0 on the Errand Toolkit fixture), L2 is the recorded live pair, and 18 unbuilt cases are listed with reasons at `/limits`. See [docs/SCENARIOS.md](docs/SCENARIOS.md).
+- **Contract sheet:** rows show "verified" only when the eleven runtime files hash-match `docs/evidence/application-conformance.json`. `npm run check:conformance` runs before every build, so a stale proof fails the deployment instead of shipping.
+- **Recorded editor loop** (`/editor-loop`, [docs/editor-loop](docs/editor-loop/README.md)): two separate headless coding-agent sessions built the checkout through the MCP tools. In both, the first submission was inconclusive (0 of 9 checks executed) and the corrected second submission passed 9 of 9; a hand-authored faulty control fails 7 of 9 through the same tools. Neither agent's executed code failed a money invariant, and that is reported as it happened.
+- **Repairs** carry a generated regression case that must fail on the faulty baseline and pass on the candidate, in addition to the unchanged public regressions; the policy strip lists the checks the code enforces; reports have a deep link and QR code.
+- **Tandem** (Python SDK targets) and **Errand** (installed PayPal Agent Toolkit against the local provider model, scripted caller) remain Sample fixtures.
 
-The [local CLI and stdio MCP server](docs/DEVELOPER_TOOLS.md) execute qualified Sample scenarios, import authorized source for static inspection, and queue campaigns, reductions and generated repair/verification through the same service, with private expiring grants, owned reports and immediate revocation for subsequent calls. Campaign workers also enforce revocation before dispatch. Initialize with `npm run cli -- init`. Imported-application execution and live-payment tools retain their separate capability gates.
+### How AI uses PayPal
 
-The [hosted model and repair qualification](docs/HOSTED_RUNTIME_QUALIFICATION.md) records the ordinary deployed Gemini → installed Toolkit → Gemini journey and actual Astra candidate verification in Vercel Sandbox. Its ten checks are public product regressions; the original Sample failure and prior study remain separate.
+| Step | What the model does | PayPal surface | Boundary |
+| --- | --- | --- | --- |
+| Diagnosis | Reads the failing run's trace and proposes a cause | Recorded Orders v2 resources from the run (local provider model in Sample) | Read-only; cannot create, capture or refund |
+| Toolkit investigation | Chooses one scoped read to test a hypothesis | Installed `@paypal/agent-toolkit` 1.11.0, order read | One read per investigation, rate-limited per session and globally |
+| Repair | Writes a candidate patch and a regression case for the Bramble checkout | The pinned APIMatic `paypal` TypeScript SDK through `@fracture/paypal-core` (`PayPal-Request-Id`, reconcile by rereading the original order) | Candidate runs only in a deny-all isolated runner with no credentials |
+| Coding agents (CLI / MCP) | Import a checkout, seal a plan, read results | None directly; nine curated checks on the Sample provider model | Owner approves each plan outside the agent |
+| Refund of the duplicate | No model involved | Payments v2 refund on the recorded capture | Deterministic, owner-approved, original capture history retained |
 
-The [completion ledger](docs/STAGE7_COMPLETION_LEDGER.md) lists the finite remaining product, editor, provider-coverage and demonstration gates. The [private remote MCP guide](docs/REMOTE_MCP.md) explains the exact-origin bridge and its qualification boundary.
+### Model roles
+
+| Role | Provider and setting | Used by |
+| --- | --- | --- |
+| Diagnosis | OpenAI Responses API, `OPENAI_MODEL` | `packages/ai/src/diagnosis.ts` |
+| Repair candidate | OpenAI Responses API, `OPENAI_PLANNER_MODEL` | `packages/ai/src/repair.ts` |
+| Toolkit investigation | Gemini, `GEMINI_MODEL` | `packages/ai/src/investigations.ts` |
+
+Model names are configuration, verified at deployment; [docs/HOSTED_RUNTIME_QUALIFICATION.md](docs/HOSTED_RUNTIME_QUALIFICATION.md) records the names used in the hosted qualification. No model holds a credential or dispatches a payment.
+
+### Measured results
+
+| Measure | Result | Scope |
+| --- | --- | --- |
+| Live hero pair | 1 of 1 recorded pair reproduced the duplicate (2 captures, $24 gross, 1 entitlement, $12 refunded) and the control (1 capture) | PayPal Sandbox, 11 November 2026 |
+| Application conformance | 38 named checks passed, 0 failed, on PostgreSQL and SQLite; 4 of 4 executable contract rows verified | Local provider model, 12 November 2026 |
+| Full test suite | 658 tests: 644 passed, 0 failed, 14 skipped | Local, 12 November 2026 |
+| Recorded editor loop | 2 of 2 agent sessions reached 9 of 9 on the second submission; faulty control 2 of 9 | Sample provider model, isolated Docker runner |
+| Context study | 600 planned, 301 scored, 299 infrastructure outcomes; all comparisons withheld | Inconclusive. The infrastructure outcomes were traced to a 300-second HTTP header timeout in the study's transport; no comparative claim is made |
+
+No human task times, user quotes or market estimates are reported; none were collected.
+
+### Not in this release
+
+Live scenarios beyond L2, provider-negative application scenarios, a model-driven live Errand, general bring-your-own execution beyond the TypeScript checkout adapter, a hidden regression set, and the public-sample audit. They are listed at `/limits` and are not advertised elsewhere.
+
+The [local CLI and stdio MCP server](docs/DEVELOPER_TOOLS.md) run the Sample scenarios, import authorized source, and queue campaigns, reductions and repair verification through the same service. Initialize with `npm run cli -- init`. The [private remote MCP guide](docs/REMOTE_MCP.md) explains the hosted bridge. How the APIMatic SDK and context plugin were used is documented in [docs/apimatic](docs/apimatic/README.md); the filled integration plan is [paypal-plan.md](paypal-plan.md).
+
+The sealed first context study binds the root `package.json` by hash; reproducing it exactly (`npm run eval:reproduce`) requires the `package.json` of commit `be1c353`.
 
 ## Payment boundary
 
@@ -82,7 +118,7 @@ All keys, consent grants and provider credentials stay server-side. Sample execu
 
 ## Deployment and provenance
 
-The current hosted checkpoint is [Fracture Lab on Vercel](https://paypal-ai-fracture-lab.vercel.app), backed by PostgreSQL, durable Workflow and isolated Sandbox execution. Node is pinned to 22.x. Runtime artifacts that the application reads are explicitly traced. Local plans, `.env`, `.artifacts`, account data and private evidence stay ignored. A hosted checkpoint does not imply every planned capability is complete.
+The current hosted checkpoint is [Fracture Lab on Vercel](https://paypal-ai-fracture-lab.vercel.app), backed by PostgreSQL, durable Workflow and isolated Sandbox execution. Node is pinned to 22.x. Runtime artifacts that the application reads are explicitly traced. Local plans, `.env`, `.artifacts`, account data and private evidence stay ignored. 
 
 The included APIMatic context skill retains its upstream license and provenance; see [APIMATIC_SETUP.md](APIMATIC_SETUP.md). Local Geist fonts include their OFL license. Application code is MIT licensed. No synthetic physical outcome, fabricated user feedback, unexecuted evaluation result, or local injection is represented as a live provider fact.
 
