@@ -73,6 +73,8 @@ function initializeWorkspace(entry: WorkspaceEntry) {
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const researchPage = pathname.startsWith('/evaluations');
+  const observationPage = pathname === '/observations' || pathname.startsWith('/observations/');
+  const publicPage = researchPage || observationPage;
   const sourcePage = pathname.startsWith('/sources');
   const entry: WorkspaceEntry = sourcePage ? "source" : pathname.startsWith("/ai-workbench") ? "read" : "sample";
   const [workspace, setWorkspace] = useState<WorkspaceDTO | null>(null);
@@ -88,6 +90,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const activeCommand = useRef<string|null>(null);
 
   const refresh = useCallback(async (dismissError=false) => {
+    if (publicPage) return null;
     try {
       const next = await readWorkspace(entry);
       if (mounted.current) { setWorkspace(next); if(dismissError || errorKind.current === "load"){setError(null);errorKind.current=null;} }
@@ -96,12 +99,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       if (mounted.current && errorKind.current !== "action") {errorKind.current="load";setError(cause instanceof Error ? cause.message : "Could not load the workspace.");}
       return null;
     }
-  }, [entry]);
+  }, [entry, publicPage]);
 
   useEffect(() => {
     mounted.current = true;
     let cancelled = false;
-    if(researchPage){
+    if(publicPage){
       setLoading(false);
       if(errorKind.current!=='action'){setError(null);errorKind.current=null;}
       return ()=>{cancelled=true;mounted.current=false;};
@@ -119,9 +122,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }
     void initialize();
     return () => { cancelled = true; mounted.current = false; };
-  }, [researchPage, entry]);
+  }, [publicPage, entry]);
 
-  const hasRunningWork = !researchPage && hasExecutingWorkspaceWork(workspace, busy);
+  const hasRunningWork = !publicPage && hasExecutingWorkspaceWork(workspace, busy);
   useEffect(() => { if (activeCommand.current && workspace?.work?.some(work => work.id === activeCommand.current && ["completed", "failed", "cancelled"].includes(work.status))) setBusy(null); }, [workspace]);
   useEffect(() => {
     if (!hasRunningWork) return;

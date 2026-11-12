@@ -4,6 +4,8 @@ An evidence-first laboratory for payment integrations. Reproduce a failure, comp
 
 The original checkout fixture is **Bramble Books**: a fictional $12 digital bookshop. A committed capture loses its answer. The faulty raw-HTTP target says “failed,” then a customer retry creates another approved order and another capture. The hardened reference uses durable operation identity and reads the original order, yielding one capture and one entitlement. The faulty target never passes through the hardened payment core.
 
+The [recorded Sandbox observations](docs/RECORDED_OBSERVATIONS.md) at `/observations` expose the original 11 November comparison without starting a session or making another payment. Its keyboard timeline separates each point’s receipts from later reads and preserves the duplicate charge after compensation.
+
 ## Run locally
 
 Requires **Node 22.x**, npm, and PostgreSQL. Set server-only configuration in `.env` using `.env.example`; the minimum for Sample mode is `DATABASE_URL` and a random `JUDGE_SESSION_SECRET`. Never expose those values through `NEXT_PUBLIC_*` variables.
