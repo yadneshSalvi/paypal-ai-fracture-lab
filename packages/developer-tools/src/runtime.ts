@@ -9,6 +9,10 @@ import type { SourceImportInput, SourceViewApprovalInput } from "../../contracts
 import { SourceAccessStore } from "../../source-access/src/store";
 import { sourceApprovalSchema, sourceChangeSchema, sourceFileSchema, sourceIdSchema, sourceImportSchema } from "../../source-access/src/schemas";
 import { checkLocalSourceChanges, importLocalSource, sourceRootCapabilities } from "./source-import";
+import { SourceExecutionService } from "../../source-execution/src/service";
+import { sourcePrepareSchema, sourceApproveSchema, sourceCancelSchema, sourcePlanIdSchema, sourceJobIdSchema, sourceListSchema } from "../../source-execution/src/schemas";
+import { sourceCloudConfiguration } from "../../source-execution/src/cloud";
+import { SourceExecutionViews, sourceExecutionReader, sourceExecutionViewApprovalSchema } from "../../source-execution-view/src/store";
 
 const identity = z.string().min(8).max(120).regex(/^[a-zA-Z0-9:_-]+$/);
 const scenario = z.string().min(2).max(8).regex(/^[ASNL][0-9]+$/);
@@ -16,6 +20,15 @@ const empty = z.strictObject({});
 const campaignIdentity = identity.max(100);
 const campaignId = z.uuid();
 export const toolDefinitions = {
+  prepare_source_execution: { description: "Seal an owned imported TypeScript checkout closure against the unchanged nine public Sample checks and the configured isolated runner. Returns the exact plan/hash for separate approval; no source executes. Unsupported imports are rejected with a retained command receipt.", schema: sourcePrepareSchema, readOnly: false },
+  approve_source_execution: { description: "Explicitly approve one exact source, adapter, suite, runner and deadline plan. Saves one durable job; reuse only the identical original request UUID after an unknown acknowledgement. Execution uses controlled Sample capabilities with no network or payment authority.", schema: sourceApproveSchema, readOnly: false },
+  get_source_execution_plan: { description: "Read the original owned source-bearing plan and its exact approval hash. Original authority and immutable import are rechecked.", schema: sourcePlanIdSchema, readOnly: true },
+  get_source_execution: { description: "Read the original owned execution job and every case state. Unknown dispatched cases are never replayed or treated as passes.", schema: sourceJobIdSchema, readOnly: true },
+  list_source_executions: { description: "List original source execution plans and jobs within the current private owner grant.", schema: sourceListSchema, readOnly: true },
+  export_source_execution: { description: "Return the original private source-bearing execution report, retained failures, exact receipts and disposal proof. No new case executes.", schema: sourceJobIdSchema, readOnly: true },
+  cancel_source_execution: { description: "Stop pending work under its original job identity. Retain partial failures and withhold late observations; never undo or replay an execution.", schema: sourceCancelSchema, readOnly: false },
+  get_source_execution_command: { description: "Recover an original source command acknowledgement by its request UUID. A missing receipt does not authorize redispatch of an unknown VM.", schema: z.strictObject({requestId:z.uuid()}), readOnly: true },
+  approve_source_execution_view: { description: "Approve the displayed browser challenge for one exact owned execution receipt. Transfers read-only receipt access until the original authority expires; never grants execution or source text access.", schema: sourceExecutionViewApprovalSchema, readOnly: false },
   list_source_roots: { description: "List explicitly authorized local source root aliases without exposing private absolute paths. Importing source is separate from running it; no application commands or network requests execute.", schema: empty, readOnly: true },
   import_source_workspace: { description: "Import a bounded snapshot from a host-configured root alias and relative path, parse without executing application code, and persist sanitized file contents plus hash-bound metadata in the configured database. Remote database storage needs explicit operator opt-in. Requires the private owner grant. Reuse the same request UUID and body after an unknown response.", schema: sourceImportSchema, readOnly: false },
   list_source_workspaces: { description: "List source snapshots within this owner's original scope. Static risk findings are unverified until separate runtime evidence exists.", schema: empty, readOnly: true },
@@ -54,6 +67,21 @@ export class DeveloperRuntime {
     const session = await this.access.authorize(this.credential);
     await this.service.store.rateLimit(`developer:${this.credential.id}:read`, 120, 60_000);
     const args = parsed.data as Record<string, string>;
+    if (["prepare_source_execution","approve_source_execution","get_source_execution_plan","get_source_execution","list_source_executions","export_source_execution","cancel_source_execution","get_source_execution_command","approve_source_execution_view"].includes(name)) {
+      const owner={sessionId:session.id,grantId:this.credential.id};
+      if(!definition.readOnly&&name!=="cancel_source_execution")await this.service.store.rateLimit(`developer:${this.credential.id}:source-execution`,30);
+      if(name==="approve_source_execution_view")return new SourceExecutionViews(this.service.store).approve(owner,parsed.data);
+      const retained=["prepare_source_execution","approve_source_execution"].includes(name)?null:await sourceExecutionReader(this.service.store,args.jobId?{jobId:args.jobId}:args.planId?{planId:args.planId}:{owner});
+      const execution=retained?.service??new SourceExecutionService(this.service.store,new SourceAccessStore(this.service.store),sourceCloudConfiguration().identity);
+      if(name==="prepare_source_execution")return execution.prepare(owner,sourcePrepareSchema.parse(parsed.data));
+      if(name==="approve_source_execution")return execution.approve(owner,sourceApproveSchema.parse(parsed.data));
+      if(name==="get_source_execution_plan")return execution.getPlan(owner,{planId:args.planId!});
+      if(name==="get_source_execution")return execution.getJob(owner,{jobId:args.jobId!});
+      if(name==="list_source_executions")return execution.list(owner,sourceListSchema.parse(parsed.data));
+      if(name==="export_source_execution")return execution.report(owner,{jobId:args.jobId!});
+      if(name==="cancel_source_execution")return execution.cancel(owner,sourceCancelSchema.parse(parsed.data));
+      return execution.getCommand(owner,args.requestId!);
+    }
     if (["list_source_roots", "import_source_workspace", "list_source_workspaces", "get_source_workspace", "read_source_file", "check_source_changes", "approve_source_view", "export_source_snapshot"].includes(name)) {
       const sources = new SourceAccessStore(this.service.store);
       const owner = { sessionId: session.id, grantId: this.credential.id };

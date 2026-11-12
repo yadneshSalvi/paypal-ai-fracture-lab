@@ -27,7 +27,7 @@ process.on("message", (message: unknown) => {
     void (async () => {
       const status = readFileSync("/proc/self/status", "utf8"), uid = process.getuid!(), gid = process.getgid!();
       const capEff = status.match(/^CapEff:\s*([0-9a-f]+)$/mi)?.[1], capPrm = status.match(/^CapPrm:\s*([0-9a-f]+)$/mi)?.[1], noNewPrivs = status.match(/^NoNewPrivs:\s*(\d+)$/m)?.[1];
-      if (uid !== 1000 || gid !== 1000 || capEff !== "0000000000000000" || capPrm !== "0000000000000000" || noNewPrivs !== "1") throw new Error("SOURCE_EXECUTION_CANDIDATE_BOUNDARY");
+      if (![1000, 1001].includes(Number(value.candidateUid)) || uid !== value.candidateUid || gid !== value.candidateUid || capEff !== "0000000000000000" || capPrm !== "0000000000000000" || noNewPrivs !== "1") throw new Error("SOURCE_EXECUTION_CANDIDATE_BOUNDARY");
       const module = await import(pathToFileURL(value.entry as string).href) as { checkout?: unknown };
       if (typeof module.checkout !== "function") throw new Error("SOURCE_EXECUTION_CHECKOUT_EXPORT_MISSING");
       checkout = module.checkout as (context: BrambleContext) => Promise<unknown>;

@@ -190,18 +190,20 @@ export class SourceExecutionService {
     await tx.query("UPDATE lab_source_execution_jobs_v1 SET status=$2,finished_at=$3,error_code=$4 WHERE id=$1", [row.id, cancelled ? uncertain ? "cancelled_uncertain" : "cancelled_confirmed" : uncertain ? "inconclusive" : "cancelled_confirmed", at, code]);
     await this.emit(tx, row, uncertain ? "execution_unknown" : "execution_stopped", "The original execution cannot admit more cases. Original identities, observations and uncertain outcomes are retained.");
   }
-  async claimNext(workerId: string): Promise<SourceExecutionClaim | null> {
+  async claimNext(workerId: string, options: { jobId?: string; maximumCases?: number } = {}): Promise<SourceExecutionClaim | null> {
+    if (options.jobId !== undefined) parse(sourceJobIdSchema, { jobId: options.jobId });
+    if (options.maximumCases !== undefined && (!Number.isInteger(options.maximumCases) || options.maximumCases < 1 || options.maximumCases > 9)) throw new SourceExecutionError("SOURCE_EXECUTION_STEP_LIMIT", "A durable step must admit between one and nine cases.", 400);
     if (!/^[a-zA-Z0-9:_-]{1,100}$/.test(workerId)) throw new SourceExecutionError("SOURCE_EXECUTION_WORKER_INVALID", "Use a bounded trusted worker identity.", 400);
     const stale = (await this.lab.db.query<JobRow>("SELECT * FROM lab_source_execution_jobs_v1 WHERE status IN ('claimed','running','cancel_requested') AND lease_until<=$1", [iso(this.now())])).rows;
     for (const candidate of stale) await this.lab.db.transaction(async tx => { const row = await this.lockedJob(tx, candidate.id); if (["claimed", "running", "cancel_requested"].includes(row.status) && row.lease_until && Date.parse(row.lease_until) <= this.now()) await this.stop(tx, row, "SOURCE_EXECUTION_LEASE_OUTCOME_UNKNOWN", true); });
     return this.lab.db.transaction(async tx => {
-      const rows = (await tx.query<JobRow>("SELECT * FROM lab_source_execution_jobs_v1 WHERE status='queued' ORDER BY created_at,id LIMIT 100")).rows;
+      const rows = (await tx.query<JobRow>("SELECT * FROM lab_source_execution_jobs_v1 WHERE status='queued'" + (options.jobId ? " AND id=$1" : "") + " ORDER BY created_at,id LIMIT 100", options.jobId ? [options.jobId] : [])).rows;
       for (const row of rows) {
         const { plan } = await this.plan(tx, row.plan_id), owner = { sessionId: row.session_id, grantId: row.grant_id };
         try { await this.authorityPlan(tx, owner, plan, true); this.verifyCaseManifest(plan, await this.cases(tx, row.id)); }
         catch (error) { if (!(error instanceof SourceExecutionError)) throw error; await this.stop(tx, row, error.code, false); continue; }
         if (canonical(plan.runner) !== canonical(this.runner)) { await this.stop(tx, row, "SOURCE_EXECUTION_RUNNER_CHANGED", false); continue; }
-        const token = randomUUID(), leaseUntil = iso(Math.min(Date.parse(plan.expiresAt), this.now() + (SOURCE_LIMITS.caseDeadlineMs + 10_000) * plan.scenarioIds.length + 10_000));
+        const token = randomUUID(), leaseUntil = iso(Math.min(Date.parse(plan.expiresAt), this.now() + (SOURCE_LIMITS.caseDeadlineMs + 10_000) * Math.min(options.maximumCases ?? 9, plan.scenarioIds.length) + 10_000));
         const changed = await tx.query("UPDATE lab_source_execution_jobs_v1 SET status='claimed',worker_id=$2,claim_token=$3,lease_until=$4 WHERE id=$1 AND status='queued'", [row.id, workerId, token, leaseUntil]);
         if (changed.rowCount !== 1) continue;
         await this.emit(tx, row, "claimed", "One trusted worker claimed this immutable job. This claim is never reused to redispatch uncertain source execution.");
@@ -218,7 +220,9 @@ export class SourceExecutionService {
     if (row.cancelled_at) throw new SourceExecutionError("SOURCE_EXECUTION_CANCELLED", "Cancellation prevents another case.");
     return row;
   }
-  async executeClaim(claim: SourceExecutionClaim, executor: SourceExecutor): Promise<SourceJobDTO> {
+  async executeClaim(claim: SourceExecutionClaim, executor: SourceExecutor, options: { maximumCases?: number } = {}): Promise<SourceJobDTO> {
+    const maximumCases = options.maximumCases ?? 9;
+    if (!Number.isInteger(maximumCases) || maximumCases < 1 || maximumCases > 9) throw new SourceExecutionError("SOURCE_EXECUTION_STEP_LIMIT", "A durable step must admit between one and nine cases.", 400);
     const begun = await this.lab.db.transaction(async tx => {
       const row = await this.job(tx, claim.jobId), { plan } = await this.plan(tx, row.plan_id);
       if (row.worker_id !== claim.workerId || row.claim_token !== claim.token || row.lease_until !== claim.leaseUntil) throw new SourceExecutionError("SOURCE_EXECUTION_CLAIM_LOST", "Another worker owns this claim.");
@@ -230,7 +234,7 @@ export class SourceExecutionService {
     });
     if (!begun.started) return begun.job;
     const plan = begun.plan;
-    for (const item of begun.job.cases) {
+    for (const item of begun.job.cases.filter(value => value.status === "pending").slice(0, maximumCases)) {
       let bundle: SourceExecutionBundle;
       try {
         bundle = await this.lab.db.transaction(async tx => {
@@ -280,12 +284,23 @@ export class SourceExecutionService {
     return this.lab.db.transaction(async tx => {
       let row = await this.job(tx, claim.jobId);
       if (!terminal.has(row.status)) {
-        const cases = await this.cases(tx, row.id), passed = cases.every(item => item.status === "passed"), failed = cases.some(item => item.status === "failed"), status: SourceJobState = row.cancelled_at ? "cancelled_confirmed" : passed ? "passed" : failed && cases.every(item => ["passed", "failed"].includes(item.status)) ? "failed" : "inconclusive";
+        const cases = await this.cases(tx, row.id);
+        if (row.claim_token !== claim.token || row.worker_id !== claim.workerId) return this.dto(tx, row);
+        // Only accepted, disposed cases can yield to the next durable step. A
+        // dispatched/unknown case is never placed back in the queue.
+        if (!row.cancelled_at && cases.some(item => item.status === "pending") && cases.every(item => ["pending", "passed", "failed"].includes(item.status))) {
+          try { await this.authorityPlan(tx, { sessionId: row.session_id, grantId: row.grant_id }, plan, true); }
+          catch (error) { if (!(error instanceof SourceExecutionError)) throw error; await this.stop(tx, row, error.code, false); return this.dto(tx, await this.job(tx, row.id)); }
+          await tx.query("UPDATE lab_source_execution_jobs_v1 SET status='queued',worker_id=NULL,claim_token=NULL,lease_until=NULL WHERE id=$1 AND claim_token=$2 AND status='running'", [row.id, claim.token]);
+          await this.emit(tx, row, "case_checkpoint", "The accepted case and confirmed disposal are saved. A later durable step may claim only the original unstarted cases.");
+          return this.dto(tx, await this.job(tx, row.id));
+        }
+        const passed = cases.every(item => item.status === "passed"), failed = cases.some(item => item.status === "failed"), status: SourceJobState = row.cancelled_at ? "cancelled_confirmed" : passed ? "passed" : failed && cases.every(item => ["passed", "failed"].includes(item.status)) ? "failed" : "inconclusive";
         await tx.query("UPDATE lab_source_execution_jobs_v1 SET status=$2,finished_at=$3 WHERE id=$1 AND claim_token=$4", [row.id, status, iso(this.now()), claim.token]); await this.emit(tx, row, "job_" + status, "The bounded job ended. Every completed, failed, cancelled or uncertain case remains separately identified."); row = await this.job(tx, row.id);
       }
       return this.dto(tx, row);
     });
   }
-  async runNext(workerId: string, executor: SourceExecutor): Promise<SourceJobDTO | null> { const claim = await this.claimNext(workerId); return claim ? this.executeClaim(claim, executor) : null; }
+  async runNext(workerId: string, executor: SourceExecutor, options: { jobId?: string; maximumCases?: number } = {}): Promise<SourceJobDTO | null> { const claim = await this.claimNext(workerId, options); return claim ? this.executeClaim(claim, executor, options) : null; }
 }
 export const sourceExecutionPublicCapabilities = Object.freeze({ scope: "private_owner_only", publicJudgeExecution: false, browserViewGrantExecution: false, sourceIncluded: false });

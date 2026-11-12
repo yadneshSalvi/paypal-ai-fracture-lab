@@ -4,7 +4,7 @@ import { DeveloperAccess, initializeCredential, readCredential } from "../../../
 import { DeveloperRuntime, safeDeveloperError, toolDefinitions } from "../../../packages/developer-tools/src/runtime";
 
 export async function main(argv: string[]) {
-  if (!argv.length || argv[0] === "help") return { usage: "npm run cli -- init | status | revoke | call <tool> '<JSON arguments>'", tools: Object.keys(toolDefinitions), scope: "Private 24-hour owner session. Curated Sample execution only; no live payments or arbitrary code execution." };
+  if (!argv.length || argv[0] === "help") return { usage: "npm run cli -- init | status | revoke | call <tool> '<JSON arguments>'", tools: Object.keys(toolDefinitions), scope: "Private 24-hour owner session. Curated Sample experiments and separately approved adapted source closures in the qualified isolated runner. No live payments, dependency installation or arbitrary application launch. Browser views have separate read-only approval." };
   const service = await getService();
   try {
     const access = new DeveloperAccess(service);

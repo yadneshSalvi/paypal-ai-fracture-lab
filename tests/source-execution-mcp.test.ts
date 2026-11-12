@@ -1,0 +1,34 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {mkdir,readFile,readdir,writeFile} from "node:fs/promises";
+import {join} from "node:path";
+import {randomUUID} from "node:crypto";
+import {fixture,textResult} from "./remote-mcp-fixture";
+import {controlledRunner} from "./source-execution-helpers";
+import {SourceAccessStore} from "../packages/source-access/src/store";
+import {createSourceWorkspaceStore} from "../packages/source-workspaces/src/index";
+import {importLocalSource} from "../packages/developer-tools/src/source-import";
+import type {SourcePlan,SourceJobDTO} from "../packages/source-execution/src/schemas";
+
+test("installed MCP transport seals and approves one source job; unknown hook acknowledgement recovers the original job without execution",async t=>{
+  const keys=["FRACTURE_SOURCE_EXECUTION_RUNNER_JSON","FRACTURE_SOURCE_EXECUTION_SNAPSHOT_EXPIRES_AT"],old=keys.map(k=>process.env[k]);
+  const{engine:_engine,imageId:_id,...common}=controlledRunner as Extract<typeof controlledRunner,{engine:"docker"}>;
+  process.env[keys[0]!]=JSON.stringify({...common,engine:"vercel-sandbox",snapshotId:"snap_controlled_transport_only"});process.env[keys[1]!]=new Date(Date.now()+86400000).toISOString();
+  t.after(()=>keys.forEach((k,i)=>{if(old[i]===undefined)delete process.env[k];else process.env[k]=old[i];}));
+  const dispatches:string[]=[];const f=await fixture(t,{dispatchSourceExecution:async id=>{dispatches.push(id);if(dispatches.length===1)throw Error("controlled lost hook acknowledgement");return "controlled-hook";}});
+  const root=join(f.directory,"owned");await mkdir(root);const fixtures=new URL("./source-execution-fixtures/corrected/",import.meta.url);
+  for(const name of await readdir(fixtures))await writeFile(join(root,name.replace(/\.txt$/,"")),await readFile(new URL(name,fixtures)));
+  const store=await createSourceWorkspaceStore({storageRoot:join(f.directory,"cache"),allowedRoots:[{id:"owned",directory:root}]});
+  const imported=await importLocalSource(new SourceAccessStore(f.service.store),{sessionId:f.owner.session.id,grantId:f.owner.credential.id},{rootId:"owned",path:".",title:"Controlled MCP source",requestId:randomUUID()},store);
+  const{client}=await f.connect();
+  const prepared=textResult<{plan:SourcePlan}>(await client.callTool({name:"prepare_source_execution",arguments:{importId:imported.import.id,entryPath:"entry.ts",expectedRevisionHash:imported.snapshot!.revisionHash,scenarioIds:["lost"],seed:"mcp-source-transport-double",requestId:randomUUID()}}));
+  assert.equal((await f.db.query("SELECT id FROM lab_source_execution_jobs_v1")).rowCount,0);
+  const input={planId:prepared.plan.id,expectedPlanHash:prepared.plan.planHash,requestId:randomUUID()};
+  const first=await client.callTool({name:"approve_source_execution",arguments:input}),job=textResult<{job:SourceJobDTO}>(first).job;
+  assert.equal((first._meta as any)["fracture/dispatch"].status,"pending");
+  const read=textResult<SourceJobDTO>(await client.callTool({name:"get_source_execution",arguments:{jobId:job.id}}));assert.equal(read.cases[0]!.status,"pending");
+  const recovered=textResult<{job:SourceJobDTO}>(await client.callTool({name:"approve_source_execution",arguments:input}));assert.equal(recovered.job.id,job.id);assert.deepEqual(dispatches,[job.id,job.id]);
+  assert.equal((await f.db.query("SELECT id FROM lab_source_execution_jobs_v1")).rowCount,1);assert.equal((await f.db.query("SELECT id FROM lab_source_execution_artifacts_v1")).rowCount,0);
+  const cancelled=textResult<{job:SourceJobDTO}>(await client.callTool({name:"cancel_source_execution",arguments:{jobId:job.id,requestId:randomUUID()}}));assert.equal(cancelled.job.cases[0]!.status,"cancelled");
+  assert.equal((await f.db.query("SELECT id FROM lab_runs")).rowCount,0);
+});

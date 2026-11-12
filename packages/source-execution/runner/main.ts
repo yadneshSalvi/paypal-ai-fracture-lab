@@ -36,6 +36,7 @@ let input = "";
 for await (const chunk of process.stdin) { input += String(chunk); if (Buffer.byteLength(input) > SOURCE_LIMITS.maxBytes * 4 + 128000) throw new Error("SOURCE_EXECUTION_INPUT_LIMIT"); }
 const bundle = verifyBundle(JSON.parse(input));
 if (bundle.binding.runner.snapshotHash !== manifest.snapshotHash || bundle.binding.runner.runnerHash !== manifest.runnerHash || bundle.binding.adapterHash !== manifest.adapterHash || bundle.binding.runner.dependencyHash !== manifest.dependencyHash || bundle.binding.scenarioManifestHash !== SCENARIO_MANIFEST_HASH) throw new Error("SOURCE_EXECUTION_CONTEXT_CHANGED");
+const candidateUid = bundle.binding.runner.engine === "vercel-sandbox" ? 1001 : 1000;
 const scenario = sourceScenario(bundle.binding.scenarioId);
 if (scenario.hash !== bundle.binding.scenarioHash || Date.parse(bundle.deadlineAt) <= Date.now() || Date.parse(bundle.deadlineAt) > Date.now() + SOURCE_LIMITS.caseDeadlineMs) throw new Error("SOURCE_EXECUTION_CASE_BINDING");
 const selfStatus = fs.readFileSync("/proc/self/status", "utf8"), effective = selfStatus.match(/^CapEff:\s*([0-9a-f]+)$/mi)?.[1], nnp = selfStatus.match(/^NoNewPrivs:\s*(\d+)$/m)?.[1];
@@ -51,7 +52,7 @@ const config = path.join(moduleRoot, "tsconfig.json");
 fs.writeFileSync(config, JSON.stringify({ compilerOptions: { target: "ES2022", lib: ["ES2022", "DOM", "DOM.Iterable"], module: "ESNext", moduleResolution: "Bundler", strict: true, exactOptionalPropertyTypes: true, verbatimModuleSyntax: true, esModuleInterop: true, skipLibCheck: true, noEmit: true, allowImportingTsExtensions: true, baseUrl: moduleRoot, paths: { "@fracture/source-target": ["/reference/packages/source-execution/src/contract.ts"], "@fracture/contracts": ["/reference/packages/contracts/src/index.ts"] } }, files: [check] }), { flag: "wx", mode: 0o444 });
 const verifySource = () => { for (const file of bundle.files) { const stat = fs.lstatSync(path.join(moduleRoot, file.path)); if (!stat.isFile() || stat.uid !== 0 || stat.mode & 0o222 || stat.size !== file.bytes || sha256(fs.readFileSync(path.join(moduleRoot, file.path))) !== file.hash) throw new Error("SOURCE_EXECUTION_IMPORTED_BYTES_CHANGED"); } };
 verifySource();
-const compilation = spawnSync(process.execPath, ["/runtime/node_modules/typescript/bin/tsc", "--noEmit", "--pretty", "false", "-p", config], { cwd: moduleRoot, uid: 1000, gid: 1000, env: { NODE_ENV: "production", HOME: "/tmp" }, encoding: "utf8", timeout: Math.min(SOURCE_LIMITS.compilerDeadlineMs, Math.max(1, Date.parse(bundle.deadlineAt) - Date.now())), maxBuffer: 64000 });
+const compilation = spawnSync(process.execPath, ["/runtime/node_modules/typescript/bin/tsc", "--noEmit", "--pretty", "false", "-p", config], { cwd: moduleRoot, uid: candidateUid, gid: candidateUid, env: { NODE_ENV: "production", HOME: "/tmp" }, encoding: "utf8", timeout: Math.min(SOURCE_LIMITS.compilerDeadlineMs, Math.max(1, Date.parse(bundle.deadlineAt) - Date.now())), maxBuffer: 64000 });
 const diagnostics = String(compilation.stdout ?? "") + String(compilation.stderr ?? "");
 let status: SourceSupervisorResult["status"] = compilation.status === 0 ? "inconclusive" : (compilation.error as NodeJS.ErrnoException | undefined)?.code === "ETIMEDOUT" ? "timeout" : (compilation.error as NodeJS.ErrnoException | undefined)?.code === "ENOBUFS" ? "output_limited" : "compiler_rejected";
 const compiler: SourceSupervisorResult["compiler"] = { status: compilation.status === 0 ? "passed" : status === "timeout" ? "timeout" : "rejected", version: "typescript@5.9.3", diagnostics: diagnostics.slice(0, 16000), diagnosticsHash: sha256(diagnostics.slice(0, 16000)) };
@@ -59,7 +60,7 @@ const targetOutputDigest = createHash("sha256");
 let observation: Record<string, unknown> | null = null, assertions: SourceSupervisorResult["assertions"] = [], targetOutput = "", targetOutputBytes = 0, outputFinalized = false, candidate: SourceSupervisorResult["supervisorProof"]["candidate"] = null;
 let child: ChildProcess | null = null; let cancellationRequested = false; let activeFailure: ((code: string) => void) | null = null;
 process.on("SIGTERM", () => { cancellationRequested = true; activeFailure?.("SOURCE_EXECUTION_CANCELLED"); });
-const stopChild = () => { if (child?.pid) spawnSync(process.execPath, ["-e", "process.kill(Number(process.argv[1]),'SIGKILL')", "--", "-" + child.pid], { uid: 1000, gid: 1000, env: { NODE_ENV: "production" }, timeout: 2000, stdio: "ignore" }); };
+const stopChild = () => { if (child?.pid) spawnSync(process.execPath, ["-e", "process.kill(Number(process.argv[1]),'SIGKILL')", "--", "-" + child.pid], { uid: candidateUid, gid: candidateUid, env: { NODE_ENV: "production" }, timeout: 2000, stdio: "ignore" }); };
 if (compiler.status === "passed" && !cancellationRequested) {
   const db = new SqliteDatabase(path.join(supervisorRoot, "case.sqlite")); await initializeDatabase(db); const store = new LabStore(db), session = await store.createSession("owner"), item = scenario.definition;
   const caseScenario: ScenarioDTO = { id: `source-${bundle.binding.caseId}`, title: item.name, shortTitle: item.name, description: "Unchanged public Bramble regression over an explicit imported checkout", family: "Imported source regression", suite: "local", mode: "sample", faultSource: "local_fixture", trigger: "Frozen public case", phase: "checkout", invariantIds: ["I1", "I2", "I3", "I7", "I8"], fixtureIds: ["bramble"], available: true, gate: null, hash: scenario.hash, estimatedSeconds: 5 };
@@ -67,7 +68,7 @@ if (compiler.status === "passed" && !cancellationRequested) {
   const runInput: RunInput = { projectId: "bramble", scenarioId: caseScenario.id, revision: "faulty", mode: "sample", seed: sha256(`source-execution-v1:${bundle.binding.seed}:${item.id}`), requestId: bundle.binding.caseId, interactive: false }, run = newRun(runInput, caseScenario, project); await store.createRun(session.id, runInput, run);
   if (item.revoked) await db.query("INSERT INTO lab_faults(run_id,fault_key,document) VALUES($1,'approval-revoked',$2)", [run.id, JSON.stringify({ source: "sample" })]);
   const provider = new LocalPayPalTransport(store, run.id, { ...noFaults, ...item.faults }), context = targetCapabilities(store, run, session.id, provider);
-  child = fork("/reference/packages/source-execution/runner/child.ts", [], { cwd: moduleRoot, uid: 1000, gid: 1000, detached: true, execArgv: ["--import", "/runtime/node_modules/tsx/dist/loader.mjs"], env: { NODE_ENV: "production", HOME: "/tmp", TSX_TSCONFIG_PATH: config }, stdio: ["ignore", "pipe", "pipe", "ipc"] });
+  child = fork("/reference/packages/source-execution/runner/child.ts", [], { cwd: moduleRoot, uid: candidateUid, gid: candidateUid, detached: true, execArgv: ["--import", "/runtime/node_modules/tsx/dist/loader.mjs"], env: { NODE_ENV: "production", HOME: "/tmp", TSX_TSCONFIG_PATH: config }, stdio: ["ignore", "pipe", "pipe", "ipc"] });
   let failure: string | null = null; const invocations = new Map<string, { resolve: (thrown: boolean) => void; reject: (reason: Error) => void }>();
   let readyResolve!: () => void, readyReject!: (reason: Error) => void; const ready = new Promise<void>((resolve, reject) => { readyResolve = resolve; readyReject = reject; }); ready.catch(() => {});
   const fail = (code: string) => { if (failure) return; failure = code; readyReject(new Error(code)); for (const pending of invocations.values()) pending.reject(new Error(code)); invocations.clear(); stopChild(); };
@@ -80,12 +81,12 @@ if (compiler.status === "passed" && !cancellationRequested) {
     if (!message || typeof message !== "object" || Array.isArray(message)) { fail("SOURCE_EXECUTION_CHILD_PROTOCOL"); return; }
     const value = message as Record<string, unknown>;
     if (value.kind === "rpc") return;
-    if (value.kind === "ready" && !candidate && Object.keys(value).sort().join(",") === "capEff,capPrm,gid,kind,noNewPrivs,uid" && value.uid === 1000 && value.gid === 1000 && value.capEff === "0000000000000000" && value.capPrm === "0000000000000000" && value.noNewPrivs === true) { candidate = { uid: 1000, gid: 1000, effectiveCapabilities: "0000000000000000", permittedCapabilities: "0000000000000000", noNewPrivileges: true }; readyResolve(); return; }
+    if (value.kind === "ready" && !candidate && Object.keys(value).sort().join(",") === "capEff,capPrm,gid,kind,noNewPrivs,uid" && value.uid === candidateUid && value.gid === candidateUid && value.capEff === "0000000000000000" && value.capPrm === "0000000000000000" && value.noNewPrivs === true) { candidate = { uid: candidateUid, gid: candidateUid, effectiveCapabilities: "0000000000000000", permittedCapabilities: "0000000000000000", noNewPrivileges: true }; readyResolve(); return; }
     if (value.kind === "invoked" && typeof value.id === "string" && typeof value.thrown === "boolean" && invocations.has(value.id) && Object.keys(value).every(key => ["kind", "id", "thrown", "error"].includes(key))) { invocations.get(value.id)!.resolve(value.thrown); invocations.delete(value.id); return; }
     fail(value.kind === "bootstrap_failed" ? "SOURCE_EXECUTION_IMPORT_FAILED" : "SOURCE_EXECUTION_CHILD_PROTOCOL");
   });
   const timer = setTimeout(() => fail("SOURCE_EXECUTION_CASE_TIMEOUT"), Math.max(1, Date.parse(bundle.deadlineAt) - Date.now() - 3000));
-  child.send({ kind: "initialize", entry: path.join(moduleRoot, bundle.entryPath) });
+  child.send({ kind: "initialize", candidateUid, entry: path.join(moduleRoot, bundle.entryPath) });
   let thrown = 0;
   try {
     await ready;

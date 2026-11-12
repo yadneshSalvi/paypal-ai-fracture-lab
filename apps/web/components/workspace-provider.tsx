@@ -76,7 +76,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const observationPage = pathname === '/observations' || pathname.startsWith('/observations/');
   const publicPage = researchPage || observationPage;
   const sourcePage = pathname.startsWith('/sources');
-  const entry: WorkspaceEntry = sourcePage ? "source" : pathname.startsWith("/ai-workbench") ? "read" : "sample";
+  const entry: WorkspaceEntry = sourcePage ? "source" : pathname.startsWith("/ai-workbench") || pathname.startsWith("/source-executions") ? "read" : "sample";
   const [workspace, setWorkspace] = useState<WorkspaceDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

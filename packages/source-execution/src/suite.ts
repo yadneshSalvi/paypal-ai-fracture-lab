@@ -1,11 +1,24 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import ts from "typescript";
 import { z } from "zod";
 import type { FaultPlan } from "../../service/src/types";
 import { objectHash, sha256 } from "./hash";
 import { PUBLIC_SUITE_HASH, SCENARIO_IDS } from "./limits";
 export interface SourcePublicCase { id: typeof SCENARIO_IDS[number]; name: string; faults: Partial<FaultPlan>; calls: number; expected: { captures: number; fulfillments: number; phone?: string }; concurrent?: boolean; revoked?: boolean; changedAmount?: boolean; requireIdentity?: boolean }
-const file = readFileSync(new URL("../../isolation/runner/suite.ts", import.meta.url), "utf8");
+// Next's server webpack uses a relative-URL shim for new URL(import.meta.url),
+// which is not a filesystem URL. Resolve the traced public file from the
+// trusted application working directory without loading config or .env.
+function publicSuiteFile(){
+  let directory=process.cwd();
+  for(let depth=0;depth<7;depth++){
+    const candidate=join(directory,"packages/isolation/runner/suite.ts");
+    if(existsSync(candidate))return candidate;
+    const parent=dirname(directory);if(parent===directory)break;directory=parent;
+  }
+  throw new Error("SOURCE_EXECUTION_PUBLIC_SUITE_UNAVAILABLE");
+}
+const file = readFileSync(publicSuiteFile(), "utf8");
 if (sha256(file) !== PUBLIC_SUITE_HASH) throw new Error("SOURCE_EXECUTION_PUBLIC_SUITE_CHANGED");
 const ast = ts.createSourceFile("immutable-public-suite.ts", file, ts.ScriptTarget.ES2022, true);
 /** Read literal declarations only. Importing the suite would evaluate its unrelated application/config modules. */

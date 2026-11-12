@@ -12,6 +12,10 @@ export function verifySourceReceipt(value: unknown, bundle: SourceExecutionBundl
     if (!receipt.isolation.configurationVerified || receipt.compiler.status !== "passed" || !receipt.observation || receipt.assertions.map(item => item.id).join(",") !== PUBLIC_ASSERTION_IDS.join(",") || (receipt.status === "passed") !== receipt.assertions.every(item => item.passed)) throw integrityFailed();
   }
   if (receipt.status === "compiler_rejected" && receipt.compiler.status !== "rejected") throw integrityFailed();
-  if (receipt.disposal.state === "confirmed" && (!receipt.disposal.removed || !receipt.disposal.verifiedAbsent)) throw integrityFailed();
+  if (receipt.isolation.engine === "docker") {
+    if ("engine" in receipt.disposal || receipt.disposal.state === "confirmed" && (!receipt.disposal.removed || !receipt.disposal.verifiedAbsent)) throw integrityFailed();
+  } else {
+    if (!("engine" in receipt.disposal) || receipt.disposal.engine !== "vercel-sandbox" || receipt.disposal.state === "confirmed" && (!receipt.disposal.stopped || !receipt.disposal.nonResumingReadVerified || !["stopped", "aborted", "failed"].includes(receipt.disposal.status ?? ""))) throw integrityFailed();
+  }
   return receipt;
 }

@@ -16,6 +16,7 @@ export interface RemoteMcpOptions {
   getService: () => Promise<LabService>;
   dispatchRepair?: (jobId: string) => Promise<unknown>;
   dispatchCampaign?: (campaignId: string) => Promise<unknown>;
+  dispatchSourceExecution?: (jobId: string) => Promise<unknown>;
 }
 
 const remoteDescriptions: Record<string, string> = {
@@ -25,6 +26,12 @@ const remoteDescriptions: Record<string, string> = {
 
 async function dispatchAccepted(runtime: DeveloperRuntime, name: string, args: Record<string, unknown>, result: unknown, options: RemoteMcpOptions): Promise<RemoteMcpDispatch | undefined> {
   const session = await runtime.access.authorize(runtime.credential);
+  if(name==="approve_source_execution"){
+    const job=(result as {job:{id:string;status:string}}).job;
+    if(!["queued","running"].includes(job.status))return{status:"not_required",operationId:job.id};
+    if(!options.dispatchSourceExecution)return{status:"worker_required",operationId:job.id};
+    try{return{status:await options.dispatchSourceExecution(job.id)?"accepted":"pending",operationId:job.id};}catch{return{status:"pending",operationId:job.id};}
+  }
   if (["propose_repair", "verify_patch"].includes(name)) {
     const operationId = `repair:${session.id}:${String(args.requestId)}`;
     const job = (await runtime.service.store.db.query<{ stage: string } & Record<string, unknown>>("SELECT stage FROM lab_repair_jobs WHERE id=$1 AND session_id=$2 AND run_id=$3 AND action_id=$4", [operationId, session.id, args.runId, args.requestId])).rows[0];
@@ -47,7 +54,7 @@ function remoteServer(service: LabService, credential: DeveloperCredential, opti
   const runtime = new DeveloperRuntime(service, credential);
   const server = new McpServer({ name: "fracture-lab-remote", version: "0.1.0" }, {
     maxToolInputElements: 256,
-    instructions: "Authenticated private developer access. Curated Sample runs are not PayPal transactions. Imported code is never executed. Remote filesystem discovery/import/change checks are unavailable; saved source reads and exact browser-view approvals retain their original authority. Reuse an existing requestId only with identical arguments after reviewing retained state. A disconnected or failed acknowledgement does not authorize a replacement model, payment, or create command. Read get_run/get_campaign to recover. Generated repairs and campaigns continue through the original durable queue and stable Workflow hook when configured.",
+    instructions: "Authenticated private developer access. Curated Sample runs are not PayPal transactions. Source imports remain static snapshots; a separate exact owner-approved adapted TypeScript closure can execute through the qualified isolated source runner with controlled Sample capabilities. Remote filesystem discovery/import/change checks are unavailable. Source and receipt view approvals retain their original authority and never transfer execution authority. Reuse an existing requestId only with identical arguments after reviewing retained state. A disconnected acknowledgement does not authorize a replacement model, payment, VM or command. Recover get_run/get_campaign/get_source_execution and original command receipts. Durable work uses stable Workflow hooks when configured.",
   });
   for (const [name, definition] of Object.entries(toolDefinitions)) {
     if (hostedFilesystemTools.has(name)) continue;

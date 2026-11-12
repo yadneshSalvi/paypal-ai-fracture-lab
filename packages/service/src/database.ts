@@ -3,6 +3,8 @@ import type { SqlDatabase } from "@fracture/paypal-core";
 import { requiredConfig } from "./config";
 import { campaignSchema } from "../../campaigns/src/schema";
 import { sourceAccessSchema } from "../../source-access/src/schema";
+import { sourceExecutionSchema } from "../../source-execution/src/schema";
+import { sourceExecutionViewSchema } from "../../source-execution-view/src/store";
 
 const schema=[
   `CREATE TABLE IF NOT EXISTS lab_live_refunds(run_id TEXT PRIMARY KEY,session_id TEXT NOT NULL,capture_id TEXT NOT NULL,created_at TEXT NOT NULL,document TEXT NOT NULL)`,
@@ -36,7 +38,7 @@ const schema=[
   `CREATE TABLE IF NOT EXISTS lab_repair_jobs(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,run_id TEXT NOT NULL,action_id TEXT NOT NULL,kind TEXT NOT NULL,stage TEXT NOT NULL,created_at TEXT NOT NULL,lease_owner TEXT,lease_until TEXT,input_hash TEXT NOT NULL,document TEXT NOT NULL,error_code TEXT)`,
   `CREATE TABLE IF NOT EXISTS lab_generated_patches(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,run_id TEXT NOT NULL,source_hash TEXT NOT NULL,context_digest TEXT NOT NULL,document TEXT NOT NULL)`
 ];
-export async function initializeDatabase(db:SqlDatabase){for(const statement of [...schema,...campaignSchema,...sourceAccessSchema])await db.query(statement);await new SqlPaymentStore(db).initialize();return db;}
+export async function initializeDatabase(db:SqlDatabase){for(const statement of [...schema,...campaignSchema,...sourceAccessSchema,...sourceExecutionSchema,...sourceExecutionViewSchema])await db.query(statement);await new SqlPaymentStore(db).initialize();return db;}
 const state=globalThis as typeof globalThis&{fractureApplicationDatabase?:Promise<SqlDatabase>};
 export function getDatabase(){
   if(!state.fractureApplicationDatabase)state.fractureApplicationDatabase=initializeDatabase(new PostgresDatabase(requiredConfig("DATABASE_URL"))).catch(error=>{delete state.fractureApplicationDatabase;throw error;});
