@@ -1,13 +1,11 @@
 import { randomBytes, randomUUID, timingSafeEqual, createHash } from "node:crypto";
-import { constants } from "node:fs";
 import { mkdir, open } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import { z } from "zod";
 import { LabError, type LabService } from "../../service/src/index";
 import { workspaceRoot } from "../../service/src/config";
+import { developerCredentialSchema as credentialSchema, readPrivateDeveloperCredential, type DeveloperCredential } from "./remote/credential";
 
-const credentialSchema = z.strictObject({ version: z.literal(1), id: z.uuid(), secret: z.string().regex(/^[a-f0-9]{64}$/) });
-export type DeveloperCredential = z.infer<typeof credentialSchema>;
+export type { DeveloperCredential } from "./remote/credential";
 type GrantRow = { session_id: string; secret_hash: string; expires_at: string; revoked_at: string | null } & Record<string, unknown>;
 const hash = (secret: string) => createHash("sha256").update(secret).digest("hex");
 export const credentialPath = () => process.env.FRACTURE_DEVELOPER_CREDENTIAL_FILE ?? join(workspaceRoot(), ".local", "developer-session.json");
@@ -43,15 +41,7 @@ export class DeveloperAccess {
 }
 
 export async function readCredential(path = credentialPath()): Promise<DeveloperCredential> {
-  let handle;
-  try {
-    handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW);
-    const stat = await handle.stat();
-    if (!stat.isFile() || stat.size > 2048 || (stat.mode & 0o077) !== 0 || (process.getuid && stat.uid !== process.getuid())) throw new Error("unsafe file");
-    return credentialSchema.parse(JSON.parse(await handle.readFile("utf8")));
-  } catch {
-    throw new LabError("DEVELOPER_CREDENTIAL_UNAVAILABLE", "Use npm run cli -- init to create a private developer credential; existing files must be owner-only regular files.", 401);
-  } finally { await handle?.close(); }
+  return readPrivateDeveloperCredential(path);
 }
 
 export async function initializeCredential(access: DeveloperAccess, path = credentialPath()) {

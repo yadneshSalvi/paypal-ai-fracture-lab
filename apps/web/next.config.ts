@@ -16,7 +16,7 @@ const config: NextConfig = {
   outputFileTracingIncludes: {"/api/**":[...repairContextFiles,"../../tests/application.test.ts","../../packages/{service,runner,invariants,campaigns}/src/*.ts","../../packages/ai/src/diagnosis.ts","../../packages/contracts/src/campaign-lab.ts","../../packages/scenarios/src/index.ts","../../package-lock.json","../../node_modules/paypal/package.json","../../vendor/fracture-paypal-core-0.2.2.tgz"],"/api/evaluations/**":["../../evaluation/studies/fracture-context-2026-11-v1/*.json","../../evaluation/corpus/tasks/**/*","../../evaluation/controls/*.json.gz","./public/evaluations/fracture-context-2026-11-v1/candidates/*.json.gz"],"/.well-known/workflow/**":[...repairContextFiles,"../../packages/{service,runner,invariants,campaigns}/src/*.ts","../../packages/ai/src/diagnosis.ts","../../packages/contracts/src/campaign-lab.ts","../../packages/scenarios/src/index.ts","../../package-lock.json","../../node_modules/paypal/package.json","../../vendor/fracture-paypal-core-0.2.2.tgz"]},
   outputFileTracingExcludes: {"/**":["../../.env*","../../plans/**","../../.artifacts/**","../../.local/**","../../.setup-evidence/**","../../.git/**"]},
   turbopack: {root:fileURLToPath(new URL("../..", import.meta.url))},
-  serverExternalPackages: ["pg", "better-sqlite3", "paypal", "@paypal/agent-toolkit"],
+  serverExternalPackages: ["pg", "better-sqlite3", "paypal", "@paypal/agent-toolkit", "tsx"],
   poweredByHeader: false,
   async headers() {
     return [{source:"/(.*)", headers:[
