@@ -1,0 +1,9 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { mkdtempSync, rmSync, readFileSync, appendFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { randomUUID } from "node:crypto";
+import { SourceQualificationJournal } from "./source-execution-qualification-journal";
+test("qualification journal alone reserves each identity before dispatch and enforces the global26 cap",t=>{const directory=mkdtempSync(path.join(tmpdir(),"source-journal-contract-"));t.after(()=>rmSync(directory,{recursive:true,force:true}));const journal=new SourceQualificationJournal(directory,"1".repeat(64),"2".repeat(64));const id="fracture-source-"+randomUUID();journal.append("runtime_intent",{executionId:id,actualRuntime:false},id);assert.throws(()=>new SourceQualificationJournal(directory,"1".repeat(64),"2".repeat(64)).append("runtime_intent",{executionId:id},id),/retry is forbidden/);for(let i=1;i<26;i++){const next="fracture-source-"+randomUUID();journal.append("runtime_intent",{executionId:next,actualRuntime:false},next)}assert.equal(journal.snapshot().runtimeIntents,26);assert.throws(()=>journal.append("runtime_intent",{executionId:"extra"},"extra"),/maximum/);assert.equal(readFileSync(journal.file,"utf8").split("\n").filter(Boolean).length,26)});
+test("an interrupted or altered qualification journal fails closed without dispatch or repair",t=>{const directory=mkdtempSync(path.join(tmpdir(),"source-journal-interrupt-"));t.after(()=>rmSync(directory,{recursive:true,force:true}));const journal=new SourceQualificationJournal(directory,"1".repeat(64),"2".repeat(64));journal.append("fixture_prepared",{actualRuntime:false});appendFileSync(journal.file,'{"incomplete":');assert.throws(()=>journal.append("runtime_intent",{executionId:"never-dispatched"},"never-dispatched"),/incomplete/);assert.ok(readFileSync(journal.file,"utf8").endsWith('{"incomplete":'))});

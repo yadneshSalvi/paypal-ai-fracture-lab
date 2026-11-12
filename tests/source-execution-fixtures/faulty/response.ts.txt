@@ -1,0 +1,1 @@
+export class FixtureRefusal extends Error { constructor(readonly status: number) { super(`Sample request refused (${status}).`); } }

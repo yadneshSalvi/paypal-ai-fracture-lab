@@ -1,0 +1,13 @@
+import type { SqlDatabase } from "@fracture/paypal-core";
+/** Additive only. Existing session/grant/import tables are read contracts, never migrated here. */
+export const sourceExecutionSchema = [
+  `CREATE TABLE IF NOT EXISTS lab_source_execution_plans_v1(id TEXT PRIMARY KEY,session_id TEXT NOT NULL,grant_id TEXT NOT NULL,import_id TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,document TEXT NOT NULL,document_hash TEXT NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS lab_source_execution_plans_owner_v1 ON lab_source_execution_plans_v1(session_id,grant_id,created_at)`,
+  `CREATE TABLE IF NOT EXISTS lab_source_execution_commands_v1(session_id TEXT NOT NULL,grant_id TEXT NOT NULL,request_id TEXT NOT NULL,action TEXT NOT NULL,input_hash TEXT NOT NULL,import_id TEXT NOT NULL,document TEXT NOT NULL,document_hash TEXT NOT NULL,PRIMARY KEY(session_id,request_id))`,
+  `CREATE TABLE IF NOT EXISTS lab_source_execution_jobs_v1(id TEXT PRIMARY KEY,plan_id TEXT NOT NULL UNIQUE,session_id TEXT NOT NULL,grant_id TEXT NOT NULL,import_id TEXT NOT NULL,plan_hash TEXT NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,expires_at TEXT NOT NULL,cancelled_at TEXT,finished_at TEXT,error_code TEXT,worker_id TEXT,claim_token TEXT,lease_until TEXT,event_sequence INTEGER NOT NULL DEFAULT 0,FOREIGN KEY(plan_id) REFERENCES lab_source_execution_plans_v1(id))`,
+  `CREATE INDEX IF NOT EXISTS lab_source_execution_jobs_queue_v1 ON lab_source_execution_jobs_v1(status,created_at)`,
+  `CREATE TABLE IF NOT EXISTS lab_source_execution_cases_v1(id TEXT PRIMARY KEY,job_id TEXT NOT NULL,position INTEGER NOT NULL,scenario_id TEXT NOT NULL,status TEXT NOT NULL,execution_id TEXT NOT NULL UNIQUE,dispatched_at TEXT,finished_at TEXT,receipt_hash TEXT,error_code TEXT,bundle_document TEXT,bundle_hash TEXT,UNIQUE(job_id,position),FOREIGN KEY(job_id) REFERENCES lab_source_execution_jobs_v1(id))`,
+  `CREATE TABLE IF NOT EXISTS lab_source_execution_events_v1(id TEXT PRIMARY KEY,job_id TEXT NOT NULL,sequence INTEGER NOT NULL,document TEXT NOT NULL,document_hash TEXT NOT NULL,UNIQUE(job_id,sequence),FOREIGN KEY(job_id) REFERENCES lab_source_execution_jobs_v1(id))`,
+  `CREATE TABLE IF NOT EXISTS lab_source_execution_artifacts_v1(id TEXT PRIMARY KEY,job_id TEXT NOT NULL,case_id TEXT NOT NULL,kind TEXT NOT NULL,created_at TEXT NOT NULL,document TEXT NOT NULL,document_hash TEXT NOT NULL,UNIQUE(case_id,kind),FOREIGN KEY(job_id) REFERENCES lab_source_execution_jobs_v1(id))`,
+];
+export async function initializeSourceExecution(db: SqlDatabase) { for (const statement of sourceExecutionSchema) await db.query(statement); }

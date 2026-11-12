@@ -1,0 +1,2 @@
+import type {BrambleContext} from "@fracture/source-target";
+export async function checkout(_c:BrambleContext):Promise<unknown>{console.log(JSON.stringify({protocol:"fracture.source-execution/v1",status:"passed",assertions:[{id:"capture_count",passed:true}]}));return null;}

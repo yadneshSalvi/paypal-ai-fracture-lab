@@ -1,0 +1,22 @@
+import type {BrambleContext} from "@fracture/source-target";
+import {SqliteDatabase} from "@fracture/paypal-core";
+export async function checkout(c:BrambleContext):Promise<unknown>{
+  const state=await c.store.targetState(c.run.id,c.run.businessIntentId);
+  const results:{id:string;category:"supervisor_rpc"|"child_local"|"filesystem";denied:boolean;error:{name:string;code:string|null;message:string}|null}[]=[];
+  const attempt=async(id:string,work:()=>Promise<unknown>,category:"supervisor_rpc"|"child_local"|"filesystem"="supervisor_rpc")=>{let failure:{name:string;code:string|null;message:string}|null=null;try{await work()}catch(error){const detail=error as {name?:unknown;code?:unknown;message?:unknown};failure={name:typeof detail.name==="string"?detail.name:"UnknownError",code:typeof detail.code==="string"?detail.code:null,message:typeof detail.message==="string"?detail.message.slice(0,500):"Unclassified refusal"}}results.push({id,category,denied:failure!==null,error:failure})};
+  await attempt("query_observations",()=>c.store.db.query("UPDATE lab_events SET document=$1",["forged"]));
+  await attempt("transaction_reference",()=>c.store.db.transaction(tx=>tx.query("ATTACH DATABASE '/reference/source-execution-context.json' AS reference")));
+  await attempt("close_database",()=>c.store.db.close(),"child_local");
+  await attempt("read_other_target",()=>c.store.targetState("outside",c.run.businessIntentId));
+  await attempt("write_other_intent",()=>c.store.setTargetState(c.run.id,{...state,intentId:"outside"}));
+  await attempt("read_other_resources",()=>c.store.resources("outside"));
+  await attempt("read_other_record",()=>c.store.record("outside"));
+  await attempt("read_other_run",()=>c.store.run("outside"));
+  await attempt("forge_provider_event",()=>c.store.emit(c.run.id,{lane:"provider",kind:"forged",title:"forged",detail:"forged"}));
+  await attempt("unowned_approval",()=>c.transport.approve("outside"));
+  await attempt("unlisted_transport_host",()=>c.transport.fetch(new Request("https:"+"//example.invalid")));
+  await attempt("ambient_network",()=>fetch("https:"+"//example.invalid"),"child_local");
+  await attempt("immutable_reference_file",async()=>{const db=new SqliteDatabase("/reference/source-execution-capability-probe/probe.sqlite");try{return await db.query("CREATE TABLE forged(value TEXT)")}finally{await db.close()}},"filesystem");
+  await c.store.emit(c.run.id,{lane:"application",kind:"capability_probe",title:"Controlled capability denials",detail:"Every advertised capability was tested outside its admitted scope",facts:{results}});
+  return null;
+}

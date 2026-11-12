@@ -1,0 +1,1 @@
+export const importedMarker = () => "controlled-import-corrected-multi-file-v1";

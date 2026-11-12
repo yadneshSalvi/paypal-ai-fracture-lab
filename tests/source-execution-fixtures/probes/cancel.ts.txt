@@ -1,0 +1,2 @@
+import type {BrambleContext} from "@fracture/source-target";
+export async function checkout(c:BrambleContext):Promise<unknown>{await c.store.emit(c.run.id,{lane:"application",kind:"cancellation_probe_started",title:"Controlled cancellation probe",detail:"Imported code entered the case"});if(c.run.scenarioTitle==="Original happy-path purchase")await new Promise<void>(resolve=>setTimeout(resolve,20000));return null;}

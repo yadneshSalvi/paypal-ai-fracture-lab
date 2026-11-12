@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import http from 'node:http';
+import https from 'node:https';
+import net from 'node:net';
+import {syncBuiltinESMExports} from 'node:module';
+let envReadAttempts=0,networkAttempts=0;
+const original=fs.readFileSync;
+fs.readFileSync=function(file,...args){const name=file instanceof URL?file.pathname:String(file);if(/(?:^|\/)\.env(?:$|\.)/.test(name)){envReadAttempts++;throw new Error('SOURCE_HOST_ENV_READ_DENIED')}return original.call(this,file,...args)};
+const deny=()=>{networkAttempts++;throw new Error('SOURCE_HOST_NETWORK_DENIED')};http.request=deny;https.request=deny;net.Socket.prototype.connect=deny;globalThis.fetch=deny;syncBuiltinESMExports();
+const module=await import('../packages/source-execution/src/index.ts');
+const suite=await import('../packages/source-execution/src/suite.ts');
+await import('../scripts/source-execution-worker.ts');
+process.stdout.write(JSON.stringify({imported:typeof module.SourceExecutionService==='function',envReadAttempts,networkAttempts,cases:suite.PUBLIC_CASES.length,scenarioManifestHash:suite.SCENARIO_MANIFEST_HASH})+'\n');

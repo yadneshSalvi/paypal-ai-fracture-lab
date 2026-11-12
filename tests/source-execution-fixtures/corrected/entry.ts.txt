@@ -1,0 +1,7 @@
+import type { BrambleContext } from "@fracture/source-target";
+import { hardenedCheckout } from "./purchase";
+import { importedMarker } from "./marker";
+export async function checkout(context: BrambleContext): Promise<unknown> {
+  await context.store.emit(context.run.id, {lane:"application",kind:"imported_source_executed",title:"Imported checkout",detail:importedMarker(),facts:{marker:importedMarker()}});
+  return hardenedCheckout(context);
+}
