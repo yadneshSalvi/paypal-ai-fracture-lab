@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "fracture-context-study-sealed-interface-2026-11-12",
+  "qualifiedAt": "2026-11-12T01:53:01.427736+00:00",
+  "source": "executed_local_production_build_and_native_browser",
+  "studyId": "fracture-context-2026-11-v1",
+  "protocolHash": "5e2553c9d371c4f842fe60b0d68eeb26c58841c1738a4b71ff1d023617e37240",
+  "sealHash": "dc59e7326838dbe068817b557ac4ea4b9d81e5518bd313c6b69710f8a2ad19dc",
+  "resultHash": "efb34103ad2f8013b577991a0feac23deb8a310df4f7f63007d0fa1b28677c49",
+  "buildId": "suBR2P7NCoPJveTPa-i8R",
+  "publication": {
+    "staticDownloadsByteMatched": 606,
+    "candidateApisExact": 600,
+    "taskApisWithReleasedControls": 20,
+    "allInfrastructureTargetsNull": true,
+    "all16ComparativeIntervalsWithheld": true,
+    "anonymousCreatesSession": false,
+    "privateReasoningIncluded": false
+  },
+  "native": {
+    "eightStrata": true,
+    "resultCardsMatchedToSealedRows": 24,
+    "originalAndRetryHistories": true,
+    "passedFailedAndInfrastructureReceipts": true,
+    "submittedSourceAndSdkTrace": true,
+    "contextAccess": true,
+    "gzipDownloadByteMatched": true,
+    "csvInfrastructureRowsExact": 299,
+    "csvUnknownVerdictsBlank": true,
+    "zeroResultAndReset": true,
+    "mobileWidths": [
+      360,
+      390
+    ],
+    "dialogForwardBackwardTabAndEscape": true,
+    "sourceLinesStackAndMatchFrozenSource": true,
+    "sourceKeyboardScroll": true,
+    "pageHorizontalOverflowAfterRepair": false,
+    "reducedMotion": true,
+    "consoleWarnings": 0,
+    "consoleErrors": 0
+  },
+  "repairs": [
+    {
+      "issue": "Tab reached BODY from the last dialog control",
+      "change": "Contain sequential focus within each open evidence drawer while retaining native Escape and opener restoration"
+    },
+    {
+      "issue": "Source line wrappers formed one horizontal strip",
+      "change": "Render each numbered source line as its own flex row; keep long-line scrolling keyboard accessible"
+    },
+    {
+      "issue": "An absolutely positioned hidden table label escaped the mobile scroll boundary",
+      "change": "Anchor the label inside its positioned table scroll container"
+    }
+  ],
+  "checks": {
+    "publicationTestsPassed": 4,
+    "publicationTestsFailed": 0,
+    "productionBuildPassed": true,
+    "frozenInputVerificationPassed": true,
+    "sealedAnalysisReproductionPassed": true
+  },
+  "sourceFiles": [
+    {
+      "path": "apps/web/components/evaluation-view.tsx",
+      "sha256": "a062aeeef4f6ae6ad7ca75d96a1472a1fc712187e45f6a8e7c45490c95a3ffa1"
+    },
+    {
+      "path": "apps/web/components/evaluation-view.module.css",
+      "sha256": "ed7c046df30ec4345389b09ec398bca7c80ba71d9b436717fc79fa3c22ec1b63"
+    },
+    {
+      "path": "apps/web/lib/evaluation-presentation.ts",
+      "sha256": "ff233f34f7dae7287bb2c9e4109c1943795ef197721b70cbefc94cd03384bae5"
+    },
+    {
+      "path": "packages/service/src/evaluation-publication.ts",
+      "sha256": "9cde1e1c62354db34be9e10be706f890290d9b06a3e5a896d61fc6d195b19b77"
+    }
+  ],
+  "limitations": [
+    "Local qualification; hosted verification is recorded separately.",
+    "This is one completed research unit, not completion of the full Fracture Lab product plan.",
+    "All study target execution used offline provider fixtures.",
+    "The original failing native build and observations are retained privately."
+  ]
+}
