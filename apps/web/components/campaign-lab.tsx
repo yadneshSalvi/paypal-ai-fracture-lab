@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { FormEvent, ReactNode } from "react";
+import type { FormEvent, ReactNode, RefObject } from "react";
 import Link from "next/link";
 import {
   Activity, ArrowDownToLine, ArrowRight, ArrowUpRight, Check,
@@ -292,7 +292,7 @@ function useCampaigns(sessionId: string | null) {
         save(pending);
       } else {
         save(null);
-        setNotice(result.dispatch === "pending" || (result.dispatch === "not_required" && value.kind !== "cancel") ? "The original saved command is recovered. Its campaign is " + stageLabel(result.campaign.status) + "; no new execution was reported." : value.kind === "cancel" ? "Campaign stop acknowledged. Saved observations remain; no compensation was submitted." : value.kind === "minimize" ? "Reduction saved. Follow the executed subsets below; a smaller witness is still being tested." : "Campaign saved and dispatch accepted. Results appear only when case evidence is retained.");
+        setNotice(result.dispatch === "pending" || (result.dispatch === "not_required" && value.kind !== "cancel") ? "The original saved command was recovered without reporting new execution. Read its current state and retained evidence below." : value.kind === "cancel" ? "Campaign stop acknowledged. Saved observations remain; no compensation was submitted." : value.kind === "minimize" ? "Reduction saved. Inspect the subset receipts and witness certificate below." : "Campaign saved and dispatch accepted. Results appear only when case evidence is retained.");
       }
       return result.campaign;
     } catch (error) {
@@ -323,7 +323,7 @@ function useCampaigns(sessionId: string | null) {
   };
 }
 
-function Modal({ open, onClose, titleId, className = "", children }: { open: boolean; onClose: () => void; titleId: string; className?: string; children: ReactNode }) {
+function Modal({ open, onClose, focusOnClose, titleId, className = "", children }: { open: boolean; onClose: () => void; focusOnClose?: () => HTMLElement | null; titleId: string; className?: string; children: ReactNode }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -332,7 +332,7 @@ function Modal({ open, onClose, titleId, className = "", children }: { open: boo
     if (!open && node?.open) node.close();
   }, [open]);
   return <dialog ref={dialog} className={s.dialog + " " + className} aria-labelledby={titleId}
-    onClose={() => { onClose(); if (opener.current?.isConnected) opener.current.focus(); }}
+    onClose={() => { onClose(); const target = focusOnClose?.() ?? opener.current; if (target?.isConnected) target.focus({ preventScroll: true }); }}
     onClick={event => { if (event.target === event.currentTarget) dialog.current?.close(); }}>{children}</dialog>;
 }
 
@@ -348,6 +348,24 @@ function CampaignWorkspace() {
   const [formError, setFormError] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const resultHeading = useRef<HTMLHeadingElement>(null);
+  const commandHeading = useRef<HTMLElement>(null);
+  const composerSubmitted = useRef(false);
+  const [focusRequest, setFocusRequest] = useState(0);
+  const focusedRequest = useRef(0);
+  const focusTarget = () => commandHeading.current ?? resultHeading.current;
+  const finishCommand = async (work: () => Promise<CampaignLabDTO | null>) => {
+    const result = await work();
+    setFocusRequest(value => value + 1);
+    return result;
+  };
+  const onCommand: CampaignCommand = (kind, payload, campaignId) => finishCommand(() => lab.issue(kind, payload, campaignId));
+  useEffect(() => {
+    if (composer || lab.sending || focusedRequest.current === focusRequest) return;
+    const target = commandHeading.current ?? resultHeading.current;
+    if (target) { target.focus({ preventScroll: true }); focusedRequest.current = focusRequest; }
+  }, [composer, lab.sending, lab.command, lab.selected?.id, focusRequest]);
+  const openComposer = () => { composerSubmitted.current = false; setFormError(null); setComposer(true); };
   const admittedScenarios = scenarios.filter(id => workspace?.scenarios.some(scenario => scenario.id === id && scenario.available && scenario.mode === "sample" && scenario.fixtureIds.includes("bramble")));
   const activeCampaign = lab.campaigns.find(item => ACTIVE.has(item.status));
   const locked = lab.sending || Boolean(lab.command);
@@ -355,8 +373,9 @@ function CampaignWorkspace() {
     event.preventDefault();
     if (!admittedScenarios.length || !SEED.test(seed)) { setFormError(!admittedScenarios.length ? "Choose at least one available fault." : "Use 1–100 letters, numbers, colons, underscores, or hyphens for the seed."); return; }
     setFormError(null);
-    await lab.issue("create", { projectId: "bramble", scenarioIds: SCENARIOS.filter(item => admittedScenarios.includes(item.id)).map(item => item.id), revisions: mode === "paired" ? ["faulty", "hardened"] : [mode], seed });
+    await onCommand("create", { projectId: "bramble", scenarioIds: SCENARIOS.filter(item => admittedScenarios.includes(item.id)).map(item => item.id), revisions: mode === "paired" ? ["faulty", "hardened"] : [mode], seed });
     // A retained command is recovered on the main screen; form choices remain available.
+    composerSubmitted.current = true;
     setComposer(false);
   };
   const exportReport = async () => {
@@ -387,16 +406,16 @@ function CampaignWorkspace() {
         <h1>Same purchase.<br /><span>Different consequences.</span></h1>
         <p>Put two revisions under the same fault. Follow the money.<br className={s.desktopBreak} /> Then find the smallest recipe that still breaks the promise.</p>
       </div>
-      <div className={s.headingActions}><SourceChip source="sample" /><button className={s.primaryButton} onClick={() => { setFormError(null); setComposer(true); }} disabled={!lab.loaded || locked || Boolean(activeCampaign)} title={activeCampaign ? "Finish or stop the active campaign before creating another." : undefined}><Plus size={16} />New campaign</button></div>
+      <div className={s.headingActions}><SourceChip source="sample" /><button className={s.primaryButton} onClick={openComposer} disabled={!lab.loaded || locked || Boolean(activeCampaign)} title={activeCampaign ? "Finish or stop the active campaign before creating another." : undefined}><Plus size={16} />New campaign</button></div>
       <div className={s.headingInstrument} aria-hidden="true"><span /><span /><span /><ScanLine size={27} /><small>COMPARE / OBSERVE / REDUCE</small></div>
     </header>
 
     <div className={s.scopeLine}><FlaskConical size={13} /><span>Deterministic local experiments. No payment or model provider calls.</span><span className={s.scopeProject}>BRAMBLE BOOKS · TYPESCRIPT</span></div>
     {lab.command ? <div className={s.commandNotice} role="alert" data-tone={lab.command.phase === "rejected" ? "rose" : "amber"}>
       <div className={s.noticeIcon}>{lab.sending ? <LoaderCircle className={s.spin} size={20} /> : <TriangleAlert size={20} />}</div>
-      <div><strong>{lab.sending ? "Awaiting acknowledgement" : lab.command.phase === "pending" ? "Saved. Dispatch is still pending." : lab.command.phase === "rejected" ? "The command was rejected." : "The command outcome is unconfirmed."}</strong><p>{lab.command.message}</p><small>Retained request <code>{lab.command.payload.requestId}</code>{lab.command.code ? <span> · {lab.command.code}</span> : null}</small>
+      <div><strong ref={commandHeading} tabIndex={-1}>{lab.sending ? "Awaiting acknowledgement" : lab.command.phase === "pending" ? "Saved. Dispatch is still pending." : lab.command.phase === "rejected" ? "The command was rejected." : "The command outcome is unconfirmed."}</strong><p>{lab.command.message}</p><small>Retained request <code>{lab.command.payload.requestId}</code>{lab.command.code ? <span> · {lab.command.code}</span> : null}</small>
         {lab.storageWarning ? <p className={s.storageWarning}><LockKeyhole size={13} />Browser recovery storage is unavailable. This request identity is retained only in the open tab; copy it before leaving. Reload recovery is not assured.</p> : null}
-        <div className={s.noticeActions}><button className={s.textButton} disabled={lab.refreshing || lab.sending} onClick={() => void lab.read(lab.command?.resultCampaignId ?? lab.command?.campaignId ?? null)}><RefreshCw size={13} />Read saved state</button><button className={s.textButton} disabled={lab.sending} onClick={() => void lab.retry()}><Play size={13} />Retry same request</button>{lab.command.phase === "rejected" ? <button className={s.textButton} onClick={lab.dismissRejected}>Dismiss rejected request<X size={12} /></button> : null}</div>
+        <div className={s.noticeActions}><button className={s.textButton} disabled={lab.refreshing || lab.sending} onClick={() => void lab.read(lab.command?.resultCampaignId ?? lab.command?.campaignId ?? null)}><RefreshCw size={13} />Read saved state</button><button className={s.textButton} disabled={lab.sending} onClick={() => void finishCommand(lab.retry)}><Play size={13} />Retry same request</button>{lab.command.phase === "rejected" ? <button className={s.textButton} onClick={lab.dismissRejected}>Dismiss rejected request<X size={12} /></button> : null}</div>
       </div>
     </div> : null}
     {lab.notice ? <div className={s.notice} role="status"><FileCheck2 size={16} /><span>{lab.notice}</span><button onClick={lab.dismissNotice} aria-label="Dismiss campaign notice"><X size={15} /></button></div> : null}
@@ -415,12 +434,12 @@ function CampaignWorkspace() {
     {!lab.loaded ? <div className={s.campaignLoading} aria-live="polite" aria-busy="true"><ScanLine size={25} /><span>Reading your saved experiments…</span><div /><div /><div /></div> : lab.selected ? <CampaignDetail key={lab.selected.id}
       campaign={lab.selected} activeCampaignId={activeCampaign?.id ?? null} locked={locked}
       visible={lab.visible} refreshing={lab.refreshing} onSelectCampaign={lab.select}
-      onCommand={lab.issue} onRead={() => void lab.read(lab.selectedId)} /> : <EmptyCampaign
-        unavailable={Boolean(lab.selectedId)} onCreate={() => setComposer(true)} locked={locked || Boolean(activeCampaign)} />}
+      resultHeading={resultHeading} onCommand={onCommand} onRead={() => void lab.read(lab.selectedId)} /> : <EmptyCampaign
+        unavailable={Boolean(lab.selectedId)} onCreate={openComposer} locked={locked || Boolean(activeCampaign)} />}
 
     <footer className={s.scopeFooter}><Fingerprint size={14} /><p>Every comparison is bound to its saved source, scenario, seed, SDK, and context. A passing property is evidence for that scope.</p><Link href="/provider-facts">Read the boundaries<ArrowUpRight size={12} /></Link></footer>
 
-    <Modal open={composer} onClose={() => setComposer(false)} titleId="create-campaign-title" className={s.composer}>
+    <Modal open={composer} onClose={() => setComposer(false)} focusOnClose={() => composerSubmitted.current ? focusTarget() : null} titleId="create-campaign-title" className={s.composer}>
       <form onSubmit={event => void start(event)}>
         <header className={s.dialogHeader}><div><span className={s.kicker}>NEW EXPERIMENT</span><h2 id="create-campaign-title">Choose where it fractures.</h2></div><button type="button" className={s.iconButton} onClick={() => setComposer(false)} aria-label="Close campaign setup"><X size={19} /></button></header>
         <p className={s.dialogIntro}>The manifest is saved before execution. Each selected fault gets its own run and retained evidence.</p>
@@ -444,8 +463,9 @@ function EmptyCampaign({ unavailable, onCreate, locked }: { unavailable: boolean
 }
 
 type CampaignCommand = (kind: CommandKind, payload: Record<string, unknown>, campaignId?: string | null) => Promise<CampaignLabDTO | null>;
-function CampaignDetail({ campaign, activeCampaignId, locked, visible, refreshing, onSelectCampaign, onCommand, onRead }: {
+function CampaignDetail({ campaign, activeCampaignId, locked, visible, refreshing, resultHeading, onSelectCampaign, onCommand, onRead }: {
   campaign: CampaignLabDTO; activeCampaignId: string | null; locked: boolean; visible: boolean; refreshing: boolean;
+  resultHeading: RefObject<HTMLHeadingElement | null>;
   onSelectCampaign: (id: string) => void; onCommand: CampaignCommand; onRead: () => void;
 }) {
   const { workspace, activeRunId, refresh } = useWorkspace();
@@ -481,7 +501,7 @@ function CampaignDetail({ campaign, activeCampaignId, locked, visible, refreshin
   };
 
   return <div className={s.campaign}>
-    <div className={s.campaignIdentity}><div><span className={s.kicker}>{campaign.manifest.kind === "minimization" ? "EXECUTED RECIPE REDUCTION" : campaign.manifest.kind === "paired" ? "PAIRED EXPERIMENT" : "SINGLE REVISION EXPERIMENT"}</span><h2>{campaign.title}</h2><p><code>{shortId(campaign.id, 12)}</code><span>·</span>{dateLabel(campaign.createdAt)}<span>·</span><SourceChip source={campaign.manifest.source} small /></p></div>
+    <div className={s.campaignIdentity}><div><span className={s.kicker}>{campaign.manifest.kind === "minimization" ? "EXECUTED RECIPE REDUCTION" : campaign.manifest.kind === "paired" ? "PAIRED EXPERIMENT" : "SINGLE REVISION EXPERIMENT"}</span><h2 ref={resultHeading} tabIndex={-1}>{campaign.title}</h2><p><code>{shortId(campaign.id, 12)}</code><span>·</span>{dateLabel(campaign.createdAt)}<span>·</span><SourceChip source={campaign.manifest.source} small /></p></div>
       <div className={s.campaignActions}><State {...campaignPresentation} />{resumable ? <button className={s.secondaryButton} disabled={locked || Boolean(activeCampaignId && activeCampaignId !== campaign.id)} onClick={() => void onCommand("resume", { action: "resume" }, campaign.id)}><Play size={13} />Resume saved work</button> : null}{cancellable ? <button className={s.stopButton} disabled={locked} onClick={() => void onCommand("cancel", { action: "cancel" }, campaign.id)}><Square size={12} />Stop campaign</button> : null}</div>
     </div>
     <div className={s.screenReaderStatus} role="status" aria-live="polite">{campaignPresentation.label + ". " + campaign.counts.completed + " of " + campaign.counts.planned + " cases have complete receipts. " + campaign.counts.interrupted + " interrupted."}</div>

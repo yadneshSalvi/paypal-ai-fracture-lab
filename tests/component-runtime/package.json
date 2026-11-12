@@ -1,0 +1,13 @@
+{
+  "name": "fracture-dom-regressions",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated DOM test tools; the root dependency lock remains study-bound.",
+  "scripts": {
+    "test": "node ../../node_modules/tsx/dist/cli.mjs --test ../campaign-component.dom.ts"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
+}
