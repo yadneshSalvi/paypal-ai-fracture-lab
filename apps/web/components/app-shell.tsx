@@ -7,6 +7,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { Activity, ArrowDownToLine, ArrowUpRight, BookOpen, ChevronDown, ChevronRight, Command, FileCode2, Files, FlaskConical, FolderKanban, GitBranch, HelpCircle, Layers3, PanelRightClose, Search, ShieldCheck, Sparkles, SquareTerminal, Wrench, X } from "lucide-react";
 import { dateLabel, shortId, SourceChip } from "./primitives";
 import { useWorkspace } from "./workspace-provider";
+import { repairProofView } from "../../../packages/ai/src/repair-proof-view";
+import { RepairProofCard } from "./repair-proof-card";
 
 const navigation = [
   { href: "/projects", label: "Projects", Icon: FolderKanban },
@@ -76,7 +78,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         return <Link href={tab.href} key={tab.href} aria-current={active ? "page" : undefined} className={active ? "active" : ""}>{tab.label}{tab.badge ? <span className="tiny-tag">{tab.badge}</span> : null}</Link>;
       })}</nav></>}
       <main id="main-content" className="main-content">{error ? <div className="error-banner" role="alert"><span>{error}</span><button onClick={() => void refresh(true)}>Reconnect</button></div> : null}{children}</main>
-      <footer className="app-footer"><span><span className="status-dot mint" />Evidence stays attached.</span><span><SquareTerminal size={12} />{research ? "Real model submissions" : sources ? "AST source inspection" : "Local fixture runtime"}<span className="footer-dot">·</span>{research ? "Offline payment checks" : sources ? "Static findings require runtime evidence" : "Sample ≠ provider execution"}</span></footer>
+      <footer className="app-footer"><span><span className="status-dot mint" />Evidence stays attached.</span><span><SquareTerminal size={12} />{research ? "Real model submissions" : sources ? "AST source inspection" : "Sample payment runtime"}<span className="footer-dot">·</span>{research ? "Offline payment checks" : sources ? "Static findings require runtime evidence" : "Sample ≠ provider execution"}</span></footer>
     </div>
     {notice ? <div className="toast" role="status"><ShieldCheck size={17} /><span>{notice}</span><button onClick={dismissNotice} aria-label="Dismiss notification"><X size={15} /></button></div> : null}
     <EvidenceDrawer />
@@ -86,12 +88,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 function EvidenceDrawer() {
   const { evidence, closeEvidence } = useWorkspace();
+  const repairProof = repairProofView(evidence);
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     if (evidence && !dialog.current?.open) dialog.current?.showModal();
     if (!evidence && dialog.current?.open) dialog.current?.close();
   }, [evidence]);
-  return <dialog ref={dialog} className="evidence-drawer" onClose={closeEvidence} onClick={event => { if (event.target === event.currentTarget) closeEvidence(); }} aria-labelledby="evidence-title"><div className="drawer-inner"><header className="drawer-header"><div><span className="eyebrow">ATTACHED PROOF</span><h2 id="evidence-title">Evidence record</h2></div><button className="icon-button" onClick={closeEvidence} aria-label="Close evidence drawer"><PanelRightClose size={20} /></button></header>{evidence ? <><div className="drawer-provenance"><SourceChip source={evidence.source} /><span className="tiny-tag">{evidence.kind}</span></div><h3 className="drawer-title">{evidence.title}</h3><p className="drawer-summary">{evidence.summary}</p><dl className="evidence-meta"><div><dt>Observed</dt><dd>{dateLabel(evidence.createdAt)}</dd></div><div><dt>Record</dt><dd className="mono">{evidence.id}</dd></div><div><dt>SHA-256</dt><dd className="mono break-all">{evidence.sha256}</dd></div>{evidence.sourceRef ? <div><dt>Source</dt><dd className="mono">{evidence.sourceRef.path}:{evidence.sourceRef.line}</dd></div> : null}</dl><div className="code-heading"><FileCode2 size={14} />Redacted record</div><pre className="evidence-json">{JSON.stringify(evidence.body, null, 2)}</pre><div className="redaction-note"><ShieldCheck size={15} /><div>Safe to inspect<small>{evidence.redactions.length ? `Redacted fields: ${evidence.redactions.join(", ")}` : "This record contains allowlisted local fixture data."}</small></div></div>{evidence.runId ? <Link className="button secondary full-width" href={`/reports/${evidence.runId}`} onClick={closeEvidence}><ArrowDownToLine size={15} />Open complete report</Link> : null}</> : null}</div></dialog>;
+  return <dialog ref={dialog} className="evidence-drawer" onClose={closeEvidence} onClick={event => { if (event.target === event.currentTarget) closeEvidence(); }} aria-labelledby="evidence-title"><div className="drawer-inner"><header className="drawer-header"><div><span className="eyebrow">ATTACHED PROOF</span><h2 id="evidence-title">Evidence record</h2></div><button className="icon-button" onClick={closeEvidence} aria-label="Close evidence drawer"><PanelRightClose size={20} /></button></header>{evidence ? <><div className="drawer-provenance"><SourceChip source={evidence.source} /><span className="tiny-tag">{evidence.kind}</span></div><h3 className="drawer-title">{evidence.title}</h3><p className="drawer-summary">{repairProof?.summary ?? evidence.summary}</p>{repairProof ? <RepairProofCard view={repairProof} /> : null}<dl className="evidence-meta"><div><dt>Observed</dt><dd>{dateLabel(evidence.createdAt)}</dd></div><div><dt>Record</dt><dd className="mono">{evidence.id}</dd></div><div><dt>SHA-256</dt><dd className="mono break-all">{evidence.sha256}</dd></div>{evidence.sourceRef ? <div><dt>Source</dt><dd className="mono">{evidence.sourceRef.path}:{evidence.sourceRef.line}</dd></div> : null}</dl><div className="code-heading"><FileCode2 size={14} />Redacted record</div><pre className="evidence-json">{JSON.stringify(evidence.body, null, 2)}</pre><div className="redaction-note"><ShieldCheck size={15} /><div>Safe to inspect<small>{evidence.redactions.length ? `Redacted fields: ${evidence.redactions.join(", ")}` : "This record contains allowlisted Sample data."}</small></div></div>{evidence.runId ? <Link className="button secondary full-width" href={`/reports/${evidence.runId}`} onClick={closeEvidence}><ArrowDownToLine size={15} />Open complete report</Link> : null}</> : null}</div></dialog>;
 }
 
 export function LoadingWorkspace() {

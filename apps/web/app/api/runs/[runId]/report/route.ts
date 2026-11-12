@@ -1,4 +1,24 @@
 import { api } from "@/lib/http";
-export const runtime="nodejs";export const dynamic="force-dynamic";
-const escape=(value:unknown)=>String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
-export async function GET(request:Request,{params}:{params:Promise<{runId:string}>}){const {runId}=await params;return api(request,async({service,session})=>{const run=await service.store.run(runId,session.id);const evidence=(await service.store.evidence(session.id)).filter(item=>item.runId===runId);const report={schemaVersion:1,run,evidence,exportedAt:new Date().toISOString()};if(new URL(request.url).searchParams.get("format")==="html")return new Response(`<!doctype html><meta charset="utf-8"><title>Fracture Lab — ${escape(run.id)}</title><style>body{max-width:1000px;margin:60px auto;background:#111317;color:#dde3ed;font:16px system-ui;line-height:1.6}h1{font-size:36px}code,pre{font-size:12px;white-space:pre-wrap;word-break:break-word}article{border-top:1px solid #343a46;padding:16px 0}strong{color:#b9a0ff}</style><h1>${escape(run.scenarioTitle)}</h1><p><strong>${escape(run.source)} · ${escape(run.revision)} · ${escape(run.verdict)}</strong></p><p>${escape(run.summary)}</p><p>Gross capture: ${run.capturedMinor} ${escape(run.currency)} minor units. Refunded: ${run.refundedMinor}. Historical verdict is preserved.</p>${run.invariants.map(item=>`<article><strong>${escape(item.id)} · ${escape(item.verdict)}</strong><h2>${escape(item.name)}</h2><p>${escape(item.reason)}</p></article>`).join("")}<h2>Reproduction and evidence</h2><pre>${escape(JSON.stringify(report,null,2))}</pre>`,{headers:{"content-type":"text/html; charset=utf-8","content-disposition":`attachment; filename="fracture-${run.id}.html"`,"content-security-policy":"default-src 'none'; style-src 'unsafe-inline'"}});return new Response(JSON.stringify(report,null,2),{headers:{"content-type":"application/json","content-disposition":`attachment; filename="fracture-${run.id}.json"`}});});}
+import { runReport, runReportHtml } from "../../../../../../../packages/ai/src/run-report";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request, { params }: { params: Promise<{ runId: string }> }) {
+  const { runId } = await params;
+  return api(request, async ({ service, session }) => {
+    const run = await service.store.run(runId, session.id);
+    const evidence = (await service.store.evidence(session.id)).filter(item => item.runId === runId);
+    const report = runReport(run, evidence);
+    if (new URL(request.url).searchParams.get("format") === "html") return new Response(runReportHtml(report), {
+      headers: {
+        "content-type": "text/html; charset=utf-8",
+        "content-disposition": `attachment; filename="fracture-${run.id}.html"`,
+        "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+      },
+    });
+    return new Response(JSON.stringify(report, null, 2), {
+      headers: { "content-type": "application/json", "content-disposition": `attachment; filename="fracture-${run.id}.json"` },
+    });
+  });
+}
