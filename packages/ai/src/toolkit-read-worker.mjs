@@ -27,6 +27,8 @@ axios.defaults.adapter = async config => {
   return response;
 };
 try {
+  const boundary = { node: process.version, environmentKeys: Object.keys(process.env).sort(), execArgvCount: process.execArgv.length, workerDataKeys: Object.keys(workerData).sort() };
+  if (JSON.stringify(boundary.environmentKeys) !== '["NODE_ENV"]' || process.env.NODE_ENV !== 'production' || boundary.execArgvCount !== 0 || JSON.stringify(boundary.workerDataKeys) !== '["callId","wireOrderId"]') throw new Error('TOOLKIT_WORKER_BOUNDARY');
   if (!/^[A-Z0-9]{17,32}$/.test(workerData.wireOrderId)) throw new Error('TOOLKIT_RESOURCE_DENIED');
   const { PayPalAgentToolkit } = require('@paypal/agent-toolkit/openai');
   const toolkit = new PayPalAgentToolkit({ clientId: 'sample-only-id', clientSecret: 'sample-only-secret', configuration: { actions: { orders: { get: true } }, context: { sandbox: true } } });
@@ -35,7 +37,7 @@ try {
   const result = await toolkit.handleToolCall({ id: workerData.callId, type: 'function', function: { name: 'get_order', arguments: JSON.stringify({ id: workerData.wireOrderId }) } });
   const content = typeof result.content === 'string' ? JSON.parse(result.content) : result.content;
   if (content?.error || content?.ok === false) throw new Error('TOOLKIT_READ_FAILED');
-  parentPort.postMessage({ type: 'result', body: content });
+  parentPort.postMessage({ type: 'result', body: content, boundary });
 } catch {
   parentPort.postMessage({ type: 'failure' });
 }

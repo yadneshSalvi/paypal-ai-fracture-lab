@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, CircleDashed, Clock3, Fingerprint, FlaskConical, GitBranch, LoaderCircle, LockKeyhole, Radio, RefreshCw, ShieldCheck, Sparkles, Terminal, X } from "lucide-react";
 import type { RuntimeAttempt, RuntimeView } from "../../../packages/ai/src/runtime-view";
 import { AppShell, LoadingWorkspace } from "./app-shell";
 import { SourceChip } from "./primitives";
 import { useWorkspace } from "./workspace-provider";
+import { ToolkitInvestigationsPanel } from "./toolkit-investigations";
 import styles from "./model-runtime.module.css";
 
 const roles: Record<string, { title: string; purpose: string }> = {
@@ -64,7 +65,7 @@ export function ModelRuntimePage() {
     sessionRead.current = true; setCheckingSession(true);
     try { await readSession(true); } finally { sessionRead.current = false; setCheckingSession(false); }
   };
-  return <AppShell>{workspaceLoading ? <LoadingWorkspace /> : !workspace ? <RuntimeEntry checking={checkingSession} onRead={() => void reconnect()} /> : <RuntimeEvidence data={data} loading={loading} error={error} onRefresh={() => void refresh()} onEvidence={openEvidence} />}</AppShell>;
+  return <AppShell>{workspaceLoading ? <LoadingWorkspace /> : !workspace ? <RuntimeEntry checking={checkingSession} onRead={() => void reconnect()} /> : <RuntimeEvidence data={data} loading={loading} error={error} onRefresh={() => void refresh()} onEvidence={openEvidence} investigations={<ToolkitInvestigationsPanel key={workspace.sessionId} sessionId={workspace.sessionId} onEvidence={openEvidence} onReceiptChange={() => void refresh()} />} />}</AppShell>;
 }
 
 export function RuntimeEntry({ checking, onRead }: { checking: boolean; onRead: () => void }) {
@@ -74,7 +75,7 @@ export function RuntimeEntry({ checking, onRead }: { checking: boolean; onRead: 
   </section>;
 }
 
-export function RuntimeEvidence({ data, loading, error, onRefresh, onEvidence }: { data: RuntimeView | null; loading: boolean; error: string | null; onRefresh: () => void; onEvidence: (id: string) => void }) {
+export function RuntimeEvidence({ data, loading, error, onRefresh, onEvidence, investigations }: { data: RuntimeView | null; loading: boolean; error: string | null; onRefresh: () => void; onEvidence: (id: string) => void; investigations?: ReactNode }) {
   const [provider, setProvider] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -86,6 +87,7 @@ export function RuntimeEvidence({ data, loading, error, onRefresh, onEvidence }:
   const failed = data?.attempts.filter(item => item.status === "failed" || item.status === "cancelled").length ?? 0;
   return <section className={styles.root}>
     <header className={styles.hero}><div className={styles.heroCopy}><span className={styles.kicker}><Radio size={13} />AI WORKBENCH / RETAINED EVIDENCE</span><h1>Every conclusion<br /><span>has a receipt.</span></h1><p>See what the model proposed, what the tool actually observed, and which original attempts remain unresolved.</p><div className={styles.heroTags}><SourceChip source="sample" /><span><LockKeyhole size={13} />Private reasoning stays private</span></div></div><div className={styles.constellation} aria-hidden="true"><span className={styles.orbit} /><div className={styles.core}><Fingerprint size={31} /><span>ORIGINAL<br />IDENTITY</span></div><span className={styles.satelliteA}><Sparkles size={15} />MODEL</span><span className={styles.satelliteB}><Terminal size={15} />TOOL</span><span className={styles.satelliteC}><ShieldCheck size={15} />RECEIPT</span></div></header>
+    {investigations}
     <div className={styles.metrics}><div><span>Retained attempts</span><strong>{data?.totalAttempts ?? "—"}</strong></div><div><span>Accepted responses</span><strong>{data ? completed : "—"}</strong></div><div><span>Unresolved / stopped</span><strong>{data ? failed : "—"}</strong></div><div><span>Observed tool reads</span><strong>{data?.reads.length ?? "—"}</strong></div></div>
     <div className={styles.sectionHeading}><div><span className={styles.kicker}>MODEL → OBSERVATION → CONCLUSION</span><h2>The evidence, step by step.</h2></div><button className="button secondary" type="button" disabled={loading} onClick={onRefresh}>{loading ? <LoaderCircle size={14} className="spin" /> : <RefreshCw size={14} />}Refresh records</button></div>
     {error ? <div className={styles.error} role="alert"><ShieldCheck size={18} /><div><strong>The latest read could not complete.</strong><p>{error}</p><p>{data ? "The saved view below is retained. Refresh only reads the existing records." : "No result has been inferred. Refresh reads the original records."}</p></div></div> : null}

@@ -13,6 +13,7 @@ export interface GeminiResponse { id: string; model: string; status: string; ste
 export interface GeminiCall {
   role: string; model: string; instructions: string; input: unknown;
   tools?: Record<string, unknown>[]; toolName?: string; schema?: Record<string, unknown>;
+  timeoutMs?: number;
   continuation?: { attemptId: string; results: { callId: string; name: string; output: unknown }[] };
 }
 export interface GeminiReceipt { attemptId: string; evidenceId: string; response: GeminiResponse; durationMs: number; inputHash: string }
@@ -27,9 +28,9 @@ const publicResponse = (response: GeminiResponse): GeminiResponse => ({
 /** Gemini's saved interaction ID retains opaque thought state; it is never reconstructed. */
 export class GeminiInteractionModel {
   private authority: OpenAIModel;
-  constructor(private store: LabStore, readonly actionId: string, private fetchImpl: typeof fetch = fetchModelProvider) {
+  constructor(private store: LabStore, readonly actionId: string, private fetchImpl: typeof fetch = fetchModelProvider, private signal?: AbortSignal) {
     if (fetchImpl === globalThis.fetch) this.fetchImpl = fetchModelProvider;
-    this.authority = new OpenAIModel(store, this.fetchImpl, actionId);
+    this.authority = new OpenAIModel(store, this.fetchImpl, actionId, signal);
   }
   async call(sessionId: string, runId: string, call: GeminiCall): Promise<GeminiReceipt> {
     await this.authority.assertActive(sessionId);
@@ -57,7 +58,8 @@ export class GeminiInteractionModel {
     const inputHash = sha256(canonicalJson(call));
     const requestHash = sha256(canonicalJson(request));
     const started = Date.now();
-    const record = { attemptId, actionId: this.actionId, role: call.role, provider: "gemini", model: call.model, inputHash, requestHash, startedAt: new Date(started).toISOString(), status: "running", previousInteractionId: previous, continuationFrom: call.continuation?.attemptId ?? null, configuration: { thinkingLevel: "high", storedInteraction: true, apiRevision: "2026-05-20" } };
+    const deadlineMs = Math.min(900_000, Math.max(1000, call.timeoutMs ?? 900_000));
+    const record = { attemptId, actionId: this.actionId, role: call.role, provider: "gemini", model: call.model, inputHash, requestHash, startedAt: new Date(started).toISOString(), status: "running", previousInteractionId: previous, continuationFrom: call.continuation?.attemptId ?? null, configuration: { thinkingLevel: "high", storedInteraction: true, apiRevision: "2026-05-20", deadlineMs } };
     const inserted = await this.store.db.query("INSERT INTO lab_model_attempts(id,session_id,run_id,role,status,document) VALUES($1,$2,$3,$4,'running',$5) ON CONFLICT(id) DO NOTHING", [attemptId, sessionId, runId, call.role, JSON.stringify(record)]);
     if (inserted.rowCount !== 1) {
       const row = (await this.store.db.query<{ document: string; session_id: string; run_id: string } & Record<string, unknown>>("SELECT document,session_id,run_id FROM lab_model_attempts WHERE id=$1", [attemptId])).rows[0];
@@ -73,7 +75,7 @@ export class GeminiInteractionModel {
     let observedResponse: GeminiResponse | null = null;
     try {
       await vault.prepare(attemptId, sessionId, runId, request);
-      response = await this.fetchImpl("https://generativelanguage.googleapis.com/v1beta/interactions", { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": requiredConfig("GEMINI_API_KEY"), "Api-Revision": "2026-05-20" }, body: JSON.stringify(request), signal: AbortSignal.any([AbortSignal.timeout(900_000), cancel.signal]) });
+      response = await this.fetchImpl("https://generativelanguage.googleapis.com/v1beta/interactions", { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": requiredConfig("GEMINI_API_KEY"), "Api-Revision": "2026-05-20" }, body: JSON.stringify(request), signal: AbortSignal.any([AbortSignal.timeout(deadlineMs), cancel.signal, ...(this.signal ? [this.signal] : [])]) });
       if (!response.ok) { await response.arrayBuffer().catch(() => {}); throw new LabError(`MODEL_HTTP_${response.status}`, "Gemini did not return a usable interaction. The original attempt is retained.", 502); }
       const raw = await response.json() as GeminiResponse;
       if (typeof raw.id !== "string" || raw.id.length > 600 || typeof raw.model !== "string" || raw.model.replace(/^models\//, "") !== call.model || !Array.isArray(raw.steps) || raw.steps.some(step => !step || typeof step.type !== "string")) throw new LabError("MODEL_RESPONSE_INVALID", "The interaction identity or model does not match the declared request.", 502);
@@ -88,14 +90,15 @@ export class GeminiInteractionModel {
       const evidence: EvidenceDTO = { id: attemptId, runId, title: `Model receipt · ${call.role}`, kind: "receipt", source: "sample", createdAt: new Date().toISOString(), sha256: sha256(canonicalJson(body)), summary: "An actual Gemini interaction using scoped Sample evidence. Model output is distinct from the observed tool result.", body, redactions: ["Provider credentials and thought/signature items are excluded.", "Exact raw response context is encrypted on this server; opaque continuation remains bound to the original saved provider interaction."] };
       await this.store.db.transaction(async tx => {
         const action = (await tx.query<{ stage: string } & Record<string, unknown>>("SELECT stage FROM lab_actions WHERE id=$1 AND session_id=$2 FOR UPDATE", [this.actionId, sessionId])).rows[0];
-        if (cancel.signal.aborted || action?.stage !== "running") throw new LabError("WORK_CANCELLED", "The original model action is no longer active.", 409);
+        if (cancel.signal.aborted || this.signal?.aborted || action?.stage !== "running") throw new LabError("WORK_CANCELLED", "The original model action is no longer active.", 409);
         await tx.query("INSERT INTO lab_evidence(id,session_id,run_id,created_at,document) VALUES($1,$2,$3,$4,$5)", [attemptId, sessionId, runId, evidence.createdAt, JSON.stringify(evidence)]);
         await tx.query("UPDATE lab_model_attempts SET status='completed',document=$2 WHERE id=$1", [attemptId, JSON.stringify({ ...record, status: "completed", receipt, context, transport, durationMs })]);
       });
       return receipt;
     } catch (error) {
-      const code = cancel.signal.aborted ? "WORK_CANCELLED" : error instanceof LabError || error instanceof ModelTransportError ? error.code : "MODEL_TRANSPORT_FAILURE";
-      await this.store.db.query("UPDATE lab_model_attempts SET status='failed',document=$2 WHERE id=$1", [attemptId, JSON.stringify({ ...record, status: "failed", errorCode: code, durationMs: Date.now() - started, providerResponse: observedResponse, transport: modelTransportReceipt(error) ?? modelTransportReceipt(response) })]);
+      const code = cancel.signal.aborted || this.signal?.aborted ? "WORK_CANCELLED" : error instanceof LabError || error instanceof ModelTransportError ? error.code : "MODEL_TRANSPORT_FAILURE";
+      const status = code === "WORK_CANCELLED" ? "cancelled" : "failed";
+      await this.store.db.query("UPDATE lab_model_attempts SET status=$3,document=$2 WHERE id=$1 AND status='running'", [attemptId, JSON.stringify({ ...record, status, errorCode: code, durationMs: Date.now() - started, providerResponse: observedResponse, transport: modelTransportReceipt(error) ?? modelTransportReceipt(response) }), status]);
       if (error instanceof LabError) throw error;
       throw new LabError(code, "The original Gemini attempt did not complete. No replacement result is presented.", 502);
     } finally { clearInterval(timer); await response?.body?.cancel().catch(() => {}); }
