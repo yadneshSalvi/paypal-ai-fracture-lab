@@ -39,8 +39,26 @@ PY
 
 ## Use in this project
 
-The skills will be available on the next Codex turn. If they do not appear, start a new Codex session in this directory. Begin a TypeScript integration with `$typescript-integrate-paypal` and `$typescript-getting-started`; corresponding Python and .NET skills are also installed.
+Start a TypeScript integration task with `$typescript-integrate-paypal` and `$typescript-getting-started`; corresponding Python and .NET skills are also installed. If the skills do not appear, start a new Codex session in this directory.
 
-The installed TypeScript entry point currently references APIMatic's generated SDK at `context-plugins/paypal-typescript-sdk`, whose package name is `paypal` and which is built from source. Read that skill before adding a runtime SDK; no application package or runtime SDK has been installed yet.
+The runtime SDK the skills describe is installed and pinned: package `paypal` 2.29.0 from `context-plugins/paypal-typescript-sdk` at commit `5d0df8a8817e5fdf2e2cd48e68f790ea4730aab2` (`package.json`). It is not `@paypal/paypal-server-sdk`. The application reaches it through `@fracture/paypal-core`, pinned to the vendored archive `vendor/fracture-paypal-core-0.2.2.tgz`. The `vendor/` directory also holds archives 0.2.3 to 0.2.7 for sibling projects, and `packages/paypal-core/` is the 0.2.7 source; the application pin stays at 0.2.2 and its conformance proof records that archive's hash.
 
-For the **Best Use of APIMatic** award, actually use the context while building the PayPal integration and document the usage in the submission. Installation alone does not demonstrate use. The optional [one-month Basic subscription claim](https://docs.google.com/forms/d/e/1FAIpQLScc2oCgAFACm7d6H3R4mgzv-O34DdyVnLIBNiwmUNggr_-hhA/viewform) requires a project/repository URL and evidence of plugin usage, so no claim has been submitted during setup.
+How the plugin and SDK were used, with file and line references:
+
+- [`docs/apimatic/README.md`](docs/apimatic/README.md): the chain from SDK call to contract row to executed proof.
+- [`docs/apimatic/CONTEXT_PLUGIN.md`](docs/apimatic/CONTEXT_PLUGIN.md): which skill informed which code.
+- [`docs/apimatic/SDK_USAGE.md`](docs/apimatic/SDK_USAGE.md): every SDK method called, its call site and its test.
+- [`docs/apimatic/FINDINGS.md`](docs/apimatic/FINDINGS.md): where documented and observed behaviour differed.
+- [`paypal-plan.md`](paypal-plan.md): the integration contract written from the skills and the SDK map.
+
+## Keeping the proof current
+
+```sh
+npm run check:conformance   # hashes the 11 runtime files against docs/evidence/application-conformance.json; no tests, no database
+npm run verify:app          # typecheck, application and model tests on the local provider model, then rewrites the proof
+npm run test:hermetic       # the test files that need no database, Docker, network, model key or .env
+```
+
+`check:conformance` runs in CI and as the `prebuild` step of `npm run build`, which is the command the hosted build runs. A stale proof therefore fails the build and names the files that changed. The proof is Sample evidence from the local provider model, not a live PayPal result.
+
+The optional [one-month Basic subscription claim](https://docs.google.com/forms/d/e/1FAIpQLScc2oCgAFACm7d6H3R4mgzv-O34DdyVnLIBNiwmUNggr_-hhA/viewform) requires a project URL and evidence of plugin usage; whether it has been submitted is not recorded in this repository.

@@ -9,7 +9,9 @@ import { EmptyState, SourceChip } from "./primitives";
 import { CampaignsView, MapView, ProjectsView, ScenarioStudio } from "./project-views";
 import { RepairsView } from "./repair-views";
 import { ContractView, EvidenceView, ProviderFactsView } from "./proof-views";
-import { ErrandView, JudgeView } from "./research-views";
+import { ErrandView } from "./research-views";
+import { JudgeTour } from "./judge-tour";
+import type { JudgeRecorded } from "./judge-recorded";
 import { TandemView } from './tandem-view';
 import { ReportView } from "./report-view";
 import { NoRun, RunWorkbench } from "./run-workbench";
@@ -18,7 +20,7 @@ import { useSelectedRun, useWorkspace } from "./workspace-provider";
 const EvaluationsView=dynamic(()=>import('./evaluation-view').then(module=>module.EvaluationsView),{loading:()=> <div className="quiet-empty" role="status">Opening the context study…</div>});
 
 export type Screen = "run" | "projects" | "map" | "scenarios" | "campaigns" | "repairs" | "contract" | "facts" | "evidence" | "evaluations" | "errand" | "tandem" | "judge" | "report";
-export function FractureConsole({ screen, runId, projectId, repairId }: { screen: Screen; runId?: string; projectId?: string; repairId?: string }) {
+export function FractureConsole({ screen, runId, projectId, repairId, recorded = null, tourStep }: { screen: Screen; runId?: string; projectId?: string; repairId?: string; recorded?: JudgeRecorded | null; tourStep?: number }) {
   const { workspace, loading, refresh, setActiveProjectId, setActiveRunId } = useWorkspace();
   const run = useSelectedRun(runId, projectId);
   useEffect(() => {
@@ -32,8 +34,8 @@ export function FractureConsole({ screen, runId, projectId, repairId }: { screen
   let content;
   if (screen === "evaluations") content = <EvaluationsView />;
   else if (loading) content = <LoadingWorkspace />;
-  else if (!workspace) content = <EmptyState title="The workspace service is disconnected." action={<button className="button primary" onClick={() => void refresh()}>Reconnect to the workspace</button>}>No observations have loaded. Start the application service, then reconnect to load your saved session and evidence.</EmptyState>;
-  else if (runId && !workspace.runs.some(item => item.id === runId)) content = <EmptyState title="This run isn’t in your session." action={<Link className="button primary" href="/projects">Open your projects</Link>}>Open a saved run from this workspace, or start a new sample scenario.</EmptyState>;
+  else if (!workspace) content = <EmptyState title="Your session could not be opened." action={<><button className="button primary" onClick={() => void refresh(true)}>Try again</button><Link className="button secondary" href="/observations" prefetch={false}>Open the recorded observations</Link></>}>The interactive lab needs a session and none could be started just now. The recorded PayPal Sandbox observations need no session and stay available.</EmptyState>;
+  else if (runId && !workspace.runs.some(item => item.id === runId)) content = <EmptyState title="This run isn’t in your session." action={<><Link className="button primary" href="/judge">Open the guided tour</Link><Link className="button secondary" href="/runs">Open this session’s run</Link></>}>Runs belong to the session that created them. This link points at a run from an earlier or different session; your current session has its own sample run.</EmptyState>;
   else if (projectId && !workspace.projects.some(item => item.id === projectId)) content = <EmptyState title="Project not found." action={<Link className="button primary" href="/projects">Open your projects</Link>}>This project is not registered in your current sample session.</EmptyState>;
   else if (screen === "projects") content = <ProjectsView />;
   else if (screen === "map") content = <MapView />;
@@ -45,7 +47,7 @@ export function FractureConsole({ screen, runId, projectId, repairId }: { screen
   else if (screen === "evidence") content = <EvidenceView />;
   else if (screen === "errand") content = <ErrandView />;
   else if (screen === 'tandem' || projectId === 'tandem') content = <TandemView />;
-  else if (screen === "judge") content = <JudgeView />;
+  else if (screen === "judge") content = <JudgeTour recorded={recorded} {...(tourStep ? { initialStep: tourStep } : {})} />;
   else if (screen === "report") content = run ? <ReportView run={run} /> : <NoRun />;
   else if(projectId === "errand" || run?.projectId === "errand") content = <ErrandView />;
   else content = run ? <RunWorkbench run={run} /> : <NoRun />;

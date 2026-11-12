@@ -1,0 +1,494 @@
+import { createHash, randomUUID } from "node:crypto";
+import { assertMoney, fromProviderMoney, toProviderMoney } from "@fracture/paypal-core";
+import type { MinorMoney } from "@fracture/paypal-core";
+import type { BrambleContext } from "@fracture/source-target";
+
+// The runner's pinned contract exports only BrambleContext, so the other shapes are derived from it.
+type BrambleStore = BrambleContext["store"];
+type TargetState = Awaited<ReturnType<BrambleStore["targetState"]>>;
+type ApplicationEvent = Parameters<BrambleStore["emit"]>[1];
+
+export interface CheckoutResult {
+  status: TargetState["status"];
+  orderId: string | null;
+  captureId: string | null;
+  fulfilled: boolean;
+  reason: string;
+}
+
+interface SeenCapture {
+  id: string;
+  status: string;
+  money: MinorMoney | null;
+}
+
+interface SeenOrder {
+  id: string;
+  status: string;
+  money: MinorMoney | null;
+  customId: string | null;
+  captures: SeenCapture[];
+}
+
+type Answer =
+  | { kind: "ok"; order: SeenOrder }
+  /** PayPal answered with a refusal: the request had no effect. */
+  | { kind: "rejected"; httpStatus: number; message: string }
+  /** No usable answer: the request may or may not have taken effect. */
+  | { kind: "unknown"; httpStatus: number; message: string };
+
+/** One in-flight checkout per purchase in this process; the database constraint covers the rest. */
+const inFlight = new Map<string, Promise<CheckoutResult>>();
+
+export async function checkout(context: BrambleContext): Promise<unknown> {
+  const purchase = [context.run.id, context.run.businessIntentId].join("\u0000");
+  const existing = inFlight.get(purchase);
+  if (existing) return existing;
+  const work = runCheckout(context).finally(() => {
+    if (inFlight.get(purchase) === work) inFlight.delete(purchase);
+  });
+  inFlight.set(purchase, work);
+  return work;
+}
+
+const errorText = (error: unknown): string => (error instanceof Error ? error.message : String(error));
+
+const sameMoney = (a: MinorMoney, b: MinorMoney): boolean =>
+  a.currency.toUpperCase() === b.currency.toUpperCase() && a.minor === b.minor;
+
+/** Untrusted wire shapes of the Orders v2 fields this module reads. Every field is checked before use. */
+interface WireMoney {
+  currency_code?: unknown;
+  value?: unknown;
+}
+interface WireCapture {
+  id?: unknown;
+  status?: unknown;
+  amount?: unknown;
+}
+interface WirePayments {
+  captures?: unknown;
+}
+interface WireUnit {
+  amount?: unknown;
+  custom_id?: unknown;
+  payments?: unknown;
+}
+interface WireOrder {
+  id?: unknown;
+  status?: unknown;
+  purchase_units?: unknown;
+}
+
+function wire<T>(value: unknown): T | null {
+  return typeof value === "object" && value !== null && !Array.isArray(value) ? (value as T) : null;
+}
+
+const text = (value: unknown): string | null => (typeof value === "string" && value.length > 0 ? value : null);
+
+function parseMoney(input: unknown): MinorMoney | null {
+  const value = wire<WireMoney>(input);
+  if (!value) return null;
+  const currencyCode = text(value.currency_code);
+  const amount = text(value.value);
+  if (!currencyCode || !amount) return null;
+  try {
+    const money = fromProviderMoney({ currencyCode, value: amount });
+    assertMoney(money);
+    return money;
+  } catch {
+    return null;
+  }
+}
+
+/** Accept only a body that is recognisably an Orders v2 order. Anything else is not evidence. */
+function parseOrder(input: unknown): SeenOrder | null {
+  const body = wire<WireOrder>(input);
+  if (!body) return null;
+  const id = text(body.id);
+  const status = text(body.status);
+  if (!id || !status) return null;
+  const listedUnits: unknown[] = Array.isArray(body.purchase_units) ? body.purchase_units : [];
+  const units: WireUnit[] = [];
+  for (const candidate of listedUnits) {
+    const unit = wire<WireUnit>(candidate);
+    if (unit) units.push(unit);
+  }
+  const captures: SeenCapture[] = [];
+  for (const unit of units) {
+    const payments = wire<WirePayments>(unit.payments);
+    const listed: unknown[] = payments && Array.isArray(payments.captures) ? payments.captures : [];
+    for (const candidate of listed) {
+      const entry = wire<WireCapture>(candidate);
+      if (!entry) return null;
+      const captureId = text(entry.id);
+      const captureStatus = text(entry.status);
+      if (!captureId || !captureStatus) return null;
+      captures.push({ id: captureId, status: captureStatus, money: parseMoney(entry.amount) });
+    }
+  }
+  const unit = units[0];
+  return {
+    id,
+    status,
+    money: unit ? parseMoney(unit.amount) : null,
+    customId: unit ? text(unit.custom_id) : null,
+    captures,
+  };
+}
+
+function pickCapture(order: SeenOrder): SeenCapture | null {
+  return order.captures.find((capture) => capture.status === "COMPLETED") ?? order.captures[0] ?? null;
+}
+
+async function runCheckout(context: BrambleContext): Promise<CheckoutResult> {
+  const { run, store, transport } = context;
+  const runId = run.id;
+  const intentId = run.businessIntentId;
+  const price: MinorMoney = { currency: run.currency, minor: run.amountMinor };
+  const entitlement = ["digital_book", intentId].join(":");
+
+  const emit = async (event: ApplicationEvent): Promise<void> => {
+    try {
+      await store.emit(runId, event);
+    } catch {
+      // The trace is best effort; it never decides the purchase.
+    }
+  };
+
+  /** Stable per purchase and step, so a repeated submit names the same PayPal request. */
+  const requestIdFor = (step: "create" | "capture"): string =>
+    `bramble-${step}-${createHash("sha256").update(`${runId}:${intentId}:${step}`).digest("hex").slice(0, 40)}`;
+
+  const call = async (
+    method: "GET" | "POST",
+    path: string,
+    requestId: string | null,
+    body: unknown,
+  ): Promise<Answer> => {
+    const headers = new Headers({ Accept: "application/json" });
+    if (method === "POST") {
+      headers.set("Content-Type", "application/json");
+      headers.set("Prefer", "return=representation");
+    }
+    if (requestId) headers.set("PayPal-Request-Id", requestId);
+    let response: Response;
+    try {
+      response = await transport.fetch(new URL(path, "https://api-m.sandbox.paypal.com").href, {
+        method,
+        headers,
+        ...(method === "POST" ? { body: JSON.stringify(body ?? {}) } : {}),
+      });
+    } catch (error) {
+      return { kind: "unknown", httpStatus: 0, message: `No response: ${errorText(error)}` };
+    }
+    const httpStatus = response.status;
+    if (httpStatus >= 200 && httpStatus < 300) {
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(await response.text());
+      } catch {
+        return { kind: "unknown", httpStatus, message: "The response body could not be read as JSON." };
+      }
+      const order = parseOrder(parsed);
+      if (!order) return { kind: "unknown", httpStatus, message: "The response body is not a valid order." };
+      return { kind: "ok", order };
+    }
+    const message = `PayPal answered HTTP ${httpStatus}.`;
+    if (httpStatus >= 400 && httpStatus < 500 && httpStatus !== 408 && httpStatus !== 429) {
+      return { kind: "rejected", httpStatus, message };
+    }
+    return { kind: "unknown", httpStatus, message };
+  };
+
+  const readOrder = (id: string): Promise<Answer> =>
+    call("GET", `/v2/checkout/orders/${encodeURIComponent(id)}`, null, null);
+
+  const state: TargetState = await store.targetState(runId, intentId);
+  let orderId: string | null = state.orderIds.at(-1) ?? null;
+  let captureSent = false;
+
+  const finish = async (
+    status: TargetState["status"],
+    reason: string,
+    patch: Partial<TargetState> = {},
+  ): Promise<CheckoutResult> => {
+    Object.assign(state, patch, { status });
+    await store.setTargetState(runId, state);
+    await emit({
+      lane: "customer",
+      kind: `checkout.${status}`,
+      title: `Phone shows ${status}`,
+      detail: reason,
+      identity: "stable",
+      ...(orderId ? { resourceId: orderId } : {}),
+      facts: { status, captureId: state.lastCaptureId, fulfillmentCount: state.fulfillmentCount },
+    });
+    return {
+      status,
+      orderId,
+      captureId: state.lastCaptureId,
+      fulfilled: state.fulfillmentCount > 0,
+      reason,
+    };
+  };
+
+  const fulfillmentRows = async (): Promise<{ capture_id: string | null }[]> => {
+    const found = await store.db.query<{ capture_id: string | null }>(
+      "SELECT capture_id FROM lab_fulfillments WHERE run_id=$1 AND intent_id=$2",
+      [runId, intentId],
+    );
+    return found.rows;
+  };
+
+  const revoked = async (): Promise<boolean> => {
+    try {
+      const faults = await store.db.query<{ fault_key: string }>(
+        "SELECT fault_key FROM lab_faults WHERE run_id=$1",
+        [runId],
+      );
+      return faults.rows.map((row) => row.fault_key).includes("approval-revoked");
+    } catch {
+      // Approval that cannot be confirmed is not approval.
+      return true;
+    }
+  };
+
+  const deliver = async (captureId: string): Promise<CheckoutResult> => {
+    let rows = await fulfillmentRows();
+    if (rows.length === 0) {
+      try {
+        await store.db.query(
+          "INSERT INTO lab_fulfillments(id,run_id,intent_id,capture_id,entitlement_key,document) VALUES($1,$2,$3,$4,$5,$6)",
+          [
+            randomUUID(),
+            runId,
+            intentId,
+            captureId,
+            entitlement,
+            JSON.stringify({ source: "sample", kind: "digital_book", captureId }),
+          ],
+        );
+      } catch (error) {
+        // UNIQUE(run_id, entitlement_key): another submit delivered first. Anything else is rethrown.
+        rows = await fulfillmentRows();
+        if (rows.length === 0) throw error;
+      }
+      rows = await fulfillmentRows();
+    }
+    await emit({
+      lane: "application",
+      kind: "fulfillment.delivered",
+      title: "Book delivered",
+      detail: "One entitlement row exists for this purchase.",
+      identity: "stable",
+      resourceId: captureId,
+      facts: { entitlement, rows: rows.length },
+    });
+    return finish("paid", "Captured for the exact price; one book delivered.", {
+      lastCaptureId: rows[0]?.capture_id ?? captureId,
+      fulfillmentCount: rows.length,
+      unknown: false,
+    });
+  };
+
+  /** Decide the purchase from an observed capture. Only a completed capture of the exact price delivers. */
+  const settle = async (order: SeenOrder, capture: SeenCapture): Promise<CheckoutResult> => {
+    if (capture.status === "COMPLETED") {
+      let money = capture.money;
+      if (!money) {
+        const again = await readOrder(order.id);
+        const reread = again.kind === "ok" ? again.order : order;
+        money = reread.captures.find((entry) => entry.id === capture.id)?.money ?? reread.money ?? order.money;
+      }
+      if (!money || !sameMoney(money, price)) {
+        await emit({
+          lane: "application",
+          kind: "capture.amount_unverified",
+          title: "Captured amount is not the price",
+          detail: "The book is withheld until the payment is reviewed.",
+          resourceId: capture.id,
+          facts: { expected: price, observed: money },
+        });
+        return finish("checking", "A capture exists but not verifiably for the exact price; nothing delivered.", {
+          lastCaptureId: capture.id,
+          unknown: true,
+        });
+      }
+      return deliver(capture.id);
+    }
+    if (capture.status === "DECLINED" || capture.status === "FAILED") {
+      return finish("failed", `The capture was ${capture.status}.`, { lastCaptureId: capture.id, unknown: false });
+    }
+    return finish("checking", `The capture is ${capture.status}; the money has not arrived yet.`, {
+      lastCaptureId: capture.id,
+      unknown: false,
+    });
+  };
+
+  try {
+    // Already delivered: never charge or deliver again.
+    const delivered = await fulfillmentRows();
+    const first = delivered[0];
+    if (first) {
+      return await finish("paid", "The book was already delivered for this purchase.", {
+        lastCaptureId: first.capture_id ?? state.lastCaptureId,
+        fulfillmentCount: delivered.length,
+        unknown: false,
+      });
+    }
+
+    let amount: { currencyCode: string; value: string };
+    try {
+      assertMoney(price);
+      amount = toProviderMoney(price);
+    } catch (error) {
+      return await finish("failed", `Invalid price, nothing was sent: ${errorText(error)}`);
+    }
+
+    state.attempt += 1;
+    let approved = false;
+
+    // A known order is read before anything is written: an earlier submit may already have been paid.
+    if (orderId) {
+      const seen = await readOrder(orderId);
+      if (seen.kind !== "ok") {
+        return await finish("checking", `The existing order could not be read: ${seen.message}`, { unknown: true });
+      }
+      const capture = pickCapture(seen.order);
+      if (capture) return await settle(seen.order, capture);
+      if (seen.order.status === "VOIDED") return await finish("failed", "The order was voided.", { unknown: false });
+      approved = seen.order.status === "APPROVED";
+    }
+
+    if (await revoked()) {
+      return await finish("failed", "The buyer's approval was withdrawn; nothing was captured.", { unknown: false });
+    }
+
+    Object.assign(state, { status: "processing" });
+    await store.setTargetState(runId, state);
+
+    if (!orderId) {
+      const createRequestId = requestIdFor("create");
+      const createBody = {
+        intent: "CAPTURE",
+        purchase_units: [
+          {
+            reference_id: "default",
+            custom_id: intentId,
+            amount: { currency_code: amount.currencyCode, value: amount.value },
+          },
+        ],
+      };
+      let created: SeenOrder | null = null;
+      for (let attempt = 0; attempt < 2 && !created; attempt += 1) {
+        const answer = await call("POST", "/v2/checkout/orders", createRequestId, createBody);
+        if (answer.kind === "ok") {
+          created = answer.order;
+          break;
+        }
+        await emit({
+          lane: "application",
+          kind: "order.create_failed",
+          title: "Create order did not succeed",
+          detail: answer.message,
+          requestId: createRequestId,
+          facts: { outcome: answer.kind, httpStatus: answer.httpStatus, attempt },
+        });
+        // Only an unanswered create is repeated, once, under the same PayPal-Request-Id.
+        if (answer.kind === "rejected") break;
+      }
+      if (!created) {
+        return await finish("failed", "No order could be created; nothing was approved or captured.", {
+          unknown: false,
+        });
+      }
+      if ((created.money && !sameMoney(created.money, price)) || (created.customId && created.customId !== intentId)) {
+        return await finish("failed", "The created order does not match this purchase; it was not approved.", {
+          unknown: false,
+        });
+      }
+      orderId = created.id;
+      approved = created.status === "APPROVED";
+      state.orderIds = [...state.orderIds, orderId];
+      await store.setTargetState(runId, state);
+      await emit({
+        lane: "application",
+        kind: "order.created",
+        title: "Order created",
+        detail: "One order for the exact price.",
+        identity: "stable",
+        resourceId: orderId,
+        requestId: createRequestId,
+      });
+    }
+
+    if (!approved) {
+      try {
+        await transport.approve(orderId);
+      } catch (error) {
+        return await finish("failed", `The buyer did not approve the order: ${errorText(error)}`, { unknown: false });
+      }
+    }
+
+    // Approval is rechecked at the last moment before money can move.
+    if (await revoked()) {
+      return await finish("failed", "The buyer's approval was withdrawn; nothing was captured.", { unknown: false });
+    }
+
+    const captureRequestId = requestIdFor("capture");
+    captureSent = true;
+    const captured = await call(
+      "POST",
+      `/v2/checkout/orders/${encodeURIComponent(orderId)}/capture`,
+      captureRequestId,
+      {},
+    );
+    if (captured.kind === "ok") {
+      const observed = pickCapture(captured.order);
+      if (observed) return await settle(captured.order, observed);
+    } else {
+      await emit({
+        lane: "application",
+        kind: "capture.unconfirmed",
+        title: "Capture was not confirmed",
+        detail: captured.message,
+        resourceId: orderId,
+        requestId: captureRequestId,
+        facts: { outcome: captured.kind, httpStatus: captured.httpStatus },
+      });
+    }
+
+    // The capture answer is missing, unreadable or an error. Read the order; never send the capture again here.
+    const seen = await readOrder(orderId);
+    if (seen.kind === "ok") {
+      const observed = pickCapture(seen.order);
+      if (observed) return await settle(seen.order, observed);
+      if (captured.kind === "rejected") {
+        return await finish("failed", "PayPal refused the capture and the order shows no capture.", {
+          unknown: false,
+        });
+      }
+    } else if (captured.kind === "rejected" && [400, 401, 403, 404].includes(captured.httpStatus)) {
+      return await finish("failed", "PayPal refused the capture.", { unknown: false });
+    }
+    return await finish("checking", "The capture outcome is not known yet; the book is withheld.", { unknown: true });
+  } catch (error) {
+    const message = errorText(error);
+    try {
+      return await finish(
+        captureSent ? "checking" : "failed",
+        captureSent ? `Unexpected error after capture was sent: ${message}` : `Unexpected error before capture: ${message}`,
+        { unknown: captureSent },
+      );
+    } catch {
+      return {
+        status: captureSent ? "checking" : "failed",
+        orderId,
+        captureId: state.lastCaptureId,
+        fulfilled: state.fulfillmentCount > 0,
+        reason: message,
+      };
+    }
+  }
+}

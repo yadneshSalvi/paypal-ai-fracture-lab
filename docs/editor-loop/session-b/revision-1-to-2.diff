@@ -1,0 +1,40 @@
+--- revision 1/index.ts
++++ revision 2/index.ts
+@@ -323,11 +323,10 @@
+   body: unknown,
+   requestId?: string,
+ ): Promise<unknown> {
+-  const response = await context.transport.fetch(PAYPAL_API + path, {
+-    method: method,
+-    headers: jsonHeaders(body !== undefined, requestId),
+-    body: body === undefined ? undefined : JSON.stringify(body),
+-  });
++  const headers = jsonHeaders(body !== undefined, requestId);
++  const response = await (body === undefined
++    ? context.transport.fetch(PAYPAL_API + path, { method: method, headers: headers })
++    : context.transport.fetch(PAYPAL_API + path, { method: method, headers: headers, body: JSON.stringify(body) }));
+   const text = await response.text();
+   const json = parseJson(text);
+   if (!response.ok) {
+@@ -346,9 +345,20 @@
+ }
+ 
+ async function queryRows(context: Context, sql: string, params: unknown[]): Promise<Row[]> {
+-  return (await context.store.db.query(sql, params)) as Row[];
++  const result: unknown = await context.store.db.query(sql, params);
++  return rowsOf(result);
+ }
+ 
++// The query result is either a row array or an object carrying a `rows` array.
++function rowsOf(result: unknown): Row[] {
++  if (Array.isArray(result)) return result as Row[];
++  if (typeof result === "object" && result !== null && "rows" in result) {
++    const rows: unknown = result.rows;
++    if (Array.isArray(rows)) return rows as Row[];
++  }
++  throw new Error("unexpected database result shape");
++}
++
+ async function findFulfillment(context: Context, runId: string): Promise<{ id: string; capture_id: string } | null> {
+   const rows = await queryRows(
+     context,

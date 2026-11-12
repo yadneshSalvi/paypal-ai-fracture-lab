@@ -7,6 +7,7 @@ import { generateRepair, loadRepairContext, type GeneratedPatch, type RepairCont
 import { BackgroundRepairModel, ModelPending, cancelInactiveBackgroundModels } from "../../ai/src/background";
 import { runIsolatedCandidate, runnerIdentity, type IsolationResult } from "../../isolation/src/local";
 import { cloudRunnerIdentity, runCloudCandidate } from "../../isolation/src/cloud";
+import { runCloudGeneratedTest, runIsolatedGeneratedTest, type GeneratedRegressionTest, type GeneratedTestExecution, type GeneratedTestRunner } from "../../isolation/src/generated-test";
 import { sourceText } from "./catalog";
 import { LabError } from "./errors";
 import { LabStore } from "./store";
@@ -16,6 +17,12 @@ type RepairJob=z.infer<typeof jobSchema>;
 const jobHash=(job:RepairJob)=>sha256(canonicalJson({...job,createdAt:null}));
 type JobRow = { id: string; stage: string; lease_owner: string | null; document: string } & Record<string, unknown>;
 const codeOf = (error: unknown) => error instanceof LabError ? error.code : "REPAIR_WORKER_FAILURE";
+/** The generated regression test travels as evidence: once when authored (not executed), once per isolated fail-before/pass-after execution. */
+function generatedTestEvidence(runId: string, repairId: string, test: GeneratedRegressionTest, execution: GeneratedTestExecution | null, executionError: string | null = null): EvidenceDTO {
+  const body = { repairId, generatedRegressionTest: test, execution, executionError };
+  const summary = execution ? execution.established ? "The model-written regression case failed on the faulty baseline and passed on this exact candidate inside the isolated runner." : `The model-written regression case did not establish fail-before/pass-after (baseline: ${execution.before}; candidate: ${execution.after}).` : executionError ? `The model-written regression case could not be executed (${executionError}). No outcome was inferred.` : "A model-written regression case accompanies this candidate. Not executed; authoring is not verification evidence.";
+  return { id: randomUUID(), runId, title: execution || executionError ? "Generated regression test · isolated fail-before / pass-after" : "Generated regression test · authored, not executed", kind: "test", source: "sample", createdAt: new Date().toISOString(), sha256: sha256(canonicalJson(body)), summary, body, redactions: ["No credentials enter the candidate container.", "A declarative Sample case; additional to, and never a replacement for, the nine unchanged public regressions."] };
+}
 
 export async function getGeneratedPatch(store: LabStore, sessionId: string, id: string): Promise<GeneratedPatch> {
   const rows = await store.db.query<{ document: string; source_hash: string; context_digest: string } & Record<string, unknown>>("SELECT document,source_hash,context_digest FROM lab_generated_patches WHERE id=$1 AND session_id=$2", [id, sessionId]);
@@ -35,7 +42,7 @@ export async function queueRepairJob(store: LabStore, sessionId: string, run: Ru
     const patch = await getGeneratedPatch(store, sessionId, repairId ?? "");
     if (patch.repair.runId !== run.id || (kind === "verify_generated" && (patch.repair.status === "rejected" || patch.contextDigest !== context.digest)) || patch.repair.baseHash !== context.baseHash) throw new LabError("REPAIR_NOT_VERIFIABLE", "This exact candidate is rejected or its source/context is stale.", 409);
   }
-  await store.rateLimit(`repair:${sessionId}:${kind}`, kind === "generate" ? 6 : 20);
+  await store.rateLimit(`repair:${sessionId}:${kind}`, kind === "generate" ? 6 : 20); await store.rateLimit(`repair:global:${kind}`, kind === "generate" ? 30 : 60);
   const job: RepairJob = { id: `repair:${sessionId}:${actionId}`, sessionId, runId: run.id, actionId, kind, baseHash: context.baseHash, contextDigest: context.digest, repairId: repairId ?? null, createdAt: new Date().toISOString() };
   const inputHash = jobHash(job);
   await store.db.query("INSERT INTO lab_repair_jobs(id,session_id,run_id,action_id,kind,stage,created_at,input_hash,document) VALUES($1,$2,$3,$4,$5,'queued',$6,$7,$8) ON CONFLICT(id) DO NOTHING", [job.id, sessionId, run.id, actionId, kind, job.createdAt, inputHash, JSON.stringify(job)]);
@@ -79,6 +86,7 @@ export interface RepairWorkerOptions {
   modelFactory?: (actionId: string) => RepairModel;
   runnerIdentity?: typeof runnerIdentity;
   runCandidate?: (source: string, signal?: AbortSignal) => Promise<IsolationResult>;
+  runGeneratedTest?: GeneratedTestRunner;
 }
 export async function processRepairJob(store: LabStore, options: RepairWorkerOptions = {}) {
   await cancelInactiveBackgroundModels(store);
@@ -114,7 +122,9 @@ async function executeClaimedRepair(store:LabStore,job:RepairJob,owner:string,op
       const feedback=prior?{repairId:prior.repair.id,sourceHash:prior.sourceHash,source:prior.source,tests:prior.repair.tests,policyChecks:prior.repair.policyChecks,contextDigest:prior.contextDigest}:undefined;
       const patch = await generateRepair(await store.run(job.runId, job.sessionId), job.sessionId, context, options.modelFactory?.(job.actionId) ?? new BackgroundRepairModel(store, job.actionId, fetch, abort.signal),feedback);
       await currentContext(job, load);
+      const authoredTest = patch.regressionTest ? generatedTestEvidence(job.runId, patch.repair.id, patch.regressionTest, null) : null;
       await commitJob(store, job, owner, async tx => {
+        if (authoredTest) await tx.query("INSERT INTO lab_evidence(id,session_id,run_id,created_at,document) VALUES($1,$2,$3,$4,$5)", [authoredTest.id, job.sessionId, job.runId, authoredTest.createdAt, JSON.stringify(authoredTest)]);
         await tx.query("INSERT INTO lab_generated_patches(id,session_id,run_id,source_hash,context_digest,document) VALUES($1,$2,$3,$4,$5,$6)", [patch.repair.id, job.sessionId, job.runId, patch.sourceHash, patch.contextDigest, JSON.stringify(patch)]);
         await tx.query("INSERT INTO lab_repairs(id,session_id,run_id,document) VALUES($1,$2,$3,$4)", [patch.repair.id, job.sessionId, job.runId, JSON.stringify(patch.repair)]);
         const latest = JSON.parse((await store.record(job.runId, job.sessionId, tx)).document) as RunDTO;
@@ -130,9 +140,8 @@ async function executeClaimedRepair(store:LabStore,job:RepairJob,owner:string,op
     auxiliary=`repair-container:${owner}`;
     await store.claimAuxiliaryJob(auxiliary,job.sessionId,job.runId,"repair_verification",{repairId:patch.repair.id,sourceHash:patch.sourceHash});
     const result = await (options.runCandidate ?? (cloud?runCloudCandidate:runIsolatedCandidate))(patch.source, abort.signal);
-    const receipt=result.runnerReceipt;
-    const boundary=receipt&&receipt.hostMountCount===0&&receipt.credentialEnvironmentForwarded===false&&receipt.snapshotHash===identity.snapshotHash&&(cloud?("snapshotId" in identity&&receipt.kind==="vercel_sandbox"&&receipt.snapshotId===identity.snapshotId&&receipt.networkPolicy==="deny-all"&&receipt.referenceReadOnly===true&&receipt.rootReadOnly===false&&receipt.persistent===false&&receipt.user==="candidate"):("imageId" in identity&&receipt.imageId===identity.imageId&&receipt.networkMode==="none"&&receipt.readOnlyRoot===true&&receipt.user==="1000:1000"));
-    if(!boundary)throw new LabError("REPAIR_PROOF_IDENTITY","The result does not bind the isolated runner identity and boundary.",422);
+    const bounded=(receipt:Record<string,unknown>|undefined)=>receipt&&receipt.hostMountCount===0&&receipt.credentialEnvironmentForwarded===false&&receipt.snapshotHash===identity.snapshotHash&&(cloud?("snapshotId" in identity&&receipt.kind==="vercel_sandbox"&&receipt.snapshotId===identity.snapshotId&&receipt.networkPolicy==="deny-all"&&receipt.referenceReadOnly===true&&receipt.rootReadOnly===false&&receipt.persistent===false&&receipt.user==="candidate"):("imageId" in identity&&receipt.imageId===identity.imageId&&receipt.networkMode==="none"&&receipt.readOnlyRoot===true&&receipt.user==="1000:1000"));
+    if(!bounded(result.runnerReceipt))throw new LabError("REPAIR_PROOF_IDENTITY","The result does not bind the isolated runner identity and boundary.",422);
     await currentContext(job, load); await activeJob(store, job, owner);
     const suiteHash = sha256(await sourceText("packages/isolation/runner/suite.ts"));
     const expectedIds = ["compile", "happy", "lost", "malformed", "unavailable", "pending", "auth", "concurrent", "revoked", "payload"];
@@ -141,7 +150,23 @@ async function executeClaimedRepair(store:LabStore,job:RepairJob,owner:string,op
     const verified = completed && result.passed && result.policy.every(check=>check.passed) && result.tests.every(test => test.status === "pass");
     const proof: EvidenceDTO = { id: randomUUID(), runId: job.runId, title: "Generated candidate · isolated verification", kind: "test", source: "sample", createdAt: new Date().toISOString(), sha256: sha256(canonicalJson(result)), summary: verified ? "This exact generated source passed compilation and nine unchanged local regressions." : "The independent boundary retained the candidate's failed checks.", body: { repairId: patch.repair.id, candidateHash: patch.sourceHash, contextDigest: patch.contextDigest, result }, redactions: ["No credentials enter the candidate container.", "Sample execution, not live payment or context-study evidence."] };
     const repair: RepairDTO = { ...patch.repair, status: verified ? "verified" : result.stage === "evaluated" ? "compiled" : "rejected", tests: result.tests.map(test => ({ ...test, hidden: false })), policyChecks: [...patch.repair.policyChecks, ...result.policy.map(check => ({ ...check, id: `runner-${check.id}` }))], verificationEvidenceId: proof.id, limitations: [...patch.repair.limitations.filter(line => !line.startsWith("Generated by actual model calls;")), result.stage === "evaluated" ? "The exact generated source was tested against compilation and nine unchanged public regressions. This is not the 600-attempt study or hosted runner qualification." : "The candidate did not reach all nine behavioral regressions; inspect the retained policy or compilation failure. This is not the 600-attempt study or hosted runner qualification."] };
+    // The generated case is additional provenance. The frozen suite above alone decides the status; a missing or failed generated run never upgrades or rewrites it.
+    let generated: EvidenceDTO | null = null;
+    if (patch.regressionTest && completed) {
+      // Bounded so the additional run can never cost the frozen-suite proof its publication window.
+      const budget = AbortSignal.timeout(45_000);
+      try {
+        const execution = await (options.runGeneratedTest ?? (cloud ? runCloudGeneratedTest() : runIsolatedGeneratedTest))(patch.regressionTest, context.baseline, patch.source, AbortSignal.any([abort.signal, budget]));
+        if (!bounded(execution.runnerReceipt)) throw new LabError("REPAIR_PROOF_IDENTITY", "The generated-test result does not bind the isolated runner identity and boundary.", 422);
+        generated = generatedTestEvidence(job.runId, patch.repair.id, patch.regressionTest, execution);
+      } catch (error) {
+        if (abort.signal.aborted) throw error;
+        generated = generatedTestEvidence(job.runId, patch.repair.id, patch.regressionTest, null, budget.aborted ? "GENERATED_TEST_TIMEOUT" : codeOf(error));
+      }
+      await currentContext(job, load); await activeJob(store, job, owner);
+    }
     await commitJob(store, job, owner, async tx => {
+      if (generated) await tx.query("INSERT INTO lab_evidence(id,session_id,run_id,created_at,document) VALUES($1,$2,$3,$4,$5)", [generated.id, job.sessionId, job.runId, generated.createdAt, JSON.stringify(generated)]);
       await tx.query("INSERT INTO lab_evidence(id,session_id,run_id,created_at,document) VALUES($1,$2,$3,$4,$5)", [proof.id, job.sessionId, job.runId, proof.createdAt, JSON.stringify(proof)]);
       await tx.query("UPDATE lab_repairs SET document=$3 WHERE id=$1 AND session_id=$2", [repair.id, job.sessionId, JSON.stringify(repair)]);
     });

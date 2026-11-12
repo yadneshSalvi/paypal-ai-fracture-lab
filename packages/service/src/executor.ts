@@ -4,6 +4,7 @@ import type { ProjectDTO, RunDTO, ScenarioDTO } from "@fracture/contracts";
 import { aggregateVerdict, evaluateRun } from "../../invariants/src/index";
 import { LocalPayPalTransport } from "../../runner/src/local-provider";
 import { retryScenarios, scenarioFaults } from "../../scenarios/src/index";
+import { scenarioCheckout, scenarioJourneys } from "../../scenarios/src/journeys";
 import { faultyCheckout } from "../../../apps/fixtures/bramble/faulty";
 import { hardenedCheckout } from "../../../apps/fixtures/bramble/hardened";
 import type { BrambleContext } from "../../../apps/fixtures/bramble/contract";
@@ -42,11 +43,11 @@ export async function executeRun(store:LabStore,runId:string,sessionId:string,ca
     if(job.input.executionRecipe&&!job.input.campaign)throw new Error("A reduction recipe requires its original campaign authority.");
     if(job.input.campaign&&!campaignLease)throw new Error("Campaign execution requires its current worker lease.");
     const dispatchGuard=job.input.campaign?async(tx:import("@fracture/paypal-core").SqlConnection)=>assertCampaignDispatch(tx,job.input.campaign!,runId,sessionId,campaignLease!):undefined;
-    const transport=new LocalPayPalTransport(store,runId,job.input.executionRecipe?recipeFaults(job.input.executionRecipe):scenarioFaults(run.scenarioId),owner,dispatchGuard);const context:BrambleContext={run,sessionId,store,transport};const checkout=run.revision==="faulty"?faultyCheckout:hardenedCheckout;
+    const transport=new LocalPayPalTransport(store,runId,job.input.executionRecipe?recipeFaults(job.input.executionRecipe):scenarioFaults(run.scenarioId),owner,dispatchGuard);const context:BrambleContext={run,sessionId,store,transport};const checkout=scenarioCheckout(run.scenarioId,run.revision,run.revision==="faulty"?faultyCheckout:hardenedCheckout);const journey=job.input.executionRecipe?undefined:scenarioJourneys[run.scenarioId];
     if(row.checkpoint==="start"||row.checkpoint==="preflight"){
       await store.stage(runId,"preflight","preflight");
       await store.emit(runId,{lane:"lab",kind:"preflight",title:"The experiment is isolated",detail:"This run owns its provider model, purchase intent and durable observations. Fault injection cannot add idempotency to the faulty target.",facts:{source:"sample",scenarioHash:run.scenarioHash,sourceHash:run.sourceHash,seed:run.seed,revision:run.revision,...(job.input.campaign?{campaign:job.input.campaign,recipe:job.input.executionRecipe??null}:{})}});
-      await store.stage(runId,"executing","first_dispatching");await checkout(context);await store.stage(runId,"observing","first_observed");
+      await store.stage(runId,"executing","first_dispatching");await (journey?journey({context,checkout,revision:run.revision}):checkout(context));await store.stage(runId,"observing","first_observed");
     }
     run=await refreshRun(store,runId,false);let state=await store.targetState(runId,run.businessIntentId);
     const retryAllowed=job.input.executionRecipe?job.input.executionRecipe.components.includes("customer_retry"):retryScenarios.has(run.scenarioId);

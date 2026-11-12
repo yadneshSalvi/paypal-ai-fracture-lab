@@ -83,7 +83,7 @@ export class ToolkitInvestigations {
       if (existing.input_hash !== requestHash(runId, requestId)) throw new LabError("ACTION_CONFLICT", "This identity belongs to another investigation.", 409);
       return this.project(existing);
     }
-    await this.store.rateLimit(`toolkit-investigation:${sessionId}`, 12);
+    await this.store.rateLimit(`toolkit-investigation:${sessionId}`, 12); await this.store.rateLimit("toolkit-investigation:global", 30);
     await this.store.db.transaction(async tx => {
       await tx.query("SELECT id FROM lab_runs WHERE id=$1 AND session_id=$2 FOR UPDATE", [runId, sessionId]);
       const original = await this.authority(tx, sessionId, runId);

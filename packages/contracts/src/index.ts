@@ -23,6 +23,12 @@ export interface ScenarioDTO {
   mode: Provenance; faultSource: "local_fixture"|"local_proxy"|"provider_negative"|"authentic_replay";
   trigger: string; phase: string; invariantIds: string[]; fixtureIds: string[];
   available: boolean; gate: string | null; hash: string; estimatedSeconds: number;
+  /** Additive. "sample": click-run against the local provider model. "recorded_live": a retained live sandbox comparison, not click-run. "roadmap": not in this release. Absent on older payloads: read `available ? "sample" : "roadmap"`. */
+  catalog?: "sample" | "recorded_live" | "roadmap";
+  /** Present only for "recorded_live". */
+  recorded?: { label: string; observedOn: string; summary: string; links: {href: string; label: string}[] } | null;
+  /** Present only for "roadmap": one plain sentence. */
+  roadmapReason?: string | null;
 }
 export interface CaptureDTO { id: string; orderId: string; status: string; amountMinor: number; currency: string; observedAt: string; source: Provenance; evidenceId: string }
 export interface RefundDTO { id: string; captureId: string; status: string; amountMinor: number; currency: string; observedAt: string; source: Provenance; evidenceId: string }

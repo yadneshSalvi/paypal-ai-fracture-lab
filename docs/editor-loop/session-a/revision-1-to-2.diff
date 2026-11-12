@@ -1,0 +1,17 @@
+--- revision 1/checkout.ts
++++ revision 2/checkout.ts
+@@ -1,8 +1,13 @@
+ import { createHash, randomUUID } from "node:crypto";
+ import { assertMoney, fromProviderMoney, toProviderMoney } from "@fracture/paypal-core";
+ import type { MinorMoney } from "@fracture/paypal-core";
+-import type { ApplicationEvent, BrambleContext, TargetState } from "@fracture/source-target";
++import type { BrambleContext } from "@fracture/source-target";
+ 
++// The runner's pinned contract exports only BrambleContext, so the other shapes are derived from it.
++type BrambleStore = BrambleContext["store"];
++type TargetState = Awaited<ReturnType<BrambleStore["targetState"]>>;
++type ApplicationEvent = Parameters<BrambleStore["emit"]>[1];
++
+ export interface CheckoutResult {
+   status: TargetState["status"];
+   orderId: string | null;

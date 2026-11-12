@@ -11,6 +11,7 @@ type WorkspaceContextValue = {
   workspace: WorkspaceDTO | null;
   loading: boolean;
   error: string | null;
+  errorCode: string | null;
   busy: string | null;
   notice: string | null;
   activeProjectId: string;
@@ -22,6 +23,7 @@ type WorkspaceContextValue = {
   closeEvidence: () => void;
   dismissNotice: () => void;
   refresh: (dismissError?: boolean) => Promise<WorkspaceDTO | null>;
+  resetSession: () => Promise<WorkspaceDTO | null>;
   createRun: (projectId: string, scenarioId: string, revision: Revision, seed?: string) => Promise<RunDTO | null>;
   act: (runId: string, action: RunAction, candidate?: "grounded" | "deceptive", repairId?: string) => Promise<WorkspaceDTO | null>;
   createCampaign: (projectId: string, revision: Revision, scenarioIds: string[]) => Promise<boolean>;
@@ -31,6 +33,8 @@ const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
 type WorkspaceEntry = "sample" | "source" | "read";
 let initialization: { entry: WorkspaceEntry; promise: Promise<WorkspaceDTO | null> } | null = null;
 class WorkspaceRequestError extends Error { constructor(message:string,readonly code:string){super(message);} }
+const codeOf=(cause:unknown)=>cause instanceof WorkspaceRequestError?cause.code:null;
+const expiredNotice="Your earlier session had ended, so a fresh isolated session is open. Its sample run starts from the beginning.";
 
 async function api<T>(path: string, body?: unknown): Promise<T> {
   const response = await fetch(path, {
@@ -79,7 +83,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const entry: WorkspaceEntry = sourcePage ? "source" : pathname.startsWith("/ai-workbench") || pathname.startsWith("/source-executions") ? "read" : "sample";
   const [workspace, setWorkspace] = useState<WorkspaceDTO | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setErrorMessage] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
+  const setError = useCallback((message: string | null, code: string | null = null) => { setErrorMessage(message); setErrorCode(message ? code : null); }, []);
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [activeProjectId, setActiveProjectId] = useState("bramble");
@@ -96,10 +102,30 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       if (mounted.current) { setWorkspace(next); if(dismissError || errorKind.current === "load"){setError(null);errorKind.current=null;} }
       return next;
     } catch (cause) {
-      if (mounted.current && errorKind.current !== "action") {errorKind.current="load";setError(cause instanceof Error ? cause.message : "Could not load the workspace.");}
+      if (mounted.current && errorKind.current !== "action") {errorKind.current="load";setError(cause instanceof Error ? cause.message : "Could not load the workspace.",codeOf(cause));}
       return null;
     }
-  }, [entry, publicPage]);
+  }, [entry, publicPage, setError]);
+
+  // An expired or missing session is replaced by a fresh one instead of leaving the visitor on a failed action.
+  const recoverSession = useCallback(async () => {
+    const next = await refresh(true);
+    if (!next) return false;
+    setActiveRunId(null); setEvidenceId(null); setNotice(expiredNotice);
+    return true;
+  }, [refresh]);
+
+  const resetSession = useCallback(async () => {
+    setBusy("reset-session"); errorKind.current="action"; setError(null);
+    try {
+      const next = await api<WorkspaceDTO>("/api/judge/sessions", { reset: true });
+      if (mounted.current) { setWorkspace(next); setActiveRunId(null); setActiveProjectId("bramble"); setEvidenceId(null); errorKind.current=null; setNotice("Fresh isolated session started. Earlier sample runs are no longer attached to this browser."); }
+      return next;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "A fresh session could not be started.",codeOf(cause));
+      return null;
+    } finally { setBusy(null); }
+  }, [setError]);
 
   useEffect(() => {
     mounted.current = true;
@@ -115,7 +141,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         const next = await initializeWorkspace(entry);
         if (!cancelled) { setWorkspace(next); setError(null); }
       } catch (cause) {
-        if (!cancelled) {errorKind.current='load';setError(cause instanceof Error ? cause.message : "Could not start your sample session.");}
+        if (!cancelled) {errorKind.current='load';setError(cause instanceof Error ? cause.message : "Could not start your sample session.",codeOf(cause));}
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -146,10 +172,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setNotice("Sample run saved. Every observation is available in its evidence record.");
       return run;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The run could not start.");
+      if(codeOf(cause)==="SESSION_REQUIRED"&&await recoverSession()) return null;
+      setError(cause instanceof Error ? cause.message : "The run could not start.",codeOf(cause));
       return null;
     } finally { setBusy(null); }
-  }, [refresh]);
+  }, [refresh, recoverSession, setError]);
 
   const act = useCallback(async (runId: string, action: RunAction, candidate?: "grounded" | "deceptive", repairId?: string) => {
     setBusy(`${action}:${runId}`); errorKind.current="action";setError(null);
@@ -172,10 +199,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       return next;
     } catch (cause) {
       if(cause instanceof WorkspaceRequestError && cause.code === "WORK_CANCELLED") setNotice(cause.message);
-      else setError(cause instanceof Error ? cause.message : "The action could not be completed.");
+      else if(codeOf(cause)==="SESSION_REQUIRED"&&await recoverSession()) return null;
+      else setError(cause instanceof Error ? cause.message : "The action could not be completed.",codeOf(cause));
       return null;
     } finally { if(activeCommand.current===requestId) { setBusy(null); activeCommand.current=null; } }
-  }, [refresh]);
+  }, [refresh, recoverSession, setError]);
 
   const createCampaign = useCallback(async (projectId: string, revision: Revision, scenarioIds: string[]) => {
     setBusy("create-campaign"); errorKind.current="action";setError(null);
@@ -184,16 +212,17 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       await refresh(); setNotice("Sample campaign saved. Each matrix result opens its own run.");
       return true;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The campaign could not start.");
+      if(codeOf(cause)==="SESSION_REQUIRED"&&await recoverSession()) return false;
+      setError(cause instanceof Error ? cause.message : "The campaign could not start.",codeOf(cause));
       return false;
     } finally { setBusy(null); }
-  }, [refresh]);
+  }, [refresh, recoverSession, setError]);
 
   return <WorkspaceContext.Provider value={{
-    workspace, loading, error, busy, notice, activeProjectId, activeRunId,
+    workspace, loading, error, errorCode, busy, notice, activeProjectId, activeRunId,
     evidence: workspace?.evidence.find(item => item.id === evidenceId) ?? null,
     setActiveProjectId, setActiveRunId, openEvidence: setEvidenceId, closeEvidence: () => setEvidenceId(null),
-    dismissNotice: () => setNotice(null), refresh, createRun, act, createCampaign,
+    dismissNotice: () => setNotice(null), refresh, resetSession, createRun, act, createCampaign,
   }}>{children}</WorkspaceContext.Provider>;
 }
 

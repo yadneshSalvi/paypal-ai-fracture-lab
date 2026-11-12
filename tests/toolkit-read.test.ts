@@ -14,8 +14,8 @@ import type { GeminiCall } from "../packages/ai/src/gemini";
 import { modelToolkitReview } from "../packages/ai/src/toolkit-review";
 
 process.env.JUDGE_SESSION_SECRET ??= "fixture-toolkit-context-key";
-process.env.GEMINI_API_KEY ??= "fixture-gemini-never-network";
-process.env.GEMINI_MODEL ??= "fixture-gemini";
+process.env.GEMINI_API_KEY = "fixture-gemini-never-network";
+process.env.GEMINI_MODEL = "fixture-gemini";
 async function setup(t: TestContext) {
   const directory = await mkdtemp(join(tmpdir(), "fracture-toolkit-read-"));
   const db = new SqliteDatabase(join(directory, "test.sqlite"));

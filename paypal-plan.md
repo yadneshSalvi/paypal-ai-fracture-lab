@@ -60,12 +60,12 @@ Every write follows a committed claim, one provider call, and a durable result. 
 
 | Write | Claim store | Rejects second | Duplicate catch | Where in code |
 |---|---|---|---|---|
-| create_order | paycore_operations | semantic business_key unique | PaymentStore.claim, SQL codes above | packages/paypal-core/src/store.ts:41 |
-| capture_order | paycore_operations | semantic business_key unique | PaymentStore.claim | packages/paypal-core/src/store.ts:41 |
-| authorize_order | paycore_operations | semantic business_key unique | PaymentStore.claim | packages/paypal-core/src/store.ts:41 |
-| capture_authorization | paycore_operations + resource reservation | unique + locked remaining amount | PaymentStore.claim | packages/paypal-core/src/store.ts:28 |
-| refund_capture | paycore_operations + resource reservation | unique + locked refundable amount | PaymentStore.claim | packages/paypal-core/src/store.ts:28 |
-| void_authorization | paycore_operations | semantic business_key unique | PaymentStore.claim | packages/paypal-core/src/store.ts:41 |
+| create_order | paycore_operations | semantic business_key unique | PaymentStore.claim, SQL codes above | packages/paypal-core/src/store.ts:69 |
+| capture_order | paycore_operations | semantic business_key unique | PaymentStore.claim | packages/paypal-core/src/store.ts:69 |
+| authorize_order | paycore_operations | semantic business_key unique | PaymentStore.claim | packages/paypal-core/src/store.ts:69 |
+| capture_authorization | paycore_operations + resource reservation | unique + locked remaining amount | PaymentStore.claim | packages/paypal-core/src/store.ts:56 (reservation) and :69 (claim) |
+| refund_capture | paycore_operations + resource reservation | unique + locked refundable amount | PaymentStore.claim | packages/paypal-core/src/store.ts:56 (reservation) and :69 (claim) |
+| void_authorization | paycore_operations | semantic business_key unique | PaymentStore.claim | packages/paypal-core/src/store.ts:69 |
 
 ## UNKNOWN OUTCOMES
 
@@ -73,12 +73,12 @@ Connection/timeout, unreadable success or missing relied-on success fields retai
 
 | Write | Reread | Reference | Where in code | Connection-loss and never-sent test |
 |---|---|---|---|---|
-| create_order | getOrder only if a provider ID is already obtained from a durable receipt/approval callback; otherwise no invented search | known orderId | TBD | TBD |
-| capture_order | getOrder, then getCapturedPayment for discovered captures | original orderId | packages/paypal-core/src/provider.ts:110 | tests/paypal-sdk.test.ts:36 and :51 |
-| authorize_order | getOrder then getAuthorizedPayment | original orderId | TBD | TBD |
-| capture_authorization | getAuthorizedPayment; owning getOrder, then getCapturedPayment if discoverable | authorizationId + known owning orderId | TBD | TBD |
-| refund_capture | getRefund if known; otherwise owning getOrder payments.refunds, match customId to operationId, and getRefund; the domain supplies a complete current refundable budget | refundId or orderId + operationId | packages/paypal-core/src/provider.ts:110 | tests/paypal-core.test.ts:95; unknown-ID live correlation remains unqualified |
-| void_authorization | getAuthorizedPayment | original authorizationId | TBD | TBD |
+| create_order | getOrder only if a provider ID is already obtained from a durable receipt/approval callback; otherwise no invented search | known orderId | packages/paypal-core/src/provider.ts:177 (rereads only an order ID already held on a durable receipt; otherwise no receipt is returned and the operation stays pending) | tests/contract-bindings.test.ts:73 (lost response: one POST, no lookup, still pending after reconcile and after a repeated execute); never-sent: tests/paypal-sdk.test.ts:182 (OAuth refusal) and tests/contract-bindings.test.ts:113 (SDK encode failure) |
+| capture_order | getOrder, then getCapturedPayment for discovered captures | original orderId | packages/paypal-core/src/provider.ts:155 | tests/paypal-sdk.test.ts:167 (connection loss and malformed success both reconcile by reread) and :182 (never-sent) |
+| authorize_order | getOrder then getAuthorizedPayment | original orderId | packages/paypal-core/src/provider.ts:155 | tests/contract-bindings.test.ts:79 (lost response reconciles through the original order and its authorization; one POST); never-sent mapping is shared by every operation (packages/paypal-core/src/provider.ts:62) and is executed for create_order at tests/paypal-sdk.test.ts:182, not separately for this operation |
+| capture_authorization | getAuthorizedPayment, then getCapturedPayment only for a capture ID already held on a durable receipt. The owning-order read is deliberately not implemented: an earlier partial capture on the same authorization cannot be attributed to this attempt, so an unknown capture stays pending | authorizationId; a capture ID only when a receipt recorded one | packages/paypal-core/src/provider.ts:175 | tests/contract-bindings.test.ts:86 (lost response: one POST, one authorization read, no receipt, still pending); never-sent mapping is shared by every operation (packages/paypal-core/src/provider.ts:62) and is executed for create_order at tests/paypal-sdk.test.ts:182, not separately for this operation |
+| refund_capture | getRefund if known; otherwise owning getOrder payments.refunds, match customId to operationId, and getRefund; the domain supplies a complete current refundable budget | refundId or orderId + operationId | packages/paypal-core/src/provider.ts:162 | tests/paypal-core.test.ts:100; unknown-ID live correlation remains unqualified |
+| void_authorization | getAuthorizedPayment | original authorizationId | packages/paypal-core/src/provider.ts:171 | tests/contract-bindings.test.ts:92 (lost response: succeeded only when the authorization reads VOIDED, otherwise pending; one POST); never-sent mapping is shared by every operation (packages/paypal-core/src/provider.ts:62) and is executed for create_order at tests/paypal-sdk.test.ts:182, not separately for this operation |
 
 No create-order lookup by provider request ID exists in this SDK. When no resource ID was received, ordinary recovery stays pending reconciliation; the lab recorder may know more but must not grant the target an invented lookup. Refund correlation not returned by owning-order read also remains unknown; an aggregate refunded amount alone cannot prove this refund operation. These are explicit capability limitations, not open SDK lookups.
 
@@ -86,12 +86,12 @@ No create-order lookup by provider request ID exists in this SDK. When no resour
 
 | Invariant | Legal set | Enforcement | Test |
 |---|---|---|---|
-| Resource belongs to current tenant/project and approved action | caller's persisted grant + all relevant resource IDs | before claim in PaymentCore.execute | TBD |
-| Capture requires genuine approved order or valid prior-consent capability | provider GET + current domain approval | before mutation | TBD |
-| Refund amount is approved, positive integer minor units and no greater than confirmed remaining capture amount including pending reservations | fresh capture/order observations + locked claims | claim transaction | TBD |
-| Changed payload cannot reuse operation/business identity | canonical immutable hash | duplicate-claim branch | TBD |
-| Captures, refunds, authorizations, payments and fulfillment remain separate | normalized resource kinds | typed provider boundary and invariant evaluator | TBD |
-| Faulty target attempts are observed, never repaired/deduplicated by core | neutral harness manifest | runner separate from core | TBD |
+| Resource belongs to current tenant/project and approved action | caller's persisted grant + all relevant resource IDs | before claim in PaymentCore.execute | tests/paypal-core.test.ts:179 (another tenant or project cannot reach the operation) and :205 (revoked or altered authority refused before dispatch); tests/paypal-sdk.test.ts:68 (a resource outside the grant is refused with RESOURCE_NOT_GRANTED and no provider traffic) |
+| Capture requires genuine approved order or valid prior-consent capability | provider GET + current domain approval | before mutation | tests/contract-bindings.test.ts:102 (order read as CREATED: refused with 409 and no write; enforcement at packages/paypal-core/src/provider.ts:125); tests/paypal-sdk.test.ts:154 (approved order: exactly one write); prior consent: tests/paypal-sdk.test.ts:68 (saved wallet refused without current consent). One live sandbox lifecycle is recorded in docs/evidence/paypal-lifecycle-qualification.json |
+| Refund amount is approved, positive integer minor units and no greater than confirmed remaining capture amount including pending reservations | fresh capture/order observations + locked claims | claim transaction | tests/paypal-core.test.ts:83 (two refund intents cannot reserve the same remaining money), :94 (duplicate refund callbacks return one winner) and :263 (integer minor units); tests/paypal-sdk.test.ts:214 (exact cents on the wire; a pending refund stays reserved); tests/paypal-store-codec.test.ts:55 |
+| Changed payload cannot reuse operation/business identity | canonical immutable hash | duplicate-claim branch | tests/paypal-core.test.ts:44 (PAYLOAD_CONFLICT asserted at :52 and :54 with one provider write); tests/paypal-sdk.test.ts:91; branch at packages/paypal-core/src/store.ts:86 |
+| Captures, refunds, authorizations, payments and fulfillment remain separate | normalized resource kinds | typed provider boundary and invariant evaluator | tests/paypal-core.test.ts:76 (pending and denied resources never become completed money); tests/paypal-sdk.test.ts:21 (a create receipt holds an order and no capture); tests/application.test.ts:50 (a pending capture cannot back fulfillment) |
+| Faulty target attempts are observed, never repaired/deduplicated by core | neutral harness manifest | runner separate from core | tests/application.test.ts:31 (the faulty retry leaves two approved orders on record while the control reconciles one) and :53 (a harness safety intervention cannot count as a target pass) |
 
 ## OPTIONAL FIELDS
 
@@ -109,15 +109,15 @@ This table applies independently to every in-scope operation (createOrder, captu
 
 | Provider status / kind | App answer | Caller reads | Test |
 |---|---|---|---|
-| 4xx except 401/403/429 | same 4xx | fixed message and HTTP status; provider body excluded because it can echo personal data | tests/paypal-sdk.test.ts:56; further operation-specific refusals remain planned |
-| 401/403 | 502 | Payment provider credentials unavailable | TBD |
-| 429 | 503 | Payment provider quota temporarily unavailable | TBD |
-| 5xx | 502 | Payment provider unavailable | TBD |
-| connection/timeout/success-decode on write | 202 pending_reconciliation after reread | Checking provider outcome | TBD |
-| no response on read | 502 | Provider state could not be confirmed | TBD |
-| auth/encode | no mutation, no reread | Provider credential/configuration fault | TBD |
-| decode on declared 4xx | map surviving provider status as above | Provider rejected the request; reason unreadable | TBD |
-| unknown nonfamily throwable | rethrow | application error boundary | TBD |
+| 4xx except 401/403/429 | same 4xx | fixed message and HTTP status; provider body excluded because it can echo personal data | tests/paypal-sdk.test.ts:187 and :192 (422 on create_order: one attempt, bounded reason, no provider text). The mapping at packages/paypal-core/src/provider.ts:53 is shared by every operation; other operations are not separately executed |
+| 401/403 | 502 | Payment provider credentials unavailable | tests/contract-bindings.test.ts:58 (401 and 403 on a write: one refused attempt answered 502, provider text not echoed); mapping at packages/paypal-core/src/provider.ts:51 |
+| 429 | 503 | Payment provider quota temporarily unavailable | tests/contract-bindings.test.ts:58 (429 on a write: one refused attempt answered 503; SDK retries are off at packages/paypal-core/src/provider.ts:76); mapping at packages/paypal-core/src/provider.ts:52 |
+| 5xx | 502 | Payment provider unavailable | tests/contract-bindings.test.ts:63 (500 and 503 on a write: stored as an unknown outcome answered 502, one POST and no resend); mapping at packages/paypal-core/src/provider.ts:54 |
+| connection/timeout/success-decode on write | 202 pending_reconciliation after reread | Checking provider outcome | tests/paypal-sdk.test.ts:167 (connection loss and malformed 2xx on capture reconcile by reread); tests/paypal-core.test.ts:64 (reread unavailable: stays pending and a retry is refused). Not established through the SDK timer: the timeout arm shares packages/paypal-core/src/provider.ts:65 with connection loss and is driven only by a fixture provider at tests/paypal-core.test.ts:64 |
+| no response on read | 502 | Provider state could not be confirmed | tests/contract-bindings.test.ts:97 (a read with no response raises an unknown-outcome provider error with 502; nothing is treated as a payment failure) |
+| auth/encode | no mutation, no reread | Provider credential/configuration fault | tests/paypal-sdk.test.ts:182 (OAuth refusal: token request only, operation not_sent); tests/contract-bindings.test.ts:113 (SDK encode failure: no network request at all); tests/paypal-core.test.ts:71 (never-sent does not trigger a reread) |
+| decode on declared 4xx | map surviving provider status as above | Provider rejected the request; reason unreadable | tests/contract-bindings.test.ts:68 (422 with an unparseable body: refused with the provider status, one POST) |
+| unknown nonfamily throwable | rethrow | application error boundary | tests/contract-bindings.test.ts:107 (a non-provider throwable after dispatch is rethrown and the operation is kept for reconciliation; packages/paypal-core/src/core.ts:55). Not established for a throwable raised inside an SDK call: no executed test produces one; the adapter passes it through at packages/paypal-core/src/provider.ts:58 and :66 |
 
 ## REST webhook intake
 
@@ -129,7 +129,7 @@ Parent established the isolated US sandbox merchant/app/buyer and verified OAuth
 
 ## First implementation checkpoint
 
-`npm run verify:core` currently passes 34 cases; the checked-in evidence carries exact source hashes and adapter coverage. Tests bind SQL duplicate winners and payload conflicts (tests/paypal-core.test.ts:39), unknown rereads (:51, :59), never-sent auth (:66), terminal resource classification (:71), refund capacity and duplicate races (:78, :89, :95), database failures around external success (:102, :110), current authority (:122), webhook dead letters (:128), exact money (:143), redaction (:151), SDK create/capture/refund encoding (tests/paypal-sdk.test.ts), and REST postback bytes. All are Sample/local-conformance evidence. The control was tested independently before implementing intentionally faulty targets.
+`npm run verify:core` wrote the checked-in receipt docs/evidence/core-conformance.json (148 passing cases for core 0.2.7 on 10 November, with exact source hashes and adapter coverage). Tests bind SQL duplicate winners and payload conflicts (tests/paypal-core.test.ts:44), unknown rereads (:56, :64), never-sent auth (:71), terminal resource classification (:76), refund capacity and duplicate races (:83, :94, :100), database failures around external success (:107, :193), current authority (:205), webhook dead letters (:211), exact money (:263), redaction (:271), SDK create/capture/refund encoding (tests/paypal-sdk.test.ts), and REST postback bytes. All are Sample/local-conformance evidence. The control was tested independently before implementing intentionally faulty targets.
 
 Runtime binding: PaymentCore dispatch/recovery in packages/paypal-core/src/core.ts; SQL claims/budgets/event intake in store.ts; public SDK operations in provider.ts; typed REST signature verification in webhook.ts. `packages/paypal-core/README.md` lists present versus absent capabilities. Unbound tests above remain explicit work; core conformance does not imply application scenario execution or live-provider qualification.
 
@@ -1802,7 +1802,7 @@ A connection/decode/cancel after dispatch remains unknown unless an original res
 ### WHEN THE API SAYS NO
 Create error arms and GET error arms are the exact tables above. Persist status and allowlisted provider reason from the correctly narrowed operation result; omit personal fields and credential payloads. Operator reports distinguish refused, not_sent, unknown and verified. Credentials/401/403 use fixed credential failure;429 fixed quota failure;5xx fixed provider unavailable. Unknown non-family exceptions remain application errors; state is conservatively retained before rethrow. Nothing maps an absent response to a conclusive provider refusal.
 
-**Required reading:** MUST load typescript-integrate-paypal, typescript-getting-started, typescript-error-handling, typescript-client-initialization, typescript-authentication, typescript-calling-endpoints, typescript-models, typescript-configuration-resilience, typescript-testing — all previously loaded; exact current operation map and this extension reread before implementation. Release replaces each TBD with the implemented source/test binding and executed hash evidence.
+**Required reading:** MUST load typescript-integrate-paypal, typescript-getting-started, typescript-error-handling, typescript-client-initialization, typescript-authentication, typescript-calling-endpoints, typescript-models, typescript-configuration-resilience, typescript-testing — all previously loaded; exact current operation map and this extension reread before implementation. Every binding cell in the tables above names its source line and executed test, or states "Not established" with the reason; no cell is left open. Source lines name packages/paypal-core/src at version 0.2.7; the web application runs the vendored 0.2.2 archive, whose SDK adapter differs only by the wallet-saving attribute added in 0.2.3 (docs/apimatic/SDK_USAGE.md).
 
 Implementation binding:12 meaningful real-SDK/PostgreSQL fixture tests pass on2026-11-11; isolated disposable schemas only, no provider traffic. The transport uses FetchLike=typeof fetch, narrows its actual Request and reads forwarded.clone() after preserving signal; this fixes a locally observed consumed-body test failure before any sandbox dispatch. Live campaign ef2bb79f-e6bc-472e-9307-9bd0e70fabd3 subsequently verified40/40 calls and20 pairs: same proper header returned one order, same generic-only header returned two, across five matched trials. The safe record and exact scope are in docs/evidence/paypal-create-identity-qualification.json.
 

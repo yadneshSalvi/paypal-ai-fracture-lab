@@ -64,3 +64,44 @@ export function repairAuthorNotes(repair: RepairDTO, view: RepairProofView | nul
   if (view?.repairId === repair.id && repair.provenance === "model_generated" && notes.at(-1) === generatedScope) notes.pop();
   return notes;
 }
+
+const faultText: Record<string, string> = { dropCaptureResponse: "The provider commits the capture, but its answer is lost", unavailableReread: "The reconciliation re-read is unavailable", authFailure: "Authentication fails before any payment request is sent", malformedSuccess: "A committed capture returns a malformed success body", capturePending: "The capture stays pending" };
+type Side = "pass" | "fail" | "not_reached";
+export interface GeneratedTestView {
+  schemaVersion: 1; evidenceId: string; repairId: string;
+  name: string; rationale: string; model: string; specHash: string;
+  given: string[]; when: string; then: string[];
+  /** established: failed on the faulty baseline and passed on the candidate in one isolated execution. */
+  state: "established" | "not_established" | "not_run" | "not_executed";
+  before: Side | null; after: Side | null; beforeDetail: string | null; afterDetail: string | null;
+  location: "Vercel Sandbox" | "local Docker" | null; executionError: string | null;
+  scope: "additional_to_public_regressions";
+}
+
+/** Presentation only. Picks the newest executed record for this repair, else the authored one. Repairs saved before generated tests existed return null. */
+export function generatedTestView(repairId: string | undefined, evidence: readonly EvidenceDTO[] | undefined): GeneratedTestView | null {
+  if (!repairId || !evidence) return null;
+  const records = evidence.filter(item => item.kind === "test" && item.source === "sample" && object(item.body)?.repairId === repairId && object(object(item.body)?.generatedRegressionTest)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const chosen = records.find(item => object(item.body.execution) || typeof item.body.executionError === "string") ?? records[0];
+  if (!chosen) return null;
+  const test = object(chosen.body.generatedRegressionTest)!, spec = object(test.spec), author = object(test.author), expected = object(spec?.expected), faults = object(spec?.faults);
+  if (!spec || !author || !expected || !faults || typeof spec.name !== "string" || typeof spec.rationale !== "string" || typeof author.model !== "string" || !digest(test.specHash) || !Number.isInteger(spec.purchaseAttempts) || !Number.isInteger(expected.completedCaptures) || !Number.isInteger(expected.entitlements) || typeof expected.customerState !== "string") return null;
+  const injected = Object.keys(faultText).filter(key => faults[key] === true).map(key => faultText[key]!);
+  const attempts = Number(spec.purchaseAttempts);
+  const execution = object(chosen.body.execution);
+  const sides = ["pass", "fail", "not_reached"];
+  const valid = execution && sides.includes(String(execution.before)) && sides.includes(String(execution.after)) && execution.specHash === test.specHash && execution.candidateHash === test.candidateHash && execution.baseHash === test.baseHash;
+  const receipt = valid ? object(execution.runnerReceipt) : null;
+  const before = valid ? execution.before as Side : null, after = valid ? execution.after as Side : null;
+  return {
+    schemaVersion: 1, evidenceId: chosen.id, repairId, name: spec.name, rationale: spec.rationale, model: author.model, specHash: test.specHash as string,
+    given: injected.length ? injected : ["No fault is injected"],
+    when: `The same purchase intent is submitted ${attempts === 1 ? "once" : `${attempts} times`}${spec.concurrent === true && attempts > 1 ? ", concurrently" : ""}`,
+    then: [`Exactly ${expected.completedCaptures} completed capture${expected.completedCaptures === 1 ? "" : "s"}`, `Exactly ${expected.entitlements} paid entitlement${expected.entitlements === 1 ? "" : "s"}`, ...(expected.customerState === "any" ? [] : [`The customer sees “${expected.customerState}”`]), "Gross captured never exceeds the 12.00 purchase", "An unknown outcome is never shown as failed", "No checkout call throws"],
+    state: valid ? before === "fail" && after === "pass" ? "established" : "not_established" : typeof chosen.body.executionError === "string" ? "not_run" : "not_executed",
+    before, after, beforeDetail: valid && typeof execution.beforeDetail === "string" ? execution.beforeDetail : null, afterDetail: valid && typeof execution.afterDetail === "string" ? execution.afterDetail : null,
+    location: receipt ? receipt.kind === "vercel_sandbox" ? "Vercel Sandbox" : "local Docker" : null,
+    executionError: !valid && typeof chosen.body.executionError === "string" ? chosen.body.executionError : null,
+    scope: "additional_to_public_regressions",
+  };
+}

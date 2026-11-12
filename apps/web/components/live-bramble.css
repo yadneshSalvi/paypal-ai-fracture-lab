@@ -4,3 +4,4 @@
 .live-compensation{border:1px solid #6ee7b73b;background:#6ee7b708;border-radius:14px;padding:22px;margin:24px 0}.live-compensation>strong{font-size:18px}.live-compensation>p{font-size:13px;color:var(--secondary);line-height:1.8;margin:12px 0 18px}.live-compensation code{display:block;overflow-wrap:anywhere}
 
 .live-redirect{margin-top:18px;display:grid;gap:12px}.live-redirect>p{font-size:12px;line-height:1.7;color:var(--secondary)}.live-redirect .button{min-height:44px;justify-content:center;border:1px solid var(--line);border-radius:8px;padding:10px}
+.live-recorded p{max-width:760px;overflow-wrap:anywhere}.live-owner{margin-top:28px}.live-owner>summary{cursor:pointer}.live-owner .live-choices{margin-top:20px}

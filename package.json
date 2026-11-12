@@ -34,6 +34,7 @@
   },
   "scripts": {
     "dev": "cd apps/web && next dev -p 4104",
+    "prebuild": "npm run check:conformance",
     "build": "cd apps/web && next build",
     "start": "cd apps/web && next start -p 4104",
     "typecheck": "tsc --noEmit",
@@ -46,6 +47,8 @@
     "eval:context": "tsx scripts/run-context-study.ts",
     "verify:core": "tsx scripts/verify-core.ts",
     "verify:app": "tsx scripts/verify-app.ts",
+    "check:conformance": "tsx scripts/check-conformance.ts",
+    "test:hermetic": "tsx --test --test-concurrency=2 tests/ai.test.ts tests/application.test.ts tests/campaign-lab.test.ts tests/context-evaluation.test.ts tests/contract-bindings.test.ts tests/developer-tools.test.ts tests/errand.test.ts tests/evaluation-execution.test.ts tests/evaluation-integrity.test.ts tests/evaluation-publication.test.ts tests/isolation.test.ts tests/live-bramble.test.ts tests/model-context.test.ts tests/model-runtime-view.test.ts tests/model-transport.test.ts tests/paypal-commerce-rest.test.ts tests/paypal-core.test.ts tests/paypal-sdk.test.ts tests/paypal-store-codec.test.ts tests/provider-fact-binding.test.ts tests/provider-negative-fact.test.ts tests/provider-probe-connection.test.ts tests/provider-webhook-fact.test.ts tests/published-observation.test.ts tests/remote-mcp-boundary.test.ts tests/remote-mcp-bridge.test.ts tests/remote-mcp-route.test.ts tests/remote-mcp.test.ts tests/repair-proof-view.test.ts tests/runtime-journal.test.ts tests/source-access.test.ts tests/source-api.test.ts tests/source-execution-boundary.test.ts tests/source-execution-hosted.test.ts tests/source-execution-mcp.test.ts tests/source-execution-qualification-journal.test.ts tests/source-execution-suite.test.ts tests/source-execution-view.test.ts tests/source-execution.test.ts tests/toolkit-read.test.ts tests/typescript-analysis.test.ts tests/workspace-transfer.test.ts",
     "prepare:isolation": "tsx scripts/prepare-isolation.ts",
     "verify:isolation": "tsx scripts/qualify-isolation.ts",
     "test:app": "tsx --test tests/application.test.ts",

@@ -17,6 +17,6 @@ export function RepairProofCard({ view }: { view: RepairProofView }) {
       {view.image ? <div><dt>Image</dt><dd>{view.image}</dd></div> : null}
       <div><dt>Original evidence SHA-256</dt><dd>{view.originalEvidenceSha256}</dd></div>
     </dl></details>
-    <p className={styles.scope}><ShieldCheck size={14} /><span>These are published product regressions. This receipt does not add a result to the sealed context study.{view.legacyHiddenFlags ? ` The raw runner marks ${view.legacyHiddenFlags} checks hidden; those historical flags are preserved in the original record. The pinned suite publishes every check shown here.` : ""}</span></p>
+    <p className={styles.scope}><ShieldCheck size={14} /><span>Every check in this receipt is public: the pinned suite ships in the repository. This receipt does not add a result to the sealed context study.{view.legacyHiddenFlags ? ` The stored runner record still carries an old internal “hidden” label on ${view.legacyHiddenFlags} of these public checks; the record is kept unmodified.` : ""}</span></p>
   </section>;
 }

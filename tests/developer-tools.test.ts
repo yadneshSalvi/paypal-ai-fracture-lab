@@ -82,7 +82,7 @@ for (const adapter of adapters) {
   test(`${adapter}: no tool accepts live mode, arbitrary paths, financial parameters, or gated scenarios`, async t => {
     const { runtime, service } = await setup(t, adapter);
     for (const extra of [{ mode: "live_sandbox" }, { path: "/etc/passwd" }, { payee: "other" }, { amount: 1 }, { projectId: "other" }]) await assert.rejects(runtime.call("run_curated_scenario", { ...input(), ...extra }), { code: "INVALID_TOOL_INPUT" });
-    for (const scenarioId of ["L1", "S1", "N1"]) await assert.rejects(runtime.call("run_curated_scenario", { ...input(), scenarioId }), { code: "SCENARIO_GATED" });
+    for (const scenarioId of ["L1", "S8", "N1"]) await assert.rejects(runtime.call("run_curated_scenario", { ...input(), scenarioId }), { code: "SCENARIO_GATED" });
     for (const tool of ["capture_payment", "run_local_scenario", "__proto__"]) await assert.rejects(runtime.call(tool, {}), { code: "TOOL_NOT_AVAILABLE" });
     assert.equal((await service.store.db.query("SELECT id FROM lab_runs")).rowCount, 0);
   });

@@ -1,0 +1,365 @@
+import { randomUUID } from "node:crypto";
+import type { BrambleContext } from "@fracture/source-target";
+
+const PAYPAL_API = "https://api-m.sandbox.paypal.com";
+const ENTITLEMENT_KEY = "digital_book";
+const SUPPORTED_CURRENCY = "USD";
+
+type Context = BrambleContext;
+type TargetState = Awaited<ReturnType<Context["store"]["targetState"]>>;
+type Row = Record<string, unknown>;
+
+interface Money {
+  currency_code?: string;
+  value?: string;
+}
+
+interface Capture {
+  id?: string;
+  status?: string;
+  amount?: Money;
+}
+
+interface Order {
+  id?: string;
+  status?: string;
+  purchase_units?: Array<{
+    amount?: Money;
+    payments?: { captures?: Capture[] };
+  }>;
+}
+
+interface Outcome {
+  status: "paid" | "failed" | "checking" | "processing";
+  orderId?: string;
+  captureId?: string;
+  fulfillmentId?: string;
+  reason?: string;
+}
+
+// The provider answered with an HTTP error status. Whether money moved is known.
+class ProviderRejected extends Error {
+  httpStatus: number;
+  body: unknown;
+
+  constructor(httpStatus: number, body: unknown) {
+    super("PayPal responded with HTTP " + String(httpStatus));
+    this.httpStatus = httpStatus;
+    this.body = body;
+  }
+}
+
+export async function checkout(context: BrambleContext): Promise<unknown> {
+  const runId = context.run.id;
+  const intentId = context.run.businessIntentId;
+
+  const before = await context.store.targetState(runId, intentId);
+
+  // Idempotent re-entry: the book was already delivered for this run.
+  const delivered = await findFulfillment(context, runId);
+  if (delivered !== null) {
+    await save(context, runId, before, {
+      status: "paid",
+      lastCaptureId: delivered.capture_id,
+      fulfillmentCount: 1,
+      unknown: false,
+    });
+    return { status: "paid", captureId: delivered.capture_id, fulfillmentId: delivered.id };
+  }
+
+  if (await hasFault(context, runId, "approval-revoked")) {
+    return fail(context, runId, before, "approval-revoked", "The buyer's approval was withdrawn.");
+  }
+
+  if (context.run.currency !== SUPPORTED_CURRENCY || !Number.isInteger(context.run.amountMinor) || context.run.amountMinor <= 0) {
+    return fail(context, runId, before, "invalid-price", "The price is not a supported amount.");
+  }
+  const amount: Money = { currency_code: SUPPORTED_CURRENCY, value: formatMinor(context.run.amountMinor) };
+
+  let state = await save(context, runId, before, {
+    status: "processing",
+    attempt: before.attempt + 1,
+    unknown: false,
+  });
+
+  // Stage 1: create the order once per purchase. The deterministic PayPal-Request-Id
+  // makes a repeated create return the same order rather than a second one.
+  let orderId = lastOf(state.orderIds);
+  if (orderId === undefined) {
+    try {
+      const created = asOrder(await paypal(context, "POST", "/v2/checkout/orders", createOrderBody(intentId, amount), "create-" + intentId));
+      if (typeof created.id !== "string") {
+        throw new Error("order response has no id");
+      }
+      orderId = created.id;
+    } catch (error) {
+      return outcomeFromError(context, runId, state, error, "create-order");
+    }
+    state = await save(context, runId, state, { orderIds: state.orderIds.concat([orderId]) });
+  }
+
+  // Stage 2: read the order and, if the buyer has not approved it yet, approve it.
+  let order: Order;
+  try {
+    order = asOrder(await paypal(context, "GET", "/v2/checkout/orders/" + orderId, undefined));
+    if (order.status === "CREATED") {
+      if (await hasFault(context, runId, "approval-revoked")) {
+        return fail(context, runId, state, "approval-revoked", "The buyer's approval was withdrawn.");
+      }
+      await context.transport.approve(orderId);
+      order = asOrder(await paypal(context, "GET", "/v2/checkout/orders/" + orderId, undefined));
+    }
+  } catch (error) {
+    return outcomeFromError(context, runId, state, error, "read-order");
+  }
+
+  // Stage 3: capture. The capture is not repeated if PayPal already reports it completed.
+  let captured: Order;
+  if (order.status === "COMPLETED") {
+    captured = order;
+  } else if (order.status === "APPROVED") {
+    if (await hasFault(context, runId, "approval-revoked")) {
+      return fail(context, runId, state, "approval-revoked", "The buyer's approval was withdrawn.");
+    }
+    try {
+      captured = asOrder(await paypal(context, "POST", "/v2/checkout/orders/" + orderId + "/capture", undefined, "capture-" + orderId));
+    } catch (error) {
+      return outcomeFromError(context, runId, state, error, "capture-order");
+    }
+  } else {
+    return fail(context, runId, state, "order-not-approved", "The order is in state " + String(order.status) + ".");
+  }
+
+  const capture = firstCapture(captured);
+  if (capture === undefined || typeof capture.id !== "string") {
+    return checking(context, runId, state, "capture-missing", "The provider reply did not include a capture.", true);
+  }
+  if (capture.status === "PENDING") {
+    return checking(context, runId, state, "capture-pending", "The payment is pending at the provider.", false);
+  }
+  if (capture.status !== "COMPLETED") {
+    return checking(context, runId, state, "capture-unexpected-status", "The capture is in state " + String(capture.status) + ".", true);
+  }
+  if (!sameMoney(capture.amount, amount)) {
+    // Money moved for an amount that is not the price. Do not deliver; keep it for review.
+    return checking(context, runId, state, "amount-mismatch", "The captured amount does not match the price.", true);
+  }
+  const captureId = capture.id;
+
+  // Stage 4: deliver exactly one book. The UNIQUE(run_id, entitlement_key) constraint
+  // stops a second row even if two calls reach this point together.
+  const fulfillmentId = randomUUID();
+  try {
+    await queryRows(
+      context,
+      "INSERT INTO lab_fulfillments(id,run_id,intent_id,capture_id,entitlement_key,document) VALUES($1,$2,$3,$4,$5,$6)",
+      [
+        fulfillmentId,
+        runId,
+        intentId,
+        captureId,
+        ENTITLEMENT_KEY,
+        JSON.stringify({ source: "sample", kind: "digital_book", captureId: captureId }),
+      ],
+    );
+  } catch (error) {
+    const existing = await findFulfillment(context, runId);
+    if (existing === null) {
+      return checking(context, runId, state, "fulfillment-failed", describe(error), true);
+    }
+    await save(context, runId, state, { status: "paid", lastCaptureId: existing.capture_id, fulfillmentCount: 1, unknown: false });
+    return { status: "paid", orderId: orderId, captureId: existing.capture_id, fulfillmentId: existing.id };
+  }
+
+  await save(context, runId, state, {
+    status: "paid",
+    lastCaptureId: captureId,
+    fulfillmentCount: 1,
+    unknown: false,
+  });
+  await context.store.emit(runId, {
+    lane: "customer",
+    kind: "payment",
+    title: "Paid",
+    detail: "Your book is ready.",
+    resourceId: captureId,
+  });
+  await context.store.emit(runId, {
+    lane: "application",
+    kind: "fulfillment",
+    title: "Book delivered",
+    detail: "One digital book was delivered for the captured payment.",
+    resourceId: fulfillmentId,
+    facts: { orderId: orderId, captureId: captureId },
+  });
+  return { status: "paid", orderId: orderId, captureId: captureId, fulfillmentId: fulfillmentId };
+}
+
+function createOrderBody(intentId: string, amount: Money): unknown {
+  return {
+    intent: "CAPTURE",
+    purchase_units: [{ reference_id: intentId, amount: amount }],
+  };
+}
+
+function formatMinor(minor: number): string {
+  // USD has two minor digits.
+  const whole = Math.floor(minor / 100);
+  const cents = minor % 100;
+  return String(whole) + "." + (cents < 10 ? "0" : "") + String(cents);
+}
+
+function sameMoney(actual: Money | undefined, expected: Money): boolean {
+  return actual !== undefined && actual.currency_code === expected.currency_code && actual.value === expected.value;
+}
+
+function firstCapture(order: Order): Capture | undefined {
+  const units = order.purchase_units;
+  if (!units || units.length === 0) return undefined;
+  const captures = units[0].payments?.captures;
+  if (!captures || captures.length === 0) return undefined;
+  return captures[0];
+}
+
+function lastOf(values: string[]): string | undefined {
+  const last = values.slice(-1);
+  return last.length > 0 ? last[0] : undefined;
+}
+
+function asOrder(value: unknown): Order {
+  if (typeof value !== "object" || value === null) {
+    throw new Error("provider reply is not an object");
+  }
+  return value as Order;
+}
+
+function describe(error: unknown): string {
+  return error instanceof Error ? error.message : "unknown error";
+}
+
+// A 4xx reply (other than timeout, conflict or rate limit) means the provider did not act.
+// Anything else leaves the outcome unknown, so the customer sees "checking".
+function outcomeFromError(
+  context: Context,
+  runId: string,
+  state: TargetState,
+  error: unknown,
+  stage: string,
+): Promise<Outcome> {
+  if (error instanceof ProviderRejected) {
+    const code = error.httpStatus;
+    const definitive = code >= 400 && code < 500 && code !== 408 && code !== 409 && code !== 429;
+    if (definitive) {
+      return fail(context, runId, state, stage + "-rejected", "PayPal rejected the request with HTTP " + String(code) + ".");
+    }
+  }
+  return checking(context, runId, state, stage + "-unknown", describe(error), true);
+}
+
+async function fail(
+  context: Context,
+  runId: string,
+  state: TargetState,
+  reason: string,
+  detail: string,
+): Promise<Outcome> {
+  await save(context, runId, state, { status: "failed", unknown: false });
+  await context.store.emit(runId, {
+    lane: "application",
+    kind: "checkout-failed",
+    title: "Checkout failed",
+    detail: detail,
+    facts: { reason: reason },
+  });
+  return { status: "failed", reason: reason };
+}
+
+async function checking(
+  context: Context,
+  runId: string,
+  state: TargetState,
+  reason: string,
+  detail: string,
+  unknown: boolean,
+): Promise<Outcome> {
+  await save(context, runId, state, { status: "checking", unknown: unknown });
+  await context.store.emit(runId, {
+    lane: "application",
+    kind: "checkout-checking",
+    title: "Payment under review",
+    detail: detail,
+    facts: { reason: reason, unknown: unknown },
+  });
+  return { status: "checking", reason: reason };
+}
+
+async function save(context: Context, runId: string, base: TargetState, patch: Partial<TargetState>): Promise<TargetState> {
+  const next: TargetState = {
+    intentId: base.intentId,
+    orderIds: patch.orderIds !== undefined ? patch.orderIds : base.orderIds,
+    status: patch.status !== undefined ? patch.status : base.status,
+    lastCaptureId: patch.lastCaptureId !== undefined ? patch.lastCaptureId : base.lastCaptureId,
+    attempt: patch.attempt !== undefined ? patch.attempt : base.attempt,
+    fulfillmentCount: patch.fulfillmentCount !== undefined ? patch.fulfillmentCount : base.fulfillmentCount,
+    unknown: patch.unknown !== undefined ? patch.unknown : base.unknown,
+  };
+  await context.store.setTargetState(runId, next);
+  return next;
+}
+
+function jsonHeaders(withBody: boolean, requestId: string | undefined): Record<string, string> {
+  if (requestId === undefined) {
+    if (withBody) return { Accept: "application/json", "Content-Type": "application/json" };
+    return { Accept: "application/json" };
+  }
+  if (withBody) return { Accept: "application/json", "Content-Type": "application/json", "PayPal-Request-Id": requestId };
+  return { Accept: "application/json", "PayPal-Request-Id": requestId };
+}
+
+async function paypal(
+  context: Context,
+  method: "GET" | "POST",
+  path: string,
+  body: unknown,
+  requestId?: string,
+): Promise<unknown> {
+  const response = await context.transport.fetch(PAYPAL_API + path, {
+    method: method,
+    headers: jsonHeaders(body !== undefined, requestId),
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  const text = await response.text();
+  const json = parseJson(text);
+  if (!response.ok) {
+    throw new ProviderRejected(response.status, json);
+  }
+  return json;
+}
+
+function parseJson(text: string): unknown {
+  if (text.length === 0) return null;
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    return null;
+  }
+}
+
+async function queryRows(context: Context, sql: string, params: unknown[]): Promise<Row[]> {
+  return (await context.store.db.query(sql, params)) as Row[];
+}
+
+async function findFulfillment(context: Context, runId: string): Promise<{ id: string; capture_id: string } | null> {
+  const rows = await queryRows(
+    context,
+    "SELECT id, capture_id FROM lab_fulfillments WHERE run_id=$1 AND entitlement_key=$2",
+    [runId, ENTITLEMENT_KEY],
+  );
+  if (rows.length === 0) return null;
+  return { id: String(rows[0].id), capture_id: String(rows[0].capture_id) };
+}
+
+async function hasFault(context: Context, runId: string, faultKey: string): Promise<boolean> {
+  const rows = await queryRows(context, "SELECT fault_key FROM lab_faults WHERE run_id=$1", [runId]);
+  return rows.some((row) => row.fault_key === faultKey);
+}

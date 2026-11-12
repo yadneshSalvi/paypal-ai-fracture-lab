@@ -7,7 +7,7 @@ import {LabStore} from './store';
 import {LabError} from './errors';
 import {newRun,refreshRun} from './executor';
 import {projectCatalog} from './catalog';
-import {scenarios} from '../../scenarios/src/index';
+import {scenarioCatalogue as scenarios} from '../../scenarios/src/index';
 import type {FixtureResource,RunInput} from './types';
 import {LivePayPalGateway} from './live-provider';
 import type {LiveObservation,LiveObserver} from './live-provider';

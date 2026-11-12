@@ -52,7 +52,8 @@ export function assertSecretFree(text: string, extraSecrets: readonly string[]):
     /-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----/,
     /\b(?:sk-(?:proj-|ant-)?[A-Za-z0-9_-]{20,}|[sr]k_live_[A-Za-z0-9]{16,}|AIza[A-Za-z0-9_-]{25,}|AKIA[A-Z0-9]{16}|gh[pousr]_[A-Za-z0-9]{24,}|github_pat_[A-Za-z0-9_]{30,}|xox[baprs]-[A-Za-z0-9-]{20,})\b/,
     /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/,
-    /\b(?:https?|postgres(?:ql)?|mysql|redis):\/\/[^\s/:]+:[^\s/@]+@/i,
+    // URL userinfo cannot span a quote, comma or bracket: this also scans compact JSON, where a plain host literal would otherwise run on to a later "@scope/package".
+    /\b(?:https?|postgres(?:ql)?|mysql|redis):\/\/[^\s/:"'`,{}[\]\\]+:[^\s/@"'`,{}[\]\\]+@/i,
     /\b(?:Bearer|Basic)\s+[A-Za-z0-9+/_.=-]{16,}/i,
   ];
   if (forbidden.some(pattern => pattern.test(text))) throw new SourceWorkspaceError("SOURCE_SECRET_DETECTED");

@@ -1,0 +1,91 @@
+/**
+ * Bramble checkout adapter surface, as seen by an imported `checkout` export.
+ * Import the type with:  import type { BrambleContext } from "@fracture/source-target";
+ * This file is a reading copy for developers. The isolated runner type-checks
+ * against its own pinned copy of the same contract.
+ */
+import type { SqlDatabase } from "@fracture/paypal-core";
+
+export interface BrambleRun {
+  /** Run identity. Every store call is scoped to this id. */
+  id: string;
+  /** The customer's purchase intent. Stable for one purchase. */
+  businessIntentId: string;
+  /** Price in minor units of `currency`. */
+  amountMinor: number;
+  currency: string;
+  createdAt: string;
+  seed: string;
+  source: "sample";
+}
+
+export interface TargetState {
+  intentId: string;
+  orderIds: string[];
+  /** What the customer's phone shows. A new purchase starts as "unpaid". */
+  status: "unpaid" | "processing" | "failed" | "checking" | "paid";
+  lastCaptureId: string | null;
+  attempt: number;
+  fulfillmentCount: number;
+  unknown: boolean;
+}
+
+export interface ApplicationEvent {
+  /** Only these two lanes may be written by the application. */
+  lane: "application" | "customer";
+  kind: string;
+  title: string;
+  detail: string;
+  identity?: "stable" | "absent" | "changed";
+  resourceId?: string;
+  requestId?: string;
+  facts?: Record<string, unknown>;
+}
+
+export interface ProviderResourceRecord {
+  id: string;
+  kind: "order" | "capture" | "refund";
+  status: string;
+  parentId: string | null;
+  money: { currency: string; minor: number } | null;
+  approved: boolean;
+  createdAt: string;
+  observedAt: string;
+}
+
+export interface BrambleStore {
+  /**
+   * Restricted SQL. Statements: single SELECT / INSERT / UPDATE / DELETE, no comments or semicolons.
+   * Writable tables: lab_target_state, lab_fulfillments, paycore_operations, paycore_resource_locks, paycore_attempts.
+   * Read-only table: lab_faults.
+   */
+  db: SqlDatabase;
+  targetState(runId: string, intentId: string): Promise<TargetState>;
+  setTargetState(runId: string, state: TargetState): Promise<void>;
+  /** Provider resources the lab has recorded for this run. */
+  resources(runId: string): Promise<ProviderResourceRecord[]>;
+  /** The run row, including `cancelled`. */
+  record(runId: string, sessionId?: string): Promise<{ id: string; cancelled: number | boolean } & Record<string, unknown>>;
+  run(runId: string): Promise<BrambleRun & Record<string, unknown>>;
+  emit(runId: string, event: ApplicationEvent): Promise<unknown>;
+}
+
+export interface BrambleTransport {
+  /**
+   * HTTP boundary for PayPal REST calls. Only https://api-m.sandbox.paypal.com is accepted, GET and POST only.
+   * In this lab the requests are answered by a local Sample provider model; no request reaches PayPal.
+   * It can be passed as the `fetch` implementation of the pinned SDK facade.
+   */
+  fetch: typeof fetch;
+  /** The scripted Sample buyer approves one created order. */
+  approve(orderId: string): Promise<void>;
+}
+
+export interface BrambleContext {
+  run: BrambleRun;
+  sessionId: string;
+  store: BrambleStore;
+  transport: BrambleTransport;
+}
+
+export type CheckoutTarget = (context: BrambleContext) => Promise<unknown>;

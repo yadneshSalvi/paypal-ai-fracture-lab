@@ -11,7 +11,8 @@ import { sourceApprovalSchema, sourceChangeSchema, sourceFileSchema, sourceIdSch
 import { checkLocalSourceChanges, importLocalSource, sourceRootCapabilities } from "./source-import";
 import { SourceExecutionService } from "../../source-execution/src/service";
 import { sourcePrepareSchema, sourceApproveSchema, sourceCancelSchema, sourcePlanIdSchema, sourceJobIdSchema, sourceListSchema } from "../../source-execution/src/schemas";
-import { sourceCloudConfiguration } from "../../source-execution/src/cloud";
+import { sourceRunnerIdentity } from "./source-runner";
+import { summarizeSourceExecution } from "./source-results";
 import { SourceExecutionViews, sourceExecutionReader, sourceExecutionViewApprovalSchema } from "../../source-execution-view/src/store";
 
 const identity = z.string().min(8).max(120).regex(/^[a-zA-Z0-9:_-]+$/);
@@ -26,6 +27,7 @@ export const toolDefinitions = {
   get_source_execution: { description: "Read the original owned execution job and every case state. Unknown dispatched cases are never replayed or treated as passes.", schema: sourceJobIdSchema, readOnly: true },
   list_source_executions: { description: "List original source execution plans and jobs within the current private owner grant.", schema: sourceListSchema, readOnly: true },
   export_source_execution: { description: "Return the original private source-bearing execution report, retained failures, exact receipts and disposal proof. No new case executes.", schema: sourceJobIdSchema, readOnly: true },
+  get_source_execution_results: { description: "Read a compact per-case result table for one owned execution: case status, the eight named public assertion verdicts, observed capture/fulfillment/phone values, invariant verdicts with reasons, compiler diagnostics and a bounded ordered event trace. Contains no source text; no new case executes. Use export_source_execution for the complete private report.", schema: sourceJobIdSchema, readOnly: true },
   cancel_source_execution: { description: "Stop pending work under its original job identity. Retain partial failures and withhold late observations; never undo or replay an execution.", schema: sourceCancelSchema, readOnly: false },
   get_source_execution_command: { description: "Recover an original source command acknowledgement by its request UUID. A missing receipt does not authorize redispatch of an unknown VM.", schema: z.strictObject({requestId:z.uuid()}), readOnly: true },
   approve_source_execution_view: { description: "Approve the displayed browser challenge for one exact owned execution receipt. Transfers read-only receipt access until the original authority expires; never grants execution or source text access.", schema: sourceExecutionViewApprovalSchema, readOnly: false },
@@ -67,18 +69,19 @@ export class DeveloperRuntime {
     const session = await this.access.authorize(this.credential);
     await this.service.store.rateLimit(`developer:${this.credential.id}:read`, 120, 60_000);
     const args = parsed.data as Record<string, string>;
-    if (["prepare_source_execution","approve_source_execution","get_source_execution_plan","get_source_execution","list_source_executions","export_source_execution","cancel_source_execution","get_source_execution_command","approve_source_execution_view"].includes(name)) {
+    if (["prepare_source_execution","approve_source_execution","get_source_execution_plan","get_source_execution","list_source_executions","export_source_execution","get_source_execution_results","cancel_source_execution","get_source_execution_command","approve_source_execution_view"].includes(name)) {
       const owner={sessionId:session.id,grantId:this.credential.id};
       if(!definition.readOnly&&name!=="cancel_source_execution")await this.service.store.rateLimit(`developer:${this.credential.id}:source-execution`,30);
       if(name==="approve_source_execution_view")return new SourceExecutionViews(this.service.store).approve(owner,parsed.data);
       const retained=["prepare_source_execution","approve_source_execution"].includes(name)?null:await sourceExecutionReader(this.service.store,args.jobId?{jobId:args.jobId}:args.planId?{planId:args.planId}:{owner});
-      const execution=retained?.service??new SourceExecutionService(this.service.store,new SourceAccessStore(this.service.store),sourceCloudConfiguration().identity);
+      const execution=retained?.service??new SourceExecutionService(this.service.store,new SourceAccessStore(this.service.store),sourceRunnerIdentity());
       if(name==="prepare_source_execution")return execution.prepare(owner,sourcePrepareSchema.parse(parsed.data));
       if(name==="approve_source_execution")return execution.approve(owner,sourceApproveSchema.parse(parsed.data));
       if(name==="get_source_execution_plan")return execution.getPlan(owner,{planId:args.planId!});
       if(name==="get_source_execution")return execution.getJob(owner,{jobId:args.jobId!});
       if(name==="list_source_executions")return execution.list(owner,sourceListSchema.parse(parsed.data));
       if(name==="export_source_execution")return execution.report(owner,{jobId:args.jobId!});
+      if(name==="get_source_execution_results")return summarizeSourceExecution(await execution.report(owner,{jobId:args.jobId!}));
       if(name==="cancel_source_execution")return execution.cancel(owner,sourceCancelSchema.parse(parsed.data));
       return execution.getCommand(owner,args.requestId!);
     }

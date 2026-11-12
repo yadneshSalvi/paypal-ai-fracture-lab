@@ -4,25 +4,28 @@ import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Activity, ArrowDownToLine, ArrowUpRight, BookOpen, ChevronDown, ChevronRight, Command, FileCode2, Files, FlaskConical, FolderKanban, GitBranch, HelpCircle, History, Layers3, PanelRightClose, Search, ShieldCheck, Sparkles, SquareTerminal, Wrench, X } from "lucide-react";
+import { Activity, ArrowDownToLine, ArrowUpRight, BookOpen, ChevronDown, ChevronRight, Command, FileCode2, Files, FlaskConical, FolderKanban, GitBranch, HelpCircle, History, Layers3, Milestone, PanelRightClose, Search, ShieldCheck, Sparkles, SquareTerminal, Wrench, X } from "lucide-react";
 import { dateLabel, shortId, SourceChip } from "./primitives";
 import { useWorkspace } from "./workspace-provider";
 import { repairProofView } from "../../../packages/ai/src/repair-proof-view";
 import { RepairProofCard } from "./repair-proof-card";
 
 const navigation = [
+  { href: "/judge", label: "Guided tour", Icon: HelpCircle },
   { href: "/observations", label: "Recorded observations", Icon: History },
   { href: "/projects", label: "Projects", Icon: FolderKanban },
-  { href: "/sources", label: "Source workspaces", Icon: FileCode2 },
-  { href: "/source-executions", label: "Source executions", Icon: SquareTerminal },
   { href: "/campaigns", label: "Campaigns", Icon: Layers3 },
   { href: "/repairs", label: "Repairs", Icon: Wrench },
-  { href: "/ai-workbench", label: "AI workbench", Icon: Sparkles },
+  { href: "/editor-loop", label: "Editor loop", Icon: SquareTerminal },
   { href: "/evaluations", label: "Evaluations", Icon: FlaskConical },
   { href: "/evidence", label: "Evidence", Icon: Files },
+  { href: "/ai-workbench", label: "AI workbench", Icon: Sparkles },
+  { href: "/sources", label: "Source workspaces", Icon: FileCode2 },
+  { href: "/source-executions", label: "Source executions", Icon: Command },
+  { href: "/limits", label: "Roadmap and limits", Icon: Milestone },
 ];
 const tabs = [
-  { href: "/", label: "Fracture console" },
+  { href: "/runs", label: "Fracture console" },
   { href: "/integration-map", label: "Integration map" },
   { href: "/scenario-studio", label: "Scenario studio" },
   { href: "/contract-sheet", label: "Contract sheet" },
@@ -41,8 +44,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const observations = pathname === "/observations" || pathname.startsWith("/observations/");
   const sourceExecutions = pathname.startsWith("/source-executions");
   const sources = pathname.startsWith("/sources") || sourceExecutions;
+  const tour = pathname === "/" || pathname.startsWith("/judge");
+  const isActive = (href: string) => href === "/judge" ? tour : href === "/projects" ? pathname.startsWith("/projects") || pathname.startsWith("/runs") || tabs.some(tab => pathname.startsWith(tab.href)) : href === "/sources" ? pathname.startsWith("/sources") : pathname.startsWith(href);
   const router = useRouter();
-  const { workspace, error, notice, refresh, dismissNotice, activeProjectId, setActiveProjectId } = useWorkspace();
+  const { workspace, error, errorCode, busy, notice, refresh, resetSession, dismissNotice, activeProjectId, setActiveProjectId } = useWorkspace();
   const inspectionEntry = pathname.startsWith("/ai-workbench") && !workspace;
   const [search, setSearch] = useState("");
   const palette = useRef<HTMLDialogElement>(null);
@@ -64,24 +69,24 @@ export function AppShell({ children }: { children: ReactNode }) {
       {observations || research || sources || inspectionEntry ? <div className="workspace-switcher"><span className="workspace-avatar"><FlaskConical size={18} /></span><span>{observations ? "Recorded observations" : sources ? sourceExecutions ? "Source executions" : "Source workspaces" : inspectionEntry ? "AI workbench" : "Fracture Research"}<small>{observations ? "Public, dated evidence" : sources ? sourceExecutions ? "Approved execution receipts" : "Private snapshot views" : inspectionEntry ? "Saved investigations" : "Public study & evidence"}</small></span></div> : <button className="workspace-switcher" type="button" onClick={() => router.push("/projects")}><span className="workspace-avatar">F</span><span>Personal workspace<small>Sample projects</small></span><ChevronDown size={14} /></button>}
       <div className="nav-eyebrow">{research || observations ? "EXPLORE THE LAB" : "WORKSPACE"}</div>
       <nav className="main-navigation">{navigation.map(({ href, label, Icon }) => {
-        const active = href === "/projects" ? pathname === "/" || pathname.startsWith("/projects") || pathname.startsWith("/runs") || tabs.some(tab => tab.href !== "/" && pathname.startsWith(tab.href)) : pathname.startsWith(href);
+        const active = isActive(href);
         const count = observations ? undefined : href === "/repairs" ? workspace?.repairs.filter(repair => repair.status !== "rejected").length : href === "/campaigns" ? workspace?.campaigns.length : undefined;
         return <Link prefetch={observations ? false : null} key={href} href={href} className={`nav-item${active ? " active" : ""}`} aria-current={active ? "page" : undefined}><Icon size={18} strokeWidth={1.6} /><span>{label}</span>{count ? <span className="nav-count">{count}</span> : null}</Link>;
       })}</nav>
       {!observations && !research && !sources && !inspectionEntry ? <><div className="sidebar-divider" />
       <div className="nav-eyebrow">YOUR PROJECTS</div>
       <nav className="project-navigation" aria-label="Projects">{workspace?.projects.map(item => <Link prefetch={observations ? false : null} href={`/projects/${item.id}`} onClick={() => setActiveProjectId(item.id)} key={item.id} className={`project-nav-item${item.id === project?.id ? " selected" : ""}`}><span className={`project-dot ${item.kind}`} />{item.name}<ChevronRight size={13} /></Link>)}</nav></> : null}
-      <div className="sidebar-bottom"><Link prefetch={observations ? false : null} href="/judge" className="judge-link"><Sparkles size={15} /><span>Take the guided tour</span><ArrowUpRight size={13} /></Link><Link prefetch={observations ? false : null} className="sidebar-help" href="/provider-facts"><BookOpen size={16} />How the lab works<ArrowUpRight size={12} /></Link><div className="local-status"><span className="status-dot mint" />{observations ? "Recorded PayPal Sandbox" : research ? "Original study records" : sources ? sourceExecutions ? "Isolated Sample execution" : "Static source inspection" : "Sample environment"}<span className="muted">↗</span></div><div className="profile-row"><span className="profile-avatar">{observations || research ? <BookOpen size={16} /> : "Y"}</span><div>{observations || research ? "Public evidence" : sources ? sourceExecutions ? "Approved receipt views" : "Approved source views" : "Your workspace"}<small>{observations ? "11 November 2026" : research ? "Offline payment checks" : sources ? sourceExecutions ? "One job per approval" : "One snapshot per approval" : "Sandbox guard enabled"}</small></div><ShieldCheck size={15} /></div></div>
+      <div className="sidebar-bottom"><div className="local-status"><span className="status-dot mint" />{observations ? "Recorded PayPal Sandbox" : research ? "Original study records" : sources ? sourceExecutions ? "Isolated Sample execution" : "Static source inspection" : "Sample environment"}<span className="muted">↗</span></div><div className="profile-row"><span className="profile-avatar">{observations || research ? <BookOpen size={16} /> : "Y"}</span><div>{observations || research ? "Public evidence" : sources ? sourceExecutions ? "Approved receipt views" : "Approved source views" : "Your workspace"}<small>{observations ? "11 November 2026" : research ? "Offline payment checks" : sources ? sourceExecutions ? "One job per approval" : "One snapshot per approval" : "Sandbox guard enabled"}</small></div><ShieldCheck size={15} /></div></div>
     </aside>
     <div className="app-body">
-      <header className="topbar"><div className="topbar-breadcrumb"><span>{observations ? "Archive" : research ? "Research" : "Workspace"}</span><ChevronRight size={13} /><span className="topbar-current">{navigation.find(item => pathname.startsWith(item.href))?.label ?? "Projects"}</span></div><div className="topbar-actions"><button className="search-trigger" aria-label={observations || research ? "Search lab pages" : "Search workspace and saved runs"} onClick={() => palette.current?.showModal()}><Search size={14} /><span>Jump to anything…</span><kbd>⌘ K</kbd></button><span className="topbar-divider" /><Link prefetch={observations ? false : null} href="/judge" className="icon-button" aria-label="Open guided tour"><HelpCircle size={18} /></Link><span className="top-avatar">{observations ? <History size={16} /> : research ? <FlaskConical size={16} /> : "Y"}</span></div></header>
-      <nav className="mobile-main-navigation" aria-label="Workspace navigation">{navigation.map(({href,label,Icon}) => <Link prefetch={observations ? false : null} key={href} href={href} aria-current={pathname.startsWith(href) ? "page" : undefined}><Icon size={14} />{label}</Link>)}</nav>
+      <header className="topbar"><div className="topbar-breadcrumb"><span>{observations ? "Archive" : research ? "Research" : "Workspace"}</span><ChevronRight size={13} /><span className="topbar-current">{navigation.find(item => isActive(item.href))?.label ?? "Projects"}</span></div><div className="topbar-actions"><button className="search-trigger" aria-label={observations || research ? "Search lab pages" : "Search workspace and saved runs"} onClick={() => palette.current?.showModal()}><Search size={14} /><span>Jump to anything…</span><kbd>⌘ K</kbd></button><span className="topbar-divider" />{tour ? null : <Link prefetch={observations ? false : null} href="/judge" className="button secondary tour-return"><HelpCircle size={15} /><span>Guided tour</span></Link>}<span className="top-avatar">{observations ? <History size={16} /> : research ? <FlaskConical size={16} /> : "Y"}</span></div></header>
+      <nav className="mobile-main-navigation" aria-label="Workspace navigation">{navigation.map(({href,label,Icon}) => <Link prefetch={observations ? false : null} key={href} href={href} aria-current={isActive(href) ? "page" : undefined}><Icon size={14} />{label}</Link>)}</nav>
       {observations ? <div className="study-workspace-header"><span className="study-workspace-symbol"><History size={22}/></span><div><strong>Recorded observations</strong><span>Original Sandbox history <i>·</i> Inspect at your own pace</span></div><span className="study-workspace-scope"><ShieldCheck size={13}/>Public archive · no new execution</span></div> : research ? <div className="study-workspace-header"><span className="study-workspace-symbol"><FlaskConical size={22}/></span><div><strong>Fracture Research</strong><span>Integration context study <i>·</i> TypeScript + Python</span></div><span className="study-workspace-scope"><ShieldCheck size={13}/>Payment resources stay offline</span></div> : sources ? <div className="study-workspace-header"><span className="study-workspace-symbol"><FileCode2 size={22}/></span><div><strong>{sourceExecutions ? "Source executions" : "Source workspaces"}</strong><span>{sourceExecutions ? "Exact imported closure" : "Exact private snapshots"} <i>·</i> {sourceExecutions ? "Saved runtime evidence" : "Static source analysis"}</span></div><span className="study-workspace-scope"><ShieldCheck size={13}/>Scoped read access</span></div> : inspectionEntry ? <div className="study-workspace-header"><span className="study-workspace-symbol"><Sparkles size={22}/></span><div><strong>AI workbench</strong><span>Saved investigations <i>·</i> Original model and tool receipts</span></div><span className="study-workspace-scope"><ShieldCheck size={13}/>Read existing evidence</span></div> : <><div className="project-header"><div className="project-identity"><span className={`project-monogram ${project?.kind ?? "bookshop"}`}>{project?.name.charAt(0) ?? "B"}</span><div><div className="project-name">{project?.name ?? "Bramble Books"}<ChevronDown size={14} /><label className="sr-only" htmlFor="project-select">Choose project</label><select id="project-select" className="project-select-overlay" value={project?.id ?? "bramble"} onChange={event => { setActiveProjectId(event.target.value); router.push(`/projects/${event.target.value}`); }}>{workspace?.projects.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></div><span className="project-language">{project?.language ?? "TypeScript"}<span>·</span><GitBranch size={11} />{shortId(project?.sourceHash ?? "local fixture", 7)}</span></div></div><div className="session-policy"><span><ShieldCheck size={12} />Sandbox only</span><span className="policy-separator" /><SourceChip source={workspace?.source ?? "sample"} /><span className="policy-desktop">No external payment calls</span></div></div>
       <nav className="project-tabs" aria-label="Project workspace">{tabs.map(tab => {
-        const active = tab.href === "/" ? pathname === "/" || pathname.startsWith("/runs/") || /^\/projects\/[^/]+$/.test(pathname) : pathname.startsWith(tab.href);
+        const active = tab.href === "/runs" ? pathname.startsWith("/runs") || /^\/projects\/[^/]+$/.test(pathname) : pathname.startsWith(tab.href);
         return <Link prefetch={observations ? false : null} href={tab.href} key={tab.href} aria-current={active ? "page" : undefined} className={active ? "active" : ""}>{tab.label}{tab.badge ? <span className="tiny-tag">{tab.badge}</span> : null}</Link>;
       })}</nav></>}
-      <main id="main-content" className="main-content">{!observations && error ? <div className="error-banner" role="alert"><span>{error}</span><button onClick={() => void refresh(true)}>Reconnect</button></div> : null}{children}</main>
+      <main id="main-content" className="main-content">{!observations && error ? <div className="error-banner" role="alert"><span>{error}</span>{errorCode === "RATE_LIMIT" || errorCode === "SESSION_REQUIRED" || errorCode === "RUN_NOT_FOUND" ? <button disabled={busy === "reset-session"} onClick={() => void resetSession()}>Start a fresh session</button> : <button onClick={() => void refresh(true)}>{errorCode ? "Dismiss" : "Reconnect"}</button>}</div> : null}{children}</main>
       <footer className="app-footer"><span><span className="status-dot mint" />Evidence stays attached.</span><span><SquareTerminal size={12} />{observations ? "Original observed sequence" : research ? "Real model submissions" : sources ? sourceExecutions ? "Original execution receipts" : "AST source inspection" : "Sample payment runtime"}<span className="footer-dot">·</span>{observations ? "11 November 2026" : research ? "Offline payment checks" : sources ? sourceExecutions ? "Controlled Sample capabilities" : "Static findings require runtime evidence" : "Sample ≠ provider execution"}</span></footer>
     </div>
     {!observations && notice ? <div className="toast" role="status"><ShieldCheck size={17} /><span>{notice}</span><button onClick={dismissNotice} aria-label="Dismiss notification"><X size={15} /></button></div> : null}

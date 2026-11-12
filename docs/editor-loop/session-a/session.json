@@ -1,0 +1,740 @@
+{
+  "schemaVersion": 1,
+  "id": "session-a",
+  "condition": "Full developer kit (interface guide, payment-core declarations, APIMatic SDK map), CLI default model",
+  "recordedOn": "2026-11-12",
+  "kitVariant": "full",
+  "agent": {
+    "harness": "Claude Code (headless: claude -p, stream-json output)",
+    "version": "2.1.322",
+    "model": "claude-fable-5-2",
+    "sessionId": "721a6bfc-791f-420a-95fe-92057b4c7581",
+    "builtInTools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep"
+    ],
+    "mcpServer": "fracture-lab (local stdio)",
+    "mcpToolsOffered": 34,
+    "mcpToolsAllowed": [
+      "list_source_roots",
+      "import_source_workspace",
+      "list_source_workspaces",
+      "get_source_workspace",
+      "read_source_file",
+      "check_source_changes",
+      "prepare_source_execution",
+      "get_source_execution_plan",
+      "get_source_execution",
+      "get_source_execution_results",
+      "list_source_executions",
+      "get_source_execution_command",
+      "get_provider_facts",
+      "list_experiments"
+    ]
+  },
+  "environment": {
+    "provider": "Sample provider model (local). No request reached PayPal and no money moved.",
+    "runner": "Local Docker container per case: network none, read-only root, no host mounts, non-root candidate",
+    "database": "local PostgreSQL",
+    "developerSessionId": "b054e396-4ced-43aa-b138-8fd295198da2"
+  },
+  "outcome": {
+    "submissions": 2,
+    "firstSubmission": {
+      "status": "inconclusive",
+      "passed": 0,
+      "total": 9
+    },
+    "firstExecutedSubmission": {
+      "n": 2,
+      "status": "passed",
+      "passed": 9,
+      "total": 9
+    },
+    "finalSubmission": {
+      "n": 2,
+      "status": "passed",
+      "passed": 9,
+      "total": 9
+    }
+  },
+  "turns": [
+    {
+      "n": 1,
+      "prompt": "You are working in a developer kit for the Bramble Books checkout. Read README.md first. Implement the checkout module it describes in the checkout/ folder, then submit it for checking through the fracture-lab MCP tools as the README describes. When you have a prepared plan, report its plan ID and plan hash and stop. I am the project owner: I will review, approve and run the plan, then give you the job ID.",
+      "model": "claude-fable-5-2",
+      "durationMs": 393454,
+      "agentSteps": 49,
+      "tools": [
+        {
+          "name": "Read",
+          "count": 13,
+          "errors": 0
+        },
+        {
+          "name": "Glob",
+          "count": 3,
+          "errors": 0
+        },
+        {
+          "name": "fracture-lab:list_source_roots",
+          "count": 1,
+          "errors": 0
+        },
+        {
+          "name": "fracture-lab:get_provider_facts",
+          "count": 1,
+          "errors": 0
+        },
+        {
+          "name": "Write",
+          "count": 6,
+          "errors": 0
+        },
+        {
+          "name": "fracture-lab:import_source_workspace",
+          "count": 11,
+          "errors": 10
+        },
+        {
+          "name": "Edit",
+          "count": 12,
+          "errors": 0
+        },
+        {
+          "name": "Grep",
+          "count": 1,
+          "errors": 0
+        }
+      ],
+      "factIdsCited": [],
+      "reply": "I don't have a plan ID or hash for you: the lab's importer refuses every snapshot of the module, so nothing was prepared.\n\n**What blocks it.** `import_source_workspace` returns `SOURCE_SECRET_DETECTED` (\"Credential-shaped source content cannot be persisted\") whenever the source contains the literal `https://api-m.sandbox.paypal.com`. I confirmed this with a small probe file outside `checkout/`:\n\n| Probe content | Result |\n| --- | --- |\n| Trivial `checkout` export, no URL | imported |\n| Same, plus the host as a constant | refused |\n| Same, plus the host inline in `new URL(...)` | refused |\n\nThat host is the one the README says all requests must go to, and the module contains no credentials. The only way I can see to get past the scanner is to assemble the hostname from fragments so it doesn't match. I stopped rather than do that, because it means disguising content from a control you or the lab operator put there.\n\n**State of the module.** `checkout/checkout.ts` is written but has never been compiled or run, since the lab is the only checker available here. It calls the three Orders endpoints directly through `context.transport.fetch` and sends no `Authorization` header. I moved off the SDK facade while chasing the scanner; that turned out to be unnecessary, and the facade would hit the same block.\n\n- **Idempotency:** create and capture each carry a `PayPal-Request-Id` that is stable per purchase.\n- **Delivery:** the book is delivered only for a `COMPLETED` capture of the exact price, and only one row per purchase.\n- **Uncertain captures:** a lost, unreadable or 5xx capture answer is reconciled by reading the order, never by re-sending the capture in the same call; if still unknown the phone shows `checking`.\n- **Revoked approval:** checked before creating the order and again immediately before capture.\n\n**Left behind by the diagnosis.**\n- `scan-probe/probe.ts` is still in the kit folder; I have no delete tool, so please remove it.\n- One stored probe snapshot exists in the lab database (import `b9d462d2-64eb-44d4-9455-d993940b94b4`, a 167-byte stub).\n- Ten imports were refused and one succeeded; I don't know whether refusals count toward the 20-per-session limit.\n\n**Your call.**\n1. Fix or allowlist the scanner rule for the sandbox host, then I re-import and prepare the plan. This is what I recommend.\n2. Explicitly authorise me to build the URL from parts so the scanner doesn't match. It would work, but it is a deliberate bypass of the scanner."
+    },
+    {
+      "n": 2,
+      "prompt": "Thanks for stopping instead of working around it. That was a false positive in the lab's import scanner, not a rule about the PayPal host: a plain https host literal was being matched as a URL with embedded credentials. I have fixed the scanner in the lab. Nothing about the checkout contract changed. Please import again and continue as the README describes: when you have a prepared plan, report its plan ID and plan hash and stop.",
+      "model": "claude-fable-5-2",
+      "durationMs": 52107,
+      "agentSteps": 10,
+      "tools": [
+        {
+          "name": "fracture-lab:import_source_workspace",
+          "count": 2,
+          "errors": 0
+        },
+        {
+          "name": "Grep",
+          "count": 2,
+          "errors": 1
+        },
+        {
+          "name": "fracture-lab:prepare_source_execution",
+          "count": 2,
+          "errors": 1
+        },
+        {
+          "name": "Edit",
+          "count": 3,
+          "errors": 0
+        }
+      ],
+      "factIdsCited": [],
+      "reply": "The plan is prepared and sealed; nothing has executed.\n\n- **Plan ID:** `1be87b74-a477-4369-85e7-83686d183619`\n- **Plan hash:** `e011cbaa8551bdf04b9ef3846c5c5314f6583477a1514b5b2fad441837c26b26`\n\nThe plan expires at 2026-11-12T19:19:15Z, about 15 minutes after it was prepared. If it lapses before you approve it, tell me and I'll prepare a fresh one.\n\nIt covers `checkout.ts` from import `cff38e30-c8fa-4729-a49e-8e59f97ee22a`, all nine scenarios, with seed `bramble-checkout-1`.\n\nThings you should know before approving:\n\n- **Never compiled or run.** The module has not been type-checked or executed anywhere; this run is its first check.\n- **One more rejection after your scanner fix.** The first prepare was refused with `SOURCE_EXECUTION_CAPABILITY` because the adapter does not allow string-keyed bracket access. I rewrote the response parsing to use declared properties and `Headers.set`, then re-imported. Behaviour is unchanged.\n- **Direct REST, no auth header.** The module calls the three Orders endpoints through `context.transport.fetch` and sends no `Authorization` header. If the Sample provider requires a token, every case will fail on that.\n- **Two static findings unread.** The importer reported two findings on the snapshot. The output was too large to display and I was denied access to the saved copy, so I have not seen what they say.\n- **Leftovers.** `scan-probe/probe.ts` is still in the kit folder for you to delete. The lab database also holds the probe snapshot and one superseded checkout import (`5006cecf-2889-4d99-a58d-15d2a5d4445d`).\n\nSend me the job ID once you have run it and I'll read the per-case results."
+    },
+    {
+      "n": 3,
+      "prompt": "I reviewed and approved plan 1be87b74-a477-4369-85e7-83686d183619 and ran it in the isolated runner. Job ID: 8f3ed04d-d7b4-46ba-8c9d-2e27b1f3be66. Read the results. If any check failed, work out why, correct your implementation, and prepare a new plan for me to approve (report its plan ID and plan hash, then stop). If every check passed, summarize what you built.",
+      "model": "claude-fable-5-2",
+      "durationMs": 22024,
+      "agentSteps": 5,
+      "tools": [
+        {
+          "name": "fracture-lab:get_source_execution_results",
+          "count": 1,
+          "errors": 0
+        },
+        {
+          "name": "Edit",
+          "count": 1,
+          "errors": 0
+        },
+        {
+          "name": "fracture-lab:import_source_workspace",
+          "count": 1,
+          "errors": 0
+        },
+        {
+          "name": "fracture-lab:prepare_source_execution",
+          "count": 1,
+          "errors": 0
+        }
+      ],
+      "factIdsCited": [],
+      "reply": "Job `8f3ed04d-…` passed 0 of 9: the runner's compiler rejected the module before any case ran, so no checkout behaviour was exercised. The `happy` case was marked compiler-rejected and the other eight were cancelled.\n\n**Why it failed.** The module imported `ApplicationEvent` and `TargetState` from `@fracture/source-target`. The kit's reading copy `reference/source-target.d.ts` exports them, but the runner's pinned copy does not:\n\n```\ncheckout.ts(4,15): error TS2305: Module '\"@fracture/source-target\"' has no exported member 'ApplicationEvent'.\ncheckout.ts(4,49): error TS2305: Module '\"@fracture/source-target\"' has no exported member 'TargetState'.\n```\n\n**The fix.** I now import only `BrambleContext` and derive the other two types from it. Nothing else changed. Those were the only two diagnostics, but the module still has not run, so the behavioural results are still unknown.\n\n**New plan for your approval** (nothing has executed):\n\n- **Plan ID:** `4aad14bc-bea8-435f-a2de-2395b3aa4a61`\n- **Plan hash:** `9db9b208ce3ae7fba75c8878117bc4c6a1aa75c811bc2f617e39c74521fb7cf4`\n\nIt expires at 2026-11-12T19:20:20Z, 15 minutes after it was prepared. It covers `checkout.ts` from import `42d448b3-0edc-41f4-969a-54bdb65adc8b`, all nine scenarios, with the same seed `bramble-checkout-1`.\n\nThe reading copy in `reference/` is out of step with the runner's contract, which you may want to correct in the kit. Send me the job ID once you have run the new plan."
+    },
+    {
+      "n": 4,
+      "prompt": "I reviewed and approved plan 4aad14bc-bea8-435f-a2de-2395b3aa4a61 and ran it in the isolated runner. Job ID: cf2e3edd-7537-4266-bfbb-8df4150b0b67. Read the results. If any check failed, work out why, correct your implementation, and prepare a new plan for me to approve (report its plan ID and plan hash, then stop). If every check passed, summarize what you built.",
+      "model": "claude-fable-5-2",
+      "durationMs": 16108,
+      "agentSteps": 2,
+      "tools": [
+        {
+          "name": "fracture-lab:get_source_execution_results",
+          "count": 1,
+          "errors": 0
+        }
+      ],
+      "factIdsCited": [],
+      "reply": "Job `cf2e3edd-7537-4266-bfbb-8df4150b0b67` passed all 9 of 9 cases, with all eight public assertions passing in every case and the compiler clean.\n\n## Results by scenario\n\n| Scenario | Phone shows | Captures | Books delivered | What happened |\n| --- | --- | --- | --- | --- |\n| happy | paid | 1 (1200) | 1 | Create, approve, capture, deliver. |\n| lost | paid | 1 (1200) | 1 | The capture answer was dropped; the order was re-read, showed the capture, and the book was delivered. |\n| malformed | paid | 1 (1200) | 1 | The capture answer was unreadable; same re-read and delivery. |\n| unavailable | checking | 1 (1200) | 0 | The capture answer was dropped and the re-read was unavailable, so the book was withheld. |\n| pending | checking | 0 completed | 0 | The capture came back pending, so nothing was delivered. |\n| auth | failed | 0 | 0 | Order creation was refused; nothing was approved or captured. |\n| concurrent | paid | 1 (1200) | 1 | The purchase was submitted twice at once; one capture and one book resulted. |\n| revoked | failed | 0 | 0 | Approval was withdrawn; no order was created. |\n| payload | paid | 1 (1200) | 1 | Exact-price capture, delivered once. |\n\nIn `unavailable` and `pending` the lab marks the \"application and provider converge\" invariant as inconclusive rather than pass. That is the expected reading of a purchase left at `checking`: in `unavailable` the money was captured but the customer has no book until a later submit can read the order.\n\n## What I built\n\n`checkout/checkout.ts` is a single module exporting `checkout(context)`. It talks to the three Orders v2 endpoints directly through `context.transport.fetch`; the SDK facade is not used, and no `Authorization` header is sent.\n\n- **Stable request identity:** create and capture each carry a `PayPal-Request-Id` derived from the run, purchase and step, so a repeated submit names the same PayPal request.\n- **Delivery rule:** a book is delivered only for a `COMPLETED` capture whose amount is verifiably the exact price, and only if no row exists yet for the purchase; the table's unique constraint backs this up.\n- **Uncertain captures:** a missing, unreadable or 5xx capture answer is never re-sent in the same call. The order is read instead, and if the outcome is still unknown the phone shows `checking`.\n- **Definite refusals:** a 4xx refusal with no capture on the order shows `failed`.\n- **Revoked approval:** `lab_faults` is checked before creating the order and again immediately before capture; if the check itself fails, the purchase is treated as revoked.\n- **Repeat and concurrent submits:** simultaneous calls for one purchase share a single in-flight run, and a later submit first reads the existing order before writing anything.\n- **Order creation:** an unanswered create is repeated once under the same request ID; a created order whose amount or `custom_id` does not match the purchase is not approved.\n\n## Limits and loose ends\n\n- This result holds for this source, seed (`bramble-checkout-1`) and the nine public Sample cases against the local provider model. It says nothing about real PayPal behaviour.\n- Several branches were not exercised by any case: the wrong-amount capture, the declined capture, the retried create, and a later submit capturing an approved but uncaptured order.\n- The importer reported two static findings on the snapshot that I could not read; you may want to look at them in the lab.\n- `scan-probe/probe.ts` is still in the kit folder for you to delete. The lab database also holds the probe snapshot and two superseded checkout imports.\n- `reference/source-target.d.ts` exports `ApplicationEvent` and `TargetState`, which the runner's pinned contract does not; that mismatch caused the first job's compiler rejection."
+    }
+  ],
+  "ownerActions": [
+    {
+      "at": "2026-11-12T19:03:28Z",
+      "actor": "lab maintainer",
+      "action": "fix_import_scanner_false_positive",
+      "file": "packages/source-workspaces/src/policy.ts",
+      "note": "The URL-credential pattern matched a plain https host literal inside compact JSON because it could run on to a later @scope/package string. The pattern now stops at quotes, commas and brackets. No checkout logic was discussed with the agent."
+    },
+    {
+      "at": "2026-11-12T19:04:39Z",
+      "actor": "owner",
+      "action": "approve_source_execution",
+      "via": "cli",
+      "planId": "1be87b74-a477-4369-85e7-83686d183619",
+      "planHash": "e011cbaa8551bdf04b9ef3846c5c5314f6583477a1514b5b2fad441837c26b26",
+      "jobId": "8f3ed04d-d7b4-46ba-8c9d-2e27b1f3be66"
+    },
+    {
+      "at": "2026-11-12T19:04:46Z",
+      "actor": "owner",
+      "action": "run_docker_worker",
+      "jobId": "8f3ed04d-d7b4-46ba-8c9d-2e27b1f3be66"
+    },
+    {
+      "at": "2026-11-12T19:05:36Z",
+      "actor": "owner",
+      "action": "approve_source_execution",
+      "via": "cli",
+      "planId": "4aad14bc-bea8-435f-a2de-2395b3aa4a61",
+      "planHash": "9db9b208ce3ae7fba75c8878117bc4c6a1aa75c811bc2f617e39c74521fb7cf4",
+      "jobId": "cf2e3edd-7537-4266-bfbb-8df4150b0b67"
+    },
+    {
+      "at": "2026-11-12T19:06:51Z",
+      "actor": "owner",
+      "action": "run_docker_worker",
+      "jobId": "cf2e3edd-7537-4266-bfbb-8df4150b0b67"
+    }
+  ],
+  "lookups": [
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/source-target.d.ts",
+      "kind": "adapter contract"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/canonical.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/checkout.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/core.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/index.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/provider.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/sql.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/store.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/types.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/fracture-paypal-core/webhook.d.ts",
+      "kind": "payment-core declarations"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/paypal-sdk/sdk-map.md",
+      "kind": "APIMatic SDK map"
+    },
+    {
+      "turn": 1,
+      "tool": "Read",
+      "target": "reference/paypal-sdk/operations/orders.md",
+      "kind": "APIMatic SDK map"
+    },
+    {
+      "turn": 1,
+      "tool": "fracture-lab:get_provider_facts",
+      "target": null,
+      "kind": "published provider facts"
+    }
+  ],
+  "submissions": [
+    {
+      "n": 1,
+      "turn": 2,
+      "importId": "cff38e30-c8fa-4729-a49e-8e59f97ee22a",
+      "snapshotId": "sws_c69edef16ff2dab23a0311cfd2c3c1574df55c543775556e0d9fa6a087e8c2b6",
+      "revisionHash": "79f47b0808507c6322436fd501a2b2d4f9084cc0cec88dab1392599419c33b3e",
+      "planId": "1be87b74-a477-4369-85e7-83686d183619",
+      "planHash": "e011cbaa8551bdf04b9ef3846c5c5314f6583477a1514b5b2fad441837c26b26",
+      "jobId": "8f3ed04d-d7b4-46ba-8c9d-2e27b1f3be66",
+      "approvedAt": "2026-11-12T19:04:39Z",
+      "status": "inconclusive",
+      "passed": 0,
+      "total": 9,
+      "runner": {
+        "protocol": "fracture.source-execution/v1",
+        "snapshotHash": "a62a5234fa2c615000731e6a9e482445ba063abde8b9536bb1b8aa3f0bc22bdf",
+        "runnerHash": "1635b364f1a7e854fa1e2d82210bf2a9ae9087de8d8319a79dd02c44cce90a52",
+        "suiteHash": "c3e3c478c3af78f82ba966e946cb578ef31b8a039855d920a65402adad190239",
+        "adapterHash": "6e4dc6080cc637e3e6ac021594c8c1fb7a183c1c89eac3fdda9dffa84da932c5",
+        "dependencyHash": "ff1e97267ef8ace1b28bef6cf6058ed2dc89baba75ed25ff91066e6ddaafe485",
+        "engine": "docker",
+        "imageId": "sha256:c0d58b0baf4fee5c29cf8223180720a5cbdc53c25d4edf53bb0f06c4434daf6a"
+      },
+      "seed": "bramble-checkout-1",
+      "files": [
+        {
+          "path": "checkout.ts",
+          "bytes": 17454,
+          "hash": "b91c7b0323366d07957d8c1d58de7302e056924fd8118372b9407929b4d3414b",
+          "published": "docs/editor-loop/session-a/revisions/1/checkout.ts.txt"
+        }
+      ],
+      "cases": [
+        {
+          "scenarioId": "happy",
+          "caseId": "6b450aff-df84-4961-8965-77cce4447ced",
+          "status": "compiler_rejected",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": "44451c27786c89b506bb0dbe8457e36358778775c92dcd97923287b966503058",
+          "compilerStatus": "rejected",
+          "compilerDiagnostics": "checkout.ts(4,15): error TS2305: Module '\"@fracture/source-target\"' has no exported member 'ApplicationEvent'.\ncheckout.ts(4,49): error TS2305: Module '\"@fracture/source-target\"' has no exported member 'TargetState'.\n",
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": {
+            "captureCount": null,
+            "capturedMinor": null,
+            "fulfillmentCount": null,
+            "phoneState": null,
+            "authoritativeReads": null,
+            "thrownCalls": null,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "lost",
+          "caseId": "37f63903-75e4-4023-8de6-9a7c08b457eb",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "malformed",
+          "caseId": "32d40877-7ff5-4add-af41-d8340a2385af",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "unavailable",
+          "caseId": "0106ca11-d83a-4fa0-876d-d33c7b564997",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "pending",
+          "caseId": "659dda5c-5e96-4831-ae67-c98c46a3758a",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "auth",
+          "caseId": "f186e0fd-1858-4475-9ad1-6a2051d77a2d",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "concurrent",
+          "caseId": "ef547ce6-b530-4cd5-becb-6ec604727566",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "revoked",
+          "caseId": "566d175f-3ab6-40a0-9c0f-64cc786a6f33",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        },
+        {
+          "scenarioId": "payload",
+          "caseId": "d6dde723-d046-4fed-9183-da730058aa18",
+          "status": "cancelled",
+          "errorCode": "SOURCE_EXECUTION_COMPILER_REJECTED",
+          "receiptHash": null,
+          "compilerStatus": null,
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 0,
+          "observed": null,
+          "failedInvariants": [],
+          "disposal": null
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "turn": 3,
+      "importId": "42d448b3-0edc-41f4-969a-54bdb65adc8b",
+      "snapshotId": "sws_ca9afcf1a4dc1983952a7c54a20aca0fbc43ef94aa7c7913baeba1a0c6608cf5",
+      "revisionHash": "09d2c74b632de27ef92873bfa16c4eff5177b36ec48835505f56d1c4bc0354ba",
+      "planId": "4aad14bc-bea8-435f-a2de-2395b3aa4a61",
+      "planHash": "9db9b208ce3ae7fba75c8878117bc4c6a1aa75c811bc2f617e39c74521fb7cf4",
+      "jobId": "cf2e3edd-7537-4266-bfbb-8df4150b0b67",
+      "approvedAt": "2026-11-12T19:05:36Z",
+      "status": "passed",
+      "passed": 9,
+      "total": 9,
+      "runner": {
+        "protocol": "fracture.source-execution/v1",
+        "snapshotHash": "a62a5234fa2c615000731e6a9e482445ba063abde8b9536bb1b8aa3f0bc22bdf",
+        "runnerHash": "1635b364f1a7e854fa1e2d82210bf2a9ae9087de8d8319a79dd02c44cce90a52",
+        "suiteHash": "c3e3c478c3af78f82ba966e946cb578ef31b8a039855d920a65402adad190239",
+        "adapterHash": "6e4dc6080cc637e3e6ac021594c8c1fb7a183c1c89eac3fdda9dffa84da932c5",
+        "dependencyHash": "ff1e97267ef8ace1b28bef6cf6058ed2dc89baba75ed25ff91066e6ddaafe485",
+        "engine": "docker",
+        "imageId": "sha256:c0d58b0baf4fee5c29cf8223180720a5cbdc53c25d4edf53bb0f06c4434daf6a"
+      },
+      "seed": "bramble-checkout-1",
+      "files": [
+        {
+          "path": "checkout.ts",
+          "bytes": 17701,
+          "hash": "2562f646640400683dbdf99c3f2df3fbc6b456f6e64823756a5a220154606bf4",
+          "published": "docs/editor-loop/session-a/revisions/2/checkout.ts.txt"
+        }
+      ],
+      "cases": [
+        {
+          "scenarioId": "happy",
+          "caseId": "00bc82ce-4a50-4a97-937e-1dea6c8678ed",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "ac1394b41c29a1aa5940db41261e6ba0334ec00edf85f36ed2767fd16a5236bf",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 1,
+            "capturedMinor": 1200,
+            "fulfillmentCount": 1,
+            "phoneState": "paid",
+            "authoritativeReads": 0,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "lost",
+          "caseId": "dc75d8cd-6f8f-4d57-b930-c4be2d4a21b5",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "8c17619d3b1efee7fe725a9b8f7ff032bcae1794b1e0587bf852f781529cbd7f",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 1,
+            "capturedMinor": 1200,
+            "fulfillmentCount": 1,
+            "phoneState": "paid",
+            "authoritativeReads": 1,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "malformed",
+          "caseId": "84546c76-1b08-4f9d-9fac-d88a9906d825",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "9c95759028189adb05582fefa35ca206f419ad0c52d0f1a835c7a614548f6d5e",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 1,
+            "capturedMinor": 1200,
+            "fulfillmentCount": 1,
+            "phoneState": "paid",
+            "authoritativeReads": 1,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "unavailable",
+          "caseId": "05887d5d-baed-43ea-a1c1-31e12dd29e59",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "10c47c2e51c0c50ae00fbc9506681ec79a5c2daef247957455af881aab098dd5",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 1,
+            "capturedMinor": 1200,
+            "fulfillmentCount": 0,
+            "phoneState": "checking",
+            "authoritativeReads": 0,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "pending",
+          "caseId": "16f7197f-6803-4ee5-a24c-d62a2fd76414",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "f903b626fcfdbc87c25e85429cc2a8e0b72edddc5344e4fbe0c7974020466484",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 0,
+            "capturedMinor": 0,
+            "fulfillmentCount": 0,
+            "phoneState": "checking",
+            "authoritativeReads": 1,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "auth",
+          "caseId": "d907381e-5cba-4a41-86b9-08416cc4d05b",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "e9e14fbb1c488158edc38095528b3226127f70b36c912420a3fba031821f143c",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 0,
+            "capturedMinor": 0,
+            "fulfillmentCount": 0,
+            "phoneState": "failed",
+            "authoritativeReads": 0,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "concurrent",
+          "caseId": "87b4a6fe-352d-4b54-b258-63d7426061f8",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "56b3049e0a6480120c237bddaad57aafdbf6fd6a5cb9b4960694577fb453edd8",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 1,
+            "capturedMinor": 1200,
+            "fulfillmentCount": 1,
+            "phoneState": "paid",
+            "authoritativeReads": 0,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "revoked",
+          "caseId": "c8306991-e90e-47b8-ada6-a24551a01b19",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "3080de7c39ddfc5dbb7d1256c34f7e1f08dbfaad9ccddf1d3792d3a519d6bf98",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 0,
+            "capturedMinor": 0,
+            "fulfillmentCount": 0,
+            "phoneState": "failed",
+            "authoritativeReads": 0,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        },
+        {
+          "scenarioId": "payload",
+          "caseId": "6c1171f8-e85d-4843-8651-52e44b56c5a6",
+          "status": "passed",
+          "errorCode": null,
+          "receiptHash": "7f8e85bd24f478b4b968a9239e5a39fe3b473e8cd908977f466901ebefb57654",
+          "compilerStatus": "passed",
+          "compilerDiagnostics": null,
+          "failedAssertions": [],
+          "assertionCount": 8,
+          "observed": {
+            "captureCount": 1,
+            "capturedMinor": 1200,
+            "fulfillmentCount": 1,
+            "phoneState": "paid",
+            "authoritativeReads": 0,
+            "thrownCalls": 0,
+            "reason": null
+          },
+          "failedInvariants": [],
+          "disposal": "confirmed"
+        }
+      ]
+    }
+  ],
+  "diffs": [
+    {
+      "from": 1,
+      "to": 2,
+      "fromRevisionHash": "79f47b0808507c6322436fd501a2b2d4f9084cc0cec88dab1392599419c33b3e",
+      "toRevisionHash": "09d2c74b632de27ef92873bfa16c4eff5177b36ec48835505f56d1c4bc0354ba",
+      "published": "docs/editor-loop/session-a/revision-1-to-2.diff",
+      "files": [
+        {
+          "path": "checkout.ts",
+          "status": "changed",
+          "added": 6,
+          "removed": 1,
+          "unified": "--- revision 1/checkout.ts\n+++ revision 2/checkout.ts\n@@ -1,8 +1,13 @@\n import { createHash, randomUUID } from \"node:crypto\";\n import { assertMoney, fromProviderMoney, toProviderMoney } from \"@fracture/paypal-core\";\n import type { MinorMoney } from \"@fracture/paypal-core\";\n-import type { ApplicationEvent, BrambleContext, TargetState } from \"@fracture/source-target\";\n+import type { BrambleContext } from \"@fracture/source-target\";\n \n+// The runner's pinned contract exports only BrambleContext, so the other shapes are derived from it.\n+type BrambleStore = BrambleContext[\"store\"];\n+type TargetState = Awaited<ReturnType<BrambleStore[\"targetState\"]>>;\n+type ApplicationEvent = Parameters<BrambleStore[\"emit\"]>[1];\n+\n export interface CheckoutResult {\n   status: TargetState[\"status\"];\n   orderId: string | null;\n"
+        }
+      ]
+    }
+  ],
+  "files": {
+    "transcript": "docs/editor-loop/session-a/transcript.jsonl",
+    "summary": "docs/editor-loop/session-a/session.json"
+  }
+}

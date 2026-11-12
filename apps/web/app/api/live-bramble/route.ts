@@ -17,7 +17,7 @@ export async function GET(request:Request){return api(request,async({service,ses
  return {enabled:liveBrambleEnabled(),clientId:liveBrambleEnabled()?process.env.PAYPAL_CLIENT_ID??null:null,source:'live_sandbox',maxCaptures:6,maxGrossMinor:7200,currency:'USD',cases:['L1','L2']};
 });}
 export async function POST(request:Request){return api(request,async({service,session})=>{
- const input=await body(request,schema);const runner=liveBramble(service.store,input.action==='reconcile');await service.store.rateLimit(`live-request:${session.id}`,120);
+ const input=await body(request,schema);const runner=liveBramble(service.store,input.action==='reconcile');await service.store.rateLimit(`live-request:${session.id}`,120);if(input.action==='create_order')await service.store.rateLimit('live-create:global',24);
  try{if(input.action==='start')return runner.start(session.id,{...input,seed:input.requestId});if(input.action==='create_order')return await runner.createOrder(session.id,input.runId,input.attempt,new URL(request.url).origin);if(input.action==='approval_link')return await runner.approvalLink(session.id,input.runId,input.attempt,new URL(request.url).origin);if(input.action==='reconcile')return await runner.reconcile(session.id,input.runId);if(input.action==='compensate')return await runner.compensate(session.id,input.runId,input.captureId);return await runner.capture(session.id,input.runId,input.orderId);}
  catch(error){if(error instanceof ProviderError)throw new LabError('PROVIDER_REVIEW',error.message,error.httpStatus===202?409:error.httpStatus);throw error;}
 });}

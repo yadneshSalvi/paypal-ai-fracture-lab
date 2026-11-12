@@ -192,6 +192,13 @@ export async function createSourceWorkspaceStore(configuration: SourceWorkspaceC
         return value;
       } catch { throw new SourceWorkspaceError("SOURCE_IMPORT_PENDING"); }
     }
+    /** A concurrent writer may be creating or atomically replacing the record; an unreadable read is transient until the bound passes. */
+    async function settledRequest(key: string, deadline = Date.now() + 1000): Promise<ImportRecord | undefined> {
+      for (let delay = 10; ; delay = Math.min(100, delay * 2)) {
+        try { return await readRequest(key); }
+        catch (error) { if (!(error instanceof SourceWorkspaceError) || error.code !== "SOURCE_IMPORT_PENDING" || Date.now() >= deadline) throw error; await pause(delay); }
+      }
+    }
     async function replayRequest(key: string, bodyHash: string, initial: ImportRecord): Promise<SourceWorkspaceSnapshot> {
       if (initial.bodyHash !== bodyHash) throw new SourceWorkspaceError("SOURCE_IMPORT_CONFLICT");
       const deadline = Date.now() + Math.min(15_000, limits.parserTimeoutMs * 3 + 1000);
@@ -209,19 +216,19 @@ export async function createSourceWorkspaceStore(configuration: SourceWorkspaceC
         }
         if (Date.now() >= deadline || Date.now() - Date.parse(value.createdAt) > Math.min(15_000, limits.parserTimeoutMs * 3 + 1000)) throw new SourceWorkspaceError("SOURCE_IMPORT_PENDING");
         await pause(delay); delay = Math.min(200, delay * 2);
-        value = await readRequest(key) ?? value;
+        value = await settledRequest(key, deadline) ?? value;
       }
     }
     const active = new Map<string, { bodyHash: string; promise: Promise<SourceWorkspaceSnapshot> }>();
     async function importOnce(input: ImportSourceWorkspaceInput, bodyHash: string): Promise<SourceWorkspaceSnapshot> {
       await privateDirectory(join(storageRoot, "requests"));
-      const existing = await readRequest(input.requestKey);
+      const existing = await settledRequest(input.requestKey);
       if (existing) return replayRequest(input.requestKey, bodyHash, existing);
       const root = roots.get(input.rootId);
       if (!root) throw new SourceWorkspaceError("SOURCE_AUTHORITY_DENIED");
       const record: ImportRecord = { version: 1, state: "pending", bodyHash, body: { rootId: input.rootId, path: input.path }, createdAt: new Date().toISOString() };
       try { await writePrivate(requestPath(input.requestKey), JSON.stringify(record)); await syncDirectory(join(storageRoot, "requests")); }
-      catch (error) { if (isErrno(error, "EEXIST")) { const winning = await readRequest(input.requestKey); if (winning) return replayRequest(input.requestKey, bodyHash, winning); } throw new SourceWorkspaceError("SOURCE_STORAGE_UNSAFE"); }
+      catch (error) { if (isErrno(error, "EEXIST")) { const winning = await settledRequest(input.requestKey); if (winning) return replayRequest(input.requestKey, bodyHash, winning); } throw new SourceWorkspaceError("SOURCE_STORAGE_UNSAFE"); }
       let published = false;
       let releaseSlot: (() => void) | undefined;
       try {

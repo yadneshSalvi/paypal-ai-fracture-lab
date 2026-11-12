@@ -1,0 +1,13 @@
+.roadmapNote{margin:18px 2px 0;color:#7f8a9b;font-size:11px;line-height:1.7}
+.roadmapNote a{display:inline-flex;align-items:center;gap:4px;color:#c3ccda;font-weight:500;border-bottom:1px solid #3a4352;padding-bottom:1px}
+.roadmapNote a:hover{color:#f1f3f7;border-color:#6ee7b7}
+.recorded{display:flex;align-items:flex-start;gap:10px;margin:16px 0 14px;padding:14px 15px;border:1px solid #2f4a41;border-radius:8px;background:linear-gradient(140deg,#1a2825aa,#191d24);color:#8fd9bb}
+.recorded>svg{flex-shrink:0;margin-top:2px}
+.recorded strong{display:block;font-size:11px;font-weight:550;color:#d7efe5}
+.recorded p{margin-top:6px;font-size:11px;line-height:1.7;color:#a9bbb4}
+.recordedLinks{display:flex;flex-direction:column;gap:8px}
+.recordedFoot{margin-top:12px;color:#8a829b;font-size:10px;line-height:1.7}
+.openRun{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;padding:12px 14px;border:1px solid #4d4532;border-radius:8px;background:#fbbf2408}
+.openRun strong{display:block;font-size:11px;font-weight:550;color:#ead9ae}
+.openRun p{margin-top:4px;font-size:10px;line-height:1.6;color:#a89f8a}
+.openRun a{flex-shrink:0;font-size:10px}

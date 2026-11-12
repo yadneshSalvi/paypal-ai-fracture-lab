@@ -14,8 +14,8 @@ import { modelToolkitReview, selectToolkitOrder, readSelectedToolkitOrder, concl
 import { investigationReportHtml } from "../packages/ai/src/investigation-report";
 import { DeveloperAccess } from "../packages/developer-tools/src/access";
 process.env.JUDGE_SESSION_SECRET ??= "fixture-toolkit-context-key";
-process.env.GEMINI_API_KEY ??= "fixture-gemini-no-network";
-process.env.GEMINI_MODEL ??= "fixture-gemini";
+process.env.GEMINI_API_KEY = "fixture-gemini-no-network";
+process.env.GEMINI_MODEL = "fixture-gemini";
 const adapters = process.env.DATABASE_URL ? ["sqlite", "postgres"] as const : ["sqlite"] as const;
 async function setup(t: TestContext, adapter: "sqlite" | "postgres" = "sqlite", owner = false) {
   const directory = await mkdtemp(join(tmpdir(), "fracture-toolkit-review-"));

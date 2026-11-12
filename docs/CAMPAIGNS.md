@@ -4,6 +4,10 @@ The `/campaigns` laboratory compares the original faulty Bramble checkout with i
 
 All cases in this laboratory are **Sample**: the actual target code and pinned APIMatic SDK execute against the persistent local provider transport. No campaign sends a PayPal request, obtains a real buyer approval or asks a model to generate an answer. Tandem, Errand and live-provider experiments retain their separate workspaces and evidence.
 
+## Which cases a campaign can hold
+
+The laboratory holds the six cases that have a declared fault recipe: S0, S3, S4, S5, S10 and A4. Bounded reduction removes recipe components one at a time, so a case needs a recipe to be admitted. The other Bramble Sample cases (A1, A2, A7, S1, S6, S9) run from the scenario studio, the CLI and MCP, and through the one-click sample campaign (`POST /api/campaigns`), which admits all twelve. Cases outside this release are not offered to any campaign; [the scenario catalogue](SCENARIOS.md) lists every case with its mode.
+
 ## Run a comparison
 
 Open `/campaigns`, choose any of S0, S3, S4, S5, S10 and A4, and select the paired baseline/control or one revision. Supply a reproducible seed, then start the campaign. The request saves all case IDs, original run IDs, scenario digests, revision digests, fault recipes and source/context bindings before a worker executes anything.

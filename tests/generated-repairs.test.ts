@@ -15,6 +15,8 @@ import {getGeneratedPatch,processRepairJob} from "../packages/service/src/genera
 import {sourceText} from "../packages/service/src/catalog";
 import {DeveloperAccess} from "../packages/developer-tools/src/access";
 import type {IsolationResult} from "../packages/isolation/src/local";
+import {generatedTestHarnessHash,type GeneratedTestRunner} from "../packages/isolation/src/generated-test";
+import {generatedTestView} from "../packages/ai/src/repair-proof-view";
 const adapters=process.env.DATABASE_URL?["sqlite","postgres"] as const:["sqlite"] as const;
 const categories=["DUPLICATE CLAIMS","UNKNOWN OUTCOMES","CROSS-OPERATION INVARIANTS","OPTIONAL FIELDS","API REFUSAL"];
 const candidate='import type { BrambleContext } from "./contract";\nexport async function faultyCheckout(context: BrambleContext) { return context.run.id; }\n';
@@ -79,6 +81,40 @@ for(const adapter of adapters){
  test(`${adapter}: a checkpointed abandoned lease resumes its saved action`,async t=>{const f=await setup(t,adapter);const actionId=await queue(f);await f.db.query("INSERT INTO lab_background_models(id,session_id,action_id,document) VALUES($1,$2,$3,$4)",["fixture-checkpoint",f.session.id,actionId,JSON.stringify({stage:"polling",responseId:"resp_fixture"})]);await f.db.query("UPDATE lab_repair_jobs SET stage='running',lease_owner='gone',lease_until='2000-01-01T00:00:00.000Z'");const m=model(f.context);const result=await processRepairJob(f.service.store,{modelFactory:()=>m});assert.equal(result?.stage,"completed");assert.equal((await f.service.store.repairs(f.session.id)).length,1);assert.equal((await f.db.query("SELECT id FROM lab_actions WHERE id=$1 AND stage='completed'",[actionId])).rowCount,1);});
  test(`${adapter}: abandoned leases fail visibly and are never automatically regenerated`,async t=>{const f=await setup(t,adapter);await queue(f);await f.db.query("UPDATE lab_repair_jobs SET stage='running',lease_owner='gone',lease_until='2000-01-01T00:00:00.000Z'");assert.equal(await processRepairJob(f.service.store,{modelFactory:()=>{throw new Error("An uncheckpointed stale job must never call a provider");}}),null);const work=(await f.service.workspace(f.session)).work;assert.equal(work[0]?.status,"failed");assert.equal(work[0]?.phase,"REPAIR_WORKER_INTERRUPTED");});
 }
+const regressionTest={name:"Lost capture answer then retry charges once",rationale:"The witness shows one purchase intent producing two completed captures after a lost answer.",faults:{dropCaptureResponse:true,unavailableReread:false,authFailure:false,malformedSuccess:false,capturePending:false},purchaseAttempts:2,concurrent:false,expected:{completedCaptures:1,entitlements:1,customerState:"paid"}};
+const withTest=(context:RepairContext,value:unknown=regressionTest)=>model(context,(body,call)=>{if(call.role==="repair_candidate_source"){assert.ok((call.schema as {required:string[]}).required.includes("regressionTest"));body.regressionTest=value;}});
+const generatedRun=(before:"pass"|"fail",after:"pass"|"fail",seen?:{baseline:string;candidate:string}[]):GeneratedTestRunner=>async(test,baseline,candidate)=>{seen?.push({baseline,candidate});return {schemaVersion:1,specHash:test.specHash,harnessHash:generatedTestHarnessHash,baseHash:test.baseHash,candidateHash:test.candidateHash,before,after,beforeDetail:"Injected baseline observation.",afterDetail:"Injected candidate observation.",beforeDurationMs:1,afterDurationMs:1,established:before==="fail"&&after==="pass",raw:{schemaVersion:1,kind:"generated_regression",frozenCasesNotLoaded:9,before:{stage:"evaluated",sourceHash:test.baseHash,runnerHash:null,policyPassed:true,tests:[],elapsedMs:1},after:{stage:"evaluated",sourceHash:test.candidateHash,runnerHash:null,policyPassed:true,tests:[],elapsedMs:1}},runnerReceipt:{...identity,networkMode:"none",readOnlyRoot:true,hostMountCount:0,user:"1000:1000",credentialEnvironmentForwarded:false}};};
+for(const adapter of adapters){
+ test(`${adapter}: a model-written regression case is saved with the candidate and executed fail-before/pass-after beside the frozen suite`,async t=>{
+  const f=await setup(t,adapter);await queue(f);assert.equal((await processRepairJob(f.service.store,{modelFactory:()=>withTest(f.context)}))?.stage,"completed");
+  const repair=(await f.service.store.repairs(f.session.id))[0]!;const patch=await getGeneratedPatch(f.service.store,f.session.id,repair.id);
+  assert.deepEqual(patch.regressionTest?.spec,regressionTest);assert.equal(patch.regressionTest?.author.model,"fixture");assert.equal(patch.regressionTest?.baseHash,f.context.baseHash);assert.equal(patch.regressionTest?.candidateHash,sha256(candidate));
+  const authored=generatedTestView(repair.id,await f.service.store.evidence(f.session.id))!;assert.equal(authored.state,"not_executed");assert.equal(authored.model,"fixture");assert.equal(repair.tests.length,1,"The generated case never enters the frozen check list.");
+  const seen:{baseline:string;candidate:string}[]=[];await queue(f,"verify_generated",repair.id);
+  assert.equal((await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:proof,runGeneratedTest:generatedRun("fail","pass",seen)}))?.stage,"completed");
+  assert.deepEqual(seen,[{baseline:f.context.baseline,candidate}]);
+  const saved=(await f.service.store.repairs(f.session.id))[0]!;const evidence=await f.service.store.evidence(f.session.id);const view=generatedTestView(repair.id,evidence)!;
+  assert.equal(saved.status,"verified");assert.equal(saved.tests.length,10);assert.ok(!saved.tests.some(test=>test.id==="generated"));assert.equal(view.state,"established");assert.equal(view.location,"local Docker");assert.notEqual(view.evidenceId,saved.verificationEvidenceId);
+  assert.equal(evidence.filter(item=>"generatedRegressionTest" in item.body).length,2,"The authored record is retained beside the executed one.");
+ });
+ test(`${adapter}: a generated case that fails, cannot run or is malformed never changes the frozen-suite status`,async t=>{
+  const f=await setup(t,adapter);await queue(f);await processRepairJob(f.service.store,{modelFactory:()=>withTest(f.context)});const repair=(await f.service.store.repairs(f.session.id))[0]!;
+  await queue(f,"verify_generated",repair.id);await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:proof,runGeneratedTest:generatedRun("pass","pass")});
+  assert.equal((await f.service.store.repairs(f.session.id))[0]!.status,"verified");assert.equal(generatedTestView(repair.id,await f.service.store.evidence(f.session.id))!.state,"not_established");
+  await queue(f,"verify_generated",repair.id);await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:proof,runGeneratedTest:async()=>{throw new Error("runner unavailable");}});
+  const failed=generatedTestView(repair.id,await f.service.store.evidence(f.session.id))!;assert.equal(failed.state,"not_run");assert.equal(failed.executionError,"REPAIR_WORKER_FAILURE");assert.equal((await f.service.store.repairs(f.session.id))[0]!.status,"verified");
+  // A foreign runner boundary is not accepted as generated-test evidence.
+  await queue(f,"verify_generated",repair.id);await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:proof,runGeneratedTest:async(...args)=>({...await generatedRun("fail","pass")(...args),runnerReceipt:{imageId:"sha256:"+"f".repeat(64)}})});
+  assert.equal(generatedTestView(repair.id,await f.service.store.evidence(f.session.id))!.executionError,"REPAIR_PROOF_IDENTITY");
+  // When the frozen suite fails, a passing generated case cannot promote the candidate.
+  await queue(f,"verify_generated",repair.id);await processRepairJob(f.service.store,{runnerIdentity:async()=>identity,runCandidate:async source=>{const p=await proof(source);p.tests[2]!.status="fail";p.passed=false;return p;},runGeneratedTest:generatedRun("fail","pass")});
+  assert.equal((await f.service.store.repairs(f.session.id))[0]!.status,"compiled");
+  for(const invalid of [{...regressionTest,faults:{...regressionTest.faults,deleteTests:true}},{...regressionTest,purchaseAttempts:99},{...regressionTest,source:"assert.ok(true)"},"expect(true)"]){
+   const g=await generateRepair(f.run,f.session.id,f.context,withTest(f.context,invalid));assert.equal(g.regressionTest,undefined);assert.ok(g.repair.limitations.some(line=>line.includes("discarded")));assert.equal(g.repair.status,"proposed");
+  }
+ });
+}
+
 
 test("fresh worker process observes a revoked grant without calling the model",{skip:!process.env.DATABASE_URL},async t=>{
  const f=await setup(t,"postgres",true);await queue(f);await f.access.revoke(f.grant!.credential);

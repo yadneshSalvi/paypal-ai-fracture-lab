@@ -1,0 +1,38 @@
+name: CI
+
+# Hermetic checks only: no database, Docker, PayPal, model key or .env is available to this job.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck, conformance freshness, hermetic tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      # The lockfile records the pinned APIMatic SDK (context-plugins/paypal-typescript-sdk@5d0df8a) with an SSH URL.
+      # The repository is public, so fetch it over HTTPS; the hosted build uses the same rewrite.
+      - name: Fetch the pinned SDK over HTTPS
+        run: git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+      - name: Install exact dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      # Fails, naming the stale files, when docs/evidence/application-conformance.json no longer matches the runtime files.
+      - name: Conformance proof is current
+        run: npm run check:conformance
+      - name: Hermetic tests
+        run: npm run test:hermetic
