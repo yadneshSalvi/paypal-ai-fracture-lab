@@ -1,0 +1,71 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createRequire, register } from "node:module";
+import { act, createElement, StrictMode } from "react";
+import type { WorkspaceDTO } from "@fracture/contracts";
+register("./helpers/css-module-loader.mjs", import.meta.url);
+register("./helpers/navigation-loader.mjs", import.meta.url);
+const { JSDOM } = createRequire(new URL("./component-runtime/package.json", import.meta.url))("jsdom") as { JSDOM: new (html: string, options: { url: string; pretendToBeVisual: boolean }) => { window: Window & typeof globalThis } };
+const dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "http://localhost/ai-workbench", pretendToBeVisual: true });
+for (const name of ["window", "self", "document", "navigator", "HTMLElement", "Event", "MouseEvent", "KeyboardEvent", "Node"] as const) Object.defineProperty(globalThis, name, { value: dom.window[name], configurable: true, writable: true });
+Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true, __fractureTestPathname: "/ai-workbench" });
+const { createRoot } = await import("react-dom/client");
+const { WorkspaceProvider } = await import("../apps/web/components/workspace-provider");
+const { ModelRuntimePage } = await import("../apps/web/components/model-runtime");
+const workspace: WorkspaceDTO = { version: "1.0", sessionId: "existing-session", createdAt: "2026-11-12T10:00:00Z", source: "sample", policy: { sandboxOnly: true, maxCaptures: 2, maxGrossMinor: 2400, currency: "USD", liveEnabled: false, reason: "Controlled fixture" }, projects: [], scenarios: [], runs: [], campaigns: [], repairs: [], providerFacts: [], contractRows: [], evaluations: [], evidence: [], selectedRunId: null, metrics: [], work: [], errand: { projectId: "errand", title: "Fixture", summary: "Controlled fixture", source: "sample", unprotectedOrderIds: [], hardenedOrderIds: [], chargeCount: 0, toolCalls: [], limitations: [] } };
+const button = (text: string) => [...document.querySelectorAll<HTMLButtonElement>("button")].find(node => node.textContent?.includes(text))!;
+const flush = () => new Promise(resolve => setTimeout(resolve, 0));
+
+test("the mounted read-only entry never admits on load, read failure, refresh, or expired session", async t => {
+  document.body.innerHTML = "<div id='root'></div>";
+  const root = createRoot(document.getElementById("root")!);
+  const originalFetch = globalThis.fetch;
+  t.after(async () => { await act(async () => root.unmount()); globalThis.fetch = originalFetch; });
+  const requests: { url: string; method: string }[] = [];
+  let connected = false, unavailable = false;
+  let deferred: (() => void) | null = null;
+  let hold = false;
+  globalThis.fetch = async (input, init) => {
+    const url = String(input), method = init?.method ?? "GET";
+    requests.push({ url, method });
+    if (url === "/api/workspace") {
+      if (hold) await new Promise<void>(resolve => { deferred = resolve; });
+      if (unavailable) return Response.json({ error: { message: "unavailable" } }, { status: 503 });
+      return connected ? Response.json({ data: workspace }) : Response.json({ error: { code: "SESSION_EXPIRED" } }, { status: 401 });
+    }
+    if (url === "/api/model-runtime") return Response.json({ data: { schemaVersion: 1, sessionId: workspace.sessionId, observedAt: "2026-11-12T10:00:00Z", attempts: [], reads: [], totalAttempts: 0, truncated: false } });
+    if (url === "/api/judge/sessions" && method === "POST") { connected = true; return Response.json({ data: workspace }, { status: 201 }); }
+    throw new Error(`Unexpected request ${method} ${url}`);
+  };
+  const render = () => act(async () => { root.render(createElement(StrictMode, null, createElement(WorkspaceProvider, null, createElement(ModelRuntimePage)))); await flush(); });
+  await render();
+  assert.match(document.body.textContent!, /No workspace is connected/);
+  assert.equal(requests.filter(r => r.method === "POST").length, 0);
+  assert.equal(document.querySelector(".project-header"), null, "An unconnected evidence page must not invent an active project.");
+  assert.equal([...document.querySelectorAll<HTMLAnchorElement>("a")].find(a => a.textContent?.includes("Create a Sample workspace"))?.getAttribute("href"), "/judge");
+  hold = true;
+  const before = requests.length;
+  await act(async () => { button("Read saved session").click(); button("Read saved session").click(); });
+  assert.equal(requests.length, before + 1, "Repeated read clicks share one in-flight request.");
+  assert.equal(button("Read saved session").disabled, true);
+  await act(async () => { deferred!(); await flush(); }); hold = false;
+  unavailable = true;
+  await act(async () => { button("Read saved session").click(); await flush(); });
+  assert.match(document.querySelector('[role="alert"]')!.textContent!, /disconnected/);
+  assert.equal(requests.filter(r => r.method === "POST").length, 0);
+  unavailable = false; connected = true;
+  await act(async () => { button("Read saved session").click(); await flush(); });
+  assert.match(document.body.textContent!, /Your first investigation starts with a witness/);
+  assert.ok(requests.some(r => r.url === "/api/model-runtime" && r.method === "GET"));
+  assert.equal(requests.filter(r => r.method === "POST").length, 0);
+  connected = false;
+  await act(async () => { root.unmount(); });
+  const recoveredRoot = createRoot(document.getElementById("root")!);
+  t.after(async () => { await act(async () => recoveredRoot.unmount()); });
+  await act(async () => { recoveredRoot.render(createElement(WorkspaceProvider, null, createElement(ModelRuntimePage))); await flush(); });
+  assert.match(document.body.textContent!, /No workspace is connected/);
+  assert.equal(requests.filter(r => r.method === "POST").length, 0, "A settled initialization cache cannot restore an expired actor or silently admit another.");
+  Object.assign(globalThis, { __fractureTestPathname: "/judge" });
+  await act(async () => { recoveredRoot.render(createElement(WorkspaceProvider, null, createElement(ModelRuntimePage))); await flush(); });
+  assert.equal(requests.filter(r => r.url === "/api/judge/sessions" && r.method === "POST").length, 1, "The explicit Sample entry route still admits once.");
+});

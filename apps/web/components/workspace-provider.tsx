@@ -28,7 +28,8 @@ type WorkspaceContextValue = {
 };
 
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
-let initialization: Promise<WorkspaceDTO> | null = null;
+type WorkspaceEntry = "sample" | "source" | "read";
+let initialization: { entry: WorkspaceEntry; promise: Promise<WorkspaceDTO | null> } | null = null;
 class WorkspaceRequestError extends Error { constructor(message:string,readonly code:string){super(message);} }
 
 async function api<T>(path: string, body?: unknown): Promise<T> {
@@ -49,24 +50,31 @@ async function api<T>(path: string, body?: unknown): Promise<T> {
   return result.data;
 }
 
-async function readWorkspace(sourceOnly = false) {
+async function readWorkspace(entry: WorkspaceEntry = "sample") {
     const response = await fetch("/api/workspace", { credentials: "same-origin", cache: "no-store" });
-    if (response.status === 401) return api<WorkspaceDTO>(sourceOnly ? "/api/source-workspaces/session" : "/api/judge/sessions", {});
+    if (response.status === 401) {
+      if (entry === "read") return null;
+      return api<WorkspaceDTO>(entry === "source" ? "/api/source-workspaces/session" : "/api/judge/sessions", {});
+    }
     if (!response.ok) throw new Error("The workspace service is disconnected. Reconnect when the service is available.");
     const envelope = await response.json() as ApiEnvelope<WorkspaceDTO>;
     if (!envelope.data) throw new Error("The workspace response was incomplete. Try reconnecting.");
     return envelope.data;
 }
 
-function initializeWorkspace(sourceOnly = false) {
-  if (!initialization) initialization = readWorkspace(sourceOnly).catch(cause => { initialization = null; throw cause; });
-  return initialization;
+function initializeWorkspace(entry: WorkspaceEntry) {
+  if (!initialization || initialization.entry !== entry) {
+    const promise = readWorkspace(entry).finally(() => { if (initialization?.promise === promise) initialization = null; });
+    initialization = { entry, promise };
+  }
+  return initialization.promise;
 }
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const researchPage = pathname.startsWith('/evaluations');
   const sourcePage = pathname.startsWith('/sources');
+  const entry: WorkspaceEntry = sourcePage ? "source" : pathname.startsWith("/ai-workbench") ? "read" : "sample";
   const [workspace, setWorkspace] = useState<WorkspaceDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -81,14 +89,14 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const refresh = useCallback(async (dismissError=false) => {
     try {
-      const next = await readWorkspace(sourcePage);
+      const next = await readWorkspace(entry);
       if (mounted.current) { setWorkspace(next); if(dismissError || errorKind.current === "load"){setError(null);errorKind.current=null;} }
       return next;
     } catch (cause) {
       if (mounted.current && errorKind.current !== "action") {errorKind.current="load";setError(cause instanceof Error ? cause.message : "Could not load the workspace.");}
       return null;
     }
-  }, [sourcePage]);
+  }, [entry]);
 
   useEffect(() => {
     mounted.current = true;
@@ -101,7 +109,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     async function initialize() {
       try {
-        const next = await initializeWorkspace(sourcePage);
+        const next = await initializeWorkspace(entry);
         if (!cancelled) { setWorkspace(next); setError(null); }
       } catch (cause) {
         if (!cancelled) {errorKind.current='load';setError(cause instanceof Error ? cause.message : "Could not start your sample session.");}
@@ -111,7 +119,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }
     void initialize();
     return () => { cancelled = true; mounted.current = false; };
-  }, [researchPage, sourcePage]);
+  }, [researchPage, entry]);
 
   const hasRunningWork = !researchPage && hasExecutingWorkspaceWork(workspace, busy);
   useEffect(() => { if (activeCommand.current && workspace?.work?.some(work => work.id === activeCommand.current && ["completed", "failed", "cancelled"].includes(work.status))) setBusy(null); }, [workspace]);

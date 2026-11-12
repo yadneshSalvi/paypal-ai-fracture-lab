@@ -24,7 +24,9 @@ const short = (value: string | null) => value ? value.slice(0, 12) : "Not record
 const errorText = (code: string | null) => code === "MODEL_DISPATCH_UNKNOWN" || code === "MODEL_TRANSPORT_UNKNOWN" || code === "MODEL_TRANSPORT_FAILURE" ? "The original submission has no completed answer. Its identity and failure remain retained; it has not been automatically replaced." : code === "MODEL_INCOMPLETE" ? "The provider returned an incomplete answer. Partial output cannot establish a diagnosis or verified repair." : code === "WORK_CANCELLED" ? "Execution authority ended. Earlier observations remain available." : "This attempt did not produce an accepted response. Its original failure remains available for inspection.";
 
 export function ModelRuntimePage() {
-  const { workspace, loading: workspaceLoading, openEvidence } = useWorkspace();
+  const { workspace, loading: workspaceLoading, openEvidence, refresh: readSession } = useWorkspace();
+  const [checkingSession, setCheckingSession] = useState(false);
+  const sessionRead = useRef(false);
   const [data, setData] = useState<RuntimeView | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -57,7 +59,19 @@ export function ModelRuntimePage() {
     const timer = setInterval(() => { if (document.visibilityState !== "hidden") void refresh(); }, 5000);
     return () => clearInterval(timer);
   }, [running, refresh]);
-  return <AppShell>{workspaceLoading ? <LoadingWorkspace /> : <RuntimeEvidence data={data} loading={loading} error={error} onRefresh={() => void refresh()} onEvidence={openEvidence} />}</AppShell>;
+  const reconnect = async () => {
+    if (sessionRead.current) return;
+    sessionRead.current = true; setCheckingSession(true);
+    try { await readSession(true); } finally { sessionRead.current = false; setCheckingSession(false); }
+  };
+  return <AppShell>{workspaceLoading ? <LoadingWorkspace /> : !workspace ? <RuntimeEntry checking={checkingSession} onRead={() => void reconnect()} /> : <RuntimeEvidence data={data} loading={loading} error={error} onRefresh={() => void refresh()} onEvidence={openEvidence} />}</AppShell>;
+}
+
+export function RuntimeEntry({ checking, onRead }: { checking: boolean; onRead: () => void }) {
+  return <section className={styles.root}>
+    <header className={styles.hero}><div className={styles.heroCopy}><span className={styles.kicker}><Radio size={13} />AI WORKBENCH / SAVED INVESTIGATIONS</span><h1>Start with<br /><span>the original witness.</span></h1><p>Connect to a saved workspace to inspect its model attempts, tool observations and retained failures.</p><div className={styles.heroTags}><LockKeyhole size={13} /><span>Opening this page only reads your saved session</span></div></div><div className={styles.constellation} aria-hidden="true"><span className={styles.orbit} /><div className={styles.core}><Fingerprint size={31} /><span>SAVED<br />IDENTITY</span></div><span className={styles.satelliteA}><Sparkles size={15} />MODEL</span><span className={styles.satelliteB}><Terminal size={15} />TOOL</span><span className={styles.satelliteC}><ShieldCheck size={15} />RECEIPT</span></div></header>
+    <div className={styles.empty}><LockKeyhole size={27} /><h2>No workspace is connected.</h2><p>If you have opened a saved session in this browser, read it again. To begin a new investigation, explicitly create a workspace with registered Sample examples.</p><div className={styles.entryActions}><button type="button" className="button secondary" disabled={checking} onClick={onRead}>{checking ? <LoaderCircle size={14} className="spin" /> : <RefreshCw size={14} />}Read saved session</button><Link className="button primary" href="/judge" prefetch={false}>Create a Sample workspace<ArrowRight size={14} /></Link></div><p>New workspace scope: controlled Sample examples. Model and payment actions require a separate choice.</p></div>
+  </section>;
 }
 
 export function RuntimeEvidence({ data, loading, error, onRefresh, onEvidence }: { data: RuntimeView | null; loading: boolean; error: string | null; onRefresh: () => void; onEvidence: (id: string) => void }) {
